@@ -147,7 +147,7 @@ async function sendOtp({
 }: {
   email: string
   otp: string
-  type: "sign-in" | "email-verification" | "forget-password"
+  type: "sign-in" | "email-verification" | "forget-password" | "change-email"
 }) {
   const apiKey = process.env.RESEND_API_KEY
   const from = process.env.AUTH_EMAIL_FROM
@@ -169,7 +169,9 @@ async function sendOtp({
       subject:
         type === "forget-password"
           ? "Reset your XPOMAG password"
-          : "Verify your XPOMAG email",
+          : type === "change-email"
+            ? "Confirm your new XPOMAG email"
+            : "Verify your XPOMAG email",
       html: `
         <div style="font-family:Arial,sans-serif;max-width:560px;margin:auto;padding:32px">
           <div style="font-weight:900;font-size:20px;margin-bottom:30px">XpoMag</div>
