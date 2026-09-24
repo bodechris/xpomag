@@ -4,12 +4,21 @@
   "private": true,
   "type": "module",
   "exports": {
-    ".": "./src/index.ts",
-    "./renderer": "./src/renderer.tsx"
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./renderer": {
+      "types": "./src/renderer.tsx",
+      "import": "./dist/renderer.js",
+      "default": "./dist/renderer.js"
+    }
   },
   "scripts": {
+    "build": "tsc -p tsconfig.json",
     "lint": "eslint . --max-warnings 0",
-    "check-types": "tsc --noEmit"
+    "check-types": "tsc --noEmit -p tsconfig.json"
   },
   "dependencies": {
     "react": "19.2.8",
