@@ -1,8 +1,8 @@
 import type { CSSProperties, ReactNode } from "react";
-import { DesignElement } from "./renderer.js";
-import { getMagazineLayout } from "./layouts.js";
-import type { MagazinePageDefinition, MagazineSection } from "./schema.js";
-import type { ComposerNode } from "./editor.js";
+import { DesignElement } from "./renderer";
+import { getMagazineLayout } from "./layouts";
+import type { MagazinePageDefinition, MagazineSection } from "./schema";
+import type { ComposerNode } from "./editor";
 
 export type SectionEngagementRenderer = (section: MagazineSection) => ReactNode;
 
