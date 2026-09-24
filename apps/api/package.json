@@ -13,6 +13,8 @@
   "dependencies": {
     "@xpomag/config": "workspace:*",
     "@xpomag/db": "workspace:*",
+    "@xpomag/magazine": "workspace:*",
+    "better-auth": "^1.7.5",
     "bullmq": "^5.58.5",
     "cors": "^2.8.5",
     "express": "^5.1.0",
@@ -20,8 +22,7 @@
     "ioredis": "^5.7.0",
     "pino": "^9.9.4",
     "pino-http": "^10.5.0",
-    "zod": "^4.1.11",
-    "@xpomag/magazine": "workspace:*"
+    "zod": "^4.1.11"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",
