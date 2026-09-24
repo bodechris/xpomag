@@ -1,5 +1,5 @@
-import Redis from "ioredis";
-import { readEnv } from "../../../../packages/config/src/index";
+import { Redis } from "ioredis";
+import { readEnv } from "@xpomag/config";
 
 let redis: Redis | undefined;
 
