@@ -1,4 +1,4 @@
-import { loadApiEnv } from "./lib/load-env";
+import { loadApiEnv } from "./lib/load-env.js";
 
 loadApiEnv();
 
@@ -7,12 +7,12 @@ import type { NextFunction, Request, Response } from "express";
 import cors from "cors";
 import helmet from "helmet";
 import pinoHttp from "pino-http";
-import { edgeLocationSignal } from "./modules/location/request-location";
+import { edgeLocationSignal } from "./modules/location/request-location.js";
 import { z } from "zod";
-import { mountBetterAuth } from "./auth-bootstrap";
-import { accountRouter } from "./routes/account";
-import { getComposition, getRevisions, publishDraft, saveDraft } from "./modules/composer/repository";
-import { addComment, createCollection, deleteComment, getEngagementSummary, getSaveCollectionsForTarget, listCollections, listComments, listSavedItems, recordShare, setReaction, setSaved, setSavedCollections } from "./modules/engagement/repository";
+import { mountBetterAuth } from "./auth-bootstrap.js";
+import { accountRouter } from "./routes/account.js";
+import { getComposition, getRevisions, publishDraft, saveDraft } from "./modules/composer/repository.js";
+import { addComment, createCollection, deleteComment, getEngagementSummary, getSaveCollectionsForTarget, listCollections, listComments, listSavedItems, recordShare, setReaction, setSaved, setSavedCollections } from "./modules/engagement/repository.js";
 
 
 const reactionSchema = z.enum(["like", "love", "insightful", "celebrate"]);
