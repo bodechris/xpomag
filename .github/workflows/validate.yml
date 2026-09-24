@@ -1,0 +1,24 @@
+name: Validate XPOMAG
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: corepack enable
+      - run: corepack prepare pnpm@11.25.0 --activate
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter frontend check-types
+      - run: pnpm --filter frontend build
+      - run: pnpm --filter api check-types
+      - run: pnpm --filter api build
