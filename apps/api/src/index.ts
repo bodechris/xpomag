@@ -9,6 +9,8 @@ import helmet from "helmet";
 import pinoHttp from "pino-http";
 import { edgeLocationSignal } from "./modules/location/request-location";
 import { z } from "zod";
+import { mountBetterAuth } from "./auth-bootstrap";
+import { accountRouter } from "./routes/account";
 import { getComposition, getRevisions, publishDraft, saveDraft } from "./modules/composer/repository";
 import { addComment, createCollection, deleteComment, getEngagementSummary, getSaveCollectionsForTarget, listCollections, listComments, listSavedItems, recordShare, setReaction, setSaved, setSavedCollections } from "./modules/engagement/repository";
 
@@ -73,8 +75,13 @@ const port = Number(process.env.PORT ?? 4000);
 app.disable("x-powered-by");
 app.use(helmet());
 app.use(cors({ origin: process.env.WEB_ORIGIN?.split(",") ?? true, credentials: true }));
-app.use(express.json({ limit: "1mb" }));
 app.use(pinoHttp());
+
+// Better Auth needs the raw request stream, so mount it before express.json().
+mountBetterAuth(app);
+
+app.use(express.json({ limit: "1mb" }));
+app.use("/api/account", accountRouter);
 
 app.get("/health", (_req, res) => res.json({ ok: true, service: "xpomag-api" }));
 app.get("/v1/location", (req, res) => res.json(edgeLocationSignal(req)));
