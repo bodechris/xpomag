@@ -4,13 +4,30 @@
   "private": true,
   "type": "module",
   "exports": {
-    ".": "./src/index.ts",
-    "./schema": "./src/schema.ts",
-    "./schema/auth": "./src/schema/auth.ts",
-    "./schema/onboarding": "./src/schema/onboarding.ts"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./schema": {
+      "types": "./dist/schema.d.ts",
+      "import": "./dist/schema.js",
+      "default": "./dist/schema.js"
+    },
+    "./schema/auth": {
+      "types": "./dist/schema/auth.d.ts",
+      "import": "./dist/schema/auth.js",
+      "default": "./dist/schema/auth.js"
+    },
+    "./schema/onboarding": {
+      "types": "./dist/schema/onboarding.d.ts",
+      "import": "./dist/schema/onboarding.js",
+      "default": "./dist/schema/onboarding.js"
+    }
   },
   "scripts": {
-    "check-types": "tsc --noEmit",
+    "build": "tsc -p tsconfig.build.json",
+    "check-types": "tsc --noEmit -p tsconfig.json",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate"
   },
