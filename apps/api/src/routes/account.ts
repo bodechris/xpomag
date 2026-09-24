@@ -78,6 +78,10 @@ async function ensureProfile(userId: string, req?: Request) {
     })
     .returning()
 
+  if (!created) {
+    throw new Error("Failed to create user profile.")
+  }
+
   return created
 }
 
