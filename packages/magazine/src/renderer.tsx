@@ -1,7 +1,7 @@
 import type { CSSProperties, ReactNode } from "react";
-import type { DesignElementNode } from "./schema.js";
-import type { ComposerDocument, ComposerNode } from "./editor.js";
-import { ComposerCanvas } from "./composer-renderer.js";
+import type { DesignElementNode } from "./schema";
+import type { ComposerDocument, ComposerNode } from "./editor";
+import { ComposerCanvas } from "./composer-renderer";
 
 type DesignElementInteractionProps = {
   renderComposerNodeOverlay?: (node: ComposerNode) => ReactNode;
