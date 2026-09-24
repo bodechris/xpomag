@@ -1,4 +1,5 @@
 import { loadApiEnv } from "./lib/load-env.js";
+// Workspace runtime packages are built by the API prebuild step before deployment.
 
 loadApiEnv();
 
