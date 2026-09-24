@@ -6,25 +6,25 @@
   "exports": {
     ".": {
       "xpomag-dev": "./src/index.ts",
-      "types": "./dist/index.d.ts",
+      "types": "./src/index.ts",
       "import": "./dist/index.js",
       "default": "./dist/index.js"
     },
     "./schema": {
       "xpomag-dev": "./src/schema.ts",
-      "types": "./dist/schema.d.ts",
+      "types": "./src/schema.ts",
       "import": "./dist/schema.js",
       "default": "./dist/schema.js"
     },
     "./schema/auth": {
       "xpomag-dev": "./src/schema/auth.ts",
-      "types": "./dist/schema/auth.d.ts",
+      "types": "./src/schema/auth.ts",
       "import": "./dist/schema/auth.js",
       "default": "./dist/schema/auth.js"
     },
     "./schema/onboarding": {
       "xpomag-dev": "./src/schema/onboarding.ts",
-      "types": "./dist/schema/onboarding.d.ts",
+      "types": "./src/schema/onboarding.ts",
       "import": "./dist/schema/onboarding.js",
       "default": "./dist/schema/onboarding.js"
     }
@@ -44,6 +44,7 @@
     "@types/pg": "^8.15.5",
     "@xpomag/typescript-config": "workspace:*",
     "drizzle-kit": "^0.31.4",
-    "typescript": "7.0.2"
+    "typescript": "7.0.2",
+    "@types/node": "26.4.1"
   }
 }
