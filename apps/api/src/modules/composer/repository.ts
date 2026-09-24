@@ -1,6 +1,6 @@
 import type { ComposerDocument } from "@xpomag/magazine";
 import { createDb } from "@xpomag/db";
-import { loadApiEnv } from "../../lib/load-env";
+import { loadApiEnv } from "../../lib/load-env.js";
 
 loadApiEnv();
 
