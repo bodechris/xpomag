@@ -1,5 +1,8 @@
-import { db } from "../index"
+import { createDb } from "../index"
 import { categories } from "../schema/onboarding"
+
+const connectionString = process.env.DATABASE_URL ?? "postgres://xpomag:xpomag@localhost:5434/xpomag"
+const { db, pool } = createDb(connectionString)
 
 const seed = [
   ["Business & Entrepreneurship", "business-entrepreneurship"],
@@ -22,3 +25,4 @@ await db
   .onConflictDoNothing()
 
 console.log("XPOMAG categories seeded.")
+await pool.end()
