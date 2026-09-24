@@ -186,41 +186,218 @@ function YouTubeStoryPanel({ story }: { story: VideoStory }) {
   );
 }
 
-function CityDashGame() {
-  const [score, setScore] = useState(0);
-  const [time, setTime] = useState(15);
-  const [running, setRunning] = useState(false);
-  const [position, setPosition] = useState({ x: 52, y: 52 });
+const CITY_TETRIS_COLS = 10;
+const CITY_TETRIS_ROWS = 18;
+const CITY_TETRIS_PIECES = {
+  I: [[1, 1, 1, 1]],
+  J: [[1, 0, 0], [1, 1, 1]],
+  L: [[0, 0, 1], [1, 1, 1]],
+  O: [[1, 1], [1, 1]],
+  S: [[0, 1, 1], [1, 1, 0]],
+  T: [[0, 1, 0], [1, 1, 1]],
+  Z: [[1, 1, 0], [0, 1, 1]],
+} as const;
 
-  const moveTarget = useCallback(() => {
-    setPosition({ x: 10 + Math.random() * 78, y: 24 + Math.random() * 62 });
-  }, []);
+type CityTetrisKind = keyof typeof CITY_TETRIS_PIECES;
+type CityTetrisCell = CityTetrisKind | null;
+type CityTetrisPiece = { kind: CityTetrisKind; shape: number[][]; x: number; y: number };
+
+const CITY_TETRIS_KINDS = Object.keys(CITY_TETRIS_PIECES) as CityTetrisKind[];
+const emptyCityBoard = (): CityTetrisCell[][] => Array.from({ length: CITY_TETRIS_ROWS }, () => Array<CityTetrisCell>(CITY_TETRIS_COLS).fill(null));
+const cloneShape = (shape: readonly (readonly number[])[]) => shape.map((row) => [...row]);
+const newCityPiece = (): CityTetrisPiece => {
+  const kind = CITY_TETRIS_KINDS[Math.floor(Math.random() * CITY_TETRIS_KINDS.length)]!;
+  const shape = cloneShape(CITY_TETRIS_PIECES[kind]);
+  return { kind, shape, x: Math.floor((CITY_TETRIS_COLS - shape[0]!.length) / 2), y: -1 };
+};
+const rotateCityPiece = (shape: number[][]) => shape[0]!.map((_, index) => shape.map((row) => row[index]!).reverse());
+
+function CityTetrisGame() {
+  const [board, setBoard] = useState<CityTetrisCell[][]>(() => emptyCityBoard());
+  const [piece, setPiece] = useState<CityTetrisPiece>(() => newCityPiece());
+  const [nextKind, setNextKind] = useState<CityTetrisKind>(() => CITY_TETRIS_KINDS[Math.floor(Math.random() * CITY_TETRIS_KINDS.length)]!);
+  const [score, setScore] = useState(0);
+  const [lines, setLines] = useState(0);
+  const [running, setRunning] = useState(false);
+  const [gameOver, setGameOver] = useState(false);
+  const gameRef = useRef<HTMLDivElement | null>(null);
+  const level = Math.min(9, Math.floor(lines / 5) + 1);
+
+  const collides = useCallback((candidate: CityTetrisPiece, source = board) => {
+    return candidate.shape.some((row, dy) => row.some((filled, dx) => {
+      if (!filled) return false;
+      const x = candidate.x + dx;
+      const y = candidate.y + dy;
+      return x < 0 || x >= CITY_TETRIS_COLS || y >= CITY_TETRIS_ROWS || (y >= 0 && Boolean(source[y]?.[x]));
+    }));
+  }, [board]);
+
+  const spawnFromNext = useCallback((source: CityTetrisCell[][]) => {
+    const shape = cloneShape(CITY_TETRIS_PIECES[nextKind]);
+    const incoming: CityTetrisPiece = { kind: nextKind, shape, x: Math.floor((CITY_TETRIS_COLS - shape[0]!.length) / 2), y: -1 };
+    const following = CITY_TETRIS_KINDS[Math.floor(Math.random() * CITY_TETRIS_KINDS.length)]!;
+    setNextKind(following);
+    const blocked = incoming.shape.some((row, dy) => row.some((filled, dx) => filled && incoming.y + dy >= 0 && Boolean(source[incoming.y + dy]?.[incoming.x + dx])));
+    if (blocked) {
+      setRunning(false);
+      setGameOver(true);
+    } else {
+      setPiece(incoming);
+    }
+  }, [nextKind]);
+
+  const lockPiece = useCallback((current: CityTetrisPiece) => {
+    const merged = board.map((row) => [...row]);
+    current.shape.forEach((row, dy) => row.forEach((filled, dx) => {
+      if (!filled) return;
+      const y = current.y + dy;
+      const x = current.x + dx;
+      if (y >= 0 && y < CITY_TETRIS_ROWS && x >= 0 && x < CITY_TETRIS_COLS) merged[y]![x] = current.kind;
+    }));
+    const survivors = merged.filter((row) => row.some((cell) => cell === null));
+    const cleared = CITY_TETRIS_ROWS - survivors.length;
+    const nextBoard = [...Array.from({ length: cleared }, () => Array<CityTetrisCell>(CITY_TETRIS_COLS).fill(null)), ...survivors];
+    setBoard(nextBoard);
+    if (cleared > 0) {
+      setLines((value) => value + cleared);
+      setScore((value) => value + [0, 100, 300, 500, 800][cleared]! * level);
+    } else {
+      setScore((value) => value + 8);
+    }
+    spawnFromNext(nextBoard);
+  }, [board, level, spawnFromNext]);
+
+  const stepDown = useCallback(() => {
+    if (!running) return;
+    const candidate = { ...piece, y: piece.y + 1 };
+    if (collides(candidate)) lockPiece(piece);
+    else setPiece(candidate);
+  }, [running, piece, collides, lockPiece]);
 
   useEffect(() => {
-    if (!running || time <= 0) return;
-    const id = window.setInterval(() => setTime((value) => Math.max(0, value - 1)), 1000);
+    if (!running) return;
+    const id = window.setInterval(stepDown, Math.max(150, 720 - (level - 1) * 65));
     return () => window.clearInterval(id);
-  }, [running, time]);
+  }, [running, stepDown, level]);
 
-  useEffect(() => { if (time === 0) setRunning(false); }, [time]);
+  const move = (dx: number) => {
+    if (!running) return;
+    const candidate = { ...piece, x: piece.x + dx };
+    if (!collides(candidate)) setPiece(candidate);
+  };
+  const rotate = () => {
+    if (!running) return;
+    const candidate = { ...piece, shape: rotateCityPiece(piece.shape) };
+    if (!collides(candidate)) setPiece(candidate);
+  };
+  const hardDrop = () => {
+    if (!running) return;
+    let candidate = piece;
+    let distance = 0;
+    while (!collides({ ...candidate, y: candidate.y + 1 })) {
+      candidate = { ...candidate, y: candidate.y + 1 };
+      distance += 1;
+    }
+    setScore((value) => value + distance * 2);
+    lockPiece(candidate);
+  };
+  const startGame = () => {
+    const fresh = emptyCityBoard();
+    const first = newCityPiece();
+    setBoard(fresh);
+    setPiece(first);
+    setNextKind(CITY_TETRIS_KINDS[Math.floor(Math.random() * CITY_TETRIS_KINDS.length)]!);
+    setScore(0);
+    setLines(0);
+    setGameOver(false);
+    setRunning(true);
+    window.setTimeout(() => gameRef.current?.focus(), 0);
+  };
 
-  const start = () => { setScore(0); setTime(15); setRunning(true); moveTarget(); };
-  const hit = () => { if (!running) return; setScore((value) => value + 1); moveTarget(); };
+  const visible = board.map((row) => [...row]);
+  if (running) {
+    piece.shape.forEach((row, dy) => row.forEach((filled, dx) => {
+      if (!filled) return;
+      const y = piece.y + dy;
+      const x = piece.x + dx;
+      if (y >= 0 && y < CITY_TETRIS_ROWS && x >= 0 && x < CITY_TETRIS_COLS) visible[y]![x] = piece.kind;
+    }));
+  }
+
+  const districtForRow = (row: number) => row < 4 ? "SANDTON" : row < 9 ? "KEYES" : row < 14 ? "ROSEBANK" : "THE MARC";
 
   return (
-    <div className="xp-play-page xp-play-page--game" data-magazine-interactive data-no-page-turn>
+    <div
+      ref={gameRef}
+      className="xp-play-page xp-play-page--game xp-city-tetris"
+      data-magazine-interactive
+      data-no-page-turn
+      tabIndex={0}
+      onKeyDown={(event) => {
+        if (!running) return;
+        if (["ArrowLeft", "ArrowRight", "ArrowDown", "ArrowUp", " ", "x", "X"].includes(event.key)) event.preventDefault();
+        if (event.key === "ArrowLeft") move(-1);
+        if (event.key === "ArrowRight") move(1);
+        if (event.key === "ArrowDown") stepDown();
+        if (event.key === "ArrowUp" || event.key === "x" || event.key === "X") rotate();
+        if (event.key === " ") hardDrop();
+      }}
+    >
       <div className="xp-play-page__eyebrow">XPOMAG / PLAY / 56</div>
-      <h1>CITY DASH</h1>
-      <p>Catch as many moving city nodes as you can in 15 seconds. Fast hands, sharp eyes.</p>
-      <div className="xp-game-hud"><span><b>{score}</b> points</span><span><b>{time}</b> sec</span></div>
-      <div className="xp-city-dash-field">
-        <div className="xp-city-dash-zones" aria-hidden="true">
-          <span>ROSEBANK</span><span>KEYES</span><span>SANDTON</span><span>THE MARC</span>
-        </div>
-        {running ? <button className="xp-city-dash-target" data-color={score % 4} style={{ left: `${position.x}%`, top: `${position.y}%` }} onClick={hit} aria-label="Catch city node"><span>+</span></button> : null}
-        {!running ? <div className="xp-game-start"><div className="xp-game-start__dots" aria-hidden="true"><i/><i/><i/></div><strong>{time === 0 ? `${score} caught!` : "15 seconds. Ready?"}</strong><button className="xp-play-primary" onClick={start}>{time === 0 ? "Play again" : "Start game"}</button></div> : null}
+      <h1>CITY BLOCKS</h1>
+      <p>Build the city upward. Complete streets to clear them, score points and keep the skyline alive.</p>
+      <div className="xp-game-hud">
+        <span><b>{score}</b> score</span>
+        <span><b>{lines}</b> streets</span>
+        <span><b>{level}</b> level</span>
       </div>
-      <div className="xp-play-page__footer">ROSEBANK ↔ SANDTON / MOVE QUICKLY</div>
+
+      <div className="xp-city-tetris-shell">
+        <div className="xp-city-tetris-board" role="application" aria-label="City Blocks game board">
+          {visible.flatMap((row, y) => row.map((cell, x) => (
+            <span
+              key={`${y}-${x}`}
+              className="xp-city-tetris-cell"
+              data-piece={cell ?? "empty"}
+              data-district={districtForRow(y)}
+              aria-hidden="true"
+            />
+          )))}
+          <div className="xp-city-tetris-districts" aria-hidden="true">
+            <span>SANDTON</span><span>KEYES</span><span>ROSEBANK</span><span>THE MARC</span>
+          </div>
+          {!running ? (
+            <div className="xp-game-start">
+              <div className="xp-city-tetris-skyline" aria-hidden="true"><i/><i/><i/><i/><i/><i/></div>
+              <strong>{gameOver ? `Skyline complete — ${score} pts` : "Build your city."}</strong>
+              <small>← → move · ↑ rotate · ↓ drop · space hard drop</small>
+              <button className="xp-play-primary" onClick={startGame}>{gameOver ? "Build again" : "Start building"}</button>
+            </div>
+          ) : null}
+        </div>
+
+        <aside className="xp-city-tetris-side">
+          <div>
+            <span>NEXT BLOCK</span>
+            <div className="xp-city-tetris-next" data-piece={nextKind}>
+              {cloneShape(CITY_TETRIS_PIECES[nextKind]).flatMap((row, y) => row.map((filled, x) => <i key={`${y}-${x}`} data-filled={filled ? "true" : "false"} />))}
+            </div>
+          </div>
+          <div className="xp-city-tetris-legend">
+            <span>THE CITY IS OPEN</span>
+            <p>Every cleared line is a completed street. The faster the city grows, the faster new blocks fall.</p>
+          </div>
+        </aside>
+      </div>
+
+      <div className="xp-city-tetris-controls" aria-label="City Blocks controls">
+        <button type="button" onClick={() => move(-1)} disabled={!running} aria-label="Move left">←</button>
+        <button type="button" onClick={rotate} disabled={!running} aria-label="Rotate block">↻</button>
+        <button type="button" onClick={() => move(1)} disabled={!running} aria-label="Move right">→</button>
+        <button type="button" onClick={stepDown} disabled={!running} aria-label="Move down">↓</button>
+        <button type="button" onClick={hardDrop} disabled={!running} aria-label="Hard drop">DROP</button>
+      </div>
+      <div className="xp-play-page__footer">ROSEBANK ↔ SANDTON / BUILD THE CITY</div>
     </div>
   );
 }
@@ -290,7 +467,7 @@ function CityWordPuzzle() {
 }
 
 function InteractiveMagazinePage({ slug }: { slug: string }) {
-  if (slug === "november-events") return <CityDashGame />;
+  if (slug === "november-events") return <CityTetrisGame />;
   if (slug === "xpomag-12") return <IssueQuiz />;
   if (slug === "ad-thread") return <CityWordPuzzle />;
   return null;
