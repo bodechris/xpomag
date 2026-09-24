@@ -10,7 +10,8 @@
     "lint": "eslint --max-warnings 0",
     "check-types": "next typegen && tsc --noEmit",
     "precheck-types": "pnpm --filter @xpomag/magazine build",
-    "prebuild": "pnpm --filter @xpomag/magazine build"
+    "prebuild": "pnpm --filter @xpomag/magazine build",
+    "predev": "pnpm --filter @xpomag/magazine build"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.87.1",
