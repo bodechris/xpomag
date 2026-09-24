@@ -1,5 +1,5 @@
 import type { CSSProperties, PointerEvent as ReactPointerEvent, ReactNode, Ref } from "react";
-import type { ComposerBackgroundLayer, ComposerDocument, ComposerNode } from "./editor.js";
+import type { ComposerBackgroundLayer, ComposerDocument, ComposerNode } from "./editor";
 
 function backgroundLayerStyle(layer: ComposerBackgroundLayer): CSSProperties {
   if (layer.kind === "solid") return { position: "absolute", inset: 0, background: layer.value, opacity: layer.opacity };
