@@ -495,7 +495,7 @@ export function SectionEngagementBar({ issueSlug, pageSlug, sectionId, sectionSl
                 onPointerDown={(event) => event.stopPropagation()}
                 onClick={(event) => event.stopPropagation()}
               >
-                {typeof navigator !== "undefined" && navigator.share ? <button type="button" onClick={nativeShare}><Share2 size={16} /><span>Share…</span></button> : null}
+                {typeof navigator !== "undefined" && typeof navigator.share === "function" ? <button type="button" onClick={nativeShare}><Share2 size={16} /><span>Share…</span></button> : null}
                 <button type="button" onClick={copyLink}>{copied ? <Check size={16} /> : <Copy size={16} />}<span>{copied ? "Copied" : "Copy link"}</span></button>
                 <button type="button" onClick={() => shareTo("linkedin")}><span className="xp-engagement__network">in</span><span>LinkedIn</span></button>
                 <button type="button" onClick={() => shareTo("facebook")}><span className="xp-engagement__network">f</span><span>Facebook</span></button>
