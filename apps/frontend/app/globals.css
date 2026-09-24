@@ -1869,6 +1869,19 @@ img, picture, video, canvas, svg { display: block; max-width: 100%; }
   box-shadow:0 18px 38px rgba(0,0,0,.22);
   isolation:isolate;
 }
+.xp-video-story--opening {
+  left:5.5%;
+  right:auto;
+  bottom:31.5%;
+  width:43%;
+  aspect-ratio:16/9;
+  border:2px solid rgba(255,255,255,.86);
+  box-shadow:0 18px 42px rgba(0,0,0,.30);
+}
+.xp-video-story--opening::before {
+  content:"CITY FILM";
+}
+
 .xp-video-story__frame {
   position:absolute;
   inset:-10%;
@@ -1969,6 +1982,7 @@ img, picture, video, canvas, svg { display: block; max-width: 100%; }
   .xp-quiz-card:last-child { grid-column:auto; }
   .xp-puzzle-list { top:32%; grid-template-columns:1fr; max-height:54%; overflow:auto; }
   .xp-video-story { width:58%; max-width:none; right:.55rem; bottom:.65rem; }
+  .xp-video-story--opening { left:.55rem; right:auto; bottom:30%; width:52%; }
 }
 
 @media (prefers-reduced-motion: reduce) {

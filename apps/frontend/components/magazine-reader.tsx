@@ -81,9 +81,18 @@ type VideoStory = {
   title: string;
   caption: string;
   accent: string;
+  placement?: "default" | "opening";
 };
 
 const VIDEO_STORIES: Record<string, VideoStory> = {
+  "rosebank-0642": {
+    videoId: "_1UeG71MOJM",
+    kicker: "06:42 / ROSEBANK / JOHANNESBURG",
+    title: "WATCH ROSEBANK WAKE UP",
+    caption: "Street-level Rosebank: commuters, businesses and the city moving into the day.",
+    accent: "#f3cf20",
+    placement: "opening",
+  },
   "sunday-market": {
     videoId: "_1UeG71MOJM",
     kicker: "WATCH / ROSEBANK",
@@ -126,7 +135,7 @@ function YouTubeStoryPanel({ story }: { story: VideoStory }) {
   return (
     <>
       <aside
-        className="xp-video-story"
+        className={`xp-video-story${story.placement === "opening" ? " xp-video-story--opening" : ""}`}
         data-magazine-interactive
         data-no-page-turn
         style={{ "--xp-video-accent": story.accent } as CSSProperties}
