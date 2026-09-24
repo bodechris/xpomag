@@ -8,8 +8,8 @@
     "types": [
       "node"
     ],
-    "declaration": false,
-    "declarationMap": false
+    "declaration": true,
+    "declarationMap": true
   },
   "include": [
     "src"
