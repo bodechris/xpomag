@@ -1,5 +1,5 @@
 import type { NextFunction, Request, Response } from "express"
-import { auth, fromNodeHeaders } from "../../../../packages/auth/src/index"
+import { auth, fromNodeHeaders } from "@xpomag/auth"
 
 declare global {
   namespace Express {
