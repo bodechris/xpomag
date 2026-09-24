@@ -1,6 +1,5 @@
 import type { NextFunction, Request, Response } from "express"
-import { fromNodeHeaders } from "better-auth/node"
-import { auth } from "../../../../packages/auth/src/index.ts"
+import { auth, fromNodeHeaders } from "../../../../packages/auth/src/index.ts"
 
 declare global {
   namespace Express {
