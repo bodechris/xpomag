@@ -8,7 +8,7 @@ import {
   uniqueIndex,
   uuid,
 } from "drizzle-orm/pg-core"
-import { user } from "./auth"
+import { user } from "./auth.js"
 
 export const userProfiles = pgTable("user_profiles", {
   userId: text("user_id")
