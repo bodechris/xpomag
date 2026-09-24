@@ -1,6 +1,6 @@
 import express from "express"
 import cors from "cors"
-import { auth, toNodeHandler } from "../../../packages/auth/src/index.ts"
+import { auth, toNodeHandler } from "../../../packages/auth/src/index"
 import { accountRouter } from "./routes/account"
 
 const app = express()
