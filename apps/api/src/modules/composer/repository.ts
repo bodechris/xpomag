@@ -1,5 +1,5 @@
-import type { ComposerDocument } from "../../../../../packages/magazine/src/index";
-import { createDb } from "../../../../../packages/db/src/index";
+import type { ComposerDocument } from "@xpomag/magazine";
+import { createDb } from "@xpomag/db";
 import { loadApiEnv } from "../../lib/load-env";
 
 loadApiEnv();
