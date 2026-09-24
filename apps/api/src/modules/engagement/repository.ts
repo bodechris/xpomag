@@ -127,7 +127,7 @@ export async function listComments(target: EngagementTarget, limit = 40): Promis
     WHERE c.issue_slug=$1 AND c.page_slug=$2 AND c.section_id=$3
     ORDER BY c.created_at ASC LIMIT $4
   `, [...values(target), Math.max(1, Math.min(limit, 100))]);
-  return result.rows.map((row) => ({ id: row.id, userId: row.user_id, userName: row.user_name ?? null, body: row.body, parentId: row.parent_id ?? null, createdAt: new Date(row.created_at).toISOString() }));
+  return result.rows.map((row: any) => ({ id: row.id, userId: row.user_id, userName: row.user_name ?? null, body: row.body, parentId: row.parent_id ?? null, createdAt: new Date(row.created_at).toISOString() }));
 }
 
 export async function addComment(target: EngagementTarget, userId: string, body: string, parentId?: string | null): Promise<EngagementComment> {
@@ -169,7 +169,7 @@ export async function listCollections(userId: string): Promise<SaveCollection[]>
     GROUP BY c.id,c.name,c.created_at
     ORDER BY CASE WHEN c.name='Saved' THEN 0 ELSE 1 END,c.created_at DESC
   `, [userId]);
-  return result.rows.map((row) => ({ id: row.id, name: row.name, itemCount: Number(row.item_count ?? 0), createdAt: new Date(row.created_at).toISOString() }));
+  return result.rows.map((row: any) => ({ id: row.id, name: row.name, itemCount: Number(row.item_count ?? 0), createdAt: new Date(row.created_at).toISOString() }));
 }
 
 export async function createCollection(userId: string, name: string): Promise<SaveCollection> {
@@ -189,7 +189,7 @@ export async function getSaveCollectionsForTarget(target: EngagementTarget, user
     SELECT collection_id FROM section_engagement_saves
     WHERE issue_slug=$1 AND page_slug=$2 AND section_id=$3 AND user_id=$4 AND collection_id IS NOT NULL
   `, [...values(target), userId]);
-  return { collections, savedCollectionIds: selected.rows.map((row) => row.collection_id as string) };
+  return { collections, savedCollectionIds: selected.rows.map((row: any) => row.collection_id as string) };
 }
 
 export async function setSavedCollections(target: EngagementTarget, userId: string, collectionIds: string[]) {
@@ -229,7 +229,7 @@ export async function listSavedItems(userId: string) {
     WHERE s.user_id=$1
     ORDER BY s.created_at DESC
   `, [userId]);
-  return result.rows.map((row) => ({
+  return result.rows.map((row: any) => ({
     issueSlug: row.issue_slug,
     pageSlug: row.page_slug,
     sectionId: row.section_id,
