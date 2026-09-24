@@ -1,4 +1,4 @@
-import { Router } from "express"
+import { Router, type Request, type Router as ExpressRouter } from "express"
 import { fromNodeHeaders } from "better-auth/node"
 import { auth } from "../../../../packages/auth/src/index"
 import { and, asc, createDb, eq, inArray } from "../../../../packages/db/src/index"
@@ -11,7 +11,7 @@ import {
 } from "../../../../packages/db/src/schema/onboarding"
 import { detectLocation } from "../lib/location"
 
-export const accountRouter = Router()
+export const accountRouter: ExpressRouter = Router()
 
 const connectionString =
   process.env.DATABASE_URL ??
@@ -44,7 +44,7 @@ function slugify(value: string) {
     .replace(/(^-|-$)/g, "")
 }
 
-async function getSession(req: any) {
+async function getSession(req: Request) {
   return auth.api.getSession({
     headers: fromNodeHeaders(req.headers),
   })
@@ -57,7 +57,7 @@ async function ensureCategories() {
     .onConflictDoNothing()
 }
 
-async function ensureProfile(userId: string, req?: any) {
+async function ensureProfile(userId: string, req?: Request) {
   const [existing] = await db
     .select()
     .from(userProfiles)
