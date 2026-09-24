@@ -6,25 +6,25 @@
   "exports": {
     ".": {
       "xpomag-dev": "./src/index.ts",
-      "types": "./src/index.ts",
+      "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
       "default": "./dist/index.js"
     },
     "./schema": {
       "xpomag-dev": "./src/schema.ts",
-      "types": "./src/schema.ts",
+      "types": "./dist/schema.d.ts",
       "import": "./dist/schema.js",
       "default": "./dist/schema.js"
     },
     "./schema/auth": {
       "xpomag-dev": "./src/schema/auth.ts",
-      "types": "./src/schema/auth.ts",
+      "types": "./dist/schema/auth.d.ts",
       "import": "./dist/schema/auth.js",
       "default": "./dist/schema/auth.js"
     },
     "./schema/onboarding": {
       "xpomag-dev": "./src/schema/onboarding.ts",
-      "types": "./src/schema/onboarding.ts",
+      "types": "./dist/schema/onboarding.d.ts",
       "import": "./dist/schema/onboarding.js",
       "default": "./dist/schema/onboarding.js"
     }
