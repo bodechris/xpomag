@@ -8,7 +8,9 @@
     "build": "tsc --noEmit -p tsconfig.json",
     "start": "tsx src/index.ts",
     "lint": "eslint . --max-warnings 0",
-    "check-types": "tsc --noEmit -p tsconfig.json"
+    "check-types": "tsc --noEmit -p tsconfig.json",
+    "precheck-types": "pnpm --filter @xpomag/config build && pnpm --filter @xpomag/magazine build && pnpm --filter @xpomag/db build && pnpm --filter @xpomag/auth build",
+    "prebuild": "pnpm --filter @xpomag/config build && pnpm --filter @xpomag/magazine build && pnpm --filter @xpomag/db build && pnpm --filter @xpomag/auth build"
   },
   "dependencies": {
     "@xpomag/config": "workspace:*",
@@ -31,6 +33,7 @@
     "@xpomag/typescript-config": "workspace:*",
     "eslint": "10.9.1",
     "tsx": "^4.20.5",
-    "typescript": "7.0.2"
+    "typescript": "7.0.2",
+    "@types/node": "26.4.1"
   }
 }
