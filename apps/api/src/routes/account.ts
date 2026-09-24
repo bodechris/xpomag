@@ -1,13 +1,13 @@
 import { Router, type Request, type Router as ExpressRouter } from "express"
-import { auth, fromNodeHeaders } from "../../../../packages/auth/src/index"
-import { and, asc, createDb, eq, inArray } from "../../../../packages/db/src/index"
+import { auth, fromNodeHeaders } from "@xpomag/auth"
+import { and, asc, createDb, eq, inArray } from "@xpomag/db"
 import {
   categories,
   cities,
   userCategoryInterests,
   userCityInterests,
   userProfiles,
-} from "../../../../packages/db/src/schema/onboarding"
+} from "@xpomag/db/schema/onboarding"
 import { detectLocation } from "../lib/location"
 
 export const accountRouter: ExpressRouter = Router()
