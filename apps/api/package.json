@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "tsx --conditions=xpomag-dev watch src/index.ts",
+    "dev": "tsx watch --conditions=xpomag-dev src/index.ts",
     "build": "tsc --noEmit -p tsconfig.json",
     "start": "tsx src/index.ts",
     "lint": "eslint . --max-warnings 0",
