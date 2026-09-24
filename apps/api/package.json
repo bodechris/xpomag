@@ -5,10 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/index.ts",
-    "build": "tsc --noEmit -p tsconfig.build.json",
+    "build": "tsc --noEmit -p tsconfig.json",
     "start": "tsx src/index.ts",
     "lint": "eslint . --max-warnings 0",
-    "check-types": "tsc --noEmit"
+    "check-types": "tsc --noEmit -p tsconfig.json"
   },
   "dependencies": {
     "@xpomag/config": "workspace:*",
@@ -21,7 +21,8 @@
     "ioredis": "^5.7.0",
     "pino": "^9.9.4",
     "pino-http": "^10.5.0",
-    "zod": "^4.1.11"
+    "zod": "^4.1.11",
+    "@xpomag/auth": "workspace:*"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",
