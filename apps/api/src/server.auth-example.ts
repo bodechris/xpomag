@@ -1,7 +1,7 @@
 import express from "express"
 import cors from "cors"
 import { auth, toNodeHandler } from "@xpomag/auth"
-import { accountRouter } from "./routes/account"
+import { accountRouter } from "./routes/account.js"
 
 const app = express()
 const port = Number(process.env.PORT ?? 4000)
