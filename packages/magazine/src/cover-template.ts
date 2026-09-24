@@ -1,4 +1,4 @@
-import type { ComposerDocument } from "./editor.js";
+import type { ComposerDocument } from "./editor";
 
 export type DemoCoverDocumentOptions = {
   city?: string;
