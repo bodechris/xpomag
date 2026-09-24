@@ -3,9 +3,16 @@
   "compilerOptions": {
     "outDir": "dist",
     "rootDir": "src",
-    "declaration": true,
-    "declarationMap": true
+    "declaration": false,
+    "declarationMap": false
   },
-  "include": ["src"],
-  "exclude": ["node_modules", "dist", "drizzle.config.ts", "src/seed/**"]
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "drizzle.config.ts",
+    "src/seed/**"
+  ]
 }
