@@ -1,5 +1,5 @@
 import { z } from "zod";
-import type { MagazineResourceBundle } from "./resources";
+import type { MagazineResourceBundle } from "./resources.js";
 
 export const designStyleSchema = z.object({
   width: z.string().optional(), maxWidth: z.string().optional(), minHeight: z.string().optional(), height: z.string().optional(),
