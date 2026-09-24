@@ -66,6 +66,9 @@ importers:
 
   apps/api:
     dependencies:
+      '@xpomag/auth':
+        specifier: workspace:*
+        version: link:../../packages/auth
       '@xpomag/config':
         specifier: workspace:*
         version: link:../../packages/config
