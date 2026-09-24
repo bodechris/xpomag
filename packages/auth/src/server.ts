@@ -1,10 +1,10 @@
 import { betterAuth } from "better-auth"
 import { drizzleAdapter } from "@better-auth/drizzle-adapter"
 import { emailOTP } from "better-auth/plugins"
-import { createDb } from "../../db/src/index"
-import * as authSchema from "../../db/src/schema/auth"
-import * as onboardingSchema from "../../db/src/schema/onboarding"
-import { sendOtpEmail } from "./send-otp-email"
+import { createDb } from "@xpomag/db"
+import * as authSchema from "@xpomag/db/schema/auth"
+import * as onboardingSchema from "@xpomag/db/schema/onboarding"
+import { sendOtpEmail } from "./send-otp-email.js"
 
 const frontendOrigin =
   process.env.FRONTEND_ORIGIN ??
