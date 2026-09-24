@@ -6,7 +6,7 @@
   "exports": {
     ".": {
       "xpomag-dev": "./src/index.ts",
-      "types": "./dist/index.d.ts",
+      "types": "./src/index.ts",
       "import": "./dist/index.js",
       "default": "./dist/index.js"
     }
@@ -19,5 +19,8 @@
     "@better-auth/drizzle-adapter": "^1.7.5",
     "@xpomag/db": "workspace:*",
     "better-auth": "^1.7.5"
+  },
+  "devDependencies": {
+    "@types/node": "26.4.1"
   }
 }
