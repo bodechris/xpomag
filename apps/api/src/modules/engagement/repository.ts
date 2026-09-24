@@ -1,4 +1,4 @@
-import { createDb } from "../../../../../packages/db/src/index";
+import { createDb } from "@xpomag/db";
 import { loadApiEnv } from "../../lib/load-env";
 
 loadApiEnv();
