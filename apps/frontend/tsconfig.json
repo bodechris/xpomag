@@ -11,12 +11,6 @@
     "paths": {
       "@/*": [
         "./*"
-      ],
-      "@xpomag/magazine": [
-        "../../packages/magazine/src/index.ts"
-      ],
-      "@xpomag/magazine/renderer": [
-        "../../packages/magazine/src/renderer.tsx"
       ]
     },
     "noUncheckedIndexedAccess": false,
