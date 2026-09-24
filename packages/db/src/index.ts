@@ -6,6 +6,6 @@ export function createDb(connectionString: string) {
   return { db: drizzle(pool), pool };
 }
 
-export * from "./schema";
+export * from "./schema.js";
 
 export { and, asc, eq, inArray } from "drizzle-orm";
