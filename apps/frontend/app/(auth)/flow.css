@@ -1,0 +1,390 @@
+:root {
+  --flow-bg: #f2f0ea;
+  --flow-panel: #ffffff;
+  --flow-ink: #0b0b0b;
+  --flow-muted: #706e67;
+  --flow-line: #d8d5cd;
+  --flow-soft: #e9e6de;
+  --flow-accent: #2847ff;
+  --flow-error: #b42318;
+  --flow-error-bg: #fff1f1;
+}
+
+* { box-sizing: border-box; }
+
+.flowShell {
+  min-height: 100vh;
+  background: var(--flow-bg);
+  color: var(--flow-ink);
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(430px, 0.8fr);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.flowEditorial {
+  position: relative;
+  min-height: 100vh;
+  padding: 34px 38px 36px;
+  border-right: 1px solid var(--flow-line);
+  background:
+    radial-gradient(circle at 83% 14%, rgba(40,71,255,.12), transparent 25%),
+    linear-gradient(180deg, #f6f4ee 0%, #ebe8df 100%);
+  display: flex;
+  flex-direction: column;
+}
+
+.flowBrand {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  color: inherit;
+  text-decoration: none;
+  font-size: 28px;
+  font-weight: 900;
+  letter-spacing: -.065em;
+}
+
+.flowBrandMeta {
+  color: var(--flow-muted);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .1em;
+}
+
+.flowHero {
+  margin-top: auto;
+  margin-bottom: 48px;
+  max-width: 900px;
+}
+
+.flowKicker {
+  margin: 0 0 18px;
+  color: var(--flow-muted);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+}
+
+.flowHero h1 {
+  margin: 0;
+  max-width: 850px;
+  font-size: clamp(68px, 8.5vw, 138px);
+  line-height: .84;
+  letter-spacing: -.075em;
+  font-weight: 500;
+}
+
+.flowHero p {
+  max-width: 590px;
+  margin: 28px 0 0;
+  color: var(--flow-muted);
+  font-size: 17px;
+  line-height: 1.55;
+}
+
+.flowMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 24px;
+  color: var(--flow-muted);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.flowPanel {
+  min-height: 100vh;
+  padding: 44px 48px;
+  background: var(--flow-panel);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flowCard {
+  width: 100%;
+  max-width: 500px;
+}
+
+.flowStep {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 34px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--flow-line);
+  color: var(--flow-muted);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.flowCard h2 {
+  margin: 0;
+  font-size: clamp(42px, 4vw, 62px);
+  line-height: .93;
+  letter-spacing: -.055em;
+  font-weight: 500;
+}
+
+.flowLead {
+  margin: 16px 0 30px;
+  color: var(--flow-muted);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.flowField {
+  margin-top: 18px;
+}
+
+.flowLabel {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+}
+
+.flowInput {
+  width: 100%;
+  height: 54px;
+  border: 0;
+  border-bottom: 1px solid #a9a69e;
+  border-radius: 0;
+  padding: 0;
+  background: transparent;
+  color: var(--flow-ink);
+  outline: none;
+  font: inherit;
+  font-size: 17px;
+}
+
+.flowInput:focus {
+  border-bottom-color: #000;
+}
+
+.flowOtp {
+  height: 78px;
+  text-align: center;
+  font-size: 30px;
+  font-weight: 600;
+  letter-spacing: .5em;
+  padding-left: .5em;
+  border: 1px solid var(--flow-line);
+  background: #faf9f6;
+}
+
+.flowButton {
+  width: 100%;
+  min-height: 54px;
+  margin-top: 22px;
+  border: 0;
+  border-radius: 0;
+  background: #000;
+  color: #fff;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.flowButton:disabled {
+  opacity: .4;
+  cursor: default;
+}
+
+.flowTextButton {
+  display: block;
+  margin: 17px auto 0;
+  border: 0;
+  background: transparent;
+  color: var(--flow-ink);
+  font: inherit;
+  font-size: 12px;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  cursor: pointer;
+}
+
+.flowError {
+  margin-top: 14px;
+  padding: 12px 14px;
+  background: var(--flow-error-bg);
+  color: var(--flow-error);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.flowSection {
+  padding: 26px 0;
+  border-top: 1px solid var(--flow-line);
+}
+
+.flowSection:first-of-type {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.flowSectionHeader {
+  display: grid;
+  grid-template-columns: 36px 1fr;
+  gap: 12px;
+  margin-bottom: 17px;
+}
+
+.flowSectionNumber {
+  color: var(--flow-muted);
+  font-size: 10px;
+  font-weight: 800;
+  padding-top: 5px;
+}
+
+.flowSection h3 {
+  margin: 0;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: -.035em;
+  font-weight: 600;
+}
+
+.flowSection p {
+  margin: 6px 0 0;
+  color: var(--flow-muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.flowInline {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  align-items: end;
+}
+
+.flowAdd {
+  height: 54px;
+  padding: 0 18px;
+  border: 1px solid #111;
+  background: transparent;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.flowPills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.flowPill {
+  border: 1px solid var(--flow-line);
+  border-radius: 999px;
+  padding: 9px 13px;
+  background: transparent;
+  color: var(--flow-ink);
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.flowPill[data-active="true"] {
+  border-color: #000;
+  background: #000;
+  color: #fff;
+}
+
+.flowPillCity {
+  background: var(--flow-soft);
+  border-color: transparent;
+}
+
+.flowFooterNote {
+  margin-top: 14px;
+  color: var(--flow-muted);
+  font-size: 11px;
+  line-height: 1.45;
+  text-align: center;
+}
+
+@media (max-width: 980px) {
+  .flowShell {
+    grid-template-columns: 1fr;
+  }
+
+  .flowEditorial {
+    min-height: 62vh;
+    border-right: 0;
+    border-bottom: 1px solid var(--flow-line);
+    padding: 28px 24px;
+  }
+
+  .flowHero {
+    margin-top: 100px;
+  }
+
+  .flowHero h1 {
+    font-size: clamp(58px, 14vw, 100px);
+  }
+
+  .flowPanel {
+    min-height: auto;
+    padding: 46px 24px 72px;
+  }
+
+  .flowMeta {
+    display: none;
+  }
+}
+
+@media (max-width: 560px) {
+  .flowEditorial {
+    min-height: 52vh;
+    padding: 20px 18px;
+  }
+
+  .flowBrand {
+    font-size: 24px;
+  }
+
+  .flowBrandMeta {
+    display: none;
+  }
+
+  .flowHero {
+    margin-top: 76px;
+    margin-bottom: 20px;
+  }
+
+  .flowHero h1 {
+    font-size: 58px;
+  }
+
+  .flowHero p {
+    font-size: 14px;
+  }
+
+  .flowPanel {
+    padding: 34px 18px 56px;
+  }
+
+  .flowCard h2 {
+    font-size: 42px;
+  }
+
+  .flowInline {
+    grid-template-columns: 1fr;
+  }
+
+  .flowAdd {
+    width: 100%;
+  }
+}

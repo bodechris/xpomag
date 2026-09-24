@@ -1,0 +1,14 @@
+{
+  "name": "@xpomag/auth",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@better-auth/drizzle-adapter": "^1.7.5",
+    "@xpomag/db": "workspace:*",
+    "better-auth": "^1.7.5"
+  }
+}

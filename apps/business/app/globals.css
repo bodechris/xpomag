@@ -1,0 +1,4 @@
+:root { --xp-bg: #f5f4f0; --xp-ink: #111; --xp-line: rgba(0,0,0,.12); }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { min-height: 100vh; color: var(--xp-ink); background: var(--xp-bg); font-family: var(--font-geist-sans), "Helvetica Neue", Arial, sans-serif; }
+a { color: inherit; text-decoration: none; }

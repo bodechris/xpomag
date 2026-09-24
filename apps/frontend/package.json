@@ -1,0 +1,40 @@
+{
+  "name": "frontend",
+  "version": "0.0.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --port 3000",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint --max-warnings 0",
+    "check-types": "next typegen && tsc --noEmit"
+  },
+  "dependencies": {
+    "@tanstack/react-query": "^5.87.1",
+    "@xpomag/magazine": "workspace:*",
+    "@xpomag/ui": "workspace:*",
+    "lucide-react": "^0.544.0",
+    "next": "16.3.4",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "sass": "^1.104.1",
+    "zustand": "^5.0.8",
+    "better-auth": "^1.7.5",
+    "@better-auth/drizzle-adapter": "^1.7.5",
+    "drizzle-orm": "^0.44.7",
+    "pg": "^8.16.3"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.13",
+    "@xpomag/eslint-config": "workspace:*",
+    "@xpomag/typescript-config": "workspace:*",
+    "@types/node": "26.4.1",
+    "@types/react": "19.2.18",
+    "@types/react-dom": "19.2.5",
+    "eslint": "10.9.1",
+    "tailwindcss": "^4.1.13",
+    "typescript": "7.0.2",
+    "@types/pg": "^8.15.5"
+  }
+}
