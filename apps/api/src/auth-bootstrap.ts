@@ -1,5 +1,5 @@
 import type { Express } from "express"
-import { auth, toNodeHandler } from "../../../packages/auth/src/index"
+import { auth, toNodeHandler } from "@xpomag/auth"
 
 export function mountBetterAuth(app: Express) {
   // Better Auth must be mounted BEFORE express.json().
