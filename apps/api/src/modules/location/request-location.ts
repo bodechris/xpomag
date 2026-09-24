@@ -1,5 +1,5 @@
 import type { Request } from "express";
-import type { LocationSignal } from "./resolver";
+import type { LocationSignal } from "./resolver.js";
 
 function header(req: Request, name: string) {
   const value = req.header(name);
