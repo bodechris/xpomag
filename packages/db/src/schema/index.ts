@@ -1,2 +1,2 @@
-export * from "./auth"
-export * from "./onboarding"
+export * from "./auth.js"
+export * from "./onboarding.js"
