@@ -8,7 +8,7 @@ import {
   userCityInterests,
   userProfiles,
 } from "@xpomag/db/schema/onboarding"
-import { detectLocation } from "../lib/location"
+import { detectLocation } from "../lib/location.js"
 
 export const accountRouter: ExpressRouter = Router()
 
