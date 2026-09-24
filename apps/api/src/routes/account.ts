@@ -259,7 +259,7 @@ accountRouter.get("/onboarding", async (req, res) => {
         source: profile.locationSource,
       },
       selectedCities,
-      selectedCategoryIds: selectedCategoryRows.map((row) => row.id),
+      selectedCategoryIds: selectedCategoryRows.map((row: { id: string }) => row.id),
       categories: availableCategories,
     })
   } catch (error) {
@@ -347,7 +347,7 @@ accountRouter.post("/onboarding", async (req, res) => {
       })
     }
 
-    await db.transaction(async (tx) => {
+    await db.transaction(async (tx: any) => {
       await tx
         .delete(userCityInterests)
         .where(eq(userCityInterests.userId, session.user.id))
@@ -393,7 +393,7 @@ accountRouter.post("/onboarding", async (req, res) => {
       }
 
       await tx.insert(userCategoryInterests).values(
-        validCategories.map((category) => ({
+        validCategories.map((category: { id: string }) => ({
           userId: session.user.id,
           categoryId: category.id,
         })),
