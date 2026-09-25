@@ -18,12 +18,12 @@
   --xp-bg-card: var(--xp-color-white);
   --xp-bg-inverse: var(--xp-color-black);
 
-  --xp-font-sans: "XP IBM Plex Sans", var(--font-geist-sans), "Helvetica Neue", Helvetica, Arial, sans-serif;
-  --xp-font-mono: var(--font-geist-mono), "SFMono-Regular", Consolas, monospace;
+  --xp-font-sans: "XP IBM Plex Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --xp-font-mono: "SFMono-Regular", Consolas, monospace;
   --xp-font-editorial: "XP Instrument Serif", "XP Newsreader", Georgia, "Times New Roman", serif;
   --xp-font-editorial-body: "XP Newsreader", Georgia, "Times New Roman", serif;
-  --xp-font-display-sans: "XP Big Shoulders", "XP Bricolage", var(--font-geist-sans), sans-serif;
-  --xp-font-grotesk: "XP Bricolage", "XP IBM Plex Sans", var(--font-geist-sans), sans-serif;
+  --xp-font-display-sans: "XP Big Shoulders", "XP Bricolage", "Helvetica Neue", Arial, sans-serif;
+  --xp-font-grotesk: "XP Bricolage", "XP IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
 
   --xp-text-xs: clamp(0.72rem, 0.69rem + 0.12vw, 0.8rem);
   --xp-text-sm: clamp(0.84rem, 0.8rem + 0.16vw, 0.95rem);
