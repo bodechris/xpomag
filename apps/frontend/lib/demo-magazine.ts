@@ -1251,7 +1251,7 @@ function imageAdvertPage(
 }
 
 function withCoverStoryLinks(document: ComposerDocument): ComposerDocument {
-  const coverStyleByNode: Record<string, DesignElementNode["style"]> = {
+  const coverStyleByNode: Record<string, NonNullable<ComposerDocument["nodes"][number]["style"]>> = {
     "issue-meta": { fontFamily: "var(--xp-font-grotesk)", fontWeight: 700, letterSpacing: ".12em" },
     "left-kicker": { fontFamily: "var(--xp-font-grotesk)", fontWeight: 700, letterSpacing: ".1em" },
     "right-kicker": { fontFamily: "var(--xp-font-grotesk)", fontWeight: 700, letterSpacing: ".1em" },
