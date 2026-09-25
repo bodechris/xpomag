@@ -15,7 +15,7 @@ export default async function MagazinePageRoute({ params, searchParams }: { para
   const viewerSession = await auth.api.getSession({ headers: await headers() });
   const viewerAuthenticated = Boolean(viewerSession?.user);
   const { preview } = await searchParams;
-  const alphaCoverAssets = await getAlphaCoverAssets();
+  const alphaCoverAssets = pageSlug === "cover" ? await getAlphaCoverAssets() : [];
   const coverDocument = pageSlug === "cover" ? await getComposerDocument(issueSlug, "cover", preview === "draft" ? "draft" : "published") : null;
   const issue = getDemoMagazineBySlug(issueSlug, { alphaCoverAssets, coverDocument });
   const readerPayload = createMagazineReaderPayload(issue, pageSlug);
