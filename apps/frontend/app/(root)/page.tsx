@@ -7,6 +7,8 @@ import { getRequestCity } from "../../lib/location";
 import { getAlphaCoverAssets } from "../../lib/cover-assets";
 import { getComposerDocument } from "../../lib/composer-persistence";
 
+export const dynamic = "force-dynamic";
+
 export default async function Home() {
   await ensureAuthInfrastructure();
   const viewerSession = await auth.api.getSession({ headers: await headers() });
