@@ -134,9 +134,19 @@ function authOrigin() {
 
 function authSecret() {
   if (process.env.BETTER_AUTH_SECRET) return process.env.BETTER_AUTH_SECRET
+
+  // Next.js imports route modules while collecting build metadata. Better Auth
+  // needs a secret to initialise at that point even though no auth request is
+  // being served. Use a build-only placeholder, but continue to fail closed
+  // for an actual production runtime that is missing BETTER_AUTH_SECRET.
+  if (process.env.NEXT_PHASE === "phase-production-build") {
+    return "xpomag-build-only-secret-not-used-at-runtime"
+  }
+
   if (process.env.NODE_ENV === "production") {
     throw new Error("BETTER_AUTH_SECRET is required in production")
   }
+
   return "xpomag-local-development-secret-change-before-production"
 }
 
