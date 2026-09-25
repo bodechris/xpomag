@@ -1252,11 +1252,12 @@ function imageAdvertPage(
 
 function withCoverStoryLinks(document: ComposerDocument): ComposerDocument {
   const coverStyleByNode: Record<string, NonNullable<ComposerDocument["nodes"][number]["style"]>> = {
-    "issue-meta": { fontFamily: "var(--xp-font-grotesk)", fontWeight: 700, letterSpacing: ".12em" },
+    "issue-meta": { fontFamily: "var(--xp-font-grotesk)", fontSize: 9, fontWeight: 750, lineHeight: 1, letterSpacing: ".14em", textAlign: "left", color: "#171717" },
     "left-kicker": { fontFamily: "var(--xp-font-grotesk)", fontWeight: 700, letterSpacing: ".1em" },
     "right-kicker": { fontFamily: "var(--xp-font-grotesk)", fontWeight: 700, letterSpacing: ".1em" },
     "left-headline": { fontFamily: "var(--xp-font-editorial)", fontWeight: 400, letterSpacing: "-.055em", lineHeight: .82 },
-    "lead-headline": { fontFamily: "var(--xp-font-display-sans)", fontWeight: 850, letterSpacing: "-.035em", lineHeight: .78 },
+    "lead-headline": { fontFamily: "var(--xp-font-display-sans)", fontWeight: 850, letterSpacing: "-.035em", lineHeight: .78, color: "#fff", textShadow: "0 2px 18px rgba(0,0,0,.52)" },
+    "lead-kicker": { fontFamily: "var(--xp-font-grotesk)", fontWeight: 750, letterSpacing: ".12em", color: "#fff", textShadow: "0 2px 12px rgba(0,0,0,.58)" },
     "right-story-1": { fontFamily: "var(--xp-font-grotesk)", fontWeight: 760, letterSpacing: "-.025em", color: "#fff", textShadow: "0 2px 18px rgba(0,0,0,.48)" },
     "right-story-2": { fontFamily: "var(--xp-font-grotesk)", fontWeight: 760, letterSpacing: "-.025em", color: "#fff", textShadow: "0 2px 18px rgba(0,0,0,.48)" },
   };
@@ -1300,6 +1301,31 @@ function withCoverStoryLinks(document: ComposerDocument): ComposerDocument {
     nodes: document.nodes.map((node) => {
       const next = storyByNode[node.id];
       const coverStyle = coverStyleByNode[node.id];
+
+      // Production cover art-direction overrides. Keep admin-authored copy/links,
+      // but make the subject intentionally oversized/full-bleed and keep the
+      // issue line tucked beneath the masthead.
+      if (node.id === "portrait") {
+        return {
+          ...node,
+          placement: { ...node.placement, x: -8, y: 8, width: 116, height: 98, zIndex: 20 },
+          imageStyle: { ...(node.imageStyle ?? {}), objectFit: "contain", objectPosition: "50% 100%", opacity: 1 },
+        };
+      }
+      if (node.id === "issue-meta") {
+        return {
+          ...node,
+          placement: { ...node.placement, x: 5, y: 14.2, width: 58, height: 2.2, zIndex: 30 },
+          style: { ...(node.style ?? {}), ...coverStyleByNode["issue-meta"] },
+          ...(next?.content ? { content: next.content } : {}),
+        };
+      }
+      if (node.id === "lead-band") {
+        return {
+          ...node,
+          style: { ...(node.style ?? {}), background: "transparent", borderRadius: 0 },
+        };
+      }
       if (!next && !coverStyle) return node;
       if (!next && coverStyle) return { ...node, style: { ...(node.style ?? {}), ...coverStyle } };
       return {
