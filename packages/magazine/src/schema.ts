@@ -1,19 +1,19 @@
 import { z } from "zod";
 import type { MagazineResourceBundle } from "./resources.js";
 
-export const designStyleSchema = z.object({
-  width: z.string().optional(), maxWidth: z.string().optional(), minHeight: z.string().optional(), height: z.string().optional(),
-  padding: z.string().optional(), margin: z.string().optional(), gap: z.string().optional(),
-  display: z.enum(["block", "flex", "grid", "none"]).optional(), flexDirection: z.enum(["row", "column"]).optional(),
-  flexWrap: z.string().optional(), flex: z.string().optional(), alignItems: z.string().optional(), justifyContent: z.string().optional(),
-  gridTemplateColumns: z.string().optional(), gridTemplateRows: z.string().optional(), gridArea: z.string().optional(),
-  position: z.enum(["relative", "absolute", "sticky"]).optional(), inset: z.string().optional(),
-  color: z.string().optional(), background: z.string().optional(), backgroundImage: z.string().optional(), backgroundSize: z.string().optional(), backgroundPosition: z.string().optional(), backgroundRepeat: z.string().optional(), border: z.string().optional(), borderRadius: z.string().optional(), boxShadow: z.string().optional(),
-  overflow: z.enum(["visible", "hidden", "auto", "clip"]).optional(), opacity: z.number().min(0).max(1).optional(), transform: z.string().optional(), zIndex: z.number().int().optional(),
-  objectFit: z.enum(["contain", "cover", "fill", "none", "scale-down"]).optional(), objectPosition: z.string().optional(), filter: z.string().optional(), mixBlendMode: z.string().optional(), pointerEvents: z.string().optional(),
-  textAlign: z.enum(["left", "center", "right", "justify"]).optional(), fontFamily: z.string().optional(), fontSize: z.string().optional(),
-  fontWeight: z.union([z.number(), z.string()]).optional(), lineHeight: z.union([z.number(), z.string()]).optional(), letterSpacing: z.string().optional()
-}).strict();
+const designStyleValueSchema = z.union([z.string(), z.number()]);
+
+/**
+ * Magazine styles are authored as React-compatible inline CSS objects.
+ * Keep the schema intentionally open so page templates can use the full CSS
+ * surface (for example top/left/right/bottom, whiteSpace, borderTop,
+ * paddingTop, fontStyle, backdropFilter and future CSS properties) without
+ * having to update this package every time a new visual treatment is added.
+ *
+ * Runtime rendering still casts the object to React.CSSProperties, while
+ * Zod guarantees values remain serializable primitive CSS values.
+ */
+export const designStyleSchema = z.record(z.string(), designStyleValueSchema);
 
 export type DesignStyle = z.infer<typeof designStyleSchema>;
 export type DesignElementType = "frame" | "stack" | "grid" | "text" | "brandMark" | "image" | "background" | "divider" | "spacer" | "reference" | "composerCanvas";
