@@ -6,6 +6,8 @@ import { getDemoMagazineBySlug } from "../../../../lib/demo-magazine";
 import { getAlphaCoverAssets } from "../../../../lib/cover-assets";
 import { getComposerDocument } from "../../../../lib/composer-persistence";
 
+export const dynamic = "force-dynamic";
+
 export default async function MagazinePageRoute({ params, searchParams }: { params: Promise<{ issue: string; page: string }>; searchParams: Promise<{ preview?: string }> }) {
   const { issue: issueSlug, page: pageSlug } = await params;
   await ensureAuthInfrastructure();
