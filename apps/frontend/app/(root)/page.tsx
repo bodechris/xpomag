@@ -6,6 +6,7 @@ import { selectDemoMagazine } from "../../lib/demo-magazine";
 import { getRequestCity } from "../../lib/location";
 import { getAlphaCoverAssets } from "../../lib/cover-assets";
 import { getComposerDocument } from "../../lib/composer-persistence";
+import { createMagazineReaderPayload } from "../../lib/magazine-reader-data";
 
 export const dynamic = "force-dynamic";
 
@@ -22,12 +23,13 @@ export default async function Home() {
   // This is the temporary curator boundary. Today it selects deterministic demo
   // content; later it will resolve the best published issue for the member/location.
   const curatedIssue = selectDemoMagazine(detectedCity, { alphaCoverAssets, coverDocument });
+  const readerPayload = createMagazineReaderPayload(curatedIssue, "cover");
 
   return (
     <main>
       <SiteHeader city={curatedIssue.city} />
       <div className="xp-container xp-home-shell">
-        <MagazineReader issue={curatedIssue} viewerAuthenticated={viewerAuthenticated} />
+        <MagazineReader issue={readerPayload.issue} initialPages={readerPayload.initialPages} viewerAuthenticated={viewerAuthenticated} />
       </div>
     </main>
   );
