@@ -1,6 +1,6 @@
 "use client"
 
-import { FormEvent, useState } from "react"
+import { FormEvent, Suspense, useState } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { authClient } from "../../../lib/auth-client"
 import { accountFetch } from "../../../lib/account-api"
@@ -17,7 +17,7 @@ function getAuthError(error: any, fallback: string) {
   )
 }
 
-export default function AuthPage() {
+function AuthPageContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const initialMode =
@@ -253,5 +253,14 @@ export default function AuthPage() {
         </div>
       </section>
     </main>
+  )
+}
+
+
+export default function AuthPage() {
+  return (
+    <Suspense fallback={<main className="xp-auth" aria-busy="true" />}>
+      <AuthPageContent />
+    </Suspense>
   )
 }
