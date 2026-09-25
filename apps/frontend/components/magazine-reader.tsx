@@ -1,11 +1,11 @@
 "use client";
 
-import { MagazinePageRenderer, type ComposerNode } from "@xpomag/magazine";
+import { MagazinePageRenderer, type ComposerNode, type MagazinePageDefinition } from "@xpomag/magazine";
 import { ArrowLeft, ArrowRight, LockKeyhole, Maximize2, Minimize2, Pause, Play, RotateCcw, X } from "lucide-react";
 import type { CSSProperties, MouseEvent as ReactMouseEvent, PointerEvent as ReactPointerEvent } from "react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import type { DemoMagazineIssue } from "../lib/demo-magazine";
+import type { MagazineReaderIssue } from "../lib/magazine-reader-data";
 import { MagazineResourcePreloader } from "./magazine-resource-preloader";
 import { SectionEngagementBar } from "./section-engagement";
 
@@ -473,13 +473,30 @@ function InteractiveMagazinePage({ slug }: { slug: string }) {
   return null;
 }
 
-export function MagazineReader({ issue, initialPageSlug, viewerAuthenticated = false }: { issue: DemoMagazineIssue; initialPageSlug?: string; viewerAuthenticated?: boolean }) {
+export function MagazineReader({
+  issue,
+  initialPages,
+  initialPageSlug,
+  viewerAuthenticated = false,
+}: {
+  issue: MagazineReaderIssue;
+  initialPages: MagazinePageDefinition[];
+  initialPageSlug?: string;
+  viewerAuthenticated?: boolean;
+}) {
   const [singlePageMode, setSinglePageMode] = useState(false);
   const spreads = useMemo(() => buildSpreads(issue.pages.length, singlePageMode), [issue.pages.length, singlePageMode]);
   const [spreadIndex, setSpreadIndex] = useState(0);
   const initialPageIndex = Math.max(0, issue.pages.findIndex((page) => page.slug === initialPageSlug));
   const [motion, setMotion] = useState<Motion | null>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [loadedPages, setLoadedPages] = useState<Record<string, MagazinePageDefinition>>(() =>
+    Object.fromEntries(initialPages.map((page) => [page.slug, page])),
+  );
+  const loadedPagesRef = useRef<Record<string, MagazinePageDefinition>>(
+    Object.fromEntries(initialPages.map((page) => [page.slug, page])),
+  );
+  const pageRequestsRef = useRef<Map<string, Promise<MagazinePageDefinition | null>>>(new Map());
 
   const pointerStartX = useRef<number | null>(null);
   const pointerStartY = useRef<number | null>(null);
@@ -510,6 +527,48 @@ export function MagazineReader({ issue, initialPageSlug, viewerAuthenticated = f
   const firstPage = activePages[0]!;
   const canGoBack = safeSpreadIndex > 0;
   const canGoForward = safeSpreadIndex < maxSpreadIndex;
+
+  const loadPage = useCallback(async (pageIndex: number): Promise<MagazinePageDefinition | null> => {
+    const manifest = issue.pages[pageIndex];
+    if (!manifest) return null;
+
+    const cached = loadedPagesRef.current[manifest.slug];
+    if (cached) return cached;
+
+    const existingRequest = pageRequestsRef.current.get(manifest.slug);
+    if (existingRequest) return existingRequest;
+
+    const request = fetch(
+      `/api/magazine/${encodeURIComponent(issue.slug)}/${encodeURIComponent(manifest.slug)}`,
+      { headers: { accept: "application/json" } },
+    )
+      .then(async (response) => {
+        if (!response.ok) throw new Error(`Unable to load magazine page (${response.status})`);
+        return await response.json() as MagazinePageDefinition;
+      })
+      .then((page) => {
+        const next = { ...loadedPagesRef.current, [page.slug]: page };
+        loadedPagesRef.current = next;
+        setLoadedPages(next);
+        return page;
+      })
+      .catch((error) => {
+        console.error("Failed to load magazine page", manifest.slug, error);
+        return null;
+      })
+      .finally(() => {
+        pageRequestsRef.current.delete(manifest.slug);
+      });
+
+    pageRequestsRef.current.set(manifest.slug, request);
+    return request;
+  }, [issue.pages, issue.slug]);
+
+  const ensureSpreadLoaded = useCallback(async (spreadToLoad: Spread | null | undefined) => {
+    if (!spreadToLoad) return false;
+    const pages = await Promise.all(spreadToLoad.pageIndexes.map((pageIndex) => loadPage(pageIndex)));
+    return pages.every(Boolean);
+  }, [loadPage]);
 
   const setProgress = useCallback((value: number) => {
     const next = clamp01(value);
@@ -557,7 +616,7 @@ export function MagazineReader({ issue, initialPageSlug, viewerAuthenticated = f
     };
   }, [singlePageMode, spreadIndex, spreads.length]);
 
-  const animateToSpread = useCallback((targetIndex: number, afterMotion?: () => void) => {
+  const animateToSpread = useCallback(async (targetIndex: number, afterMotion?: () => void) => {
     if (motion) return false;
     const currentIndex = Math.min(Math.max(0, spreadIndex), Math.max(0, spreads.length - 1));
     if (targetIndex < 0 || targetIndex >= spreads.length) return false;
@@ -565,6 +624,9 @@ export function MagazineReader({ issue, initialPageSlug, viewerAuthenticated = f
       afterMotion?.();
       return true;
     }
+
+    const ready = await ensureSpreadLoaded(spreads[targetIndex]);
+    if (!ready) return false;
 
     const direction: Direction = targetIndex > currentIndex ? "next" : "previous";
     const nextMotion: Motion = {
@@ -584,7 +646,7 @@ export function MagazineReader({ issue, initialPageSlug, viewerAuthenticated = f
     });
     completeMotion(true, targetIndex);
     return true;
-  }, [clearMotionTimer, completeMotion, motion, setProgress, spreadIndex, spreads.length]);
+  }, [clearMotionTimer, completeMotion, ensureSpreadLoaded, motion, setProgress, spreadIndex, spreads]);
 
   const openStoryTarget = useCallback((node: ComposerNode) => {
     const story = node.story;
@@ -602,13 +664,16 @@ export function MagazineReader({ issue, initialPageSlug, viewerAuthenticated = f
       }));
     };
 
-    animateToSpread(targetSpreadIndex, finishStoryNavigation);
+    void animateToSpread(targetSpreadIndex, finishStoryNavigation);
   }, [animateToSpread, issue.pages, issue.slug, spreads]);
 
-  const navigate = useCallback((direction: Direction) => {
+  const navigate = useCallback(async (direction: Direction) => {
     if (motion) return;
     const nextMotion = createMotion(direction, "animating");
     if (!nextMotion) return;
+
+    const ready = await ensureSpreadLoaded(spreads[nextMotion.targetIndex]);
+    if (!ready) return;
 
     clearMotionTimer();
     setProgress(0);
@@ -617,7 +682,7 @@ export function MagazineReader({ issue, initialPageSlug, viewerAuthenticated = f
       requestAnimationFrame(() => setProgress(1));
     });
     completeMotion(true, nextMotion.targetIndex);
-  }, [clearMotionTimer, completeMotion, createMotion, motion, setProgress]);
+  }, [clearMotionTimer, completeMotion, createMotion, ensureSpreadLoaded, motion, setProgress, spreads]);
 
   useEffect(() => {
     const media = window.matchMedia("(max-width: 820px)");
@@ -635,11 +700,34 @@ export function MagazineReader({ issue, initialPageSlug, viewerAuthenticated = f
   }, [initialPageIndex, initialPageSlug, setProgress, spreads]);
 
   useEffect(() => {
+    if (!spread || motion) return;
+    let cancelled = false;
+
+    void ensureSpreadLoaded(spread).then((ready) => {
+      if (!ready || cancelled) return;
+      const keepSlugs = new Set(
+        spread.pageIndexes
+          .map((pageIndex) => issue.pages[pageIndex]?.slug)
+          .filter((slug): slug is string => Boolean(slug)),
+      );
+      const next = Object.fromEntries(
+        Object.entries(loadedPagesRef.current).filter(([slug]) => keepSlugs.has(slug)),
+      );
+      loadedPagesRef.current = next;
+      setLoadedPages(next);
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [ensureSpreadLoaded, issue.pages, motion, safeSpreadIndex, singlePageMode, spread]);
+
+  useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
       const target = event.target as HTMLElement | null;
       if (target?.closest("button, a, input, textarea, select, [role='dialog'], [contenteditable='true']")) return;
-      if (event.key === "ArrowRight" || event.key === "PageDown") navigate("next");
-      if (event.key === "ArrowLeft" || event.key === "PageUp") navigate("previous");
+      if (event.key === "ArrowRight" || event.key === "PageDown") void navigate("next");
+      if (event.key === "ArrowLeft" || event.key === "PageUp") void navigate("previous");
     };
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
@@ -656,7 +744,7 @@ export function MagazineReader({ issue, initialPageSlug, viewerAuthenticated = f
   useEffect(() => {
     if (!firstPage || motion) return;
     const hashValue = decodeURIComponent(window.location.hash.slice(1));
-    const hashBelongsToActivePage = activePages.some((activePage) => activePage.sections.some((section) => section.slug === hashValue));
+    const hashBelongsToActivePage = activePages.some((activePage) => loadedPages[activePage.slug]?.sections.some((section) => section.slug === hashValue));
     const hash = hashBelongsToActivePage ? window.location.hash : "";
     const requestedPageIsVisible = initialPageSlug && activePages.some((activePage) => activePage.slug === initialPageSlug);
     const routePageSlug = requestedPageIsVisible ? initialPageSlug : firstPage.slug;
@@ -664,7 +752,7 @@ export function MagazineReader({ issue, initialPageSlug, viewerAuthenticated = f
     if (`${window.location.pathname}${window.location.hash}` !== nextPath) {
       window.history.replaceState(window.history.state, "", nextPath);
     }
-  }, [activePages, firstPage, initialPageSlug, issue.slug, motion]);
+  }, [activePages, firstPage, initialPageSlug, issue.slug, loadedPages, motion]);
 
   useEffect(() => {
     if (!window.location.hash) return;
@@ -831,6 +919,7 @@ export function MagazineReader({ issue, initialPageSlug, viewerAuthenticated = f
 
     if (!motion || motion.direction !== direction || motion.phase !== "dragging") {
       setMotion(nextMotion);
+      void ensureSpreadLoaded(spreads[nextMotion.targetIndex]);
     }
 
     const stageWidth = Math.max(1, event.currentTarget.getBoundingClientRect().width);
@@ -838,7 +927,7 @@ export function MagazineReader({ issue, initialPageSlug, viewerAuthenticated = f
     setProgress(absX / distance);
   };
 
-  const finishPointer = (event: ReactPointerEvent<HTMLDivElement>) => {
+  const finishPointer = async (event: ReactPointerEvent<HTMLDivElement>) => {
     updatePointerGuide(event);
     if (pointerStartX.current == null) return;
 
@@ -860,6 +949,13 @@ export function MagazineReader({ issue, initialPageSlug, viewerAuthenticated = f
     }
 
     const commit = progressRef.current >= TURN_THRESHOLD || (Math.abs(deltaX) >= FLICK_DISTANCE && velocity >= FLICK_VELOCITY);
+    if (commit) {
+      const ready = await ensureSpreadLoaded(spreads[motion.targetIndex]);
+      if (!ready) {
+        animateMotion(motion, false);
+        return;
+      }
+    }
     animateMotion(motion, commit);
   };
 
@@ -876,7 +972,7 @@ export function MagazineReader({ issue, initialPageSlug, viewerAuthenticated = f
     const rect = book.getBoundingClientRect();
     if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) return;
 
-    navigate(event.clientX >= rect.left + rect.width / 2 ? "next" : "previous");
+    void navigate(event.clientX >= rect.left + rect.width / 2 ? "next" : "previous");
   };
 
   const hidePointerGuide = () => {
@@ -895,16 +991,26 @@ export function MagazineReader({ issue, initialPageSlug, viewerAuthenticated = f
         aria-hidden={role === "target" ? true : undefined}
       >
         {spreadToRender.pageIndexes.map((pageIndex, slot) => {
-          const page = issue.pages[pageIndex]!;
+          const manifest = issue.pages[pageIndex]!;
+          const page = loadedPages[manifest.slug];
           const slotClass = isSingle ? "solo" : slot === 0 ? "left" : "right";
           const hidden = hiddenPageIndex === pageIndex;
           return (
             <article
               className={`xp-magazine__sheet xp-magazine__sheet--${slotClass}${hidden ? " is-turning-page" : ""}`}
-              key={`${role}-${page.id}`}
-              aria-label={role === "current" ? `${page.title}, page ${pageIndex + 1}` : undefined}
+              key={`${role}-${manifest.id}`}
+              aria-label={role === "current" ? `${manifest.title}, page ${pageIndex + 1}` : undefined}
+              aria-busy={!page}
             >
               <div className="xp-magazine__paper">
+                {!page ? (
+                  <div className="xp-magazine__page-loading" role="status" aria-label={`Loading ${manifest.title}`}>
+                    <span />
+                    <span />
+                    <span />
+                  </div>
+                ) : (
+                  <>
                 <MagazineResourcePreloader resources={page.resources} />
                 {page.sections.map((section) => <MagazineResourcePreloader key={`resource-${section.id}`} resources={section.resources} />)}
                 {new Set(["november-events", "xpomag-12", "ad-thread"]).has(page.slug) ? (
@@ -940,6 +1046,8 @@ export function MagazineReader({ issue, initialPageSlug, viewerAuthenticated = f
                   />
                 )}
                 {VIDEO_STORIES[page.slug] ? <YouTubeStoryPanel story={VIDEO_STORIES[page.slug]!} /> : null}
+                  </>
+                )}
                 <span className="xp-magazine__folio" aria-hidden="true">{String(pageIndex + 1).padStart(2, "0")}</span>
               </div>
             </article>
@@ -961,8 +1069,8 @@ export function MagazineReader({ issue, initialPageSlug, viewerAuthenticated = f
       : targetSpread.pageIndexes[targetSpread.pageIndexes.length - 1]
     : undefined;
 
-  const currentTurnPage = currentTurnPageIndex == null ? null : issue.pages[currentTurnPageIndex];
-  const backTurnPage = backTurnPageIndex == null ? null : issue.pages[backTurnPageIndex];
+  const currentTurnPage = currentTurnPageIndex == null ? null : loadedPages[issue.pages[currentTurnPageIndex]?.slug ?? ""];
+  const backTurnPage = backTurnPageIndex == null ? null : loadedPages[issue.pages[backTurnPageIndex]?.slug ?? ""];
 
   const currentIsSingle = spread.pageIndexes.length === 1;
   const targetIsSingle = targetSpread?.pageIndexes.length === 1;
