@@ -72,7 +72,7 @@ export function DesignElement({ node, registry, renderComposerNodeOverlay, onCom
       const alt = typeof props.alt === "string" ? props.alt : "";
       const loading = props.loading === "eager" ? "eager" : "lazy";
       const fetchPriority = props.fetchPriority === "high" || props.fetchPriority === "low" ? props.fetchPriority : "auto";
-      return <img src={src} alt={alt} style={style} loading={loading} fetchPriority={fetchPriority} />;
+      return <img src={src} alt={alt} style={style} loading={loading} fetchPriority={fetchPriority} decoding="async" />;
     }
     case "background": {
       const layers = Array.isArray(props.layers) ? props.layers.filter((layer): layer is Record<string, unknown> => Boolean(layer) && typeof layer === "object") : [];
@@ -90,7 +90,8 @@ export function DesignElement({ node, registry, renderComposerNodeOverlay, onCom
                   key={`${node.id}-layer-${index}`}
                   src={layer.src}
                   alt=""
-                  loading={layer.loading === "lazy" ? "lazy" : "eager"}
+                  loading={layer.loading === "eager" ? "eager" : "lazy"}
+                  decoding="async"
                   style={{
                     ...backgroundLayerStyle(layer),
                     width: "100%",
