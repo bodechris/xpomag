@@ -475,12 +475,12 @@ function InteractiveMagazinePage({ slug }: { slug: string }) {
 
 export function MagazineReader({
   issue,
-  initialPages,
+  initialPages = [],
   initialPageSlug,
   viewerAuthenticated = false,
 }: {
   issue: MagazineReaderIssue;
-  initialPages: MagazinePageDefinition[];
+  initialPages?: MagazinePageDefinition[];
   initialPageSlug?: string;
   viewerAuthenticated?: boolean;
 }) {
@@ -490,11 +490,29 @@ export function MagazineReader({
   const initialPageIndex = Math.max(0, issue.pages.findIndex((page) => page.slug === initialPageSlug));
   const [motion, setMotion] = useState<Motion | null>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
+
+  // Keep the reader backwards-compatible during local HMR / staggered pulls.
+  // Older server output can briefly render the new client component without
+  // initialPages. If full page definitions are present on issue.pages, seed
+  // from the requested page; otherwise start empty and fetch on demand.
+  const seedPages = useMemo(() => {
+    if (initialPages.length) return initialPages;
+    const legacyPages = issue.pages.filter(
+      (page): page is MagazinePageDefinition =>
+        Array.isArray((page as MagazinePageDefinition).sections),
+    );
+    if (!legacyPages.length) return [];
+    const requested = initialPageSlug
+      ? legacyPages.find((page) => page.slug === initialPageSlug)
+      : legacyPages[0];
+    return requested ? [requested] : [];
+  }, [initialPageSlug, initialPages, issue.pages]);
+
   const [loadedPages, setLoadedPages] = useState<Record<string, MagazinePageDefinition>>(() =>
-    Object.fromEntries(initialPages.map((page) => [page.slug, page])),
+    Object.fromEntries(seedPages.map((page) => [page.slug, page])),
   );
   const loadedPagesRef = useRef<Record<string, MagazinePageDefinition>>(
-    Object.fromEntries(initialPages.map((page) => [page.slug, page])),
+    Object.fromEntries(seedPages.map((page) => [page.slug, page])),
   );
   const pageRequestsRef = useRef<Map<string, Promise<MagazinePageDefinition | null>>>(new Map());
 
