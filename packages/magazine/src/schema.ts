@@ -1,7 +1,7 @@
 import { z } from "zod";
 import type { MagazineResourceBundle } from "./resources.js";
 
-const designStyleValueSchema = z.union([z.string(), z.number()]);
+const designStyleValueSchema = z.union([z.string(), z.number(), z.undefined()]);
 
 /**
  * Magazine styles are authored as React-compatible inline CSS objects.
