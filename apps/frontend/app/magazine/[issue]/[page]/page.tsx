@@ -5,6 +5,7 @@ import { SiteHeader } from "../../../../components/site-header";
 import { getDemoMagazineBySlug } from "../../../../lib/demo-magazine";
 import { getAlphaCoverAssets } from "../../../../lib/cover-assets";
 import { getComposerDocument } from "../../../../lib/composer-persistence";
+import { createMagazineReaderPayload } from "../../../../lib/magazine-reader-data";
 
 export const dynamic = "force-dynamic";
 
@@ -17,12 +18,13 @@ export default async function MagazinePageRoute({ params, searchParams }: { para
   const alphaCoverAssets = await getAlphaCoverAssets();
   const coverDocument = pageSlug === "cover" ? await getComposerDocument(issueSlug, "cover", preview === "draft" ? "draft" : "published") : null;
   const issue = getDemoMagazineBySlug(issueSlug, { alphaCoverAssets, coverDocument });
+  const readerPayload = createMagazineReaderPayload(issue, pageSlug);
 
   return (
     <main>
       <SiteHeader city={issue.city} />
       <div className="xp-container xp-home-shell">
-        <MagazineReader issue={issue} initialPageSlug={pageSlug} viewerAuthenticated={viewerAuthenticated} />
+        <MagazineReader issue={readerPayload.issue} initialPages={readerPayload.initialPages} initialPageSlug={pageSlug} viewerAuthenticated={viewerAuthenticated} />
       </div>
     </main>
   );
