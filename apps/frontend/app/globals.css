@@ -807,7 +807,8 @@ img, picture, video, canvas, svg { display: block; max-width: 100%; }
   position: absolute;
   bottom: calc(100% + 5px);
   left: 50%;
-  width: max-content;
+  width: auto;
+  min-width: max-content;
   max-width: none;
   padding: 3px 6px;
   border-radius: 4px;
