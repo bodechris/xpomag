@@ -19,7 +19,7 @@ function placementStyle(node: ComposerNode): CSSProperties {
   };
 }
 
-function textNode(node: ComposerNode, fitContent = false): ReactNode {
+function textNode(node: ComposerNode, canvasWidth: number, fitContent = false): ReactNode {
   const t = node.textStyle ?? {};
   const style: CSSProperties = {
     width: "100%",
@@ -28,10 +28,10 @@ function textNode(node: ComposerNode, fitContent = false): ReactNode {
     whiteSpace: "pre-line",
     overflow: fitContent ? "visible" : "hidden",
     fontFamily: t.fontFamily,
-    fontSize: t.fontSize,
+    fontSize: typeof t.fontSize === "number" ? `${(t.fontSize / canvasWidth) * 100}cqw` : t.fontSize,
     fontWeight: t.fontWeight,
     lineHeight: t.lineHeight,
-    letterSpacing: t.letterSpacing,
+    letterSpacing: typeof t.letterSpacing === "number" ? `${(t.letterSpacing / canvasWidth) * 100}cqw` : t.letterSpacing,
     color: t.color,
     textAlign: t.textAlign,
     textTransform: t.textTransform === "uppercase" ? "uppercase" : undefined,
@@ -61,7 +61,7 @@ export function ComposerCanvas({ document, className, style, selectedId, renderN
       ref={canvasRef}
       className={className}
       data-composer-canvas="true"
-      style={{ position: "relative", width: "100%", aspectRatio: `${document.canvas.width} / ${document.canvas.height}`, overflow: "hidden", background: "#fff", ...style }}
+      style={{ position: "relative", width: "100%", aspectRatio: `${document.canvas.width} / ${document.canvas.height}`, overflow: "hidden", background: "#fff", containerType: "inline-size", ...style }}
       onPointerMove={onCanvasPointerMove}
       onPointerUp={onCanvasPointerUp}
       onPointerCancel={onCanvasPointerUp}
@@ -89,7 +89,7 @@ export function ComposerCanvas({ document, className, style, selectedId, renderN
           >
             {isTextual && overlay ? (
               <div className="xp-composer-node__content-with-overlay" style={{ position: "relative", width: "100%", height: "fit-content" }}>
-                {textNode(node, true)}
+                {textNode(node, document.canvas.width, true)}
                 {overlay}
               </div>
             ) : (
@@ -98,7 +98,7 @@ export function ComposerCanvas({ document, className, style, selectedId, renderN
                   <img src={node.src} alt="" draggable={false} style={{ width: "100%", height: "100%", display: "block", objectFit: node.imageStyle?.objectFit ?? "contain", objectPosition: node.imageStyle?.objectPosition ?? "50% 50%", opacity: node.imageStyle?.opacity ?? 1, mixBlendMode: node.imageStyle?.mixBlendMode as CSSProperties["mixBlendMode"], filter: node.imageStyle?.filter, pointerEvents: "none", userSelect: "none" }} />
                 ) : node.kind === "shape" ? (
                   <div style={{ width: "100%", height: "100%", ...node.style }} />
-                ) : textNode(node)}
+                ) : textNode(node, document.canvas.width)}
                 {overlay}
               </>
             )}
