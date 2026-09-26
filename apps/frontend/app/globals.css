@@ -2328,3 +2328,56 @@ img, picture, video, canvas, svg { display: block; max-width: 100%; }
   .xp-magazine__footer { padding-inline: .15rem; }
   .xp-magazine__progress { max-width: 56vw; overflow: hidden; }
 }
+
+
+/* Every editorial page scales as a self-contained magazine canvas.
+   Keep measure intentionally short: magazine copy should scan, not become web-width prose. */
+[data-magazine-page] {
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+}
+[data-magazine-page] [data-design-element="stack"],
+[data-magazine-page] [data-design-element="grid"] {
+  min-width: 0;
+  max-width: 100%;
+}
+[data-magazine-page] h1,
+[data-magazine-page] h2,
+[data-magazine-page] h3,
+[data-magazine-page] p,
+[data-magazine-page] span {
+  overflow-wrap: anywhere;
+  text-wrap: pretty;
+}
+[data-magazine-page] h1,
+[data-magazine-page] h2,
+[data-magazine-page] h3 {
+  text-wrap: balance;
+}
+[data-magazine-page] p {
+  max-width: min(100%, 38em);
+}
+[data-magazine-page] img,
+[data-magazine-page] video,
+[data-magazine-page] iframe {
+  max-width: 100%;
+}
+
+@container (max-width: 520px) {
+  [data-magazine-page] [data-magazine-section] {
+    min-width: 0 !important;
+  }
+  [data-magazine-page] h1 { font-size: clamp(1.15rem, 8.5cqw, 2.55rem) !important; line-height: .9 !important; }
+  [data-magazine-page] h2 { font-size: clamp(1rem, 7.2cqw, 2.15rem) !important; line-height: .94 !important; }
+  [data-magazine-page] h3 { font-size: clamp(.76rem, 4.5cqw, 1.25rem) !important; line-height: 1 !important; }
+  [data-magazine-page] p { font-size: clamp(.52rem, 2.65cqw, .86rem) !important; line-height: 1.28 !important; max-width: 34em; }
+  [data-magazine-page] [data-design-element="stack"] { gap: clamp(.18rem, 1.8cqw, .62rem) !important; }
+  [data-magazine-page] [data-design-element="grid"] { gap: clamp(.18rem, 1.8cqw, .68rem) !important; }
+}
+
+@container (max-width: 360px) {
+  [data-magazine-page] h1 { font-size: clamp(1rem, 7.7cqw, 2rem) !important; }
+  [data-magazine-page] h2 { font-size: clamp(.9rem, 6.5cqw, 1.75rem) !important; }
+  [data-magazine-page] p { font-size: clamp(.48rem, 2.45cqw, .72rem) !important; line-height: 1.22 !important; max-width: 32em; }
+}
