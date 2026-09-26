@@ -25,7 +25,7 @@ export function createDemoCoverDocument(options: DemoCoverDocumentOptions = {}):
     nodes: [
       {
         id: "masthead", name: "XpoMag masthead", kind: "brand", content: "XpoMag",
-        placement: { x: 4, y: 2.2, width: 76, height: 14, zIndex: 12 },
+        placement: { x: 4, y: 2.2, width: 92, height: 14, zIndex: 45 },
         textStyle: { fontFamily: "var(--font-geist-sans, Arial, sans-serif)", fontSize: 132, fontWeight: 900, lineHeight: 0.8, letterSpacing: -8, color: "#090909" },
       },
       {
