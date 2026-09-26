@@ -2381,3 +2381,110 @@ img, picture, video, canvas, svg { display: block; max-width: 100%; }
   [data-magazine-page] h2 { font-size: clamp(.9rem, 6.5cqw, 1.75rem) !important; }
   [data-magazine-page] p { font-size: clamp(.48rem, 2.45cqw, .72rem) !important; line-height: 1.22 !important; max-width: 32em; }
 }
+
+
+/* Cover hierarchy on phone-size readers: fewer coverlines, larger useful copy. */
+@media (max-width: 560px) {
+  [data-magazine-page="cover"] [data-composer-node="masthead"] {
+    left: 3% !important;
+    top: 2.2% !important;
+    width: 94% !important;
+    height: 13% !important;
+    z-index: 70 !important;
+  }
+  [data-magazine-page="cover"] [data-composer-node="masthead"] > div {
+    width: 100% !important;
+    font-size: 22.5cqw !important;
+    line-height: .76 !important;
+    letter-spacing: -.075em !important;
+    white-space: nowrap !important;
+    overflow: visible !important;
+  }
+  [data-magazine-page="cover"] [data-composer-node="issue-meta"] {
+    left: 5% !important;
+    top: 14.2% !important;
+    width: 82% !important;
+  }
+  [data-magazine-page="cover"] [data-composer-node="issue-meta"] > div {
+    font-size: 2.05cqw !important;
+    line-height: 1.1 !important;
+  }
+
+  /* Remove secondary furniture instead of shrinking every coverline into illegibility. */
+  [data-magazine-page="cover"] [data-composer-node="left-kicker"],
+  [data-magazine-page="cover"] [data-composer-node="right-kicker"],
+  [data-magazine-page="cover"] [data-composer-node="right-story-2"] {
+    display: none !important;
+  }
+
+  [data-magazine-page="cover"] [data-composer-node="left-headline"] {
+    left: 5% !important;
+    top: 28% !important;
+    width: 35% !important;
+    height: 14% !important;
+    z-index: 55 !important;
+  }
+  [data-magazine-page="cover"] [data-composer-node="left-headline"] > div,
+  [data-magazine-page="cover"] [data-composer-node="left-headline"] .xp-composer-node__content-with-overlay > div:first-child {
+    font-size: 8.4cqw !important;
+    line-height: .86 !important;
+  }
+  [data-magazine-page="cover"] [data-composer-node="left-copy"] {
+    left: 5% !important;
+    top: 43% !important;
+    width: 35% !important;
+    height: auto !important;
+    z-index: 55 !important;
+  }
+  [data-magazine-page="cover"] [data-composer-node="left-copy"] > div,
+  [data-magazine-page="cover"] [data-composer-node="left-copy"] .xp-composer-node__content-with-overlay > div:first-child {
+    font-size: 3.15cqw !important;
+    line-height: 1.18 !important;
+    max-width: 100% !important;
+  }
+  [data-magazine-page="cover"] [data-composer-node="right-story-1"] {
+    right: 4% !important;
+    left: auto !important;
+    top: 31% !important;
+    width: 27% !important;
+    height: auto !important;
+    z-index: 55 !important;
+  }
+  [data-magazine-page="cover"] [data-composer-node="right-story-1"] > div,
+  [data-magazine-page="cover"] [data-composer-node="right-story-1"] .xp-composer-node__content-with-overlay > div:first-child {
+    font-size: 3.25cqw !important;
+    line-height: 1.08 !important;
+  }
+  [data-magazine-page="cover"] [data-composer-node="lead-kicker"] {
+    display: none !important;
+  }
+  [data-magazine-page="cover"] [data-composer-node="lead-headline"] {
+    left: 6% !important;
+    bottom: 6% !important;
+    top: auto !important;
+    width: 62% !important;
+    height: auto !important;
+    z-index: 60 !important;
+  }
+  [data-magazine-page="cover"] [data-composer-node="lead-headline"] > div,
+  [data-magazine-page="cover"] [data-composer-node="lead-headline"] .xp-composer-node__content-with-overlay > div:first-child {
+    font-size: 5.3cqw !important;
+    line-height: .9 !important;
+  }
+}
+
+@media (max-width: 390px) {
+  [data-magazine-page="cover"] [data-composer-node="right-story-1"] {
+    display: none !important;
+  }
+  [data-magazine-page="cover"] [data-composer-node="left-headline"] {
+    width: 42% !important;
+  }
+  [data-magazine-page="cover"] [data-composer-node="left-copy"] {
+    width: 42% !important;
+  }
+  [data-magazine-page="cover"] [data-composer-node="left-copy"] > div,
+  [data-magazine-page="cover"] [data-composer-node="left-copy"] .xp-composer-node__content-with-overlay > div:first-child {
+    font-size: 3.45cqw !important;
+  }
+}
