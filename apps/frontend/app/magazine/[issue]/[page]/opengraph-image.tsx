@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
-import { getDemoMagazineBySlug } from "../../../../../lib/demo-magazine";
-import { pageDescription, pageHeroImage } from "../../../../../lib/seo";
+import { getDemoMagazineBySlug } from "../../../../lib/demo-magazine";
+import { pageDescription, pageHeroImage } from "../../../../lib/seo";
 
 export const alt = "XpoMag editorial story";
 export const size = { width: 1200, height: 630 };
