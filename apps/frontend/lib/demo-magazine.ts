@@ -1314,7 +1314,7 @@ function withCoverStoryLinks(document: ComposerDocument): ComposerDocument {
       if (node.id === "portrait") {
         return {
           ...node,
-          placement: { ...node.placement, x: -8, y: 8, width: 116, height: 98, zIndex: 20 },
+          placement: { ...node.placement, x: -12, y: 4, width: 124, height: 104, zIndex: 60 },
           imageStyle: { ...(node.imageStyle ?? {}), objectFit: "contain", objectPosition: "50% 100%", opacity: 1 },
         };
       }
