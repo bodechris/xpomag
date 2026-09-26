@@ -12,7 +12,7 @@ export function MagazinePageRenderer({ page, globalElements, renderEngagement, r
     <div
       data-magazine-page={page.slug}
       data-layout={layout.id}
-      style={{ ...layout.style, position: "relative", isolation: "isolate", overflow: "hidden" }}
+      style={{ ...layout.style, position: "relative", isolation: "isolate", overflow: "hidden", containerType: "inline-size" }}
     >
       <DesignElement node={page.background} registry={globalElements} renderComposerNodeOverlay={renderComposerNodeOverlay} onComposerNodeActivate={onComposerNodeActivate} />
       {page.sections.map((section) => {
