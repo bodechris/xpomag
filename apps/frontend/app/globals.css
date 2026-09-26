@@ -2298,3 +2298,33 @@ img, picture, video, canvas, svg { display: block; max-width: 100%; }
   .xp-city-tetris-controls { bottom:6.5%; }
   .xp-city-tetris-controls button { min-width:2.25rem; min-height:2.15rem; padding:.35rem .5rem; }
 }
+
+
+/* Mobile cover interaction + responsive composer safeguards. */
+[data-composer-canvas="true"] [data-composer-node][data-story-id] {
+  pointer-events: auto;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: rgba(49, 87, 255, .12);
+}
+@media (max-width: 820px) {
+  .xp-magazine__stage { touch-action: pan-y pinch-zoom; }
+  [data-composer-canvas="true"] [data-composer-node][data-story-id] {
+    min-width: 28px;
+    min-height: 28px;
+  }
+  [data-composer-canvas="true"] [data-composer-node][data-story-id]::before {
+    content: "";
+    position: absolute;
+    inset: -6px;
+    z-index: -1;
+  }
+  .xp-cover-story-engagement {
+    max-width: min(230%, 88vw);
+  }
+}
+@media (max-width: 480px) {
+  .xp-container { width: 100%; padding-inline: .5rem; }
+  .xp-magazine__book { width: 100%; max-width: calc(100vw - 1rem); }
+  .xp-magazine__footer { padding-inline: .15rem; }
+  .xp-magazine__progress { max-width: 56vw; overflow: hidden; }
+}
