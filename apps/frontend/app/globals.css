@@ -2488,3 +2488,78 @@ img, picture, video, canvas, svg { display: block; max-width: 100%; }
     font-size: 3.45cqw !important;
   }
 }
+
+
+/* Mobile cover v3 — portrait overlaps masthead; editorial copy lives in lower half. */
+@media (max-width: 560px) {
+  [data-magazine-page="cover"] [data-composer-node="masthead"] {
+    z-index: 50 !important;
+  }
+  [data-magazine-page="cover"] [data-composer-node="portrait"] {
+    left: -14% !important;
+    top: 3% !important;
+    width: 128% !important;
+    height: 106% !important;
+    z-index: 60 !important;
+  }
+
+  /* Keep issue metadata out of the oversized wordmark/portrait collision. */
+  [data-magazine-page="cover"] [data-composer-node="issue-meta"] {
+    left: 5% !important;
+    top: 17% !important;
+    width: 48% !important;
+    z-index: 72 !important;
+  }
+  [data-magazine-page="cover"] [data-composer-node="issue-meta"] > div {
+    font-size: 1.8cqw !important;
+    line-height: 1.12 !important;
+  }
+
+  [data-magazine-page="cover"] [data-composer-node="left-headline"] {
+    left: 5% !important;
+    top: 57% !important;
+    width: 38% !important;
+    height: auto !important;
+    z-index: 72 !important;
+  }
+  [data-magazine-page="cover"] [data-composer-node="left-copy"] {
+    left: 5% !important;
+    top: 69% !important;
+    width: 39% !important;
+    height: auto !important;
+    z-index: 72 !important;
+  }
+  [data-magazine-page="cover"] [data-composer-node="left-copy"] > div,
+  [data-magazine-page="cover"] [data-composer-node="left-copy"] .xp-composer-node__content-with-overlay > div:first-child {
+    font-size: 3.25cqw !important;
+    line-height: 1.16 !important;
+  }
+  [data-magazine-page="cover"] [data-composer-node="right-story-1"] {
+    top: 58% !important;
+    z-index: 72 !important;
+  }
+  [data-magazine-page="cover"] [data-composer-node="lead-headline"] {
+    bottom: 5% !important;
+    z-index: 72 !important;
+  }
+}
+
+@media (max-width: 390px) {
+  [data-magazine-page="cover"] [data-composer-node="portrait"] {
+    left: -18% !important;
+    width: 136% !important;
+    height: 108% !important;
+  }
+  [data-magazine-page="cover"] [data-composer-node="issue-meta"] {
+    top: 17.5% !important;
+    width: 56% !important;
+  }
+  [data-magazine-page="cover"] [data-composer-node="left-headline"] {
+    top: 56% !important;
+    width: 45% !important;
+  }
+  [data-magazine-page="cover"] [data-composer-node="left-copy"] {
+    top: 69% !important;
+    width: 45% !important;
+  }
+}
