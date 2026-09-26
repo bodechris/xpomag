@@ -2758,3 +2758,110 @@ img, picture, video, canvas, svg { display: block; max-width: 100%; }
     font-size: 5.35cqw !important;
   }
 }
+
+
+/* Cover layout v6 — generous measures and no clipped editorial text. */
+[data-magazine-page="cover"] [data-composer-node="left-kicker"],
+[data-magazine-page="cover"] [data-composer-node="left-headline"],
+[data-magazine-page="cover"] [data-composer-node="left-copy"],
+[data-magazine-page="cover"] [data-composer-node="right-kicker"],
+[data-magazine-page="cover"] [data-composer-node="right-story-1"],
+[data-magazine-page="cover"] [data-composer-node="right-story-2"],
+[data-magazine-page="cover"] [data-composer-node="lead-kicker"],
+[data-magazine-page="cover"] [data-composer-node="lead-headline"] {
+  overflow: visible !important;
+}
+[data-magazine-page="cover"] [data-composer-node="left-kicker"] > div,
+[data-magazine-page="cover"] [data-composer-node="left-headline"] > div,
+[data-magazine-page="cover"] [data-composer-node="left-copy"] > div,
+[data-magazine-page="cover"] [data-composer-node="right-kicker"] > div,
+[data-magazine-page="cover"] [data-composer-node="right-story-1"] > div,
+[data-magazine-page="cover"] [data-composer-node="right-story-2"] > div,
+[data-magazine-page="cover"] [data-composer-node="lead-kicker"] > div,
+[data-magazine-page="cover"] [data-composer-node="lead-headline"] > div {
+  overflow: visible !important;
+  max-width: none !important;
+}
+
+/* Desktop/tablet: widen columns so coverlines read as editorial phrases, not narrow stacks. */
+@media (min-width: 561px) {
+  [data-magazine-page="cover"] [data-composer-node="left-kicker"] {
+    left: 5% !important;
+    width: 29% !important;
+    height: auto !important;
+  }
+  [data-magazine-page="cover"] [data-composer-node="left-headline"] {
+    left: 5% !important;
+    width: 31% !important;
+    height: auto !important;
+  }
+  [data-magazine-page="cover"] [data-composer-node="left-copy"] {
+    left: 5% !important;
+    width: 31% !important;
+    height: auto !important;
+  }
+  [data-magazine-page="cover"] [data-composer-node="right-kicker"] {
+    left: auto !important;
+    right: 5% !important;
+    width: 27% !important;
+    height: auto !important;
+  }
+  [data-magazine-page="cover"] [data-composer-node="right-story-1"],
+  [data-magazine-page="cover"] [data-composer-node="right-story-2"] {
+    left: auto !important;
+    right: 4% !important;
+    width: 29% !important;
+    height: auto !important;
+  }
+  [data-magazine-page="cover"] [data-composer-node="lead-kicker"] {
+    width: 42% !important;
+    height: auto !important;
+  }
+  [data-magazine-page="cover"] [data-composer-node="lead-headline"] {
+    width: 58% !important;
+    height: auto !important;
+  }
+
+  [data-magazine-page="cover"] [data-composer-node="left-headline"] > div,
+  [data-magazine-page="cover"] [data-composer-node="left-headline"] .xp-composer-node__content-with-overlay > div:first-child {
+    font-size: clamp(1.55rem, 7.2cqw, 4.25rem) !important;
+    line-height: .84 !important;
+  }
+  [data-magazine-page="cover"] [data-composer-node="right-story-1"] > div,
+  [data-magazine-page="cover"] [data-composer-node="right-story-1"] .xp-composer-node__content-with-overlay > div:first-child,
+  [data-magazine-page="cover"] [data-composer-node="right-story-2"] > div,
+  [data-magazine-page="cover"] [data-composer-node="right-story-2"] .xp-composer-node__content-with-overlay > div:first-child {
+    font-size: clamp(.76rem, 2.7cqw, 1.55rem) !important;
+    line-height: .96 !important;
+  }
+  [data-magazine-page="cover"] [data-composer-node="left-copy"] > div,
+  [data-magazine-page="cover"] [data-composer-node="left-copy"] .xp-composer-node__content-with-overlay > div:first-child {
+    font-size: clamp(.6rem, 1.8cqw, 1.05rem) !important;
+    line-height: 1.2 !important;
+  }
+}
+
+/* Mobile keeps the lower-third composition but gives retained stories more horizontal measure. */
+@media (max-width: 560px) {
+  [data-magazine-page="cover"] [data-composer-node="left-headline"] {
+    width: 52% !important;
+  }
+  [data-magazine-page="cover"] [data-composer-node="left-copy"] {
+    width: 54% !important;
+  }
+  [data-magazine-page="cover"] [data-composer-node="right-story-1"] {
+    width: 34% !important;
+    right: 3% !important;
+  }
+  [data-magazine-page="cover"] [data-composer-node="lead-headline"] {
+    width: 76% !important;
+  }
+}
+@media (max-width: 390px) {
+  [data-magazine-page="cover"] [data-composer-node="left-headline"] {
+    width: 56% !important;
+  }
+  [data-magazine-page="cover"] [data-composer-node="left-copy"] {
+    width: 58% !important;
+  }
+}
