@@ -1305,6 +1305,12 @@ function withCoverStoryLinks(document: ComposerDocument): ComposerDocument {
       // Production cover art-direction overrides. Keep admin-authored copy/links,
       // but make the subject intentionally oversized/full-bleed and keep the
       // issue line tucked beneath the masthead.
+      if (node.id === "masthead") {
+        return {
+          ...node,
+          placement: { ...node.placement, x: 4, y: 2.2, width: 92, height: 14, zIndex: 50 },
+        };
+      }
       if (node.id === "portrait") {
         return {
           ...node,
