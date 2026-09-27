@@ -174,13 +174,49 @@ export function InteractiveYouTubeVideo({
           }}
         />
 
+        <button
+          type="button"
+          className="xp-youtube-video__open-hero"
+          onClick={openModal}
+          aria-label={"Open " + title + " in video player"}
+          title="Open video player"
+          style={{
+            position: "absolute",
+            left: "50%",
+            top: "50%",
+            zIndex: 9,
+            transform: "translate(-50%, -50%)",
+            minWidth: "44px",
+            minHeight: "44px",
+            padding: "0 14px",
+            border: "1px solid rgba(255,255,255,.52)",
+            borderRadius: "999px",
+            background: "rgba(8,8,8,.76)",
+            color: "#fff",
+            display: "inline-flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "8px",
+            cursor: "pointer",
+            backdropFilter: "blur(12px)",
+            boxShadow: "0 10px 30px rgba(0,0,0,.32)",
+            fontSize: "12px",
+            fontWeight: 760,
+            lineHeight: 1,
+            whiteSpace: "nowrap",
+          }}
+        >
+          <span aria-hidden="true" style={{ fontSize: "14px" }}>▶</span>
+          <span className="xp-youtube-video__hero-label">Watch video</span>
+        </button>
+
         <div
           className="xp-youtube-video__controls"
           style={{
             position: "absolute",
             right: "8px",
             bottom: "8px",
-            zIndex: 8,
+            zIndex: 10,
             display: "flex",
             alignItems: "center",
             gap: "6px",
@@ -192,11 +228,11 @@ export function InteractiveYouTubeVideo({
             aria-label={playing ? "Pause video" : "Play video"}
             title={playing ? "Pause video" : "Play video"}
             style={{
-              width: "32px",
-              height: "32px",
-              border: "1px solid rgba(255,255,255,.38)",
+              width: "34px",
+              height: "34px",
+              border: "1px solid rgba(255,255,255,.42)",
               borderRadius: "999px",
-              background: "rgba(12,12,12,.72)",
+              background: "rgba(12,12,12,.8)",
               color: "#fff",
               display: "grid",
               placeItems: "center",
@@ -212,15 +248,15 @@ export function InteractiveYouTubeVideo({
           <button
             type="button"
             onClick={openModal}
-            aria-label="Open video"
-            title="Open video"
+            aria-label="Open video player"
+            title="Open video player"
             style={{
-              minWidth: "32px",
-              height: "32px",
+              minWidth: "34px",
+              height: "34px",
               padding: "0 10px",
-              border: "1px solid rgba(255,255,255,.38)",
+              border: "1px solid rgba(255,255,255,.42)",
               borderRadius: "999px",
-              background: "rgba(12,12,12,.72)",
+              background: "rgba(12,12,12,.8)",
               color: "#fff",
               display: "inline-flex",
               alignItems: "center",
@@ -230,13 +266,13 @@ export function InteractiveYouTubeVideo({
               backdropFilter: "blur(10px)",
               boxShadow: "0 5px 16px rgba(0,0,0,.24)",
               fontSize: "11px",
-              fontWeight: 700,
+              fontWeight: 760,
               lineHeight: 1,
               whiteSpace: "nowrap",
             }}
           >
-            <span aria-hidden="true">↗</span>
-            <span className="xp-youtube-video__open-label">Watch</span>
+            <span aria-hidden="true">⛶</span>
+            <span className="xp-youtube-video__open-label">Expand</span>
           </button>
         </div>
       </div>
