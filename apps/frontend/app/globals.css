@@ -4389,3 +4389,30 @@ html.xp-nav-open body {
     right: .65rem;
   }
 }
+
+
+/* Keep reader navigation legible after switching floating chrome to white. */
+.xp-reader-page .xp-magazine__nav {
+  color: var(--xp-color-ink) !important;
+  background: #ffffff !important;
+  border: 1px solid rgba(17,17,17,.10) !important;
+}
+
+.xp-reader-page .xp-magazine__nav--primary {
+  color: #ffffff !important;
+  background: #111111 !important;
+  border-color: #111111 !important;
+}
+
+.xp-reader-page .xp-magazine__nav:disabled {
+  color: rgba(17,17,17,.28) !important;
+  background: #ffffff !important;
+  border-color: rgba(17,17,17,.08) !important;
+  opacity: 1 !important;
+}
+
+.xp-reader-page .xp-magazine__nav--primary:disabled {
+  color: rgba(255,255,255,.58) !important;
+  background: #b9b9b5 !important;
+  border-color: #b9b9b5 !important;
+}
