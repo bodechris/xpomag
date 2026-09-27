@@ -66,5 +66,11 @@ export type MagazineGlobalDefinition = {
   fonts: Record<string, string>;
   styles: Record<string, string>;
   designElements: Record<string, DesignElementNode>;
+  /**
+   * Native spread-authored issues use spreads as their visual source of truth.
+   * pages remains during migration for routing, article views and legacy issues.
+   * Legacy issues are normalized into master spreads by the reader.
+   */
+  spreads?: import("./spread.js").MagazineSpreadDefinition[];
   pages: MagazinePageDefinition[];
 };
