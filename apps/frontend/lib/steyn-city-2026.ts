@@ -1251,6 +1251,7 @@ function bentleyAdvertSpread(issueId: string): MagazineSpreadDefinition {
             autoplayDelayMs: 4000,
             muted: true,
             loop: true,
+            maxLoops: 10,
             controls: false,
           },
           style: {
