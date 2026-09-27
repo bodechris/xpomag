@@ -4806,6 +4806,320 @@ function birdsBeesSpread(issueId: string): MagazineSpreadDefinition {
   };
 }
 
+
+function liveYourDreamsSpread(issueId: string): MagazineSpreadDefinition {
+  const hero = "/resources/studio/steyn/steyn-city-xpomag-spread-9-01.webp";
+  const logo = "/resources/studio/steyn/pam-golding-properties-logo.webp";
+  const qr = "/resources/studio/steyn/qr-code-steyn-city.png";
+  const videoSrc = "https://www.youtube.com/embed/qKiizstxMXU?autoplay=1&mute=1&controls=1&playsinline=1&rel=0";
+
+  const engagement = { reactions: true, comments: true, share: true, save: true };
+  const noEngagement = { reactions: false, comments: false, share: false, save: false };
+
+  const image = (
+    id: string,
+    src: string,
+    alt: string,
+    style: DesignElementNode["style"] = {},
+  ): DesignElementNode => ({
+    id,
+    type: "image",
+    props: { src, alt, loading: "eager", fetchPriority: "high" },
+    style: { display: "block", objectFit: "cover", ...style },
+  });
+
+  const video = (
+    id: string,
+    src: string,
+    title: string,
+    style: DesignElementNode["style"] = {},
+  ): DesignElementNode => ({
+    id,
+    type: "video",
+    props: {
+      src,
+      title,
+      cover: true,
+      interactive: true,
+      autoplay: false,
+      muted: true,
+      controls: true,
+    },
+    style: { display: "block", width: "100%", height: "100%", ...style },
+  });
+
+  return {
+    id: "steyn-live-your-dreams-spread",
+    issueId,
+    slug: "live-your-dreams",
+    title: "Live Your Dreams",
+    kind: "advert",
+    pageIds: ["birds-bees-iii", "birds-bees-iv"],
+    style: { background: "#fff" },
+    pieces: [
+      {
+        id: "steyn-live-your-dreams-piece",
+        slug: "live-your-dreams-piece",
+        title: "Live Your Dreams",
+        kind: "advert",
+        region: "spread",
+        gutterBehaviour: "cross",
+        engagement,
+        style: {
+          position: "absolute",
+          inset: 0,
+          overflow: "hidden",
+          background: "#fff",
+        },
+        elements: [
+          image("live-dreams-hero", hero, "Luxury Steyn City home with outdoor living and pool", {
+            position: "absolute",
+            left: 0,
+            top: 0,
+            width: "100%",
+            height: "84.8%",
+            objectFit: "cover",
+            objectPosition: "center 52%",
+          }),
+
+          {
+            id: "live-dreams-video-card",
+            type: "frame",
+            style: {
+              position: "absolute",
+              left: "3.3%",
+              top: "5.2%",
+              width: "17.5%",
+              aspectRatio: "16 / 9",
+              overflow: "hidden",
+              border: "2px solid rgba(255,255,255,.92)",
+              boxShadow: "0 10px 28px rgba(0,0,0,.22)",
+              background: "#111",
+              zIndex: 6,
+            },
+            children: [
+              video("live-dreams-video", videoSrc, "Steyn City property lifestyle", {
+                position: "absolute",
+                inset: 0,
+              }),
+            ],
+          },
+
+          {
+            id: "live-dreams-bottom-rail",
+            type: "frame",
+            style: {
+              position: "absolute",
+              left: 0,
+              right: 0,
+              bottom: 0,
+              height: "15.2%",
+              background: "rgba(255,255,255,.99)",
+              borderTop: "1px solid rgba(0,0,0,.08)",
+              display: "grid",
+              gridTemplateColumns: "1.18fr .82fr",
+              alignItems: "stretch",
+              boxSizing: "border-box",
+              zIndex: 5,
+            },
+            children: [
+              {
+                id: "live-dreams-copy-left",
+                type: "stack",
+                style: {
+                  justifyContent: "center",
+                  alignItems: "center",
+                  textAlign: "center",
+                  padding: "clamp(.8rem,1.25vw,1.4rem) clamp(1.4rem,3vw,3.6rem)",
+                  gap: "clamp(.2rem,.36vw,.38rem)",
+                },
+                children: [
+                  text("live-dreams-title", "LIVE YOUR DREAMS", {
+                    color: "#2c2a28",
+                    fontFamily: "var(--xp-font-editorial)",
+                    fontSize: "clamp(1rem,1.45vw,1.7rem)",
+                    fontWeight: 500,
+                    lineHeight: 1.05,
+                    letterSpacing: ".03em",
+                  }, "h2"),
+                  text(
+                    "live-dreams-description",
+                    "Imagine the possibilities. Steyn City’s range of stands allows you to design your lifestyle exactly as you envision it. This magnificent home, where a strong emphasis on connecting with the outdoors is complemented by interiors by The Private House Company, stands as a prime example.",
+                    {
+                      color: "#3f3b37",
+                      fontFamily: "var(--xp-font-sans)",
+                      fontSize: "clamp(.42rem,.5vw,.56rem)",
+                      lineHeight: 1.35,
+                      maxWidth: "43rem",
+                    },
+                  ),
+                ],
+              },
+              {
+                id: "live-dreams-contact",
+                type: "grid",
+                style: {
+                  gridTemplateColumns: "auto 1fr auto",
+                  gap: "clamp(.7rem,1.1vw,1.2rem)",
+                  alignItems: "center",
+                  padding: "clamp(.7rem,1.1vw,1.3rem) clamp(1.2rem,2.6vw,3rem)",
+                },
+                children: [
+                  image("live-dreams-qr", qr, "QR code for Steyn City property enquiries", {
+                    width: "clamp(2.7rem,4.3vw,4.7rem)",
+                    aspectRatio: "1 / 1",
+                    objectFit: "contain",
+                  }),
+                  {
+                    id: "live-dreams-contact-copy",
+                    type: "stack",
+                    style: {
+                      justifyContent: "center",
+                      gap: ".22rem",
+                    },
+                    children: [
+                      text("live-dreams-contact-label", "FOR STANDS | SALES, CONTACT:", {
+                        color: "#4c4742",
+                        fontFamily: "var(--xp-font-sans)",
+                        fontSize: "clamp(.34rem,.42vw,.47rem)",
+                        fontWeight: 760,
+                        letterSpacing: ".09em",
+                      }, "span"),
+                      text("live-dreams-contact-tel", "TEL: 010 597 1040", {
+                        color: "#2f2c29",
+                        fontFamily: "var(--xp-font-sans)",
+                        fontSize: "clamp(.38rem,.46vw,.52rem)",
+                        fontWeight: 650,
+                      }, "span"),
+                      text("live-dreams-contact-email", "EMAIL: SALES@STEYNCITY.CO.ZA", {
+                        color: "#2f2c29",
+                        fontFamily: "var(--xp-font-sans)",
+                        fontSize: "clamp(.38rem,.46vw,.52rem)",
+                        fontWeight: 650,
+                      }, "span"),
+                    ],
+                  },
+                  image("live-dreams-logo", logo, "Pam Golding Properties", {
+                    width: "clamp(7.2rem,10.5vw,12rem)",
+                    maxHeight: "4.5rem",
+                    objectFit: "contain",
+                    objectPosition: "right center",
+                  }),
+                ],
+              },
+            ],
+          },
+        ],
+      },
+
+      {
+        id: "steyn-live-your-dreams-mobile-piece",
+        slug: "live-your-dreams-mobile-piece",
+        title: "Live Your Dreams",
+        kind: "advert",
+        region: "spread",
+        gutterBehaviour: "clip",
+        engagement: noEngagement,
+        style: {
+          position: "absolute",
+          inset: "3.5% 3%",
+          display: "none",
+          background: "#fff",
+          zIndex: 70,
+          overflow: "auto",
+          padding: "clamp(.9rem,3.8vw,1.35rem)",
+          boxSizing: "border-box",
+        },
+        elements: [
+          image("live-dreams-mobile-hero", hero, "Luxury Steyn City home with outdoor living and pool", {
+            width: "100%",
+            height: "18rem",
+            objectFit: "cover",
+            objectPosition: "center 52%",
+            marginBottom: ".85rem",
+          }),
+          text("live-dreams-mobile-title", "LIVE YOUR DREAMS", {
+            color: "#2c2a28",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(1.55rem,6.8vw,2.1rem)",
+            lineHeight: 1,
+            letterSpacing: ".02em",
+            marginBottom: ".55rem",
+            textAlign: "center",
+          }, "h2"),
+          text(
+            "live-dreams-mobile-description",
+            "Imagine the possibilities. Steyn City’s range of stands allows you to design your lifestyle exactly as you envision it. This magnificent home connects generous interiors with the outdoors in a way that feels effortless and complete.",
+            {
+              color: "#3f3b37",
+              fontFamily: "var(--xp-font-sans)",
+              fontSize: "clamp(1rem,3.8vw,1.14rem)",
+              lineHeight: 1.5,
+              marginBottom: ".9rem",
+              textAlign: "center",
+            },
+          ),
+          video("live-dreams-mobile-video", videoSrc, "Steyn City property lifestyle", {
+            width: "100%",
+            height: "11rem",
+            marginBottom: ".95rem",
+          }),
+          {
+            id: "live-dreams-mobile-contact",
+            type: "grid",
+            style: {
+              display: "grid",
+              gridTemplateColumns: "auto 1fr",
+              gap: ".8rem",
+              alignItems: "center",
+              marginBottom: ".8rem",
+            },
+            children: [
+              image("live-dreams-mobile-qr", qr, "QR code for Steyn City property enquiries", {
+                width: "4.5rem",
+                aspectRatio: "1 / 1",
+                objectFit: "contain",
+              }),
+              {
+                id: "live-dreams-mobile-contact-copy",
+                type: "stack",
+                style: { gap: ".22rem" },
+                children: [
+                  text("live-dreams-mobile-label", "FOR STANDS | SALES, CONTACT:", {
+                    color: "#4c4742",
+                    fontFamily: "var(--xp-font-sans)",
+                    fontSize: ".78rem",
+                    fontWeight: 760,
+                    letterSpacing: ".08em",
+                  }, "span"),
+                  text("live-dreams-mobile-tel", "TEL: 010 597 1040", {
+                    color: "#2f2c29",
+                    fontFamily: "var(--xp-font-sans)",
+                    fontSize: ".86rem",
+                    fontWeight: 650,
+                  }, "span"),
+                  text("live-dreams-mobile-email", "SALES@STEYNCITY.CO.ZA", {
+                    color: "#2f2c29",
+                    fontFamily: "var(--xp-font-sans)",
+                    fontSize: ".86rem",
+                    fontWeight: 650,
+                  }, "span"),
+                ],
+              },
+            ],
+          },
+          image("live-dreams-mobile-logo", logo, "Pam Golding Properties", {
+            width: "10rem",
+            maxWidth: "65%",
+            margin: "0 auto",
+            objectFit: "contain",
+          }),
+        ],
+      },
+    ],
+  };
+}
+
 function placeholderPage(
   issueId: string,
   pageNo: number,
@@ -4970,7 +5284,7 @@ export function getSteynCity2026Magazine(): MagazineGlobalDefinition {
         props: { label: "STEYN CITY" },
       },
     },
-    spreads: [cityLivingSpread(issueId), bentleyAdvertSpread(issueId), contentsGolfSpread(issueId), golfTraditionSpread(issueId), golfTraditionContinuationSpread(issueId), cyclingSpread(issueId), seniorVillageSpread(issueId), easyLifeSpread(issueId), birdsBeesSpread(issueId)],
+    spreads: [cityLivingSpread(issueId), bentleyAdvertSpread(issueId), contentsGolfSpread(issueId), golfTraditionSpread(issueId), golfTraditionContinuationSpread(issueId), cyclingSpread(issueId), seniorVillageSpread(issueId), easyLifeSpread(issueId), birdsBeesSpread(issueId), liveYourDreamsSpread(issueId)],
     pages,
   };
 }
