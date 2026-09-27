@@ -2765,242 +2765,463 @@ function demoTextNode(
   return { id, type: "text", props: { as, text: value }, style };
 }
 
+
+function longReadDemoPage(
+  issueId: string,
+  original: MagazinePageDefinition,
+  chapter: string,
+  title: string,
+  deck: string,
+  variant: number,
+  seed: number,
+): MagazinePageDefinition {
+  const hero = pageHeroImage(original);
+  const paragraphs = demoArticleParagraphs(title, pageEditorialText(original), seed);
+  while (paragraphs.length < 7) {
+    paragraphs.push(
+      "What matters in a city story is the relationship between the individual place and the system around it. Movement, proximity, ritual, reputation and repeat behaviour turn isolated businesses into part of a district.",
+    );
+  }
+  const ink = variant % 2 ? "#f5f2ea" : "#171713";
+  const bg = variant % 2 ? "#15171b" : variant === 2 ? "#e4eadf" : "#f1ede4";
+  const accent = ["#ef5a24", "#9fc5ff", "#3157ff", "#f3cf20", "#8c5b3d"][variant % 5]!;
+  const titleNodes = [
+    label(`${original.id}-long-kicker`, chapter, accent),
+    text(`${original.id}-long-title`, title, {
+      color: ink,
+      fontFamily: "var(--xp-font-display-sans)",
+      fontSize: "clamp(2.6rem,5.5vw,5.9rem)",
+      fontWeight: 850,
+      lineHeight: .78,
+      letterSpacing: "-.055em",
+      textTransform: "uppercase",
+      maxWidth: "96%",
+    }, "h2"),
+    text(`${original.id}-long-deck`, deck, {
+      color: ink,
+      fontFamily: "var(--xp-font-editorial)",
+      fontSize: "clamp(.82rem,1.2vw,1.25rem)",
+      lineHeight: 1.18,
+      opacity: .76,
+      maxWidth: "34rem",
+    }),
+  ];
+
+  const bodyNode = (id: string, copy: string[]) => stack(id, copy.map((paragraph, index) =>
+    text(`${id}-p-${index}`, paragraph, {
+      color: ink,
+      fontFamily: "var(--xp-font-editorial-body)",
+      fontSize: "clamp(.61rem,.75vw,.8rem)",
+      lineHeight: 1.52,
+      margin: index ? ".65rem 0 0" : 0,
+    }),
+  ), { gap: 0 });
+
+  if (variant === 0) {
+    return page(issueId, original.id, title, "editorial", "article-wide-body", bg, [
+      section(`${original.id}-headline`, title, "headline", titleNodes, { background: bg, color: ink }),
+      section(`${original.id}-body`, `${title} continuation`, "body", [
+        grid(`${original.id}-columns`, [
+          bodyNode(`${original.id}-col-a`, paragraphs.slice(0, 4)),
+          bodyNode(`${original.id}-col-b`, paragraphs.slice(4)),
+        ], { gridTemplateColumns: "1fr 1fr", gap: "clamp(1rem,2vw,2rem)" }),
+      ], { background: bg, color: ink }),
+    ]);
+  }
+
+  if (variant === 1) {
+    return page(issueId, original.id, title, "editorial", "article-two-column", bg, [
+      section(`${original.id}-headline`, title, "headline", titleNodes, { background: bg, color: ink }),
+      section(`${original.id}-left`, `${title} left column`, "left", [
+        ...(hero ? [editorialPhoto(`${original.id}-long-image`, hero, title, { height: "42%", objectFit: "cover", marginBottom: ".8rem" })] : []),
+        bodyNode(`${original.id}-left-copy`, paragraphs.slice(0, 4)),
+      ], { background: bg, color: ink }),
+      section(`${original.id}-right`, `${title} right column`, "right", [
+        bodyNode(`${original.id}-right-copy`, paragraphs.slice(4)),
+        text(`${original.id}-pull`, "THE DISTRICT IS PART OF THE STORY.", {
+          color: accent, fontFamily: "var(--xp-font-display-sans)", fontSize: "clamp(1.5rem,2.6vw,2.8rem)",
+          lineHeight: .84, fontWeight: 850, letterSpacing: "-.04em", marginTop: "1rem",
+        }, "h3"),
+      ], { background: bg, color: ink }),
+    ]);
+  }
+
+  if (variant === 2) {
+    return page(issueId, original.id, title, "editorial", "article-three-column", bg, [
+      section(`${original.id}-headline`, title, "headline", titleNodes, { background: bg, color: ink }),
+      ...(["a", "b", "c"] as const).map((slot, column) =>
+        section(`${original.id}-${slot}`, `${title} column ${column + 1}`, slot,
+          [bodyNode(`${original.id}-${slot}-copy`, paragraphs.slice(column * 3, column === 2 ? paragraphs.length : column * 3 + 3))],
+          { background: column === 1 ? "rgba(49,87,255,.06)" : bg, color: ink },
+        ),
+      ),
+    ]);
+  }
+
+  if (variant === 3) {
+    return page(issueId, original.id, title, "editorial", "article-pullquote", bg, [
+      section(`${original.id}-body`, title, "body", [
+        ...titleNodes,
+        bodyNode(`${original.id}-pull-body`, paragraphs),
+      ], { background: bg, color: ink }),
+      section(`${original.id}-quote`, "Pull quote", "quote", [
+        text(`${original.id}-giant-quote`, "A PLACE BECOMES VALUABLE WHEN PEOPLE HAVE MORE THAN ONE REASON TO RETURN.", {
+          color: "#151515",
+          fontFamily: "var(--xp-font-display-sans)",
+          fontSize: "clamp(2.3rem,4.6vw,5rem)",
+          lineHeight: .78,
+          fontWeight: 850,
+          letterSpacing: "-.05em",
+        }, "h3"),
+      ], { background: accent, color: "#151515", display: "flex", alignItems: "flex-end" }),
+    ]);
+  }
+
+  return page(issueId, original.id, title, "editorial", "article-led-image", bg, [
+    section(`${original.id}-media`, `${title} image`, "media", hero
+      ? [editorialPhoto(`${original.id}-hero`, hero, title, { objectFit: "cover", filter: "grayscale(.15) contrast(1.05)" })]
+      : [stack(`${original.id}-color-field`, [], { width: "100%", height: "100%", background: accent })],
+      { padding: 0, background: accent }),
+    section(`${original.id}-headline`, title, "headline", titleNodes, { background: bg, color: ink }),
+    section(`${original.id}-body`, `${title} body`, "body", [
+      bodyNode(`${original.id}-image-body`, paragraphs),
+    ], { background: bg, color: ink }),
+  ]);
+}
+
+function halfPageDemoAdvert(
+  issueId: string,
+  original: MagazinePageDefinition,
+  brand: string,
+  headline: string,
+  editorialTitle: string,
+  editorialBody: string,
+  imageSrc: string,
+  reverse = false,
+): MagazinePageDefinition {
+  const editorial = section(`${original.id}-editorial`, editorialTitle, reverse ? "right" : "left", [
+    label(`${original.id}-editorial-label`, "CITY NOTE", "#71583f"),
+    text(`${original.id}-editorial-title`, editorialTitle, {
+      color: "#171511", fontFamily: "var(--xp-font-editorial)",
+      fontSize: "clamp(2rem,4vw,4rem)", lineHeight: .9, letterSpacing: "-.045em",
+    }, "h2"),
+    text(`${original.id}-editorial-copy`, editorialBody, {
+      color: "#332f29", fontFamily: "var(--xp-font-editorial-body)",
+      fontSize: "clamp(.68rem,.9vw,.9rem)", lineHeight: 1.55, marginTop: "auto",
+    }),
+  ], { background: "#efe9de", color: "#171511", display: "flex", flexDirection: "column" });
+
+  const advert = section(`${original.id}-advert`, brand, reverse ? "left" : "right", [
+    editorialPhoto(`${original.id}-advert-image`, imageSrc, `${brand} concept campaign`, {
+      position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover",
+      filter: "grayscale(.12) contrast(1.06)",
+    }),
+    stack(`${original.id}-advert-wash`, [], {
+      position: "absolute", inset: 0,
+      background: "linear-gradient(180deg,rgba(0,0,0,.06),rgba(0,0,0,.74))",
+    }),
+    label(`${original.id}-advert-label`, "PAID PLACEMENT · DEMO", "#fff"),
+    text(`${original.id}-advert-brand`, brand, {
+      position: "relative", zIndex: 2, color: "#fff",
+      fontSize: ".68rem", fontWeight: 900, letterSpacing: ".16em",
+    }, "span"),
+    text(`${original.id}-advert-headline`, headline, {
+      position: "relative", zIndex: 2, color: "#fff",
+      fontFamily: "var(--xp-font-display-sans)", fontSize: "clamp(2rem,4.4vw,4.6rem)",
+      lineHeight: .78, fontWeight: 850, letterSpacing: "-.045em", marginTop: "auto",
+    }, "h2"),
+  ], { position: "relative", padding: pad, overflow: "hidden", background: "#171717", display: "flex", flexDirection: "column" }, false);
+
+  return page(issueId, original.id, `${editorialTitle} + ${brand}`, "advert", "feature-50-50", "#efe9de",
+    reverse ? [advert, editorial] : [editorial, advert]);
+}
+
+function prepareDemoPages(
+  issueId: string,
+  rawPages: MagazinePageDefinition[],
+): MagazinePageDefinition[] {
+  const bySlug = new Map(rawPages.map((page) => [page.slug, page]));
+
+  const longReadGroups = [
+    {
+      chapter: "LONG READ 01 / THE POWER CORRIDOR",
+      slugs: ["power-corridor-i", "power-corridor-ii", "power-corridor-iii", "people-i", "people-ii"],
+      titles: ["A CITY CENTRE WITHOUT ONE CENTRE", "ROSEBANK: THE POWER OF PROXIMITY", "SANDTON: THE POWER OF SCALE", "WHO ACTUALLY MAKES A DISTRICT?", "THE PEOPLE BEHIND THE PLACES"],
+      deck: "A multi-spread essay about how Rosebank and Sandton function together as a connected commercial and cultural corridor.",
+    },
+    {
+      chapter: "LONG READ 02 / THE NEW TABLE",
+      slugs: ["new-table-i", "new-table-ii", "new-table-iii", "kora", "qlounge"],
+      titles: ["THE RESTAURANT BECAME THE MEDIA", "FROM PLACE TO OCCASION", "WHY THE ROOM MATTERS", "THE DESTINATION TABLE", "HOW FAMILIAR PLACES EVOLVE"],
+      deck: "Five pages on hospitality, destination dining and the new reasons people cross the city for a table.",
+    },
+    {
+      chapter: "LONG READ 03 / THE FIVE-MINUTE CITY",
+      slugs: ["mixed-use-i", "mixed-use-ii", "mixed-use-iii", "rosebank-retail", "sandton-scale"],
+      titles: ["THE FIVE-MINUTE CITY", "WHAT IS A BUILDING REALLY SELLING?", "THE CITY AS A SHARED LOBBY", "RETAIL AS DAILY INFRASTRUCTURE", "WHEN SCALE BECOMES USEFUL"],
+      deck: "A multi-spread property essay about mixed use, walkability, retail, work and the network outside the front door.",
+    },
+  ];
+
+  longReadGroups.forEach((group, groupIndex) => {
+    group.slugs.forEach((slug, index) => {
+      const original = bySlug.get(slug);
+      if (!original) return;
+      bySlug.set(slug, longReadDemoPage(
+        issueId,
+        original,
+        `${group.chapter} / ${String(index + 1).padStart(2, "0")}`,
+        group.titles[index]!,
+        group.deck,
+        index,
+        (groupIndex + 1) * 5 + index,
+      ));
+    });
+  });
+
+  const halfAds = [
+    ["ad-arc-south", "ARC SOUTH", "MOVE CAPITAL DIFFERENTLY.", "WHY THE COMMUTE STILL MATTERS", "Transport changes the radius of a working day. A better connection does more than save minutes: it changes which meetings, restaurants, shops and opportunities feel realistically close.", art.portraitC, false],
+    ["ad-studio-nine", "STUDIO/NINE", "WEAR THE CITY.", "STYLE HAS A STREET ADDRESS", "Fashion does not exist separately from the city around it. The useful retail experience is part product, part place, part ritual and part identity.", "/resources/images-with-alpha/lady-in-ankara-1.webp", true],
+    ["ad-after-work", "AFTER/WORK", "STAY OUT A LITTLE LONGER.", "THE DISTRICT AFTER FIVE", "After-hours behaviour is an economic layer of its own: dinner, exercise, gallery openings, drinks, events and the simple decision not to go home yet.", "/resources/images-with-alpha/lady-happy-vibes-1.webp", false],
+    ["ad-fieldwork", "FIELD/WORK", "THE OFFICE HAS LEFT THE OFFICE.", "THE WORKPLACE OUTSIDE THE LEASE", "Teams now borrow meeting rooms, restaurants, hotels, cafés, transport and public space from the district around them. Location becomes part of the workplace product.", "/resources/images-with-alpha/young-corporate-man-4.webp", true],
+  ] as const;
+
+  halfAds.forEach(([slug, brand, headline, editorialTitle, editorialBody, imageSrc, reverse]) => {
+    const original = bySlug.get(slug);
+    if (original) bySlug.set(slug, halfPageDemoAdvert(issueId, original, brand, headline, editorialTitle, editorialBody, imageSrc, reverse));
+  });
+
+  const desiredStart = [
+    "cover",
+    "inside-front-cover",
+    "issue-in-60",
+    "rosebank-0642",
+    "editors-note",
+    "november-events",
+    "pulse-i",
+    "ad-thread",
+    "xpomag-12",
+  ];
+  const used = new Set(desiredStart);
+  const ordered = [
+    ...desiredStart.map((slug) => bySlug.get(slug)).filter((page): page is MagazinePageDefinition => Boolean(page)),
+    ...rawPages
+      .filter((page) => !used.has(page.slug))
+      .map((page) => bySlug.get(page.slug) ?? page),
+  ];
+
+  return ordered.map((page, index) => {
+    const next = structuredClone(page) as MagazinePageDefinition;
+    const pageNo = index + 1;
+    const rewrite = (node: DesignElementNode) => {
+      if (node.type === "text" && typeof node.props?.text === "string") {
+        const value = node.props.text
+          .replace(/XPOMAG 01 · \d{2}/g, `XPOMAG 01 · ${String(pageNo).padStart(2, "0")}`)
+          .replace(/PAGE \d{2} ·/g, `PAGE ${String(pageNo).padStart(2, "0")} ·`);
+        node.props = { ...node.props, text: value };
+      }
+      node.children?.forEach(rewrite);
+    };
+    next.sections.forEach((section) => section.elements.forEach(rewrite));
+    return next;
+  });
+}
+
+function demoSpreadImage(pageA: MagazinePageDefinition, pageB: MagazinePageDefinition): string | undefined {
+  return pageHeroImage(pageA) ?? pageHeroImage(pageB);
+}
+
 function buildDemoShowcaseSpreads(
   issueId: string,
   pages: MagazinePageDefinition[],
 ): MagazineSpreadDefinition[] {
-  const interactive = new Set(["november-events", "xpomag-12", "ad-thread"]);
+  const editorialPairs = new Map<string, number>([
+    ["rosebank-0642|editors-note", 0],
+    ["new-table-i|new-table-ii", 1],
+    ["rosebank-art-i|rosebank-art-ii", 2],
+    ["mixed-use-i|mixed-use-ii", 3],
+    ["wellness-i|wellness-ii", 4],
+  ]);
+  const advertPairs = new Map<string, { brand: string; headline: string; sub: string }>([
+    ["rosebank-art-iii|keyes-guide", { brand: "ATELIER/44", headline: "CULTURE NEEDS ROOM.", sub: "A fictional premium design-and-property campaign." }],
+    ["made-here|issue-index", { brand: "NORTH/01", headline: "THE NEXT CITY STARTS HERE.", sub: "A fictional mobility campaign closing the issue." }],
+  ]);
+
   const spreads: MagazineSpreadDefinition[] = [];
 
-  for (let pageIndex = 1, spreadIndex = 1; pageIndex < pages.length; pageIndex += 2, spreadIndex += 1) {
-    const left = pages[pageIndex];
-    const right = pages[pageIndex + 1];
-    if (!left || !right) continue;
+  for (let pageIndex = 1; pageIndex < pages.length - 1; pageIndex += 2) {
+    const left = pages[pageIndex]!;
+    const right = pages[pageIndex + 1]!;
+    const pairKey = `${left.slug}|${right.slug}`;
+    const editorialVariant = editorialPairs.get(pairKey);
+    const advert = advertPairs.get(pairKey);
+    if (editorialVariant == null && !advert) continue;
 
-    // Keep the game / quiz / puzzle as native per-leaf interactions.
-    if (interactive.has(left.slug) || interactive.has(right.slug)) continue;
+    const hero = demoSpreadImage(left, right);
 
-    const title = right.title && right.title !== left.title
-      ? `${left.title} / ${right.title}`
-      : left.title;
-    const paragraphs = demoArticleParagraphs(
-      title,
+    if (advert) {
+      const second = pairKey.startsWith("made-here");
+      spreads.push({
+        id: `demo-ad-spread-${left.id}-${right.id}`,
+        issueId,
+        slug: `demo-ad-spread-${left.slug}`,
+        title: advert.brand,
+        kind: "advert",
+        pageIds: [left.id, right.id],
+        style: { background: second ? "#111318" : "#ece4d5" },
+        pieces: [{
+          id: `demo-ad-spread-${left.id}-piece`,
+          slug: `demo-ad-spread-${left.slug}-piece`,
+          title: advert.headline,
+          kind: "advert",
+          region: "spread",
+          gutterBehaviour: "cross",
+          engagement: { reactions: false, comments: false, share: true, save: false },
+          style: { position: "absolute", inset: 0, overflow: "hidden" },
+          elements: [
+            ...(hero ? [editorialPhoto(`demo-ad-${left.id}-image`, hero, advert.brand, {
+              position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover",
+              objectPosition: second ? "center 24%" : "center",
+              filter: second ? "grayscale(.6) contrast(1.08)" : "grayscale(.15) contrast(1.04)",
+            })] : []),
+            stack(`demo-ad-${left.id}-wash`, [], {
+              position: "absolute", inset: 0,
+              background: second
+                ? "linear-gradient(90deg,rgba(10,11,14,.94),rgba(10,11,14,.28),rgba(10,11,14,.82))"
+                : "linear-gradient(90deg,rgba(239,233,222,.95),rgba(239,233,222,.2),rgba(19,17,14,.72))",
+            }),
+            label(`demo-ad-${left.id}-label`, "PAID SPREAD · DEMO CAMPAIGN", second ? "#e9ff58" : "#8c5b3d"),
+            text(`demo-ad-${left.id}-brand`, advert.brand, {
+              position: "absolute", left: "4%", top: "7%", zIndex: 4,
+              color: second ? "#fff" : "#171511", fontWeight: 900, fontSize: "clamp(.8rem,1.2vw,1.3rem)", letterSpacing: ".2em",
+            }, "span"),
+            text(`demo-ad-${left.id}-headline`, advert.headline, {
+              position: "absolute", left: second ? "4%" : "26%", right: "4%", bottom: "10%", zIndex: 4,
+              color: "#fff", fontFamily: "var(--xp-font-display-sans)", fontWeight: 880,
+              fontSize: "clamp(5rem,11vw,13rem)", lineHeight: .72, letterSpacing: "-.06em",
+              textTransform: "uppercase", textAlign: second ? "left" : "right",
+            }, "h2"),
+            text(`demo-ad-${left.id}-sub`, advert.sub, {
+              position: "absolute", right: "4%", top: "7%", zIndex: 4,
+              color: second ? "rgba(255,255,255,.7)" : "#fff", fontSize: ".7rem", maxWidth: "18rem", lineHeight: 1.45,
+            }),
+          ],
+        }],
+      });
+      continue;
+    }
+
+    const variant = editorialVariant!;
+    const title = variant === 0 ? "THE CITY\nIS ALREADY\nOPEN"
+      : variant === 1 ? "THE NEW\nTABLE"
+      : variant === 2 ? "LOOK.\nWANDER.\nSTAY."
+      : variant === 3 ? "THE FIVE\nMINUTE\nCITY"
+      : "RUNNING\nBECAME\nSOCIAL";
+    const copy = demoArticleParagraphs(
+      `${left.title} / ${right.title}`,
       [...pageEditorialText(left), ...pageEditorialText(right)],
-      spreadIndex,
-    );
-    const hero = pageHeroImage(left) ?? pageHeroImage(right);
-    const mode = spreadIndex % 5;
-    const dark = mode === 2 || mode === 4;
-    const ink = dark ? "#fff" : "#111";
-    const paper = dark ? "#101114" : mode === 1 ? "#e9dfcc" : mode === 3 ? "#dce7df" : "#f3f0e8";
-    const accent = mode === 0 ? "#f3cf20" : mode === 1 ? "#ef5a24" : mode === 2 ? "#8ec5ff" : mode === 3 ? "#3157ff" : "#e9ff58";
-    const isLongRead = spreadIndex % 5 === 0;
-    const articleColumnCount = isLongRead ? 4 : 2;
-    const videoSpread = spreadIndex === 4 || spreadIndex === 12 || spreadIndex === 22;
+      10 + variant * 5,
+    ).slice(0, variant === 3 ? 8 : 6);
+    const isVideo = variant === 2;
+    const bg = ["#f0ede4", "#451e17", "#101215", "#dde7d9", "#dff0cb"][variant]!;
+    const ink = [ "#14130f", "#fff", "#fff", "#162016", "#132415" ][variant]!;
+    const accent = ["#ef5a24", "#f3cf20", "#8ec5ff", "#3157ff", "#3d7a45"][variant]!;
 
-    const pieces: MagazineSpreadDefinition["pieces"] = [
-      {
-        id: `demo-spread-${spreadIndex}-canvas`,
-        slug: `demo-spread-${spreadIndex}-canvas`,
-        title,
-        kind: "editorial",
-        region: "spread",
-        gutterBehaviour: "cross",
-        engagement: { reactions: true, comments: true, share: true, save: true },
-        elements: [
-          ...(videoSpread
-            ? [{
-                id: `demo-spread-${spreadIndex}-video`,
-                type: "video" as const,
-                props: {
-                  src: "https://www.youtube.com/embed/_1UeG71MOJM?autoplay=1&mute=1&controls=0&loop=1&playlist=_1UeG71MOJM&playsinline=1&rel=0",
-                  title: "Johannesburg in motion",
-                  autoplay: true,
-                  muted: true,
-                  loop: true,
-                  controls: false,
-                },
-                style: {
-                  position: "absolute",
-                  inset: 0,
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "cover",
-                  filter: "saturate(.72) contrast(1.05)",
-                },
-              } satisfies DesignElementNode]
-            : hero
-              ? [{
-                  id: `demo-spread-${spreadIndex}-image`,
-                  type: "image" as const,
-                  props: { src: hero, alt: title },
-                  style: {
-                    position: "absolute",
-                    inset: 0,
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
-                    objectPosition: spreadIndex % 2 ? "center 30%" : "center",
-                    filter: dark ? "grayscale(.15) contrast(1.08)" : "grayscale(.35) contrast(1.02)",
-                    opacity: mode === 1 || mode === 3 ? .33 : .82,
-                    transform: "scale(1.025)",
-                  },
-                } satisfies DesignElementNode]
-              : []),
-          {
-            id: `demo-spread-${spreadIndex}-wash`,
-            type: "frame",
-            style: {
-              position: "absolute",
-              inset: 0,
-              background: videoSpread
-                ? "linear-gradient(90deg,rgba(0,0,0,.74),rgba(0,0,0,.12) 52%,rgba(0,0,0,.65))"
-                : hero
-                  ? dark
-                    ? "linear-gradient(90deg,rgba(8,8,10,.84),rgba(8,8,10,.16) 50%,rgba(8,8,10,.68))"
-                    : "linear-gradient(90deg,rgba(243,240,232,.96),rgba(243,240,232,.36) 48%,rgba(243,240,232,.86))"
-                  : paper,
+    const elements: DesignElementNode[] = [
+      ...(isVideo
+        ? [{
+            id: `spread-${variant}-video`,
+            type: "video" as const,
+            props: {
+              src: "https://www.youtube.com/embed/KbmTGjaCsXk?autoplay=1&mute=1&controls=0&loop=1&playlist=KbmTGjaCsXk&playsinline=1&rel=0",
+              title: "Johannesburg art and city motion",
+              autoplay: true, muted: true, loop: true, controls: false,
             },
-          },
-          demoTextNode(
-            `demo-spread-${spreadIndex}-eyebrow`,
-            `XPOMAG / ROSEBANK + SANDTON / SPREAD ${String(spreadIndex).padStart(2, "0")}`,
-            {
+            style: { position: "absolute", inset: 0, width: "100%", height: "100%" },
+          } satisfies DesignElementNode]
+        : hero
+          ? [editorialPhoto(`spread-${variant}-hero`, hero, title, {
               position: "absolute",
-              left: "4%",
-              top: "4%",
-              zIndex: 5,
-              color: videoSpread ? "#fff" : accent,
-              fontFamily: "var(--xp-font-sans)",
-              fontSize: "clamp(.52rem,.72vw,.8rem)",
-              fontWeight: 850,
-              letterSpacing: ".16em",
-            },
-            "span",
-          ),
-          demoTextNode(
-            `demo-spread-${spreadIndex}-title`,
-            title.toUpperCase().replace(/ · /g, "\n"),
-            {
-              position: "absolute",
-              left: "4%",
-              right: "3%",
-              top: mode === 3 ? "8%" : "10%",
-              zIndex: 5,
-              color: videoSpread ? "#fff" : ink,
-              fontFamily: "var(--xp-font-display-sans)",
-              fontSize: spreadIndex % 4 === 0 ? "clamp(5rem,11vw,12.5rem)" : "clamp(4rem,8.7vw,10rem)",
-              fontWeight: 850,
-              lineHeight: .74,
-              letterSpacing: "-.065em",
-              textTransform: "uppercase",
-              whiteSpace: "pre-line",
-              maxWidth: "94%",
-              textShadow: videoSpread || dark ? "0 8px 40px rgba(0,0,0,.32)" : undefined,
-            },
-            "h2",
-          ),
-          {
-            id: `demo-spread-${spreadIndex}-article-panel`,
-            type: "frame",
-            style: {
-              position: "absolute",
-              left: isLongRead ? "4%" : spreadIndex % 2 ? "4%" : "46%",
-              right: isLongRead ? "4%" : spreadIndex % 2 ? "46%" : "4%",
-              bottom: "4%",
-              maxHeight: isLongRead ? "58%" : "48%",
-              overflow: "hidden",
-              zIndex: 6,
-              padding: "clamp(1rem,1.6vw,1.8rem)",
-              background: videoSpread
-                ? "rgba(8,8,10,.82)"
-                : dark
-                  ? "rgba(12,13,16,.88)"
-                  : "rgba(248,246,240,.92)",
-              color: videoSpread || dark ? "#fff" : "#1a1814",
-              backdropFilter: "blur(12px)",
-              borderTop: `5px solid ${accent}`,
-            },
-            children: [
-              demoTextNode(
-                `demo-spread-${spreadIndex}-dek`,
-                isLongRead
-                  ? "A long-form demonstration: this spread deliberately carries enough copy to show that XpoMag can behave like a real editorial publication, not only a visual brochure."
-                  : "A spread-led city story designed to be read, watched, saved, shared and explored.",
-                {
-                  fontFamily: "var(--xp-font-editorial)",
-                  fontSize: "clamp(1rem,1.45vw,1.6rem)",
-                  lineHeight: 1.02,
-                  letterSpacing: "-.025em",
-                  marginBottom: ".9rem",
-                },
-                "h3",
-              ),
-              {
-                id: `demo-spread-${spreadIndex}-article-columns`,
-                type: "frame",
-                style: {
-                  columnCount: articleColumnCount,
-                  columnGap: "clamp(1rem,1.8vw,2rem)",
-                  columnRule: "1px solid rgba(127,127,127,.24)",
-                },
-                children: paragraphs.map((paragraph, paragraphIndex) =>
-                  demoTextNode(
-                    `demo-spread-${spreadIndex}-p-${paragraphIndex}`,
-                    paragraph,
-                    {
-                      fontFamily: "var(--xp-font-editorial-body)",
-                      fontSize: "clamp(.65rem,.78vw,.86rem)",
-                      lineHeight: 1.5,
-                      margin: paragraphIndex ? ".75rem 0 0" : 0,
-                      breakInside: "avoid",
-                      opacity: .9,
-                    },
-                  ),
-                ),
-              },
-            ],
-          },
-          demoTextNode(
-            `demo-spread-${spreadIndex}-folio-left`,
-            String(pageIndex + 1).padStart(2, "0"),
-            { position: "absolute", left: "2%", bottom: "2%", zIndex: 8, color: videoSpread ? "#fff" : ink, fontSize: ".58rem", fontWeight: 800 },
-            "span",
-          ),
-          demoTextNode(
-            `demo-spread-${spreadIndex}-folio-right`,
-            String(pageIndex + 2).padStart(2, "0"),
-            { position: "absolute", right: "2%", bottom: "2%", zIndex: 8, color: videoSpread ? "#fff" : ink, fontSize: ".58rem", fontWeight: 800 },
-            "span",
-          ),
-        ],
-        style: { position: "absolute", inset: 0, overflow: "hidden" },
-      },
+              ...(variant === 1
+                ? { left: "48%", right: 0, top: 0, bottom: 0, width: "52%", height: "100%" }
+                : variant === 3
+                  ? { left: "34%", right: 0, top: 0, bottom: 0, width: "66%", height: "100%" }
+                  : variant === 4
+                    ? { left: 0, top: 0, width: "58%", height: "100%" }
+                    : { inset: 0, width: "100%", height: "100%" }),
+              objectFit: "cover",
+              filter: variant === 0 ? "grayscale(.28) contrast(1.04)" : "grayscale(.08) contrast(1.05)",
+            })]
+          : []),
+      stack(`spread-${variant}-wash`, [], {
+        position: "absolute", inset: 0,
+        background: variant === 0
+          ? "linear-gradient(90deg,rgba(240,237,228,.96),rgba(240,237,228,.18) 58%,rgba(240,237,228,.76))"
+          : variant === 1
+            ? "linear-gradient(90deg,#451e17 0 47%,rgba(69,30,23,.1) 70%)"
+            : variant === 2
+              ? "linear-gradient(90deg,rgba(5,6,8,.78),rgba(5,6,8,.12),rgba(5,6,8,.72))"
+              : variant === 3
+                ? "linear-gradient(90deg,#dde7d9 0 35%,rgba(221,231,217,.12) 66%)"
+                : "linear-gradient(90deg,rgba(223,240,203,.18) 0 55%,#dff0cb 58%)",
+      }),
+      label(`spread-${variant}-meta`, `XPOMAG / FEATURE SPREAD 0${variant + 1}`, accent),
+      text(`spread-${variant}-title`, title, {
+        position: "absolute",
+        left: variant === 1 ? "4%" : variant === 4 ? "50%" : "4%",
+        right: "4%",
+        top: variant === 3 ? "6%" : "10%",
+        zIndex: 4, color: ink,
+        fontFamily: "var(--xp-font-display-sans)",
+        fontSize: variant === 2 ? "clamp(6rem,13vw,15rem)" : "clamp(4.6rem,9.6vw,11rem)",
+        fontWeight: 880, lineHeight: .71, letterSpacing: "-.065em",
+        whiteSpace: "pre-line", textTransform: "uppercase",
+        textShadow: variant === 2 ? "0 10px 40px rgba(0,0,0,.35)" : undefined,
+      }, "h2"),
+      stack(`spread-${variant}-copy`, copy.map((paragraph, index) =>
+        text(`spread-${variant}-p-${index}`, paragraph, {
+          color: variant === 2 ? "#fff" : ink,
+          fontFamily: "var(--xp-font-editorial-body)",
+          fontSize: "clamp(.62rem,.76vw,.82rem)", lineHeight: 1.5,
+        }),
+      ), {
+        position: "absolute",
+        left: variant === 1 ? "4%" : variant === 4 ? "51%" : variant === 3 ? "4%" : "56%",
+        right: variant === 1 ? "55%" : "4%",
+        bottom: "5%",
+        zIndex: 5,
+        padding: "clamp(.8rem,1.3vw,1.35rem)",
+        background: variant === 2 ? "rgba(5,6,8,.72)" : variant === 1 ? "rgba(255,255,255,.08)" : "rgba(248,246,239,.88)",
+        backdropFilter: "blur(10px)",
+        borderTop: `5px solid ${accent}`,
+        maxHeight: "45%",
+        overflow: "hidden",
+      }),
     ];
 
     spreads.push({
-      id: `demo-master-spread-${spreadIndex}`,
+      id: `demo-editorial-spread-${left.id}-${right.id}`,
       issueId,
-      slug: `demo-spread-${spreadIndex}`,
-      title,
-      kind: videoSpread ? "feature" : left.kind === right.kind ? left.kind : "editorial",
+      slug: `demo-editorial-spread-${left.slug}`,
+      title: `${left.title} / ${right.title}`,
+      kind: "feature",
       pageIds: [left.id, right.id],
-      style: { background: paper },
-      pieces,
+      style: { background: bg },
+      pieces: [{
+        id: `demo-editorial-spread-${left.id}-piece`,
+        slug: `demo-editorial-spread-${left.slug}-piece`,
+        title,
+        kind: "feature",
+        region: "spread",
+        gutterBehaviour: "cross",
+        engagement: { reactions: true, comments: true, share: true, save: true },
+        style: { position: "absolute", inset: 0, overflow: "hidden", background: bg },
+        elements,
+      }],
     });
   }
 
   return spreads;
-}
-
-function prioritiseDemoInteractions(pages: MagazinePageDefinition[]): MagazinePageDefinition[] {
-  const prioritySlugs = ["november-events", "xpomag-12", "ad-thread"];
-  const priority = prioritySlugs
-    .map((slug) => pages.find((page) => page.slug === slug))
-    .filter((page): page is MagazinePageDefinition => Boolean(page));
-  const rest = pages.filter((page) => !prioritySlugs.includes(page.slug));
-  // Cover, inside cover, opening feature and editor's note remain first.
-  return [...rest.slice(0, 4), ...priority, ...rest.slice(4)];
 }
 
 export function selectDemoMagazine(city: string, options: DemoMagazineOptions = {}): DemoMagazineIssue {
@@ -3052,7 +3273,7 @@ export function selectDemoMagazine(city: string, options: DemoMagazineOptions = 
     }],
   };
 
-  const pages = prioritiseDemoInteractions(buildIssuePages(issueId, options, cover));
+  const pages = prepareDemoPages(issueId, buildIssuePages(issueId, options, cover));
 
   // Issue 001 interactive interlude: preserve the 64-page count while replacing
   // three late-issue pages with native game / quiz / puzzle experiences.
