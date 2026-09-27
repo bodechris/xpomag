@@ -3677,6 +3677,536 @@ function seniorVillageSpread(issueId: string): MagazineSpreadDefinition {
   };
 }
 
+
+function easyLifeSpread(issueId: string): MagazineSpreadDefinition {
+  const iceCream = "/resources/studio/steyn/steyn-city-xpomag-spread-7-01.webp";
+  const leCreuset = "/resources/studio/steyn/steyn-city-xpomag-spread-7-02.webp";
+  const cafe = "/resources/studio/steyn/steyn-city-xpomag-spread-7-03.webp";
+  const gymWide = "/resources/studio/steyn/steyn-city-xpomag-spread-7-04.webp";
+  const gymPortrait = "/resources/studio/steyn/steyn-city-xpomag-spread-7-05.webp";
+  const pharmacy = "/resources/studio/steyn/steyn-city-xpomag-spread-7-06.webp";
+  const cardio = "/resources/studio/steyn/steyn-city-xpomag-spread-7-07.webp";
+  const sorbet = "/resources/studio/steyn/steyn-city-xpomag-spread-7-08.webp";
+  const lounge = "/resources/studio/steyn/steyn-city-xpomag-spread-7-09.webp";
+  const greenery = "/resources/studio/steyn/steyn-city-xpomag-spread-7-10.webp";
+
+  const cityCentreVideo = "https://www.youtube.com/embed/yEg0UNrj9Ws?autoplay=1&mute=1&controls=1&playsinline=1&rel=0";
+  const cityCentreVideoTwo = "https://www.youtube.com/embed/R4SqauTEXZA?autoplay=1&mute=1&controls=1&playsinline=1&rel=0";
+
+  const image = (
+    id: string,
+    src: string,
+    alt: string,
+    style: DesignElementNode["style"] = {},
+  ): DesignElementNode => ({
+    id,
+    type: "image",
+    props: { src, alt, loading: "eager", fetchPriority: "high" },
+    style: { display: "block", objectFit: "cover", ...style },
+  });
+
+  const video = (
+    id: string,
+    src: string,
+    title: string,
+    style: DesignElementNode["style"] = {},
+  ): DesignElementNode => ({
+    id,
+    type: "video",
+    props: {
+      src,
+      title,
+      cover: true,
+      interactive: true,
+      autoplay: true,
+      muted: true,
+      controls: true,
+    },
+    style: { display: "block", width: "100%", height: "100%", ...style },
+  });
+
+  const engagement = { reactions: true, comments: true, share: true, save: true };
+  const noEngagement = { reactions: false, comments: false, share: false, save: false };
+
+  const photoPiece = (
+    id: string,
+    slug: string,
+    title: string,
+    src: string,
+    alt: string,
+    style: Record<string, unknown>,
+    objectPosition = "center center",
+    withEngagement = false,
+  ): any => ({
+    id,
+    slug,
+    title,
+    kind: "feature",
+    region: "spread",
+    gutterBehaviour: "clip",
+    engagement: withEngagement ? engagement : noEngagement,
+    style: { ...style, overflow: "hidden", background: "#ece8e2" },
+    elements: [
+      image(id + "-image", src, alt, {
+        position: "absolute",
+        inset: 0,
+        width: "100%",
+        height: "100%",
+        objectFit: "cover",
+        objectPosition,
+      }),
+    ],
+  });
+
+  return {
+    id: "steyn-easy-life-spread",
+    issueId,
+    slug: "living-the-easy-life",
+    title: "Living the Easy Life",
+    kind: "feature",
+    pageIds: ["easy-life", "easy-life-visual"],
+    style: { background: "#fbfaf7" },
+    pieces: [
+      {
+        id: "steyn-easy-life-editorial-piece",
+        slug: "easy-life-editorial",
+        title: "Living the Easy Life",
+        kind: "article",
+        region: "spread",
+        gutterBehaviour: "cross",
+        engagement,
+        style: {
+          position: "absolute",
+          inset: 0,
+          overflow: "hidden",
+          background: "#fbfaf7",
+        },
+        elements: [
+          text("easy-life-title", "LIVING THE\nEASY LIFE", {
+            position: "absolute",
+            left: "4.7%",
+            top: "35.8%",
+            width: "20.5%",
+            color: "#302924",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(1.32rem,2.28vw,2.6rem)",
+            fontWeight: 450,
+            lineHeight: .95,
+            letterSpacing: ".02em",
+            whiteSpace: "pre-line",
+          }, "h2"),
+          {
+            id: "easy-life-copy-left",
+            type: "text",
+            props: {
+              as: "p",
+              text: "When Steyn City first opened its doors, it made a simple yet compelling promise to all residents: it would provide the very best facilities and services, comparable (if not superior) to any estate around the world.\n\nThe estate has more than lived up to that promise. But because today’s lifestyle is constantly evolving, the offering keeps evolving, too. That’s why a number of new retailers and service providers have made their home at the estate during the past year, making life easier and more convenient.\n\nTHE ROUTE TO WELLNESS\n\nWellness has always been the cornerstone of the extraordinary lifestyle on offer. From an estate thoughtfully designed to encourage people to get moving, to on-site amenities that make exercise part of everyday life, convenience is built into the routine.",
+              dropCap: true,
+              dropCapLines: 4,
+              dropCapColor: "#302924",
+            },
+            style: {
+              position: "absolute",
+              left: "4.7%",
+              top: "45.8%",
+              width: "20.5%",
+              bottom: "6.5%",
+              color: "#302924",
+              fontFamily: "var(--xp-font-editorial)",
+              fontSize: "clamp(.43rem,.58vw,.61rem)",
+              lineHeight: 1.47,
+              whiteSpace: "pre-line",
+            },
+          },
+          text("easy-life-center-heading", "GETTING THINGS DONE", {
+            position: "absolute",
+            left: "55.3%",
+            top: "36.9%",
+            width: "12.8%",
+            color: "#625b55",
+            fontFamily: "var(--xp-font-grotesk)",
+            fontSize: "clamp(.34rem,.47vw,.5rem)",
+            fontWeight: 820,
+            letterSpacing: ".16em",
+          }, "h3"),
+          text("easy-life-center-copy", "City Centre’s service offering takes care of all the chores and tasks that take up time and energy. With an array of services that make life easier, residents can reclaim a little more of every day.\n\nRETAIL THERAPY\n\nLooking for the perfect piece to complete your home? Make a little colour into your kitchen with Le Creuset’s signature cookware, or explore the broader City Centre retail mix. From groceries and pharmacy essentials to beauty, flowers and everyday conveniences, it is all right on your doorstep.\n\nTHE GOOD LIFE\n\nCity Centre’s food and leisure offering makes it easy to meet a friend for coffee, grab something delicious, fit in a workout or take a moment to reset.", {
+            position: "absolute",
+            left: "55.3%",
+            top: "39.8%",
+            width: "12.9%",
+            bottom: "11%",
+            color: "#514a45",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(.37rem,.50vw,.54rem)",
+            lineHeight: 1.45,
+            whiteSpace: "pre-line",
+          }),
+          {
+            id: "easy-life-red-list",
+            type: "frame",
+            style: {
+              position: "absolute",
+              left: "69.2%",
+              top: "31.5%",
+              width: "11.7%",
+              aspectRatio: "1 / 1",
+              borderRadius: "50%",
+              background: "#ed1717",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: ".9rem",
+              zIndex: 10,
+            },
+            children: [
+              text("easy-life-red-list-copy", "1. Paul’s Homemade Ice Cream\n2. Le Creuset\n3. Seattle Coffee Co.\n4. Coco Reformer Pilates Studio\n5. Pack Life Studio\n6. Clicks\n7. The Gym at Steyn City\n8. Sorbet Salon\n9. City Centre lifestyle interiors\n10. The Greenery", {
+                color: "#fff",
+                fontFamily: "var(--xp-font-grotesk)",
+                fontSize: "clamp(.27rem,.39vw,.43rem)",
+                fontWeight: 750,
+                lineHeight: 1.34,
+                textAlign: "center",
+                whiteSpace: "pre-line",
+              }, "span"),
+            ],
+          },
+          text("easy-life-kicker-right", "LIFESTYLE │", {
+            position: "absolute",
+            right: "4.1%",
+            top: "6.8%",
+            color: "#534c46",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(.48rem,.66vw,.72rem)",
+            letterSpacing: ".06em",
+          }, "span"),
+          text("easy-life-folio-left", "16", {
+            position: "absolute", left: "5.0%", bottom: "2.2%", color: "#302924",
+            fontFamily: "var(--xp-font-grotesk)", fontSize: ".45rem", fontWeight: 800,
+          }, "span"),
+          text("easy-life-brand-left", "STEYN CITY", {
+            position: "absolute", left: "8.1%", bottom: "2.2%", color: "#302924",
+            fontFamily: "var(--xp-font-grotesk)", fontSize: ".42rem", fontWeight: 720, letterSpacing: ".08em",
+          }, "span"),
+          text("easy-life-brand-right", "STEYN CITY", {
+            position: "absolute", right: "6.0%", bottom: "2.2%", color: "#fff",
+            fontFamily: "var(--xp-font-grotesk)", fontSize: ".42rem", fontWeight: 720, letterSpacing: ".08em",
+            textShadow: "0 1px 8px rgba(0,0,0,.38)",
+          }, "span"),
+          text("easy-life-folio-right", "17", {
+            position: "absolute", right: "3.0%", bottom: "2.2%", color: "#fff",
+            fontFamily: "var(--xp-font-grotesk)", fontSize: ".45rem", fontWeight: 800,
+            textShadow: "0 1px 8px rgba(0,0,0,.38)",
+          }, "span"),
+        ],
+      },
+      photoPiece(
+        "steyn-easy-icecream-piece",
+        "easy-icecream",
+        "Paul’s Homemade Ice Cream",
+        iceCream,
+        "Paul’s Homemade Ice Cream at Steyn City",
+        { position: "absolute", left: 0, top: 0, width: "24.2%", height: "32.2%", zIndex: 6 },
+        "center center",
+        false,
+      ),
+      {
+        id: "steyn-easy-lecreuset-video-piece",
+        slug: "easy-lecreuset-video",
+        title: "City Centre retail",
+        kind: "feature",
+        region: "spread",
+        gutterBehaviour: "clip",
+        engagement,
+        style: {
+          position: "absolute",
+          left: "25.8%",
+          top: 0,
+          width: "39.6%",
+          height: "32.2%",
+          zIndex: 7,
+          overflow: "hidden",
+          background: "#eee",
+        },
+        elements: [
+          image("easy-lecreuset-image", leCreuset, "Le Creuset at Steyn City City Centre", {
+            position: "absolute", inset: 0, width: "100%", height: "100%",
+            objectFit: "cover", objectPosition: "center center",
+          }),
+          {
+            id: "easy-lecreuset-video-frame",
+            type: "frame",
+            style: {
+              position: "absolute",
+              right: "2.3%",
+              bottom: "3.5%",
+              width: "30%",
+              aspectRatio: "16 / 9",
+              overflow: "hidden",
+              border: "2px solid rgba(255,255,255,.92)",
+              boxShadow: "0 8px 24px rgba(0,0,0,.25)",
+              zIndex: 4,
+              background: "#000",
+            },
+            children: [
+              video("easy-city-centre-video", cityCentreVideo, "Steyn City City Centre", {
+                position: "absolute", inset: 0,
+              }),
+            ],
+          },
+        ],
+      },
+      photoPiece(
+        "steyn-easy-cafe-piece",
+        "easy-cafe",
+        "Seattle Coffee Co.",
+        cafe,
+        "Coffee shop at Steyn City City Centre",
+        { position: "absolute", left: "25.8%", top: "34.0%", width: "24.4%", height: "19.4%", zIndex: 6 },
+        "center center",
+        false,
+      ),
+      photoPiece(
+        "steyn-easy-gym-wide-piece",
+        "easy-gym-wide",
+        "Coco Reformer Pilates Studio",
+        gymWide,
+        "Wellness and gym studio at Steyn City",
+        { position: "absolute", left: "25.8%", top: "55.4%", width: "24.4%", height: "20.5%", zIndex: 6 },
+        "center 52%",
+        false,
+      ),
+      {
+        id: "steyn-easy-gym-portrait-piece",
+        slug: "easy-gym-portrait",
+        title: "Pack Life Studio",
+        kind: "feature",
+        region: "spread",
+        gutterBehaviour: "clip",
+        engagement: noEngagement,
+        style: {
+          position: "absolute",
+          left: "22.4%",
+          top: "64.1%",
+          width: "9.7%",
+          aspectRatio: "1 / 1",
+          borderRadius: "50%",
+          overflow: "hidden",
+          zIndex: 10,
+          outline: "4px solid rgba(255,255,255,.95)",
+          background: "#ddd",
+        },
+        elements: [
+          image("easy-gym-portrait-image", gymPortrait, "Strength training at Steyn City", {
+            position: "absolute", inset: 0, width: "100%", height: "100%",
+            objectFit: "cover", objectPosition: "center 48%",
+          }),
+        ],
+      },
+      photoPiece(
+        "steyn-easy-pharmacy-piece",
+        "easy-pharmacy",
+        "Clicks",
+        pharmacy,
+        "Pharmacy and health retail at Steyn City",
+        { position: "absolute", left: "25.8%", bottom: 0, width: "24.4%", height: "22.4%", zIndex: 5 },
+        "center center",
+        false,
+      ),
+      {
+        id: "steyn-easy-cardio-video-piece",
+        slug: "easy-cardio-video",
+        title: "The Gym at Steyn City",
+        kind: "feature",
+        region: "spread",
+        gutterBehaviour: "clip",
+        engagement: noEngagement,
+        style: {
+          position: "absolute",
+          left: "81.9%",
+          top: 0,
+          width: "18.1%",
+          height: "32.2%",
+          zIndex: 7,
+          overflow: "hidden",
+          background: "#ddd",
+        },
+        elements: [
+          image("easy-cardio-image", cardio, "The Gym at Steyn City", {
+            position: "absolute", inset: 0, width: "100%", height: "100%",
+            objectFit: "cover", objectPosition: "center 48%",
+          }),
+          {
+            id: "easy-cardio-video-frame",
+            type: "frame",
+            style: {
+              position: "absolute",
+              left: "5%",
+              bottom: "4%",
+              width: "44%",
+              aspectRatio: "16 / 9",
+              overflow: "hidden",
+              border: "2px solid rgba(255,255,255,.92)",
+              boxShadow: "0 8px 22px rgba(0,0,0,.22)",
+              zIndex: 4,
+              background: "#000",
+            },
+            children: [
+              video("easy-city-centre-video-two", cityCentreVideoTwo, "Steyn City City Centre lifestyle", {
+                position: "absolute", inset: 0,
+              }),
+            ],
+          },
+        ],
+      },
+      photoPiece(
+        "steyn-easy-sorbet-piece",
+        "easy-sorbet",
+        "Sorbet Salon",
+        sorbet,
+        "Sorbet Salon at Steyn City",
+        { position: "absolute", left: "81.9%", top: "34.0%", width: "18.1%", height: "20.1%", zIndex: 6 },
+        "center center",
+        true,
+      ),
+      photoPiece(
+        "steyn-easy-lounge-piece",
+        "easy-lounge",
+        "City Centre interiors",
+        lounge,
+        "Premium lounge interior at Steyn City",
+        { position: "absolute", left: "81.9%", top: "56.2%", width: "18.1%", height: "19.3%", zIndex: 6 },
+        "center center",
+        false,
+      ),
+      photoPiece(
+        "steyn-easy-greenery-piece",
+        "easy-greenery",
+        "The Greenery",
+        greenery,
+        "The Greenery florist at Steyn City",
+        { position: "absolute", left: "81.9%", bottom: 0, width: "18.1%", height: "22.2%", zIndex: 6 },
+        "center 52%",
+        false,
+      ),
+      {
+        id: "steyn-easy-mobile-left-piece",
+        slug: "easy-mobile-left",
+        title: "Living the Easy Life",
+        kind: "article",
+        region: "left",
+        gutterBehaviour: "clip",
+        engagement,
+        style: {
+          position: "absolute",
+          left: "2.8%",
+          top: "3.5%",
+          width: "44.4%",
+          height: "93%",
+          display: "none",
+          background: "#fbfaf7",
+          zIndex: 70,
+          padding: "clamp(.95rem,3.8vw,1.4rem)",
+          overflow: "auto",
+        },
+        elements: [
+          text("easy-mobile-title", "LIVING THE\nEASY LIFE", {
+            color: "#302924",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(1.6rem,6.8vw,2.1rem)",
+            lineHeight: .95,
+            whiteSpace: "pre-line",
+            marginBottom: ".8rem",
+          }, "h2"),
+          image("easy-mobile-icecream", iceCream, "Paul’s Homemade Ice Cream", {
+            width: "100%", height: "11.5rem", objectFit: "cover", marginBottom: ".8rem",
+          }),
+          {
+            id: "easy-mobile-copy",
+            type: "text",
+            props: {
+              as: "p",
+              text: "Steyn City’s promise has always been simple: make everyday life easier, richer and more convenient. City Centre brings that idea together through food, retail, wellness and services that residents can reach without leaving the estate.\n\nFrom coffee and cookware to fitness, pharmacy and personal care, the practical parts of the day sit alongside the pleasures. That means less time travelling for errands and more time enjoying the lifestyle around you.",
+              dropCap: true,
+              dropCapLines: 4,
+              dropCapColor: "#302924",
+            },
+            style: {
+              color: "#302924",
+              fontFamily: "var(--xp-font-editorial)",
+              fontSize: "clamp(1rem,3.8vw,1.14rem)",
+              lineHeight: 1.55,
+              whiteSpace: "pre-line",
+              marginBottom: ".9rem",
+            },
+          },
+          image("easy-mobile-cafe", cafe, "Coffee shop at City Centre", {
+            width: "100%", height: "10rem", objectFit: "cover",
+          }),
+        ],
+      },
+      {
+        id: "steyn-easy-mobile-right-piece",
+        slug: "easy-mobile-right",
+        title: "City Centre lifestyle",
+        kind: "feature",
+        region: "right",
+        gutterBehaviour: "clip",
+        engagement: noEngagement,
+        style: {
+          position: "absolute",
+          left: "52.8%",
+          top: "3.5%",
+          width: "44.4%",
+          height: "93%",
+          display: "none",
+          background: "#fbfaf7",
+          zIndex: 70,
+          padding: "clamp(.9rem,3.6vw,1.35rem)",
+          overflow: "auto",
+        },
+        elements: [
+          text("easy-mobile-kicker", "LIFESTYLE", {
+            color: "#5b534c",
+            fontFamily: "var(--xp-font-grotesk)",
+            fontSize: ".78rem",
+            fontWeight: 820,
+            letterSpacing: ".13em",
+            marginBottom: ".65rem",
+          }, "span"),
+          image("easy-mobile-lecreuset", leCreuset, "Le Creuset at City Centre", {
+            width: "100%", height: "10.5rem", objectFit: "cover", marginBottom: ".65rem",
+          }),
+          video("easy-mobile-video-one", cityCentreVideo, "Steyn City City Centre", {
+            width: "100%", height: "9.5rem", marginBottom: ".9rem",
+          }),
+          {
+            id: "easy-mobile-grid",
+            type: "grid",
+            style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: ".55rem", marginBottom: ".9rem" },
+            children: [
+              image("easy-mobile-cardio", cardio, "The Gym at Steyn City", { width: "100%", height: "7.5rem", objectFit: "cover" }),
+              image("easy-mobile-sorbet", sorbet, "Sorbet Salon", { width: "100%", height: "7.5rem", objectFit: "cover" }),
+            ],
+          },
+          text("easy-mobile-copy-right", "Retail, dining, wellness and everyday services come together in one walkable hub. The result is a City Centre designed around small conveniences that add up to a much easier day.", {
+            color: "#4d4640",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(1rem,3.8vw,1.14rem)",
+            lineHeight: 1.52,
+            marginBottom: ".9rem",
+          }),
+          image("easy-mobile-greenery", greenery, "The Greenery", {
+            width: "100%", height: "9rem", objectFit: "cover", marginBottom: ".65rem",
+          }),
+          video("easy-mobile-video-two", cityCentreVideoTwo, "Steyn City City Centre lifestyle", {
+            width: "100%", height: "9.5rem",
+          }),
+        ],
+      },
+    ],
+  };
+}
+
 function placeholderPage(
   issueId: string,
   pageNo: number,
@@ -3841,7 +4371,7 @@ export function getSteynCity2026Magazine(): MagazineGlobalDefinition {
         props: { label: "STEYN CITY" },
       },
     },
-    spreads: [cityLivingSpread(issueId), bentleyAdvertSpread(issueId), contentsGolfSpread(issueId), golfTraditionSpread(issueId), golfTraditionContinuationSpread(issueId), cyclingSpread(issueId), seniorVillageSpread(issueId)],
+    spreads: [cityLivingSpread(issueId), bentleyAdvertSpread(issueId), contentsGolfSpread(issueId), golfTraditionSpread(issueId), golfTraditionContinuationSpread(issueId), cyclingSpread(issueId), seniorVillageSpread(issueId), easyLifeSpread(issueId)],
     pages,
   };
 }
