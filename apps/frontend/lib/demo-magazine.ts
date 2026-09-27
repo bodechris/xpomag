@@ -2936,6 +2936,84 @@ function halfPageDemoAdvert(
     reverse ? [advert, editorial] : [editorial, advert]);
 }
 
+
+function showcaseLayoutPage(
+  issueId: string,
+  original: MagazinePageDefinition,
+  layoutId: string,
+  slots: string[],
+  accent: string,
+  seed: number,
+): MagazinePageDefinition {
+  const hero = pageHeroImage(original);
+  const sourceText = pageEditorialText(original);
+  const title = original.title.replace(/ · /g, " ");
+  const copy = demoArticleParagraphs(title, sourceText, seed);
+  const paper = seed % 2 === 0 ? "#f2eee5" : "#e4e9e0";
+  const ink = "#171713";
+
+  const slotSections = slots.map((slot, index) => {
+    const isMedia = /hero|media|feature|portrait|secondary|a|b|c|d/.test(slot) && hero && index === 0;
+    const isTitle = /headline|heading|title|number|aside|categories/.test(slot);
+    const chunkSize = Math.max(1, Math.ceil(copy.length / Math.max(1, slots.length)));
+    const chunk = copy.slice(index * chunkSize, (index + 1) * chunkSize);
+    const elements: DesignElementNode[] = [];
+
+    if (isMedia && hero) {
+      elements.push(editorialPhoto(`${original.id}-showcase-${slot}-image`, hero, title, {
+        position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover",
+        filter: seed % 3 === 0 ? "grayscale(.65) contrast(1.08)" : "grayscale(.1) contrast(1.04)",
+      }));
+      elements.push(stack(`${original.id}-showcase-${slot}-shade`, [], {
+        position: "absolute", inset: 0,
+        background: "linear-gradient(180deg,rgba(0,0,0,.06),rgba(0,0,0,.58))",
+      }));
+      elements.push(label(`${original.id}-showcase-${slot}-media-label`, "XPOMAG / VISUAL FIELD", "#fff"));
+    } else if (isTitle) {
+      elements.push(label(`${original.id}-showcase-${slot}-label`, `LAYOUT STUDY / ${layoutId}`, accent));
+      elements.push(text(`${original.id}-showcase-${slot}-title`, title.toUpperCase(), {
+        color: ink,
+        fontFamily: "var(--xp-font-display-sans)",
+        fontSize: /number/.test(slot) ? "clamp(5rem,10vw,11rem)" : "clamp(2.3rem,4.8vw,5rem)",
+        fontWeight: 850, lineHeight: .78, letterSpacing: "-.055em",
+      }, "h2"));
+      elements.push(text(`${original.id}-showcase-${slot}-deck`, copy[0] ?? "", {
+        color: ink, fontFamily: "var(--xp-font-editorial)",
+        fontSize: "clamp(.75rem,1vw,1rem)", lineHeight: 1.35, opacity: .72,
+      }));
+    } else {
+      if (index % 2 === 0) {
+        elements.push(text(`${original.id}-showcase-${slot}-big`, String(seed + index).padStart(2, "0"), {
+          color: accent, fontFamily: "var(--xp-font-display-sans)",
+          fontSize: "clamp(2rem,4vw,4.4rem)", fontWeight: 850, lineHeight: .8,
+        }, "span"));
+      }
+      elements.push(...(chunk.length ? chunk : copy.slice(0, 2)).map((paragraph, paragraphIndex) =>
+        text(`${original.id}-showcase-${slot}-p-${paragraphIndex}`, paragraph, {
+          color: ink, fontFamily: "var(--xp-font-editorial-body)",
+          fontSize: "clamp(.62rem,.78vw,.82rem)", lineHeight: 1.48,
+          margin: paragraphIndex ? ".55rem 0 0" : 0,
+        }),
+      ));
+    }
+
+    return section(
+      `${original.id}-showcase-${slot}`,
+      `${title} / ${slot}`,
+      slot,
+      elements,
+      {
+        position: "relative",
+        background: isMedia ? "#161616" : index % 2 === 0 ? paper : "rgba(255,255,255,.68)",
+        color: isMedia ? "#fff" : ink,
+        borderTop: index ? "1px solid rgba(0,0,0,.1)" : undefined,
+      },
+    );
+  });
+
+  return page(issueId, original.id, title, original.kind, layoutId, paper, slotSections);
+}
+
 function prepareDemoPages(
   issueId: string,
   rawPages: MagazinePageDefinition[],
@@ -2989,6 +3067,29 @@ function prepareDemoPages(
   halfAds.forEach(([slug, brand, headline, editorialTitle, editorialBody, imageSrc, reverse]) => {
     const original = bySlug.get(slug);
     if (original) bySlug.set(slug, halfPageDemoAdvert(issueId, original, brand, headline, editorialTitle, editorialBody, imageSrc, reverse));
+  });
+
+  const layoutShowcase = [
+    ["pulse-ii", "contents-numbered", ["number", "list"], "#ef5a24"],
+    ["rosebank-numbers", "article-sidebar-left", ["aside", "body"], "#3157ff"],
+    ["sandton-signals", "feature-hero-top", ["hero", "left", "right"], "#96b5ff"],
+    ["two-districts-i", "article-portrait-led", ["media", "headline", "body"], "#8c5b3d"],
+    ["two-districts-ii", "article-bottom-notes", ["body", "notes"], "#f3cf20"],
+    ["working-day", "utility-header-body-footer", ["header", "body", "footer"], "#3157ff"],
+    ["meeting-guide", "directory-cards", ["a", "b", "c", "d"], "#ef5a24"],
+    ["places-i", "gallery-mosaic-left", ["hero", "a", "b", "c", "d"], "#8c5b3d"],
+    ["places-ii", "gallery-filmstrip", ["hero", "a", "b", "c"], "#3157ff"],
+    ["perfect-saturday", "directory-featured", ["featured", "list"], "#d09a00"],
+    ["sunday-market", "contents-hero-list", ["hero", "list"], "#ef5a24"],
+    ["sponsored-house44-i", "feature-offset-right", ["top", "bottom", "hero"], "#916b3f"],
+    ["sponsored-house44-ii", "article-side-caption", ["body", "rail"], "#755f43"],
+    ["after-five-i", "gallery-editorial", ["hero", "secondary", "caption", "copy"], "#e9ff58"],
+    ["after-five-ii", "feature-70-30", ["feature", "rail"], "#8ec5ff"],
+  ] as const;
+
+  layoutShowcase.forEach(([slug, layoutId, slots, accent], index) => {
+    const original = bySlug.get(slug);
+    if (original) bySlug.set(slug, showcaseLayoutPage(issueId, original, layoutId, [...slots], accent, 20 + index));
   });
 
   const desiredStart = [
