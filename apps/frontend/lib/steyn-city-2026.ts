@@ -4573,7 +4573,7 @@ function birdsBeesSpread(issueId: string): MagazineSpreadDefinition {
             ],
           },
         ],
-      }),
+      },
 
       photoPiece(
         "steyn-birds-bees-beekeeper-piece",
