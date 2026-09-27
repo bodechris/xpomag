@@ -113,7 +113,6 @@ function AuthPageContent() {
 
   return (
     <main className="xp-auth">
-      <FloatingSiteNav cityLabel="ROSEBANK + SANDTON" />
       <section className="xp-auth__left">
 
         <div className="xp-auth__hero">
