@@ -917,6 +917,7 @@ function cityLivingSpread(issueId: string): MagazineSpreadDefinition {
   // Every bento tile below uses a different source image.
   const aerial = "/resources/studio/steyn/steyn-city-img-03.webp";
   const sunsetPortrait = "/resources/studio/steyn/steyn-city-img-04.webp";
+  const luxuryInteriorVideo = "https://videos.pexels.com/video-files/37674127/15971334_1080_1920_60fps.mp4";
   const terrace = "/resources/studio/steyn/steyn-city-img-05.webp";
   const sunset = "/resources/studio/steyn/city-living-sunset.webp";
   const kitchen = "/resources/studio/steyn/city-living-kitchen.webp";
@@ -964,10 +965,10 @@ function cityLivingSpread(issueId: string): MagazineSpreadDefinition {
       region: "spread",
       gutterBehaviour: "cross",
       engagement: {
-        reactions: true,
-        comments: true,
-        share: true,
-        save: true,
+        reactions: false,
+        comments: false,
+        share: false,
+        save: false,
       },
       style: {
         position: "absolute",
@@ -983,17 +984,6 @@ function cityLivingSpread(issueId: string): MagazineSpreadDefinition {
           width: "56%",
           height: "49%",
           objectPosition: "center 48%",
-          borderRight: gutter,
-          borderBottom: gutter,
-        }),
-
-        image("city-living-sunset-portrait", sunsetPortrait, "Sunset view from a Steyn City residence", {
-          position: "absolute",
-          left: "56%",
-          top: 0,
-          width: "19%",
-          height: "49%",
-          objectPosition: "center 50%",
           borderRight: gutter,
           borderBottom: gutter,
         }),
@@ -1203,9 +1193,63 @@ function cityLivingSpread(issueId: string): MagazineSpreadDefinition {
           ],
         },
       ],
+    },
+    {
+      id: "steyn-city-living-video-piece",
+      slug: "city-living-luxury-video",
+      title: "Luxury living at Steyn City",
+      kind: "feature",
+      region: "spread",
+      gutterBehaviour: "clip",
+      engagement: {
+        reactions: true,
+        comments: true,
+        share: true,
+        save: true,
+      },
+      style: {
+        position: "absolute",
+        left: "56%",
+        top: 0,
+        width: "19%",
+        height: "49%",
+        overflow: "hidden",
+        background: "#dfe5e7",
+        borderRight: gutter,
+        borderBottom: gutter,
+        zIndex: 8,
+      },
+      elements: [
+        {
+          id: "city-living-luxury-video",
+          type: "video",
+          props: {
+            src: luxuryInteriorVideo,
+            poster: sunsetPortrait,
+            title: "Luxury apartment interior film",
+            autoplay: false,
+            managedAutoplay: true,
+            autoplayDelayMs: 0,
+            muted: true,
+            loop: true,
+            maxLoops: 999,
+            controls: false,
+          },
+          style: {
+            position: "absolute",
+            inset: 0,
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            objectPosition: "center center",
+            background: "#dfe5e7",
+          },
+        },
+      ],
     }],
   };
 }
+
 
 function bentleyAdvertSpread(issueId: string): MagazineSpreadDefinition {
   const poster = "/resources/studio/steyn/bentley-img-01.webp";
