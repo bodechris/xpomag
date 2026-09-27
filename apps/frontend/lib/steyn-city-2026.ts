@@ -2144,7 +2144,7 @@ function golfTraditionSpread(issueId: string): MagazineSpreadDefinition {
         width: "27.1%",
         height: "27%",
         overflow: "hidden",
-        zIndex: 6,
+        zIndex: 4,
       },
       elements: [
         image("golf-tradition-liv-sign", livSign, "LIV Golf sign at Steyn City", {
@@ -2331,18 +2331,26 @@ function golfTraditionContinuationSpread(issueId: string): MagazineSpreadDefinit
             textAlign: "right",
           }, "span"),
 
-          text("golf-cont-left-copy-a",
-            "A number of LIV Golf executives were involved in the selection, including LIV Golf EVP, Head of Events Ross Hallett and LIV Golf South Africa regional managing director, Chris Bentley. They settled on The Club at Steyn City, which boasts the estate’s excellent infrastructure, easy access and proximity to airports while still feeling completely removed from the city rush.",
-            {
-              position: "absolute", left: "5.1%", top: "66.7%", width: "13.4%",
+          {
+            id: "golf-cont-left-copy-a",
+            type: "text",
+            props: {
+              as: "p",
+              text: "A number of LIV Golf executives were involved in the selection, including LIV Golf EVP, Head of Events Ross Hallett and LIV Golf South Africa regional managing director, Chris Bentley. They settled on The Club at Steyn City, which boasts the estate’s excellent infrastructure, easy access and proximity to airports while still feeling completely removed from the city rush.",
+              dropCap: true,
+              dropCapLines: 4,
+              dropCapColor: "#b38a19",
+            },
+            style: {
+              position: "absolute", left: "5.1%", top: "67.2%", width: "13.4%",
               color: "#37322e", fontFamily: "var(--xp-font-editorial)",
               fontSize: "clamp(.39rem,.52vw,.57rem)", lineHeight: 1.42,
-            }
-          ),
+            },
+          },
           text("golf-cont-left-copy-b",
             "The announcement that the league would be played in Africa for the first time was finally made in July 2025 at LIV Golf Rocester, UK. Minister McKenzie attended the occasion alongside Southern Guards GC captain Louis Oosthuizen and partners from across the event.",
             {
-              position: "absolute", left: "19.1%", top: "66.7%", width: "12.3%",
+              position: "absolute", left: "19.1%", top: "67.2%", width: "12.3%",
               color: "#37322e", fontFamily: "var(--xp-font-editorial)",
               fontSize: "clamp(.39rem,.52vw,.57rem)", lineHeight: 1.42,
             }
@@ -2397,7 +2405,7 @@ function golfTraditionContinuationSpread(issueId: string): MagazineSpreadDefinit
           text("golf-cont-right-bottom-a",
             "In Diepsloot, feeding over 3,300 children per day, as it works to become more sustainable, remains a key focus. What matters is building systems that can continue to support families and children consistently.",
             {
-              position: "absolute", left: "69.1%", top: "69.3%", width: "12.3%",
+              position: "absolute", left: "69.1%", top: "68.2%", width: "12.3%",
               color: "#37322e", fontFamily: "var(--xp-font-editorial)",
               fontSize: "clamp(.39rem,.52vw,.57rem)", lineHeight: 1.42,
             }
@@ -2411,7 +2419,7 @@ function golfTraditionContinuationSpread(issueId: string): MagazineSpreadDefinit
           text("golf-cont-right-bottom-b",
             "“Seeing golf in Diepsloot and bringing a major event here makes the sport feel closer, more possible and more connected to our own community.”",
             {
-              position: "absolute", right: "5.1%", top: "80.3%", width: "12.4%",
+              position: "absolute", right: "5.1%", top: "78.9%", width: "12.4%",
               color: "#37322e", fontFamily: "var(--xp-font-editorial)",
               fontSize: "clamp(.39rem,.52vw,.57rem)", lineHeight: 1.42,
             }
@@ -2455,7 +2463,7 @@ function golfTraditionContinuationSpread(issueId: string): MagazineSpreadDefinit
         "Course inspection at Steyn City",
         inspection,
         "LIV Golf course inspection at Steyn City",
-        { position: "absolute", left: 0, top: "45.2%", width: "31.8%", height: "28.7%" },
+        { position: "absolute", left: 0, top: "45.2%", width: "31.8%", height: "20.6%" },
         "center 45%",
       ),
       photoPiece(
@@ -2473,7 +2481,7 @@ function golfTraditionContinuationSpread(issueId: string): MagazineSpreadDefinit
         "Hospitality structures inspection",
         hospitality,
         "LIV Golf hospitality structures inspection at Steyn City",
-        { position: "absolute", right: 0, top: "45.2%", width: "31.9%", height: "28.3%" },
+        { position: "absolute", right: 0, top: "45.2%", width: "31.9%", height: "21.2%" },
         "center 45%",
       ),
 
