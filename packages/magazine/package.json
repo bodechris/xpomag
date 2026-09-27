@@ -5,16 +5,14 @@
   "type": "module",
   "exports": {
     ".": {
-      "xpomag-dev": "./src/index.ts",
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "default": "./dist/index.js"
+      "types": "./src/index.ts",
+      "import": "./src/index.ts",
+      "default": "./src/index.ts"
     },
     "./renderer": {
-      "xpomag-dev": "./src/renderer.tsx",
-      "types": "./dist/renderer.d.ts",
-      "import": "./dist/renderer.js",
-      "default": "./dist/renderer.js"
+      "types": "./src/renderer.tsx",
+      "import": "./src/renderer.tsx",
+      "default": "./src/renderer.tsx"
     }
   },
   "scripts": {
