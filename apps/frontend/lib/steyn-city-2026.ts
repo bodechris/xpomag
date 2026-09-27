@@ -372,9 +372,12 @@ function coverPage(issueId: string, tone: Tone): MagazinePageDefinition {
       objectFit: "contain",
       filter: "invert(1)",
       opacity: .96,
-      transform: align === "right" ? "scaleX(-1)" : undefined,
+      transform: align === "left"
+        ? "scaleX(-1) translate(-12%, 16%)"
+        : "translate(12%, 16%)",
+      transformOrigin: "center",
       alignSelf: align === "right" ? "flex-end" : "flex-start",
-      marginBottom: "clamp(.28rem,.55vw,.52rem)",
+      marginBottom: "clamp(.18rem,.34vw,.34rem)",
     }),
     text(`${id}-title`, title, {
       color: "#fff",
@@ -468,20 +471,34 @@ function coverPage(issueId: string, tone: Tone): MagazinePageDefinition {
         textShadow: "0 2px 18px rgba(0,0,0,.55)",
       }, "h1"),
 
-      text("cover-script", "LIV your best life", {
+      stack("cover-script-lockup", [
+        text("cover-script-liv", "LIV", {
+          color: "#fff",
+          fontFamily: "var(--xp-font-editorial)",
+          fontStyle: "italic",
+          fontSize: "clamp(.95rem,1.35vw,1.3rem)",
+          lineHeight: .9,
+          textShadow: "0 2px 16px rgba(0,0,0,.55)",
+        }, "span"),
+        text("cover-script-rest", "your best life", {
+          color: "#fff",
+          fontFamily: '"Allura", cursive',
+          fontSize: "clamp(1rem,2vw,2rem)",
+          lineHeight: .82,
+          textShadow: "0 2px 16px rgba(0,0,0,.55)",
+        }, "span"),
+      ], {
         position: "absolute",
         zIndex: 8,
-        top: "19.6%",
-        right: "8.5%",
-        color: "#fff",
-        fontFamily: '"Allura", cursive',
-        fontSize: "clamp(.82rem,1.75vw,1.72rem)",
-        lineHeight: .92,
-        textAlign: "right",
+        top: "21.8%",
+        right: "8.3%",
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "flex-end",
+        gap: "clamp(.14rem,.3vw,.32rem)",
         whiteSpace: "nowrap",
         transform: "rotate(-4deg)",
-        textShadow: "0 2px 16px rgba(0,0,0,.55)",
-      }, "span"),
+      }),
 
       coverline(
         "cover-senior",
