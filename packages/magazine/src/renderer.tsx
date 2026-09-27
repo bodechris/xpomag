@@ -151,6 +151,7 @@ export function DesignElement({ node, registry, renderComposerNodeOverlay, onCom
           autoplayDelayMs={typeof props.autoplayDelayMs === "number" ? props.autoplayDelayMs : 0}
           muted={muted}
           loop={loop}
+          maxLoops={typeof props.maxLoops === "number" ? props.maxLoops : undefined}
           controls={props.controls !== false}
           style={style}
         />
