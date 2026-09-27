@@ -74,7 +74,11 @@ function engagementTarget(req: Request) {
 
 const app = express();
 
-const port = Number(process.env.PORT ?? 4000);
+const port = Number(
+  process.env.API_PORT ??
+  (process.env.NODE_ENV === "production" ? process.env.PORT : undefined) ??
+  4000,
+);
 
 app.disable("x-powered-by");
 app.use(helmet());
