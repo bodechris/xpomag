@@ -1175,7 +1175,7 @@ export function MagazineReader({
     if (nativeSpread && isSingle) {
       const pageIndex = spreadToRender.pageIndexes[0]!;
       const manifest = issue.pages[pageIndex]!;
-      const nativePagePosition = nativeSpread.pageIds.indexOf(manifest.id);
+      const nativePagePosition = (nativeSpread.pageIds ?? []).indexOf(manifest.id);
       const leafSide = nativePagePosition === 1 ? "right" : "left";
       return (
         <div
