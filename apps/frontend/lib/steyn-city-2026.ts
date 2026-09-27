@@ -4207,6 +4207,512 @@ function easyLifeSpread(issueId: string): MagazineSpreadDefinition {
   };
 }
 
+
+function birdsBeesSpread(issueId: string): MagazineSpreadDefinition {
+  const bee = "/resources/studio/steyn/steyn-city-xpomag-spread-8-01.webp";
+  const birdGuide = "/resources/studio/steyn/steyn-city-xpomag-spread-8-02.webp";
+  const birdPrize = "/resources/studio/steyn/steyn-city-xpomag-spread-8-03.webp";
+  const birdWalk = "/resources/studio/steyn/steyn-city-xpomag-spread-8-04.webp";
+  const birdExpert = "/resources/studio/steyn/steyn-city-xpomag-spread-8-05.webp";
+  const hives = "/resources/studio/steyn/steyn-city-xpomag-spread-8-06.webp";
+  const beekeeper = "/resources/studio/steyn/steyn-city-xpomag-spread-8-07.webp";
+  const growzone = "/resources/studio/steyn/steyn-city-xpomag-spread-8-08.webp";
+
+  const beeVideo = "https://www.youtube.com/embed/p3FoFJFKAjc?autoplay=1&mute=1&controls=1&playsinline=1&rel=0";
+  const birdsVideo = "https://www.youtube.com/embed/G5sVvkrqaJU?autoplay=1&mute=1&controls=1&playsinline=1&rel=0";
+
+  const image = (
+    id: string,
+    src: string,
+    alt: string,
+    style: DesignElementNode["style"] = {},
+  ): DesignElementNode => ({
+    id,
+    type: "image",
+    props: { src, alt, loading: "eager", fetchPriority: "high" },
+    style: { display: "block", objectFit: "cover", ...style },
+  });
+
+  const video = (
+    id: string,
+    src: string,
+    title: string,
+    style: DesignElementNode["style"] = {},
+  ): DesignElementNode => ({
+    id,
+    type: "video",
+    props: {
+      src,
+      title,
+      cover: true,
+      interactive: true,
+      autoplay: true,
+      muted: true,
+      controls: true,
+    },
+    style: { display: "block", width: "100%", height: "100%", ...style },
+  });
+
+  const engagement = { reactions: true, comments: true, share: true, save: true };
+  const noEngagement = { reactions: false, comments: false, share: false, save: false };
+
+  const photoPiece = (
+    id: string,
+    slug: string,
+    title: string,
+    src: string,
+    alt: string,
+    style: Record<string, unknown>,
+    objectPosition = "center center",
+    withEngagement = false,
+  ): any => ({
+    id,
+    slug,
+    title,
+    kind: "feature",
+    region: "spread",
+    gutterBehaviour: "clip",
+    engagement: withEngagement ? engagement : noEngagement,
+    style: { ...style, overflow: "hidden", background: "#e9ece5" },
+    elements: [
+      image(id + "-image", src, alt, {
+        position: "absolute",
+        inset: 0,
+        width: "100%",
+        height: "100%",
+        objectFit: "cover",
+        objectPosition,
+      }),
+    ],
+  });
+
+  return {
+    id: "steyn-birds-bees-spread",
+    issueId,
+    slug: "birds-and-bees",
+    title: "Birds and Bees",
+    kind: "feature",
+    pageIds: ["birds-bees-i", "birds-bees-ii"],
+    style: { background: "#fbfaf7" },
+    pieces: [
+      {
+        id: "steyn-birds-bees-editorial-piece",
+        slug: "birds-bees-editorial",
+        title: "Birds and Bees",
+        kind: "article",
+        region: "spread",
+        gutterBehaviour: "cross",
+        engagement,
+        style: {
+          position: "absolute",
+          inset: 0,
+          overflow: "hidden",
+          background: "#fbfaf7",
+        },
+        elements: [
+          {
+            id: "birds-bees-hero-shade",
+            type: "frame",
+            style: {
+              position: "absolute",
+              left: 0,
+              top: 0,
+              width: "50%",
+              height: "34.2%",
+              zIndex: 3,
+              background: "linear-gradient(90deg,rgba(18,40,29,.36),rgba(18,40,29,.02) 72%)",
+              pointerEvents: "none",
+            },
+          },
+          text("birds-bees-kicker", "│ ENVIRONMENT", {
+            position: "absolute",
+            left: "4.4%",
+            top: "6.6%",
+            color: "#f2f0e8",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(.46rem,.64vw,.7rem)",
+            letterSpacing: ".07em",
+            zIndex: 5,
+          }, "span"),
+          text("birds-bees-title", "BIRDS AND\nBEES", {
+            position: "absolute",
+            left: "6.2%",
+            top: "13.8%",
+            width: "20%",
+            color: "#f4f0e8",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(1.3rem,2.36vw,2.7rem)",
+            fontWeight: 500,
+            lineHeight: .92,
+            letterSpacing: ".05em",
+            whiteSpace: "pre-line",
+            textAlign: "center",
+            zIndex: 5,
+            textShadow: "0 2px 12px rgba(0,0,0,.16)",
+          }, "h2"),
+          text("birds-bees-standfirst", "WHERE ELSE IN JOHANNESBURG ARE THERE 2 000\nACRES OF INDIGENOUS PARKLAND TO ROAM,\nEXPLORE AND ENJOY WITH PEACE OF MIND?", {
+            position: "absolute",
+            left: "4.4%",
+            top: "26.1%",
+            width: "22.2%",
+            color: "#f4f0e8",
+            fontFamily: "var(--xp-font-grotesk)",
+            fontSize: "clamp(.3rem,.43vw,.47rem)",
+            fontWeight: 760,
+            lineHeight: 1.25,
+            letterSpacing: ".04em",
+            whiteSpace: "pre-line",
+            textAlign: "center",
+            zIndex: 5,
+          }),
+
+          text("birds-bees-flights-heading", "FLIGHTS OF FANCY", {
+            position: "absolute",
+            left: "32.3%",
+            top: "37.0%",
+            width: "14.5%",
+            color: "#69635e",
+            fontFamily: "var(--xp-font-grotesk)",
+            fontSize: "clamp(.32rem,.45vw,.49rem)",
+            fontWeight: 820,
+            letterSpacing: ".15em",
+          }, "h3"),
+          text("birds-bees-flights-copy", "It was Steyn City resident Amy Shangase who first had the idea to start a regular bird walk, and this year it grew into a community experience for residents and visitors alike.\n\nThe first gathering brought together keen birders and complete newcomers, all united by curiosity. The walk was guided through established paths, mature planting and open grassland where participants could slow down and notice the remarkable birdlife that has settled into the estate.\n\nRight now, moves are afoot to have the area recognised as a birding hotspot. Best of all, the experience is accessible without having to travel across the city.", {
+            position: "absolute",
+            left: "32.3%",
+            top: "40.2%",
+            width: "14.4%",
+            bottom: "7.5%",
+            color: "#4f4944",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(.36rem,.49vw,.53rem)",
+            lineHeight: 1.44,
+            whiteSpace: "pre-line",
+          }),
+
+          text("birds-bees-right-col-a", "Africa’s most threatened ecosystems are often relatively small, fragmented and vulnerable. That makes every pocket of green space valuable, especially within a city.\n\nWHAT’S THE BUZZ?\n\nImagine receiving no fewer than 40 bee stings and still holding a soft spot for the little black and yellow creatures. That’s how passionate beekeeper Bryce McCall is about his hives. The result is a living system that supports pollination while providing a direct connection to the wider ecosystem.", {
+            position: "absolute",
+            left: "55.0%",
+            top: "37.6%",
+            width: "12.0%",
+            bottom: "8%",
+            color: "#4c4642",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(.35rem,.48vw,.52rem)",
+            lineHeight: 1.44,
+            whiteSpace: "pre-line",
+          }),
+          text("birds-bees-right-col-b", "The honey yields are certain to increase in the years to come.\n\nMAKING A DIFFERENCE\n\nWhen the natural environment is an integral part of your lifestyle, it is not enough simply to admire it. Steyn City has continued to invest in practical initiatives that protect the parkland and reduce environmental impact.\n\nWET WASTE FOR A CIRCULAR FUTURE\n\nThe estate is committed to processing wet waste from its leading F&B operators, helping divert organic material from landfill while generating compost that can be used within the landscape.", {
+            position: "absolute",
+            left: "68.4%",
+            top: "37.6%",
+            width: "12.0%",
+            bottom: "8%",
+            color: "#4c4642",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(.35rem,.48vw,.52rem)",
+            lineHeight: 1.44,
+            whiteSpace: "pre-line",
+          }),
+          text("birds-bees-right-col-c", "and residents on the estate to join the programme.\n\nGROW, GROW, GROW\n\nSteyn City’s Growzone supports food security and skills development through a working garden that contributes fresh produce to community initiatives. The programme has become a practical example of how land, training and social impact can reinforce each other.\n\nThe result is a wider environmental story: biodiversity, food security, recycling, cleaner energy and community impact all connecting back to the same landscape.", {
+            position: "absolute",
+            right: "3.2%",
+            top: "37.6%",
+            width: "12.0%",
+            bottom: "8%",
+            color: "#4c4642",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(.35rem,.48vw,.52rem)",
+            lineHeight: 1.44,
+            whiteSpace: "pre-line",
+          }),
+
+          text("birds-bees-brand-right", "STEYN CITY", {
+            position: "absolute", right: "6.1%", bottom: "2.2%", color: "#342f2b",
+            fontFamily: "var(--xp-font-grotesk)", fontSize: ".42rem", fontWeight: 720, letterSpacing: ".08em",
+          }, "span"),
+          text("birds-bees-folio-right", "19", {
+            position: "absolute", right: "3.0%", bottom: "2.2%", color: "#342f2b",
+            fontFamily: "var(--xp-font-grotesk)", fontSize: ".45rem", fontWeight: 800,
+          }, "span"),
+        ],
+      },
+
+      photoPiece(
+        "steyn-birds-bees-hero-piece",
+        "birds-bees-hero",
+        "Birds and bees",
+        bee,
+        "Honey bee on a flower",
+        { position: "absolute", left: 0, top: 0, width: "50%", height: "34.2%", zIndex: 2 },
+        "center 52%",
+        false,
+      ),
+
+      {
+        id: "steyn-birds-bees-walk-video-piece",
+        slug: "birds-bees-walk-video",
+        title: "Birdlife at Steyn City",
+        kind: "feature",
+        region: "spread",
+        gutterBehaviour: "clip",
+        engagement,
+        style: {
+          position: "absolute",
+          left: 0,
+          top: "34.2%",
+          width: "29.3%",
+          height: "49.4%",
+          zIndex: 7,
+          overflow: "hidden",
+          background: "#e8ece6",
+        },
+        elements: [
+          image("birds-bees-walk-image", birdWalk, "Guided bird walk through Steyn City parkland", {
+            position: "absolute", inset: 0, width: "100%", height: "100%",
+            objectFit: "cover", objectPosition: "center 48%",
+          }),
+          {
+            id: "birds-bees-walk-video-inset",
+            type: "frame",
+            style: {
+              position: "absolute",
+              right: "3%",
+              bottom: "3%",
+              width: "40%",
+              aspectRatio: "16 / 9",
+              overflow: "hidden",
+              border: "2px solid rgba(255,255,255,.92)",
+              boxShadow: "0 8px 24px rgba(0,0,0,.25)",
+              zIndex: 5,
+              background: "#000",
+            },
+            children: [
+              video("birds-bees-birds-video", birdsVideo, "South African birdlife", {
+                position: "absolute", inset: 0,
+              }),
+            ],
+          },
+        ],
+      },
+
+      photoPiece(
+        "steyn-birds-bees-guide-piece",
+        "birds-bees-guide",
+        "Birdlife guide",
+        birdGuide,
+        "Birding expert portrait",
+        { position: "absolute", left: "3.2%", top: "29.8%", width: "8.4%", aspectRatio: "1 / 1", borderRadius: "50%", zIndex: 10, outline: "4px solid #fff" },
+        "center 36%",
+        false,
+      ),
+      photoPiece(
+        "steyn-birds-bees-expert-piece",
+        "birds-bees-expert",
+        "Birdlife South Africa",
+        birdExpert,
+        "Birdlife South Africa expert portrait",
+        { position: "absolute", left: "17.2%", top: "29.8%", width: "8.4%", aspectRatio: "1 / 1", borderRadius: "50%", zIndex: 10, outline: "4px solid #fff" },
+        "center 34%",
+        false,
+      ),
+
+      photoPiece(
+        "steyn-birds-bees-prize-piece",
+        "birds-bees-prize",
+        "Birding prize",
+        birdPrize,
+        "Hoopoe and binoculars",
+        { position: "absolute", left: 0, bottom: 0, width: "29.3%", height: "16.7%", zIndex: 8 },
+        "center center",
+        true,
+      ),
+
+      {
+        id: "steyn-birds-bees-hives-video-piece",
+        slug: "birds-bees-hives-video",
+        title: "Bees and pollination",
+        kind: "feature",
+        region: "spread",
+        gutterBehaviour: "clip",
+        engagement: noEngagement,
+        style: {
+          position: "absolute",
+          left: "50%",
+          top: 0,
+          width: "31.2%",
+          height: "34.2%",
+          zIndex: 7,
+          overflow: "hidden",
+          background: "#e8ece6",
+        },
+        elements: [
+          image("birds-bees-hives-image", hives, "Bee hives in Steyn City grassland", {
+            position: "absolute", inset: 0, width: "100%", height: "100%",
+            objectFit: "cover", objectPosition: "center 52%",
+          }),
+          {
+            id: "birds-bees-hives-video-inset",
+            type: "frame",
+            style: {
+              position: "absolute",
+              left: "3%",
+              bottom: "4%",
+              width: "35%",
+              aspectRatio: "16 / 9",
+              overflow: "hidden",
+              border: "2px solid rgba(255,255,255,.92)",
+              boxShadow: "0 8px 24px rgba(0,0,0,.25)",
+              zIndex: 5,
+              background: "#000",
+            },
+            children: [
+              video("birds-bees-bee-video", beeVideo, "Bees and pollination", {
+                position: "absolute", inset: 0,
+              }),
+            ],
+          },
+        ],
+      }),
+
+      photoPiece(
+        "steyn-birds-bees-beekeeper-piece",
+        "birds-bees-beekeeper",
+        "Beekeeper Bryce McCall",
+        beekeeper,
+        "Beekeeper holding honeycomb and honey",
+        { position: "absolute", left: "81.1%", top: 0, width: "18.9%", height: "34.2%", zIndex: 7 },
+        "center 36%",
+        false,
+      ),
+
+      photoPiece(
+        "steyn-birds-bees-growzone-piece",
+        "birds-bees-growzone",
+        "Growzone",
+        growzone,
+        "Growzone team member with honeycomb",
+        { position: "absolute", left: "73.4%", top: "17.4%", width: "13.2%", aspectRatio: "1 / 1", borderRadius: "50%", zIndex: 11, outline: "5px solid #fff" },
+        "center 34%",
+        false,
+      ),
+
+      {
+        id: "steyn-birds-bees-mobile-left-piece",
+        slug: "birds-bees-mobile-left",
+        title: "Birds and Bees",
+        kind: "article",
+        region: "left",
+        gutterBehaviour: "clip",
+        engagement,
+        style: {
+          position: "absolute",
+          left: "2.8%",
+          top: "3.5%",
+          width: "44.4%",
+          height: "93%",
+          display: "none",
+          background: "#fbfaf7",
+          zIndex: 70,
+          padding: "clamp(.95rem,3.8vw,1.4rem)",
+          overflow: "auto",
+        },
+        elements: [
+          image("birds-bees-mobile-hero", bee, "Honey bee on a flower", {
+            width: "100%", height: "12rem", objectFit: "cover", objectPosition: "center 52%", marginBottom: ".8rem",
+          }),
+          text("birds-bees-mobile-title", "BIRDS AND BEES", {
+            color: "#24392d",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(1.55rem,6.7vw,2.05rem)",
+            lineHeight: .94,
+            marginBottom: ".7rem",
+          }, "h2"),
+          {
+            id: "birds-bees-mobile-copy",
+            type: "text",
+            props: {
+              as: "p",
+              text: "Steyn City’s indigenous parkland supports a thriving web of birdlife, pollinators and other wildlife. Residents can move through the landscape on foot, join guided bird walks and experience nature as part of everyday life.\n\nThe estate’s mature planting, hives and community environmental initiatives all contribute to a richer urban ecosystem where biodiversity is visible, accessible and worth protecting.",
+              dropCap: true,
+              dropCapLines: 4,
+              dropCapColor: "#24392d",
+            },
+            style: {
+              color: "#3f4942",
+              fontFamily: "var(--xp-font-editorial)",
+              fontSize: "clamp(1rem,3.8vw,1.14rem)",
+              lineHeight: 1.55,
+              whiteSpace: "pre-line",
+              marginBottom: ".9rem",
+            },
+          },
+          image("birds-bees-mobile-walk", birdWalk, "Guided bird walk", {
+            width: "100%", height: "11rem", objectFit: "cover",
+          }),
+        ],
+      },
+
+      {
+        id: "steyn-birds-bees-mobile-right-piece",
+        slug: "birds-bees-mobile-right",
+        title: "Nature at Steyn City",
+        kind: "feature",
+        region: "right",
+        gutterBehaviour: "clip",
+        engagement: noEngagement,
+        style: {
+          position: "absolute",
+          left: "52.8%",
+          top: "3.5%",
+          width: "44.4%",
+          height: "93%",
+          display: "none",
+          background: "#fbfaf7",
+          zIndex: 70,
+          padding: "clamp(.9rem,3.6vw,1.35rem)",
+          overflow: "auto",
+        },
+        elements: [
+          text("birds-bees-mobile-kicker", "ENVIRONMENT", {
+            color: "#556058",
+            fontFamily: "var(--xp-font-grotesk)",
+            fontSize: ".78rem",
+            fontWeight: 820,
+            letterSpacing: ".13em",
+            marginBottom: ".65rem",
+          }, "span"),
+          image("birds-bees-mobile-hives", hives, "Bee hives in the parkland", {
+            width: "100%", height: "10.5rem", objectFit: "cover", marginBottom: ".65rem",
+          }),
+          video("birds-bees-mobile-bees-video", beeVideo, "Bees and pollination", {
+            width: "100%", height: "9.5rem", marginBottom: ".9rem",
+          }),
+          {
+            id: "birds-bees-mobile-grid",
+            type: "grid",
+            style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: ".55rem", marginBottom: ".9rem" },
+            children: [
+              image("birds-bees-mobile-beekeeper", beekeeper, "Beekeeper with honeycomb", { width: "100%", height: "7.5rem", objectFit: "cover", objectPosition: "center 34%" }),
+              image("birds-bees-mobile-growzone", growzone, "Growzone team member", { width: "100%", height: "7.5rem", objectFit: "cover", objectPosition: "center 34%" }),
+            ],
+          },
+          text("birds-bees-mobile-copy-right", "The environmental story continues beyond wildlife: recycling, wet-waste recovery, cleaner energy and food-security initiatives all reinforce the idea that the landscape is part of the lifestyle, not simply a backdrop.", {
+            color: "#4d514d",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(1rem,3.8vw,1.14rem)",
+            lineHeight: 1.52,
+            marginBottom: ".9rem",
+          }),
+          video("birds-bees-mobile-birds-video", birdsVideo, "South African birdlife", {
+            width: "100%", height: "9.5rem",
+          }),
+        ],
+      },
+    ],
+  };
+}
+
 function placeholderPage(
   issueId: string,
   pageNo: number,
@@ -4371,7 +4877,7 @@ export function getSteynCity2026Magazine(): MagazineGlobalDefinition {
         props: { label: "STEYN CITY" },
       },
     },
-    spreads: [cityLivingSpread(issueId), bentleyAdvertSpread(issueId), contentsGolfSpread(issueId), golfTraditionSpread(issueId), golfTraditionContinuationSpread(issueId), cyclingSpread(issueId), seniorVillageSpread(issueId), easyLifeSpread(issueId)],
+    spreads: [cityLivingSpread(issueId), bentleyAdvertSpread(issueId), contentsGolfSpread(issueId), golfTraditionSpread(issueId), golfTraditionContinuationSpread(issueId), cyclingSpread(issueId), seniorVillageSpread(issueId), easyLifeSpread(issueId), birdsBeesSpread(issueId)],
     pages,
   };
 }
