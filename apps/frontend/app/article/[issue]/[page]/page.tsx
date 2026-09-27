@@ -6,6 +6,7 @@ import { ArticlePost } from "../../../../components/article-post";
 import { SiteHeader } from "../../../../components/site-header";
 import { getDemoMagazineBySlug } from "../../../../lib/demo-magazine";
 import { articleJsonLd, buildPageMetadata } from "../../../../lib/seo";
+import { isStandaloneArticleKind } from "../../../../lib/magazine-reader-data";
 
 export const dynamic = "force-dynamic";
 
@@ -25,7 +26,7 @@ export default async function ArticlePage({ params }: RouteProps) {
   const { issue: issueSlug, page: pageSlug } = await params;
   const issue = getDemoMagazineBySlug(issueSlug);
   const page = issue.pages.find((item) => item.slug === pageSlug);
-  if (!page || page.kind === "cover") notFound();
+  if (!page || !isStandaloneArticleKind(page.kind)) notFound();
 
   await ensureAuthInfrastructure();
   const viewerSession = await auth.api.getSession({ headers: await headers() });
