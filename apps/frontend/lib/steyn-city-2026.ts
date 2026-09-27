@@ -1664,36 +1664,22 @@ function contentsGolfSpread(issueId: string): MagazineSpreadDefinition {
               children: [
                 grid("contents-golf-article-grid", [
                   {
-                    id: "contents-golf-article-a-wrap",
-                    type: "frame",
-                    style: {
-                      position: "relative",
-                      minHeight: "100%",
+                    id: "contents-golf-article-a",
+                    type: "text",
+                    props: {
+                      as: "p",
+                      text: "Hosting LIV Golf South Africa 2026 is not only an enormous honour but also a profound responsibility, both for our estate and for our country; giving us the opportunity to showcase to the world the spirit of our people and the excellence of our offering.\n\nI marvel that an event of this magnitude and distinction will be hosted at Steyn City. I honestly can’t think LIV Golf could have chosen a better golf course and lifestyle estate to be the stage for a global sporting spectacle.",
+                      dropCap: true,
+                      dropCapLines: 3,
+                      dropCapColor: "#18464a",
                     },
-                    children: [
-                      text("contents-golf-dropcap", "H", {
-                        position: "absolute",
-                        left: 0,
-                        top: "-.02em",
-                        color: "#18464a",
-                        fontFamily: "var(--xp-font-editorial)",
-                        fontSize: "clamp(1.5rem,2.35vw,2.6rem)",
-                        fontWeight: 500,
-                        lineHeight: .82,
-                        zIndex: 3,
-                      }, "span"),
-                      text("contents-golf-article-a",
-                        "osting LIV Golf South Africa 2026 is not only an enormous honour but also a profound responsibility, both for our estate and for our country; giving us the opportunity to showcase to the world the spirit of our people and the excellence of our offering.\n\nI marvel that an event of this magnitude and distinction will be hosted at Steyn City. I honestly can’t think LIV Golf could have chosen a better golf course and lifestyle estate to be the stage for a global sporting spectacle.",
-                        {
-                          color: "#3a3531",
-                          fontFamily: "var(--xp-font-editorial)",
-                          fontSize: "clamp(.38rem,.50vw,.54rem)",
-                          lineHeight: 1.43,
-                          whiteSpace: "pre-line",
-                          paddingLeft: "clamp(1rem,1.4vw,1.45rem)",
-                        }
-                      ),
-                    ],
+                    style: {
+                      color: "#3a3531",
+                      fontFamily: "var(--xp-font-editorial)",
+                      fontSize: "clamp(.38rem,.50vw,.54rem)",
+                      lineHeight: 1.43,
+                      whiteSpace: "pre-line",
+                    },
                   },
                   text("contents-golf-article-b",
                     "We are extremely grateful for this opportunity and grateful, too, for the investment by LIV Golf and the Southern Guards GC. Their contribution to our Steyn City Foundation goes to supporting existing initiatives, while also making it possible to establish the Southern Guards GC Foundation Academy Development Programme in Gauteng.\n\nHowever, you don’t have to love golf to want to live here. Our estate caters to all interests, from mountain-biking and horse riding to swimming, yoga, pilates, aquafit and more. With our hotel, conferencing facilities, and varied workspaces, Steyn City is also an ideal destination for discerning travellers and business guests.",
