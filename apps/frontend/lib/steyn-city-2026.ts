@@ -344,6 +344,7 @@ function coverPage(issueId: string, tone: Tone): MagazinePageDefinition {
   const aerial = "https://www.steyncity.co.za/wp-content/uploads/2021/08/SC_15112023-0503-Pano-Edit.webp";
   const steynTextLogo = "/resources/studio/steyn/steyn-city-text-logo.svg";
   const steynMark = "/resources/studio/steyn/steyn-city-logo-mark.svg";
+  const golfSaLogo = "/resources/studio/steyn/golf-sa-logo.png";
   const corner = "/resources/studio/steyn/corner-shape.svg";
 
   const image = (
@@ -366,22 +367,22 @@ function coverPage(issueId: string, tone: Tone): MagazinePageDefinition {
     align: "left" | "right" = "left",
   ): DesignElementNode => stack(`${id}-group`, [
     image(`${id}-corner`, corner, "", {
-      width: "clamp(1.25rem,2.7vw,2.8rem)",
-      height: "clamp(1.25rem,2.7vw,2.8rem)",
+      width: "clamp(1rem,1.9vw,1.85rem)",
+      height: "clamp(1rem,1.9vw,1.85rem)",
       objectFit: "contain",
       filter: "invert(1)",
       opacity: .96,
       transform: align === "right" ? "scaleX(-1)" : undefined,
       alignSelf: align === "right" ? "flex-end" : "flex-start",
-      marginBottom: "-.55rem",
+      marginBottom: "clamp(.28rem,.55vw,.52rem)",
     }),
     text(`${id}-title`, title, {
       color: "#fff",
       fontFamily: "var(--xp-font-editorial)",
-      fontSize: "clamp(1.25rem,3.35vw,3.3rem)",
+      fontSize: "clamp(1.02rem,2.18vw,2.18rem)",
       fontWeight: 500,
-      lineHeight: .86,
-      letterSpacing: "-.035em",
+      lineHeight: .9,
+      letterSpacing: "-.025em",
       whiteSpace: "pre-line",
       textAlign: align,
       textShadow: "0 3px 20px rgba(0,0,0,.55)",
@@ -389,14 +390,14 @@ function coverPage(issueId: string, tone: Tone): MagazinePageDefinition {
     text(`${id}-deck`, deck, {
       color: "rgba(255,255,255,.94)",
       fontFamily: "var(--xp-font-editorial)",
-      fontSize: "clamp(.56rem,.95vw,.94rem)",
+      fontSize: "clamp(.48rem,.72vw,.72rem)",
       fontStyle: "italic",
-      lineHeight: 1.05,
+      lineHeight: 1.08,
       whiteSpace: "pre-line",
       textAlign: align,
       textShadow: "0 2px 10px rgba(0,0,0,.72)",
     }),
-  ], { position: "absolute", zIndex: 6, gap: ".18rem", ...style });
+  ], { position: "absolute", zIndex: 6, gap: ".04rem", ...style });
 
   return page(issueId, "cover", "Steyn City 2026 · Extraordinary Living", "cover", "utility-full", tone, [
     section("cover-main", "Steyn City 2026 cover", "main", [
@@ -470,13 +471,15 @@ function coverPage(issueId: string, tone: Tone): MagazinePageDefinition {
       text("cover-script", "LIV your best life", {
         position: "absolute",
         zIndex: 8,
-        top: "18.7%",
-        right: "9%",
+        top: "19.6%",
+        right: "8.5%",
         color: "#fff",
         fontFamily: '"Allura", cursive',
-        fontSize: "clamp(1.3rem,3.5vw,3.6rem)",
-        lineHeight: .8,
-        transform: "rotate(-5deg)",
+        fontSize: "clamp(.82rem,1.75vw,1.72rem)",
+        lineHeight: .92,
+        textAlign: "right",
+        whiteSpace: "nowrap",
+        transform: "rotate(-4deg)",
         textShadow: "0 2px 16px rgba(0,0,0,.55)",
       }, "span"),
 
@@ -484,14 +487,14 @@ function coverPage(issueId: string, tone: Tone): MagazinePageDefinition {
         "cover-senior",
         "SENIOR\nLIVING",
         "a new take on\nthe golden years",
-        { left: "8.5%", top: "34%", width: "35%" },
+        { left: "8.4%", top: "34.7%", width: "28.5%" },
       ),
 
       coverline(
         "cover-liv",
-        "HOME OF\nLIV GOLF\nSOUTH AFRICA\n2027",
+        "HOME OF\nLIV GOLF\nSOUTH AFRICA\n2026",
         "making history",
-        { right: "7.5%", top: "36%", width: "42%" },
+        { right: "7.8%", top: "37.3%", width: "34.5%" },
         "right",
       ),
 
@@ -499,75 +502,39 @@ function coverPage(issueId: string, tone: Tone): MagazinePageDefinition {
         "cover-easy",
         "LIVING THE\nEASY LIFE",
         "convenient world-class\nfacilities and services",
-        { left: "7%", top: "61%", width: "45%" },
+        { left: "7.3%", top: "59.6%", width: "37.5%" },
       ),
 
       coverline(
         "cover-nature",
         "BIRDS\n& BEES",
         "where nature\nthrives",
-        { right: "7.2%", top: "66%", width: "30%" },
+        { right: "7.8%", top: "65.4%", width: "22%" },
         "right",
       ),
 
       stack("cover-bottom-lockup", [
-        image("cover-steyn-mark", steynMark, "Steyn City emblem", {
-          width: "clamp(2.8rem,6.3vw,6.1rem)",
+        image("cover-steyn-mark", steynMark, "Steyn City logo mark", {
+          width: "clamp(2.7rem,5.1vw,4.9rem)",
           height: "auto",
+          objectFit: "contain",
           filter: "invert(1) brightness(4)",
         }),
-        {
-          id: "cover-liv-badge",
-          type: "frame",
-          style: {
-            width: "clamp(3.6rem,8vw,7.4rem)",
-            aspectRatio: "1",
-            borderRadius: "999px",
-            display: "grid",
-            placeItems: "center",
-            padding: ".45rem",
-            color: "#fff",
-            background: "rgba(3,6,4,.88)",
-            border: "2px solid rgba(211,171,49,.88)",
-            boxShadow: "0 5px 20px rgba(0,0,0,.35)",
-          },
-          children: [
-            text("cover-liv-badge-top", "LIV GOLF", {
-              color: "#fff",
-              fontFamily: "var(--xp-font-display-sans)",
-              fontSize: "clamp(.36rem,.72vw,.68rem)",
-              fontWeight: 700,
-              lineHeight: .9,
-              textAlign: "center",
-            }, "span"),
-            text("cover-liv-badge-main", "SOUTH\nAFRICA", {
-              color: "#fff",
-              fontFamily: "var(--xp-font-display-sans)",
-              fontSize: "clamp(.5rem,1.08vw,1rem)",
-              fontWeight: 700,
-              lineHeight: .72,
-              textAlign: "center",
-              whiteSpace: "pre-line",
-            }, "span"),
-            text("cover-liv-badge-date", "STEYN CITY · 2027", {
-              color: "#d6b331",
-              fontFamily: "var(--xp-font-grotesk)",
-              fontSize: "clamp(.25rem,.48vw,.44rem)",
-              fontWeight: 800,
-              letterSpacing: ".04em",
-              textAlign: "center",
-            }, "span"),
-          ],
-        },
+        image("cover-golf-sa-logo", golfSaLogo, "LIV Golf South Africa — Steyn City", {
+          width: "clamp(3rem,5.7vw,5.4rem)",
+          height: "auto",
+          objectFit: "contain",
+          filter: "drop-shadow(0 4px 12px rgba(0,0,0,.32))",
+        }),
       ], {
         position: "absolute",
         zIndex: 9,
         left: "50%",
-        bottom: "4.2%",
+        bottom: "3.5%",
         transform: "translateX(-50%)",
         flexDirection: "row",
         alignItems: "center",
-        gap: "clamp(.7rem,1.4vw,1.2rem)",
+        gap: "clamp(.7rem,1.3vw,1.15rem)",
       }),
 
       text("cover-edition", "STEYN CITY MAGAZINE · 2026 EDITION", {
