@@ -1,34 +1,14 @@
 import { headers } from "next/headers";
-import { auth, ensureAuthInfrastructure } from "../../lib/auth-server";
-import { MagazineReader } from "../../components/magazine-reader";
-import { selectDemoMagazine } from "../../lib/demo-magazine";
-import { getRequestCity } from "../../lib/location";
-import { getAlphaCoverAssets } from "../../lib/cover-assets";
-import { getComposerDocument } from "../../lib/composer-persistence";
-import { createMagazineReaderPayload } from "../../lib/magazine-reader-data";
+import { auth,ensureAuthInfrastructure } from "../../lib/auth-server";
+import { PublicationFollowButton,type PublicPublication } from "../../components/publication-follow-button";
 
-export const dynamic = "force-dynamic";
-
-export default async function Home() {
-  await ensureAuthInfrastructure();
-  const viewerSession = await auth.api.getSession({ headers: await headers() });
-  const viewerAuthenticated = Boolean(viewerSession?.user);
-  const location = await getRequestCity();
-  const detectedCity = location.city ?? "Johannesburg";
-  const alphaCoverAssets = await getAlphaCoverAssets();
-  const issueSlug = `demo-${detectedCity.toLowerCase().replace(/\s+/g, "-")}-001`;
-  const coverDocument = await getComposerDocument(issueSlug, "cover", "published");
-
-  // This is the temporary curator boundary. Today it selects deterministic demo
-  // content; later it will resolve the best published issue for the member/location.
-  const curatedIssue = selectDemoMagazine(detectedCity, { alphaCoverAssets, coverDocument });
-  const readerPayload = createMagazineReaderPayload(curatedIssue, "cover");
-
-  return (
-    <main className="xp-reader-page">
-      <div className="xp-container xp-home-shell">
-        <MagazineReader issue={readerPayload.issue} initialPages={readerPayload.initialPages} viewerAuthenticated={viewerAuthenticated} />
-      </div>
-    </main>
-  );
-}
+export const dynamic="force-dynamic";
+function apiOrigin(){return process.env.API_ORIGIN??process.env.NEXT_PUBLIC_API_ORIGIN??"http://localhost:4000"}
+export default async function Home(){await ensureAuthInfrastructure();const session=await auth.api.getSession({headers:await headers()});const h=new Headers({accept:"application/json"});if(session?.user?.id){h.set("x-xpomag-user-id",session.user.id);if(process.env.ENGAGEMENT_INTERNAL_SECRET)h.set("x-xpomag-internal-key",process.env.ENGAGEMENT_INTERNAL_SECRET)}let publications:PublicPublication[]=[];try{const r=await fetch(new URL("/v1/publications",apiOrigin()),{headers:h,cache:"no-store"});if(r.ok)publications=(await r.json()).publications??[]}catch{}const active=publications.filter(p=>p.status==="ACTIVE");const following=active.filter(p=>p.viewerFollowing);return <main className="xp-discover">
+ <nav className="xp-discover__nav"><a href="/" className="xp-discover__logo">XpoMag</a><div><a href="/explore">Explore</a><a href="/contribute">Contribute</a><a href="/studio">Studio</a>{session?.user?<a href="/saved">Saved</a>:<a href="/auth">Sign in</a>}</div></nav>
+ <section className="xp-discover__hero"><p>THE SOCIAL MAGAZINE FOR YOUR CITY</p><h1>Every City<br/>Has a Story.</h1><div className="xp-discover__hero-bottom"><p>Discover the people, places, businesses and ideas shaping cities around the world.</p><div><a href="/explore">Explore cities →</a><a href="/contribute">Tell us what's happening</a></div></div></section>
+ {following.length?<section className="xp-discover__section"><div className="xp-discover__heading"><p>YOUR CITIES</p><h2>Pick up where you left off.</h2></div><div className="xp-discover__cities">{following.map(p=><CityCard key={p.id} p={p} authenticated={Boolean(session?.user)}/>)}</div></section>:null}
+ <section className="xp-discover__section xp-discover__section--issues"><div className="xp-discover__heading"><p>NOW PUBLISHING</p><h2>Open a city.</h2></div><div className="xp-discover__cities">{active.map(p=><CityCard key={p.id} p={p} authenticated={Boolean(session?.user)}/>)}</div><a className="xp-discover__more" href="/explore">Explore all cities →</a></section>
+ <section className="xp-discover__manifesto"><p>XPOMAG</p><h2>A living magazine<br/>for the city around you.</h2><p>Follow cities. Open monthly issues. Save what matters. Join the conversation. Come back when the city changes.</p></section>
+ </main>}
+function CityCard({p,authenticated}:{p:PublicPublication;authenticated:boolean}){const city=p.city??p.name.replace("XpoMag ","");return <article className="xp-discover-card"><a href={`/city/${p.slug}`}><span>{p.country} · NOVEMBER 2026</span><h3>{city}</h3><p>{p.description}</p></a><div><PublicationFollowButton publication={p} authenticated={authenticated} className="xp-discover-card__follow"/><a href={`/city/${p.slug}`}>View city →</a></div></article>}
