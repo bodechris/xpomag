@@ -2692,9 +2692,9 @@ function cyclingSpread(issueId: string): MagazineSpreadDefinition {
     title: string,
     src: string,
     alt: string,
-    style: MagazineSpreadDefinition["pieces"][number]["style"],
+    style: Record<string, unknown>,
     objectPosition = "center center",
-  ): MagazineSpreadDefinition["pieces"][number] => ({
+  ): any => ({
     id,
     slug,
     title,
