@@ -4794,3 +4794,43 @@ p[data-drop-cap-lines="6"] .xp-editorial-drop-cap { font-size: 5.85em; }
 
   .xp-spread-video-launch__copy small { display: none; }
 }
+
+
+/* Native spread media engagement: keep controls visibly attached to media pieces. */
+[data-spread-piece-id="steyn-city-living-video-piece"] {
+  overflow: visible !important;
+}
+
+[data-spread-piece-id="steyn-city-living-video-piece"] > .xp-section-engagement--inline {
+  position: absolute !important;
+  left: 10px !important;
+  right: auto !important;
+  top: auto !important;
+  bottom: 10px !important;
+  z-index: 90 !important;
+  width: max-content !important;
+  max-width: calc(100% - 20px) !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  padding: 3px !important;
+  border-radius: 999px !important;
+  background: rgba(255, 255, 255, .88) !important;
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .14) !important;
+}
+
+[data-spread-piece-id="steyn-city-living-video-piece"] > .xp-section-engagement--inline .xp-engagement__action {
+  color: #111 !important;
+}
+
+@media (max-width: 720px) {
+  [data-spread-piece-id="steyn-city-living-video-piece"] > .xp-section-engagement--inline {
+    left: 6px !important;
+    bottom: 6px !important;
+    max-width: calc(100% - 12px) !important;
+    transform: scale(.9);
+    transform-origin: left bottom;
+  }
+}
