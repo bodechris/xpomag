@@ -5127,10 +5127,11 @@ function rentalCheninSpread(issueId: string): MagazineSpreadDefinition {
   const rentalExterior = "/resources/studio/steyn/steyn-city-xpomag-spread-10-03.webp";
   const winemaker = "/resources/studio/steyn/steyn-city-xpomag-spread-10-04.webp";
   const wineTable = "/resources/studio/steyn/steyn-city-xpomag-spread-10-05.webp";
+  const wineBottle = "/resources/studio/steyn/wine-bottle-01.webp";
   const rentalQr = "/resources/studio/steyn/07_steyn_city_rentals_qr.webp";
   const wineQr = "/resources/studio/steyn/08_spier_wine_club_qr.webp";
   const rentalVideo = "https://videos.pexels.com/video-files/37674127/15971334_1080_1920_60fps.mp4";
-  const wineVideo = "https://www.youtube.com/embed/14gAF4a13V8?autoplay=1&mute=1&controls=1&playsinline=1&rel=0";
+  const wineVideo = "https://videos.pexels.com/video-files/31484645/13424468_2160_3840_30fps.mp4";
 
   const engagement = { reactions: true, comments: true, share: true, save: true };
   const noEngagement = { reactions: false, comments: false, share: false, save: false };
@@ -5234,16 +5235,18 @@ function rentalCheninSpread(issueId: string): MagazineSpreadDefinition {
           }, "span"),
           text("rental-title", "DISCOVER THE STEYN CITY\nRENTAL COLLECTION", {
             position: "absolute",
-            left: "5.8%",
-            top: "10.1%",
-            width: "39%",
+            left: "4.8%",
+            top: "9.3%",
+            width: "40.8%",
             color: "#342d28",
             fontFamily: "var(--xp-font-editorial)",
-            fontSize: "clamp(1.2rem,2.1vw,2.4rem)",
+            fontSize: "clamp(1.05rem,1.72vw,2rem)",
             fontWeight: 500,
-            lineHeight: .97,
-            letterSpacing: ".018em",
-            whiteSpace: "pre-line",
+            lineHeight: .94,
+            letterSpacing: ".014em",
+            whiteSpace: "pre",
+            overflowWrap: "normal",
+            wordBreak: "normal",
             textAlign: "center",
           }, "h2"),
 
@@ -5273,15 +5276,16 @@ function rentalCheninSpread(issueId: string): MagazineSpreadDefinition {
 
           text("rental-list-copy", "Three-bedroom apartments along the landscaped creek, private balconies and lock-up-and-go convenience are all part of the mix.\n\n• City Centre rentals — contemporary apartments with access to restaurants, retail and services\n\n• Heron Heights — two- and three-bedroom apartments overlooking parkland\n\n• 104 on Creek — relaxed creek-side living with a quieter residential feel", {
             position: "absolute",
-            left: "23.3%",
-            top: "27.5%",
-            width: "20.7%",
-            bottom: "21%",
+            left: "33.1%",
+            top: "23.3%",
+            width: "13.2%",
+            bottom: "23%",
             color: "#4a433e",
             fontFamily: "var(--xp-font-editorial)",
-            fontSize: "clamp(.36rem,.48vw,.52rem)",
-            lineHeight: 1.45,
+            fontSize: "clamp(.31rem,.42vw,.46rem)",
+            lineHeight: 1.46,
             whiteSpace: "pre-line",
+            overflowWrap: "break-word",
           }),
 
           {
@@ -5457,7 +5461,7 @@ function rentalCheninSpread(issueId: string): MagazineSpreadDefinition {
         image("rental-hero-image", rentalHero, "City Centre rental apartment overlooking Steyn City", {
           position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 52%",
         }),
-        { position: "absolute", left: 0, top: "20.2%", width: "31.9%", height: "30.8%", zIndex: 7 },
+        { position: "absolute", left: 0, top: "22.2%", width: "31.9%", height: "29.4%", zIndex: 7 },
         true,
       ),
 
@@ -5497,16 +5501,16 @@ function rentalCheninSpread(issueId: string): MagazineSpreadDefinition {
       {
         id: "steyn-wine-video-piece",
         slug: "wine-video",
-        title: "Spier Seaward Chenin Blanc",
+        title: "Spier Chenin Blanc",
         kind: "feature",
         region: "spread",
         gutterBehaviour: "clip",
         engagement,
         style: {
           position: "absolute",
-          left: "81.2%",
-          top: "25%",
-          width: "15.1%",
+          left: "81.0%",
+          top: "25.2%",
+          width: "15.3%",
           aspectRatio: "1 / 1",
           borderRadius: "50%",
           outline: "5px solid #fff",
@@ -5521,15 +5525,42 @@ function rentalCheninSpread(issueId: string): MagazineSpreadDefinition {
           {
             id: "wine-video-inner",
             type: "frame",
-            style: { position: "absolute", inset: 0, overflow: "hidden", borderRadius: "50%" },
+            style: {
+              position: "absolute",
+              left: "7%",
+              bottom: "7%",
+              width: "45%",
+              aspectRatio: "16 / 9",
+              overflow: "hidden",
+              border: "2px solid rgba(255,255,255,.94)",
+              boxShadow: "0 7px 20px rgba(0,0,0,.23)",
+              zIndex: 5,
+              background: "#111",
+            },
             children: [
-              video("wine-video-player", wineVideo, "Spier Seaward Chenin Blanc", {
-                position: "absolute", inset: 0,
-              }),
+              video("wine-video-player", wineVideo, "Wine tasting in a vineyard", {
+                position: "absolute", inset: 0, objectFit: "cover",
+              }, true),
             ],
           },
         ],
       },
+
+      mediaPiece(
+        "steyn-wine-bottle-piece",
+        "wine-bottle",
+        "Spier Chenin Blanc bottle",
+        image("wine-bottle-image", wineBottle, "Spier Chenin Blanc bottle", {
+          position: "absolute",
+          inset: 0,
+          width: "100%",
+          height: "100%",
+          objectFit: "contain",
+          objectPosition: "center bottom",
+        }),
+        { position: "absolute", right: "3.1%", top: "54.2%", width: "10.5%", height: "26.5%", zIndex: 7, background: "transparent" },
+        false,
+      ),
 
       {
         id: "steyn-rental-chenin-mobile-left-piece",
@@ -5656,11 +5687,14 @@ function rentalCheninSpread(issueId: string): MagazineSpreadDefinition {
               marginBottom: ".8rem",
             },
           },
-          video("wine-mobile-video", wineVideo, "Spier Seaward Chenin Blanc", {
-            width: "100%", height: "10rem", marginBottom: ".8rem",
-          }),
+          video("wine-mobile-video", wineVideo, "Wine tasting in a vineyard", {
+            width: "100%", height: "10rem", objectFit: "cover", marginBottom: ".8rem",
+          }, true),
           image("wine-mobile-table", wineTable, "Spier Chenin Blanc outdoors", {
-            width: "100%", height: "9rem", objectFit: "cover",
+            width: "100%", height: "9rem", objectFit: "cover", marginBottom: ".7rem",
+          }),
+          image("wine-mobile-bottle", wineBottle, "Spier Chenin Blanc bottle", {
+            width: "6.5rem", height: "13rem", objectFit: "contain", margin: "0 auto",
           }),
         ],
       },
