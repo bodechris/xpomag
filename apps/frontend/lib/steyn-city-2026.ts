@@ -5120,6 +5120,554 @@ function liveYourDreamsSpread(issueId: string): MagazineSpreadDefinition {
   };
 }
 
+
+function rentalCheninSpread(issueId: string): MagazineSpreadDefinition {
+  const rentalHero = "/resources/studio/steyn/steyn-city-xpomag-spread-10-01.webp";
+  const rentalInterior = "/resources/studio/steyn/steyn-city-xpomag-spread-10-02.webp";
+  const rentalExterior = "/resources/studio/steyn/steyn-city-xpomag-spread-10-03.webp";
+  const winemaker = "/resources/studio/steyn/steyn-city-xpomag-spread-10-04.webp";
+  const wineTable = "/resources/studio/steyn/steyn-city-xpomag-spread-10-05.webp";
+  const rentalQr = "/resources/studio/steyn/07_steyn_city_rentals_qr.webp";
+  const wineQr = "/resources/studio/steyn/08_spier_wine_club_qr.webp";
+  const rentalVideo = "https://videos.pexels.com/video-files/37674127/15971334_1080_1920_60fps.mp4";
+  const wineVideo = "https://www.youtube.com/embed/14gAF4a13V8?autoplay=1&mute=1&controls=1&playsinline=1&rel=0";
+
+  const engagement = { reactions: true, comments: true, share: true, save: true };
+  const noEngagement = { reactions: false, comments: false, share: false, save: false };
+
+  const image = (
+    id: string,
+    src: string,
+    alt: string,
+    style: DesignElementNode["style"] = {},
+  ): DesignElementNode => ({
+    id,
+    type: "image",
+    props: { src, alt, loading: "eager", fetchPriority: "high" },
+    style: { display: "block", objectFit: "cover", ...style },
+  });
+
+  const video = (
+    id: string,
+    src: string,
+    title: string,
+    style: DesignElementNode["style"] = {},
+    nativeAutoplay = false,
+  ): DesignElementNode => ({
+    id,
+    type: "video",
+    props: nativeAutoplay
+      ? {
+          src,
+          title,
+          autoplay: true,
+          managedAutoplay: false,
+          autoplayDelayMs: 0,
+          muted: true,
+          loop: true,
+          maxLoops: 999,
+          controls: false,
+        }
+      : {
+          src,
+          title,
+          cover: true,
+          interactive: true,
+          autoplay: false,
+          muted: true,
+          controls: true,
+        },
+    style: { display: "block", width: "100%", height: "100%", ...style },
+  });
+
+  const mediaPiece = (
+    id: string,
+    slug: string,
+    title: string,
+    node: DesignElementNode,
+    style: Record<string, unknown>,
+    withEngagement = false,
+  ): any => ({
+    id,
+    slug,
+    title,
+    kind: "feature",
+    region: "spread",
+    gutterBehaviour: "clip",
+    engagement: withEngagement ? engagement : noEngagement,
+    style: { ...style, overflow: "hidden", background: "#ece8e2" },
+    elements: [node],
+  });
+
+  return {
+    id: "steyn-rental-chenin-spread",
+    issueId,
+    slug: "rental-chenin",
+    title: "Rental Collection / SA Chenin Blanc",
+    kind: "feature",
+    pageIds: ["rental-collection", "chenin"],
+    style: { background: "#fbfaf7" },
+    pieces: [
+      {
+        id: "steyn-rental-chenin-editorial-piece",
+        slug: "rental-chenin-editorial",
+        title: "Rental Collection / SA Chenin Blanc",
+        kind: "article",
+        region: "spread",
+        gutterBehaviour: "cross",
+        engagement,
+        style: {
+          position: "absolute",
+          inset: 0,
+          overflow: "hidden",
+          background: "#fbfaf7",
+        },
+        elements: [
+          text("rental-kicker", "│ PROPERTY", {
+            position: "absolute",
+            left: "4.4%",
+            top: "6.7%",
+            color: "#625a54",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(.48rem,.66vw,.72rem)",
+            letterSpacing: ".06em",
+          }, "span"),
+          text("rental-title", "DISCOVER THE STEYN CITY\nRENTAL COLLECTION", {
+            position: "absolute",
+            left: "5.8%",
+            top: "10.1%",
+            width: "39%",
+            color: "#342d28",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(1.2rem,2.1vw,2.4rem)",
+            fontWeight: 500,
+            lineHeight: .97,
+            letterSpacing: ".018em",
+            whiteSpace: "pre-line",
+            textAlign: "center",
+          }, "h2"),
+
+          {
+            id: "rental-article-copy",
+            type: "text",
+            props: {
+              as: "p",
+              text: "Steyn City’s rental apartment homes make it possible to experience a taste of a lifestyle usually reserved for owners. A world of convenience, beautifully considered spaces and direct access to the estate’s amenities make renting here feel anything but temporary.\n\nThe collection ranges from well-appointed apartments to homes with generous balconies, easy access to retail, restaurants, parkland and wellness, and the convenience of a secure, connected city around you.",
+              dropCap: true,
+              dropCapLines: 4,
+              dropCapColor: "#342d28",
+            },
+            style: {
+              position: "absolute",
+              left: "4.5%",
+              top: "56.1%",
+              width: "17.4%",
+              bottom: "20.6%",
+              color: "#463f3a",
+              fontFamily: "var(--xp-font-editorial)",
+              fontSize: "clamp(.39rem,.52vw,.56rem)",
+              lineHeight: 1.48,
+              whiteSpace: "pre-line",
+            },
+          },
+
+          text("rental-list-copy", "Three-bedroom apartments along the landscaped creek, private balconies and lock-up-and-go convenience are all part of the mix.\n\n• City Centre rentals — contemporary apartments with access to restaurants, retail and services\n\n• Heron Heights — two- and three-bedroom apartments overlooking parkland\n\n• 104 on Creek — relaxed creek-side living with a quieter residential feel", {
+            position: "absolute",
+            left: "23.3%",
+            top: "27.5%",
+            width: "20.7%",
+            bottom: "21%",
+            color: "#4a433e",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(.36rem,.48vw,.52rem)",
+            lineHeight: 1.45,
+            whiteSpace: "pre-line",
+          }),
+
+          {
+            id: "rental-qr-group",
+            type: "grid",
+            style: {
+              position: "absolute",
+              left: "33.8%",
+              top: "66.3%",
+              width: "10.3%",
+              display: "grid",
+              gridTemplateColumns: "auto 1fr",
+              gap: ".45rem",
+              alignItems: "center",
+            },
+            children: [
+              image("rental-qr", rentalQr, "Steyn City rentals QR code", {
+                width: "3.3rem",
+                aspectRatio: "1 / 1",
+                objectFit: "contain",
+              }),
+              text("rental-qr-label", "SCAN FOR MORE\nINFORMATION", {
+                color: "#5a514b",
+                fontFamily: "var(--xp-font-grotesk)",
+                fontSize: "clamp(.3rem,.41vw,.45rem)",
+                fontWeight: 760,
+                letterSpacing: ".08em",
+                lineHeight: 1.2,
+                whiteSpace: "pre-line",
+              }, "span"),
+            ],
+          },
+
+          text("wine-kicker", "WINE │", {
+            position: "absolute",
+            right: "4.2%",
+            top: "6.8%",
+            color: "#5c534c",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(.48rem,.66vw,.72rem)",
+            letterSpacing: ".06em",
+          }, "span"),
+
+          text("wine-title", "CONSECUTIVE\nGLOBAL ACCLAIM\nFOR SA CHENIN BLANC", {
+            position: "absolute",
+            left: "54.4%",
+            top: "37.3%",
+            width: "36.5%",
+            color: "#332d29",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(1.15rem,2.02vw,2.25rem)",
+            fontWeight: 500,
+            lineHeight: .96,
+            letterSpacing: ".01em",
+            whiteSpace: "pre-line",
+          }, "h2"),
+
+          {
+            id: "wine-copy-a",
+            type: "text",
+            props: {
+              as: "p",
+              text: "South African winemaking continues to shine on the world stage, with Johan Jordaan, Cellar Master at Spier, recognised for his mastery of Chenin Blanc. The accolade reinforces both Spier’s long-standing commitment to the varietal and the broader global reputation of South African Chenin.",
+              dropCap: true,
+              dropCapLines: 4,
+              dropCapColor: "#342d28",
+            },
+            style: {
+              position: "absolute",
+              left: "54.6%",
+              top: "54.7%",
+              width: "14.6%",
+              bottom: "12.5%",
+              color: "#463f3a",
+              fontFamily: "var(--xp-font-editorial)",
+              fontSize: "clamp(.36rem,.48vw,.52rem)",
+              lineHeight: 1.45,
+            },
+          },
+
+          text("wine-copy-b", "The 21 Gables Chenin Blanc is sourced from certified old vines planted in 1983 and offers a style that balances richness with freshness. Fermented and matured in French oak, it reveals layered notes of pear, quince and citrus with a textured finish.\n\nTogether, these wines speak to a collective effort and a proud moment not only for Spier, but for South African wine as a whole.", {
+            position: "absolute",
+            left: "70.2%",
+            top: "54.7%",
+            width: "14.6%",
+            bottom: "12.5%",
+            color: "#463f3a",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(.36rem,.48vw,.52rem)",
+            lineHeight: 1.45,
+            whiteSpace: "pre-line",
+          }),
+
+          {
+            id: "wine-qr-group",
+            type: "grid",
+            style: {
+              position: "absolute",
+              left: "54.5%",
+              bottom: "4.8%",
+              width: "28.8%",
+              display: "grid",
+              gridTemplateColumns: "auto 1fr",
+              gap: ".65rem",
+              alignItems: "center",
+            },
+            children: [
+              image("wine-qr", wineQr, "Spier Wine Club QR code", {
+                width: "3.4rem",
+                aspectRatio: "1 / 1",
+                objectFit: "contain",
+              }),
+              text("wine-qr-copy", "JOIN THE SPIER WINE CLUB TO GET ACCESS TO\nEXCLUSIVE EVENTS, WINE OFFERS, AND MORE.", {
+                color: "#625a54",
+                fontFamily: "var(--xp-font-grotesk)",
+                fontSize: "clamp(.31rem,.42vw,.46rem)",
+                fontWeight: 700,
+                letterSpacing: ".075em",
+                lineHeight: 1.28,
+                whiteSpace: "pre-line",
+              }, "span"),
+            ],
+          },
+
+          text("wine-brand", "SPIER\n1692", {
+            position: "absolute",
+            right: "4.2%",
+            bottom: "8%",
+            width: "11.5%",
+            color: "#222",
+            fontFamily: "var(--xp-font-grotesk)",
+            fontSize: "clamp(1rem,1.6vw,1.8rem)",
+            fontWeight: 650,
+            lineHeight: 1.05,
+            letterSpacing: ".14em",
+            textAlign: "center",
+            whiteSpace: "pre-line",
+          }, "span"),
+
+          {
+            id: "wine-age-warning",
+            type: "frame",
+            style: {
+              position: "absolute",
+              left: "50%",
+              right: 0,
+              bottom: 0,
+              height: "4.2%",
+              borderTop: "1px solid rgba(0,0,0,.32)",
+              background: "#fff",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              zIndex: 5,
+            },
+            children: [
+              text("wine-age-warning-copy", "Not for Sale to Persons Under the Age of 18.", {
+                color: "#2e2925",
+                fontFamily: "var(--xp-font-grotesk)",
+                fontSize: "clamp(.42rem,.57vw,.62rem)",
+                fontWeight: 760,
+                letterSpacing: ".01em",
+              }, "span"),
+            ],
+          },
+        ],
+      },
+
+      mediaPiece(
+        "steyn-rental-hero-piece",
+        "rental-hero",
+        "City Centre rental apartment",
+        image("rental-hero-image", rentalHero, "City Centre rental apartment overlooking Steyn City", {
+          position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 52%",
+        }),
+        { position: "absolute", left: 0, top: "20.2%", width: "31.9%", height: "30.8%", zIndex: 7 },
+        true,
+      ),
+
+      mediaPiece(
+        "steyn-rental-video-piece",
+        "rental-video",
+        "Steyn City rental lifestyle",
+        video("rental-autoplay-video", rentalVideo, "Luxury apartment interior film", {
+          position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center center",
+        }, true),
+        { position: "absolute", left: 0, bottom: 0, width: "24.4%", height: "18.8%", zIndex: 7 },
+        false,
+      ),
+
+      mediaPiece(
+        "steyn-rental-exterior-piece",
+        "rental-exterior",
+        "104 on Creek",
+        image("rental-exterior-image", rentalExterior, "104 on Creek at Steyn City", {
+          position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 52%",
+        }),
+        { position: "absolute", left: "25.9%", bottom: 0, width: "24.1%", height: "18.8%", zIndex: 7 },
+        false,
+      ),
+
+      mediaPiece(
+        "steyn-wine-hero-piece",
+        "wine-hero",
+        "Spier Cellar Master Johan Jordaan",
+        image("wine-hero-image", winemaker, "Spier Cellar Master Johan Jordaan in the vineyard", {
+          position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 48%",
+        }),
+        { position: "absolute", left: "50%", top: 0, width: "50%", height: "34.3%", zIndex: 6 },
+        false,
+      ),
+
+      {
+        id: "steyn-wine-video-piece",
+        slug: "wine-video",
+        title: "Spier Seaward Chenin Blanc",
+        kind: "feature",
+        region: "spread",
+        gutterBehaviour: "clip",
+        engagement,
+        style: {
+          position: "absolute",
+          left: "81.2%",
+          top: "25%",
+          width: "15.1%",
+          aspectRatio: "1 / 1",
+          borderRadius: "50%",
+          outline: "5px solid #fff",
+          overflow: "hidden",
+          zIndex: 10,
+          background: "#ddd",
+        },
+        elements: [
+          image("wine-table-poster", wineTable, "Spier Chenin Blanc served outdoors", {
+            position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center center",
+          }),
+          {
+            id: "wine-video-inner",
+            type: "frame",
+            style: { position: "absolute", inset: 0, overflow: "hidden", borderRadius: "50%" },
+            children: [
+              video("wine-video-player", wineVideo, "Spier Seaward Chenin Blanc", {
+                position: "absolute", inset: 0,
+              }),
+            ],
+          },
+        ],
+      },
+
+      {
+        id: "steyn-rental-chenin-mobile-left-piece",
+        slug: "rental-chenin-mobile-left",
+        title: "Discover the Steyn City Rental Collection",
+        kind: "article",
+        region: "left",
+        gutterBehaviour: "clip",
+        engagement,
+        style: {
+          position: "absolute",
+          left: "2.8%",
+          top: "3.5%",
+          width: "44.4%",
+          height: "93%",
+          display: "none",
+          background: "#fbfaf7",
+          zIndex: 70,
+          padding: "clamp(.95rem,3.8vw,1.4rem)",
+          overflow: "auto",
+        },
+        elements: [
+          text("rental-mobile-kicker", "PROPERTY", {
+            color: "#655d56",
+            fontFamily: "var(--xp-font-grotesk)",
+            fontSize: ".78rem",
+            fontWeight: 800,
+            letterSpacing: ".13em",
+            marginBottom: ".5rem",
+          }, "span"),
+          text("rental-mobile-title", "DISCOVER THE STEYN CITY\nRENTAL COLLECTION", {
+            color: "#342d28",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(1.45rem,6.4vw,1.95rem)",
+            lineHeight: .98,
+            whiteSpace: "pre-line",
+            marginBottom: ".75rem",
+          }, "h2"),
+          image("rental-mobile-hero", rentalHero, "City Centre rental apartment", {
+            width: "100%", height: "11.5rem", objectFit: "cover", marginBottom: ".75rem",
+          }),
+          {
+            id: "rental-mobile-copy",
+            type: "text",
+            props: {
+              as: "p",
+              text: "Steyn City’s rental collection offers beautifully considered homes, everyday convenience and direct access to the estate’s amenities — without the commitment of ownership.",
+              dropCap: true,
+              dropCapLines: 4,
+              dropCapColor: "#342d28",
+            },
+            style: {
+              color: "#463f3a",
+              fontFamily: "var(--xp-font-editorial)",
+              fontSize: "clamp(1rem,3.8vw,1.14rem)",
+              lineHeight: 1.55,
+              marginBottom: ".8rem",
+            },
+          },
+          video("rental-mobile-video", rentalVideo, "Luxury apartment interior film", {
+            width: "100%", height: "10rem", objectFit: "cover", marginBottom: ".8rem",
+          }, true),
+          image("rental-mobile-exterior", rentalExterior, "104 on Creek", {
+            width: "100%", height: "9.5rem", objectFit: "cover",
+          }),
+        ],
+      },
+
+      {
+        id: "steyn-rental-chenin-mobile-right-piece",
+        slug: "rental-chenin-mobile-right",
+        title: "Consecutive Global Acclaim for SA Chenin Blanc",
+        kind: "article",
+        region: "right",
+        gutterBehaviour: "clip",
+        engagement: noEngagement,
+        style: {
+          position: "absolute",
+          left: "52.8%",
+          top: "3.5%",
+          width: "44.4%",
+          height: "93%",
+          display: "none",
+          background: "#fbfaf7",
+          zIndex: 70,
+          padding: "clamp(.9rem,3.6vw,1.35rem)",
+          overflow: "auto",
+        },
+        elements: [
+          text("wine-mobile-kicker", "WINE", {
+            color: "#655d56",
+            fontFamily: "var(--xp-font-grotesk)",
+            fontSize: ".78rem",
+            fontWeight: 800,
+            letterSpacing: ".13em",
+            marginBottom: ".5rem",
+          }, "span"),
+          image("wine-mobile-hero", winemaker, "Spier Cellar Master Johan Jordaan", {
+            width: "100%", height: "10.5rem", objectFit: "cover", objectPosition: "center 48%", marginBottom: ".75rem",
+          }),
+          text("wine-mobile-title", "CONSECUTIVE GLOBAL ACCLAIM\nFOR SA CHENIN BLANC", {
+            color: "#342d28",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(1.4rem,6.2vw,1.9rem)",
+            lineHeight: .98,
+            whiteSpace: "pre-line",
+            marginBottom: ".7rem",
+          }, "h2"),
+          {
+            id: "wine-mobile-copy",
+            type: "text",
+            props: {
+              as: "p",
+              text: "South African winemaking continues to shine internationally, with Spier Cellar Master Johan Jordaan recognised for his mastery of Chenin Blanc. The award reflects decades of work in the vineyard and cellar, and the strength of South African Chenin on the world stage.",
+              dropCap: true,
+              dropCapLines: 4,
+              dropCapColor: "#342d28",
+            },
+            style: {
+              color: "#463f3a",
+              fontFamily: "var(--xp-font-editorial)",
+              fontSize: "clamp(1rem,3.8vw,1.14rem)",
+              lineHeight: 1.55,
+              marginBottom: ".8rem",
+            },
+          },
+          video("wine-mobile-video", wineVideo, "Spier Seaward Chenin Blanc", {
+            width: "100%", height: "10rem", marginBottom: ".8rem",
+          }),
+          image("wine-mobile-table", wineTable, "Spier Chenin Blanc outdoors", {
+            width: "100%", height: "9rem", objectFit: "cover",
+          }),
+        ],
+      },
+    ],
+  };
+}
+
 function placeholderPage(
   issueId: string,
   pageNo: number,
@@ -5284,7 +5832,7 @@ export function getSteynCity2026Magazine(): MagazineGlobalDefinition {
         props: { label: "STEYN CITY" },
       },
     },
-    spreads: [cityLivingSpread(issueId), bentleyAdvertSpread(issueId), contentsGolfSpread(issueId), golfTraditionSpread(issueId), golfTraditionContinuationSpread(issueId), cyclingSpread(issueId), seniorVillageSpread(issueId), easyLifeSpread(issueId), birdsBeesSpread(issueId), liveYourDreamsSpread(issueId)],
+    spreads: [cityLivingSpread(issueId), bentleyAdvertSpread(issueId), contentsGolfSpread(issueId), golfTraditionSpread(issueId), golfTraditionContinuationSpread(issueId), cyclingSpread(issueId), seniorVillageSpread(issueId), easyLifeSpread(issueId), birdsBeesSpread(issueId), liveYourDreamsSpread(issueId), rentalCheninSpread(issueId)],
     pages,
   };
 }
