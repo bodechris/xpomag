@@ -2667,10 +2667,11 @@ function golfTraditionContinuationSpread(issueId: string): MagazineSpreadDefinit
 
 
 function cyclingSpread(issueId: string): MagazineSpreadDefinition {
-  const mtb = "https://cyclelabmtbseries.co.za/sites/default/files/2023-03/prime-view_0.jpg";
-  const kids = "https://cansa-active.org.za/files/2020/03/JOBURG-CLASSIC-KIDS.jpg";
-  const road = "https://gsport.co.za/wp-content/uploads/2024/04/20240421-Cycling-Joanna-van-de-Winkel-Wins-aQuelle-Tour-Durban-2.jpg";
-  const aerial = "/resources/studio/steyn/steyn-city-img-03.webp";
+  const mtb = "/resources/studio/steyn/steyn-city-xpomag-spread-5-02.webp";
+  const kids = "/resources/studio/steyn/steyn-city-xpomag-spread-5-03.webp";
+  const road = "/resources/studio/steyn/steyn-city-xpomag-spread-5-04.webp";
+  const aerial = "/resources/studio/steyn/steyn-city-xpomag-spread-5-05.webp";
+  const riderCutout = "/resources/studio/steyn/steyn-city-xpomag-spread-5-06.webp";
 
   const image = (
     id: string,
