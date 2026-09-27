@@ -43,7 +43,7 @@ type Props = {
   sectionSlug: string;
   authenticated?: boolean;
   config?: MagazineEngagementConfig;
-  variant?: "inline" | "panel";
+  variant?: "inline" | "panel" | "dock";
   appearance?: "auto" | "light" | "dark";
 };
 
@@ -283,7 +283,9 @@ export function SectionEngagementBar({ issueSlug, pageSlug, sectionId, sectionSl
     } catch { return false; }
   };
 
-  const sectionUrl = () => `${window.location.origin}/magazine/${encodeURIComponent(issueSlug)}/${encodeURIComponent(pageSlug)}#${encodeURIComponent(sectionSlug)}`;
+  const sectionUrl = () => pageSlug === "__magazine__"
+    ? `${window.location.origin}/magazine/${encodeURIComponent(issueSlug)}/cover`
+    : `${window.location.origin}/magazine/${encodeURIComponent(issueSlug)}/${encodeURIComponent(pageSlug)}#${encodeURIComponent(sectionSlug)}`;
 
   const nativeShare = async () => {
     if (!requireAuth()) return;
@@ -469,8 +471,8 @@ export function SectionEngagementBar({ issueSlug, pageSlug, sectionId, sectionSl
         {enabled.reactions ? (
           <div className="xp-engagement__reaction-wrap" onPointerEnter={() => setReactionOpen(true)} onPointerLeave={() => setReactionOpen(false)}>
             <button type="button" className={`xp-engagement__action ${summary.viewerReaction ? "is-active" : ""}`} onClick={() => chooseReaction(summary.viewerReaction ?? "like")} aria-label={summary.viewerReaction ? `Remove ${selectedReaction.label} reaction` : "React to this story"}>
-              <SelectedReactionIcon size={variant === "inline" ? 12 : 17} />
-              {variant === "inline" ? <span>{compactCount(summary.totalReactions)}</span> : <span>{summary.viewerReaction ? selectedReaction.label : "Like"}</span>}
+              <SelectedReactionIcon size={variant === "inline" || variant === "dock" ? 12 : 17} />
+              {variant === "inline" || variant === "dock" ? <span>{compactCount(summary.totalReactions)}</span> : <span>{summary.viewerReaction ? selectedReaction.label : "Like"}</span>}
             </button>
             <div className={`xp-engagement__reactions ${reactionOpen ? "is-open" : ""}`} role="menu" aria-hidden={!reactionOpen}>
               {(Object.keys(reactionMeta) as Reaction[]).map((reaction, index) => {
