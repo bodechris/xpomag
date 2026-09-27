@@ -1152,6 +1152,15 @@ export function MagazineReader({
     }
 
     guide.dataset.visible = "true";
+
+    const target = event.target instanceof Element ? event.target : null;
+    const videoTarget = target?.closest(".xp-youtube-video");
+    if (videoTarget) {
+      guide.dataset.mode = "video";
+      guide.dataset.label = "Play Video";
+      return;
+    }
+
     if (isInteractiveTarget(event.target)) {
       guide.dataset.mode = "interactive";
       guide.dataset.label = "";
