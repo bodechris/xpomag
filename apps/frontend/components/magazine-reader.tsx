@@ -1,6 +1,6 @@
 "use client";
 
-import { buildMasterSpreadsFromPages, MagazinePageRenderer, MagazineSpreadLeaf, type ComposerNode, type MagazineMasterSpread, type MagazinePageDefinition, type MagazineSpreadDefinition } from "@xpomag/magazine";
+import { buildMasterSpreadsFromPages, MagazinePageRenderer, MagazineSpreadCanvas, MagazineSpreadLeaf, type ComposerNode, type DesignElementNode, type MagazineMasterSpread, type MagazinePageDefinition, type MagazineSpreadDefinition } from "@xpomag/magazine";
 import { ArrowLeft, ArrowRight, BookOpen, LockKeyhole, Maximize2, Menu, Minimize2, Pause, Play, RotateCcw, X } from "lucide-react";
 import { MagazineEngagementDock } from "./magazine-engagement-dock";
 import type { CSSProperties, MouseEvent as ReactMouseEvent, PointerEvent as ReactPointerEvent } from "react";
@@ -25,6 +25,33 @@ const MOTION_MS = 560;
 const TURN_THRESHOLD = 0.22;
 const FLICK_DISTANCE = 44;
 const FLICK_VELOCITY = 0.34;
+
+const MAGAZINE_PAGE_CACHE = new Map<string, MagazinePageDefinition>();
+const MAGAZINE_ASSET_CACHE = new Set<string>();
+
+function collectNodeAssetUrls(nodes: DesignElementNode[]): string[] {
+  const urls: string[] = [];
+  const visit = (node: DesignElementNode) => {
+    if (node.type === "image" && typeof node.props?.src === "string") urls.push(node.props.src);
+    if (node.type === "background" && Array.isArray(node.props?.layers)) {
+      for (const layer of node.props.layers as Array<Record<string, unknown>>) {
+        if (typeof layer?.src === "string") urls.push(layer.src);
+      }
+    }
+    node.children?.forEach(visit);
+  };
+  nodes.forEach(visit);
+  return urls;
+}
+
+function preloadImageOnce(src: string) {
+  if (!src || MAGAZINE_ASSET_CACHE.has(src) || typeof window === "undefined") return;
+  MAGAZINE_ASSET_CACHE.add(src);
+  const image = new Image();
+  image.decoding = "async";
+  image.src = src;
+}
+
 
 const INTERACTIVE_SELECTOR = [
   "a",
@@ -544,6 +571,15 @@ export function MagazineReader({
     const cached = loadedPagesRef.current[manifest.slug];
     if (cached) return cached;
 
+    const cacheKey = `${issue.slug}:${manifest.slug}`;
+    const sessionCached = MAGAZINE_PAGE_CACHE.get(cacheKey);
+    if (sessionCached) {
+      const next = { ...loadedPagesRef.current, [manifest.slug]: sessionCached };
+      loadedPagesRef.current = next;
+      setLoadedPages(next);
+      return sessionCached;
+    }
+
     const existingRequest = pageRequestsRef.current.get(manifest.slug);
     if (existingRequest) return existingRequest;
 
@@ -556,6 +592,7 @@ export function MagazineReader({
         return await response.json() as MagazinePageDefinition;
       })
       .then((page) => {
+        MAGAZINE_PAGE_CACHE.set(`${issue.slug}:${page.slug}`, page);
         const next = { ...loadedPagesRef.current, [page.slug]: page };
         loadedPagesRef.current = next;
         setLoadedPages(next);
@@ -712,24 +749,59 @@ export function MagazineReader({
     if (!spread || motion) return;
     let cancelled = false;
 
-    void ensureSpreadLoaded(spread).then((ready) => {
-      if (!ready || cancelled) return;
-      const keepSlugs = new Set(
-        spread.pageIndexes
-          .map((pageIndex) => issue.pages[pageIndex]?.slug)
-          .filter((slug): slug is string => Boolean(slug)),
+    const prepareSpreadAssets = (masterSpread: MagazineMasterSpread) => {
+      masterSpread.pageIndexes.forEach((pageIndex) => {
+        const manifest = issue.pages[pageIndex];
+        if (!manifest) return;
+        const page = loadedPagesRef.current[manifest.slug];
+        if (page) {
+          page.resources?.images?.forEach((asset) => preloadImageOnce(asset.src));
+          page.sections.forEach((section) => {
+            section.resources?.images?.forEach((asset) => preloadImageOnce(asset.src));
+            collectNodeAssetUrls(section.elements).forEach(preloadImageOnce);
+          });
+        }
+      });
+
+      const pageIds = masterSpread.pageIndexes
+        .map((pageIndex) => issue.pages[pageIndex]?.id)
+        .filter((id): id is string => Boolean(id));
+      const nativeSpread = issue.spreads?.find((candidate) =>
+        candidate.pageIds?.length === pageIds.length &&
+        candidate.pageIds.every((id, index) => id === pageIds[index]));
+      nativeSpread?.resources?.images?.forEach((asset) => preloadImageOnce(asset.src));
+      nativeSpread?.pieces.forEach((piece) => {
+        piece.resources?.images?.forEach((asset) => preloadImageOnce(asset.src));
+        collectNodeAssetUrls(piece.elements).forEach(preloadImageOnce);
+      });
+    };
+
+    const current = spreads[safeSpreadIndex];
+    const previous = spreads[safeSpreadIndex - 1];
+    const next = spreads[safeSpreadIndex + 1];
+
+    void (async () => {
+      if (current) {
+        await ensureSpreadLoaded(current);
+        if (cancelled) return;
+        prepareSpreadAssets(current);
+      }
+
+      // Only warm the immediate neighbours. Nothing else in the issue is
+      // fetched or decoded until the reader gets close to it.
+      await Promise.all(
+        [previous, next].filter((item): item is MagazineMasterSpread => Boolean(item))
+          .map(async (item) => {
+            await ensureSpreadLoaded(item);
+            if (!cancelled) prepareSpreadAssets(item);
+          }),
       );
-      const next = Object.fromEntries(
-        Object.entries(loadedPagesRef.current).filter(([slug]) => keepSlugs.has(slug)),
-      );
-      loadedPagesRef.current = next;
-      setLoadedPages(next);
-    });
+    })();
 
     return () => {
       cancelled = true;
     };
-  }, [ensureSpreadLoaded, issue.pages, motion, safeSpreadIndex, singlePageMode, spread]);
+  }, [ensureSpreadLoaded, issue.pages, issue.spreads, motion, safeSpreadIndex, spread, spreads]);
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
