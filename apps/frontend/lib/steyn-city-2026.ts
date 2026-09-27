@@ -3,7 +3,7 @@ import type {
   MagazineGlobalDefinition,
   MagazinePageDefinition,
   MagazineSection,
-  type MagazineSpreadDefinition,
+  MagazineSpreadDefinition,
 } from "@xpomag/magazine";
 
 type Tone = {
