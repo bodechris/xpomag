@@ -609,7 +609,7 @@ function coverPage(issueId: string, tone: Tone): MagazinePageDefinition {
       overflow: "hidden",
       background: "#0c2017",
       isolation: "isolate",
-    }, false),
+    }, true),
   ]);
 }
 
@@ -712,7 +712,7 @@ function insideFrontGalleryPage(issueId: string): MagazinePageDefinition {
           overflow: "hidden",
           background: "#fff",
         },
-        false,
+        true,
       ),
     ],
   );
@@ -904,7 +904,7 @@ function insideFrontPropertyPage(issueId: string): MagazinePageDefinition {
           overflow: "hidden",
           background: "#fbfaf8",
         },
-        false,
+        true,
       ),
     ],
   );
@@ -964,10 +964,10 @@ function cityLivingSpread(issueId: string): MagazineSpreadDefinition {
       region: "spread",
       gutterBehaviour: "cross",
       engagement: {
-        reactions: false,
-        comments: false,
+        reactions: true,
+        comments: true,
         share: true,
-        save: false,
+        save: true,
       },
       style: {
         position: "absolute",
@@ -1228,10 +1228,10 @@ function bentleyAdvertSpread(issueId: string): MagazineSpreadDefinition {
       region: "spread",
       gutterBehaviour: "cross",
       engagement: {
-        reactions: false,
-        comments: false,
+        reactions: true,
+        comments: true,
         share: true,
-        save: false,
+        save: true,
       },
       style: {
         position: "absolute",
@@ -1486,7 +1486,7 @@ function contentsGolfSpread(issueId: string): MagazineSpreadDefinition {
       kind: "feature",
       region: "spread",
       gutterBehaviour: "cross",
-      engagement: { reactions: false, comments: false, share: true, save: true },
+      engagement: { reactions: true, comments: true, share: true, save: true },
       style: {
         position: "absolute",
         inset: 0,
