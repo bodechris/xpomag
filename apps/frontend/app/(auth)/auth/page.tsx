@@ -4,6 +4,7 @@ import { FormEvent, Suspense, useState } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { authClient } from "../../../lib/auth-client"
 import { accountFetch } from "../../../lib/account-api"
+import { FloatingSiteNav } from "../../../components/floating-site-nav"
 
 type Mode = "signin" | "signup"
 
@@ -113,11 +114,8 @@ function AuthPageContent() {
 
   return (
     <main className="xp-auth">
+      <FloatingSiteNav cityLabel="ROSEBANK + SANDTON" />
       <section className="xp-auth__left">
-        <a className="xp-brand" href="/">
-          XpoMag
-          <span className="xp-brand__city">ROSEBANK + SANDTON</span>
-        </a>
 
         <div className="xp-auth__hero">
           <p className="xp-eyebrow">YOUR CITY, CURATED</p>
