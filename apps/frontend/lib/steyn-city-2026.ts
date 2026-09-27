@@ -5546,21 +5546,38 @@ function rentalCheninSpread(issueId: string): MagazineSpreadDefinition {
         ],
       },
 
-      mediaPiece(
-        "steyn-wine-bottle-piece",
-        "wine-bottle",
-        "Spier Chenin Blanc bottle",
-        image("wine-bottle-image", wineBottle, "Spier Chenin Blanc bottle", {
+      {
+        id: "steyn-wine-bottle-piece",
+        slug: "wine-bottle",
+        title: "Spier Chenin Blanc bottle",
+        kind: "feature",
+        region: "spread",
+        gutterBehaviour: "clip",
+        engagement: noEngagement,
+        style: {
           position: "absolute",
-          inset: 0,
-          width: "100%",
-          height: "100%",
-          objectFit: "contain",
-          objectPosition: "center bottom",
-        }),
-        { position: "absolute", right: "3.1%", top: "54.2%", width: "10.5%", height: "26.5%", zIndex: 7, background: "transparent" },
-        false,
-      ),
+          right: "2.5%",
+          top: "52.2%",
+          width: "12.8%",
+          height: "29.2%",
+          zIndex: 7,
+          overflow: "visible",
+          background: "transparent",
+        },
+        elements: [
+          image("wine-bottle-image", wineBottle, "Spier Chenin Blanc bottle", {
+            position: "absolute",
+            left: "50%",
+            top: "50%",
+            width: "122%",
+            height: "122%",
+            transform: "translate(-50%, -50%)",
+            objectFit: "contain",
+            objectPosition: "center center",
+            background: "transparent",
+          }),
+        ],
+      },
 
       {
         id: "steyn-rental-chenin-mobile-left-piece",
@@ -5694,7 +5711,7 @@ function rentalCheninSpread(issueId: string): MagazineSpreadDefinition {
             width: "100%", height: "9rem", objectFit: "cover", marginBottom: ".7rem",
           }),
           image("wine-mobile-bottle", wineBottle, "Spier Chenin Blanc bottle", {
-            width: "6.5rem", height: "13rem", objectFit: "contain", margin: "0 auto",
+            width: "8rem", height: "15rem", objectFit: "contain", margin: "0 auto", background: "transparent",
           }),
         ],
       },
