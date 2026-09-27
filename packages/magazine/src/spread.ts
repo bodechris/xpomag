@@ -98,3 +98,45 @@ export function buildMasterSpreadsFromPages(
 
   return [cover, ...rest];
 }
+
+
+/**
+ * Transitional data adapter for page-authored issues. It gives every legacy
+ * magazine canonical spread records immediately while preserving its page
+ * definitions as leaf content until that issue is redesigned natively.
+ */
+export function legacyPagesToSpreadDefinitions(
+  issueId: string,
+  pages: MagazinePageDefinition[],
+): MagazineSpreadDefinition[] {
+  if (!pages.length) return [];
+
+  const definitions: MagazineSpreadDefinition[] = [
+    {
+      id: `spread-${pages[0]!.id}`,
+      issueId,
+      slug: `spread-${pages[0]!.slug}`,
+      title: pages[0]!.title,
+      kind: pages[0]!.kind,
+      pageIds: [pages[0]!.id],
+      pieces: [],
+    },
+  ];
+
+  for (let index = 1; index < pages.length; index += 2) {
+    const left = pages[index];
+    const right = pages[index + 1];
+    if (!left) continue;
+    definitions.push({
+      id: `spread-${left.id}-${right?.id ?? "end"}`,
+      issueId,
+      slug: `spread-${left.slug}-${right?.slug ?? "end"}`,
+      title: right ? `${left.title} / ${right.title}` : left.title,
+      kind: left.kind === right?.kind ? left.kind : "mixed",
+      pageIds: [left.id, right?.id].filter((id): id is string => Boolean(id)),
+      pieces: [],
+    });
+  }
+
+  return definitions;
+}
