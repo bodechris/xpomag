@@ -1816,17 +1816,20 @@ function golfTraditionSpread(issueId: string): MagazineSpreadDefinition {
 
         text("golf-tradition-title", "A NEW TAKE ON\nAN ESTABLISHED\nTRADITION", {
           position: "absolute",
-          left: "5.2%",
+          left: "5.4%",
           top: "11.7%",
-          width: "28%",
+          width: "27.2%",
+          maxWidth: "27.2%",
+          boxSizing: "border-box",
           color: "#173f3e",
           fontFamily: "var(--xp-font-editorial)",
-          fontSize: "clamp(1.65rem,3.3vw,3.45rem)",
+          fontSize: "clamp(1.2rem,2.7vw,2.85rem)",
           fontWeight: 400,
-          lineHeight: .93,
-          letterSpacing: ".035em",
+          lineHeight: .96,
+          letterSpacing: ".025em",
           whiteSpace: "pre-line",
           textAlign: "center",
+          overflow: "visible",
         }, "h2"),
 
         text("golf-tradition-section-label", "THE START OF IT ALL", {
