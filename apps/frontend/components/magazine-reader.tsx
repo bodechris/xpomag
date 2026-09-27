@@ -1,6 +1,6 @@
 "use client";
 
-import { buildMasterSpreadsFromPages, MagazinePageRenderer, type ComposerNode, type MagazineMasterSpread, type MagazinePageDefinition } from "@xpomag/magazine";
+import { buildMasterSpreadsFromPages, MagazinePageRenderer, MagazineSpreadLeaf, type ComposerNode, type MagazineMasterSpread, type MagazinePageDefinition, type MagazineSpreadDefinition } from "@xpomag/magazine";
 import { ArrowLeft, ArrowRight, BookOpen, LockKeyhole, Maximize2, Menu, Minimize2, Pause, Play, RotateCcw, X } from "lucide-react";
 import { MagazineEngagementDock } from "./magazine-engagement-dock";
 import type { CSSProperties, MouseEvent as ReactMouseEvent, PointerEvent as ReactPointerEvent } from "react";
@@ -1038,6 +1038,15 @@ export function MagazineReader({
     hiddenPageIndex?: number,
   ) => {
     const isSingle = spreadToRender.pageIndexes.length === 1;
+    const spreadPageIds = spreadToRender.pageIndexes
+      .map((pageIndex) => issue.pages[pageIndex]?.id)
+      .filter((id): id is string => Boolean(id));
+    const nativeSpread = !isSingle
+      ? issue.spreads?.find((candidate) =>
+          candidate.pieces.length > 0 &&
+          candidate.pageIds?.length === spreadPageIds.length &&
+          candidate.pageIds.every((id, index) => id === spreadPageIds[index]))
+      : undefined;
     return (
       <div
         className={`xp-magazine__spread-layer xp-magazine__spread-layer--${role} ${isSingle ? "is-single" : "is-spread"}`}
@@ -1056,7 +1065,24 @@ export function MagazineReader({
               aria-busy={!page}
             >
               <div className="xp-magazine__paper">
-                {!page ? (
+                {nativeSpread ? (
+                  <MagazineSpreadLeaf
+                    spread={nativeSpread as MagazineSpreadDefinition}
+                    side={slot === 0 ? "left" : "right"}
+                    globalElements={issue.designElements}
+                    renderEngagement={(piece) => (
+                      <SectionEngagementBar
+                        issueSlug={issue.slug}
+                        pageSlug={manifest.slug}
+                        sectionId={piece.id}
+                        sectionSlug={piece.slug}
+                        authenticated={viewerAuthenticated}
+                        config={piece.engagement}
+                        appearance={["feature", "advert", "closing"].includes(nativeSpread.kind ?? "") ? "light" : "dark"}
+                      />
+                    )}
+                  />
+                ) : !page ? (
                   <div className="xp-magazine__page-loading" role="status" aria-label={`Loading ${manifest.title}`}>
                     <span />
                     <span />
