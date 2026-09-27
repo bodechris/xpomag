@@ -39,11 +39,25 @@ export function DesignElement({ node, registry, renderComposerNodeOverlay, onCom
     case "text": {
       const as = typeof props.as === "string" ? props.as : "p";
       const text = typeof props.text === "string" ? props.text : "";
+      const dropCap = props.dropCap === true && text.length > 0;
+      const dropCapColor = typeof props.dropCapColor === "string" ? props.dropCapColor : undefined;
+      const dropCapLines = typeof props.dropCapLines === "number" ? Math.max(3, Math.min(6, props.dropCapLines)) : 5;
+      const dropCapStyle = dropCapColor ? ({ "--xp-drop-cap-color": dropCapColor } as CSSProperties) : undefined;
+      const paragraph = dropCap ? (
+        <p
+          data-drop-cap="true"
+          data-drop-cap-lines={dropCapLines}
+          style={{ ...dropCapStyle, ...style }}
+        >
+          <span className="xp-editorial-drop-cap" aria-hidden="true">{text.charAt(0)}</span>
+          {text.slice(1)}
+        </p>
+      ) : <p style={style}>{text}</p>;
       if (as === "h1") return <h1 style={style}>{text}</h1>;
       if (as === "h2") return <h2 style={style}>{text}</h2>;
       if (as === "h3") return <h3 style={style}>{text}</h3>;
       if (as === "span") return <span style={style}>{text}</span>;
-      return <p style={style}>{text}</p>;
+      return paragraph;
     }
     case "brandMark": {
       const label = typeof props.label === "string" ? props.label : "XpoMag";
