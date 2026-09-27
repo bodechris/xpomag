@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { getDemoMagazineBySlug } from "../lib/demo-magazine";
 import { SITE_URL } from "../lib/seo";
+import { isStandaloneArticleKind } from "../lib/magazine-reader-data";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const issues = [
@@ -15,9 +16,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
       issue.pages
         .filter((page) => page.access === "public")
         .map((page) => ({
-          url: page.kind === "cover"
-            ? `${SITE_URL}/magazine/${issue.slug}/${page.slug}`
-            : `${SITE_URL}/article/${issue.slug}/${page.slug}`,
+          url: isStandaloneArticleKind(page.kind)
+            ? `${SITE_URL}/article/${issue.slug}/${page.slug}`
+            : `${SITE_URL}/magazine/${issue.slug}/${page.slug}`,
           lastModified: now,
           changeFrequency: "monthly" as const,
           priority: page.kind === "cover" ? 0.9 : 0.75,
