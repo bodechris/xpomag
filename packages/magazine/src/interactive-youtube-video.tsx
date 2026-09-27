@@ -136,11 +136,25 @@ export function InteractiveYouTubeVideo({
         data-magazine-interactive
         data-no-page-turn
         className="xp-youtube-video"
+        role="button"
+        tabIndex={0}
+        aria-label={"Play " + title}
+        onClick={(event) => {
+          if (event.target instanceof Element && event.target.closest("button")) return;
+          openModal();
+        }}
+        onKeyDown={(event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            openModal();
+          }
+        }}
         style={{
           position: "relative",
           overflow: "hidden",
           containerType: "size",
           background: "#000",
+          cursor: "pointer",
           ...frameStyle,
         }}
       >
