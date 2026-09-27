@@ -3069,6 +3069,498 @@ function cyclingSpread(issueId: string): MagazineSpreadDefinition {
   };
 }
 
+
+function seniorVillageSpread(issueId: string): MagazineSpreadDefinition {
+  const hero = "https://www.steyncity.co.za/wp-content/uploads/2025/12/City-Centre-luxe-apartment-living.webp";
+  const apartmentTwo = "https://www.steyncity.co.za/wp-content/uploads/2026/09/SV-2bedroom-scaled.webp";
+  const apartmentThree = "https://www.steyncity.co.za/wp-content/uploads/2026/09/SV-3bedroom-scaled.webp";
+  const lounge = "https://www.steyncity.co.za/wp-content/uploads/2025/12/City-Centre-Show-Apartment-Lounge-patio-view.webp";
+
+  const seniorVillageVideo = "https://www.youtube.com/embed/WmoNsAdM7-I?autoplay=1&mute=1&controls=1&playsinline=1&rel=0";
+  const apartmentVideo = "https://www.youtube.com/embed/qKiizstxMXU?autoplay=1&mute=1&controls=1&playsinline=1&rel=0";
+
+  const image = (
+    id: string,
+    src: string,
+    alt: string,
+    style: DesignElementNode["style"] = {},
+  ): DesignElementNode => ({
+    id,
+    type: "image",
+    props: { src, alt, loading: "eager", fetchPriority: "high" },
+    style: { display: "block", objectFit: "cover", ...style },
+  });
+
+  const video = (
+    id: string,
+    src: string,
+    title: string,
+    style: DesignElementNode["style"] = {},
+  ): DesignElementNode => ({
+    id,
+    type: "video",
+    props: {
+      src,
+      title,
+      cover: true,
+      interactive: true,
+      autoplay: true,
+      muted: true,
+      loop: true,
+      controls: true,
+    },
+    style: { display: "block", width: "100%", height: "100%", ...style },
+  });
+
+  const engagement = { reactions: true, comments: true, share: true, save: true };
+  const noEngagement = { reactions: false, comments: false, share: false, save: false };
+
+  const mediaPiece = (
+    id: string,
+    slug: string,
+    title: string,
+    node: DesignElementNode,
+    style: Record<string, unknown>,
+    withEngagement = false,
+  ): any => ({
+    id,
+    slug,
+    title,
+    kind: "feature",
+    region: "spread",
+    gutterBehaviour: "clip",
+    engagement: withEngagement ? engagement : noEngagement,
+    style: { ...style, overflow: "hidden", background: "#e7e1da" },
+    elements: [node],
+  });
+
+  return {
+    id: "steyn-senior-village-spread",
+    issueId,
+    slug: "senior-village-feature",
+    title: "Glowing Through the Golden Years",
+    kind: "feature",
+    pageIds: ["senior-village", "senior-village-ii"],
+    style: { background: "#faf8f4" },
+    pieces: [
+      {
+        id: "steyn-senior-editorial-piece",
+        slug: "senior-editorial",
+        title: "Glowing Through the Golden Years",
+        kind: "article",
+        region: "spread",
+        gutterBehaviour: "cross",
+        engagement,
+        style: {
+          position: "absolute",
+          inset: 0,
+          overflow: "hidden",
+          background: "#faf8f4",
+        },
+        elements: [
+          image("senior-hero", hero, "Steyn City Senior Village apartment living", {
+            position: "absolute",
+            left: 0,
+            top: 0,
+            width: "50%",
+            height: "38%",
+            objectFit: "cover",
+            objectPosition: "center 52%",
+            zIndex: 1,
+          }),
+          {
+            id: "senior-hero-shade",
+            type: "frame",
+            style: {
+              position: "absolute",
+              left: 0,
+              top: 0,
+              width: "50%",
+              height: "38%",
+              zIndex: 2,
+              pointerEvents: "none",
+              background: "linear-gradient(90deg,rgba(26,20,18,.36),rgba(26,20,18,.06) 72%)",
+            },
+          },
+          text("senior-title", "GLOWING\nTHROUGH\nTHE GOLDEN\nYEARS", {
+            position: "absolute",
+            left: "4.5%",
+            top: "12.8%",
+            width: "22%",
+            color: "#fff",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(1.15rem,2.18vw,2.5rem)",
+            fontWeight: 500,
+            lineHeight: .94,
+            letterSpacing: ".012em",
+            whiteSpace: "pre-line",
+            textShadow: "0 2px 14px rgba(0,0,0,.28)",
+            zIndex: 4,
+          }, "h2"),
+          {
+            id: "senior-quote-bubble",
+            type: "frame",
+            style: {
+              position: "absolute",
+              left: "31%",
+              top: "23%",
+              width: "11.7%",
+              aspectRatio: "1 / 1",
+              borderRadius: "50%",
+              background: "#058db9",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: ".95rem",
+              zIndex: 8,
+              boxShadow: "0 8px 22px rgba(0,0,0,.08)",
+            },
+            children: [
+              text("senior-quote-copy", "IT WASN’T LONG\nAGO THAT “GOING\nINTO A RETIREMENT HOME”\nMEANT CRAMPED COTTAGES\nAND MEALS THAT WEREN’T\nALL THAT DIFFERENT FROM\nBOARDING SCHOOL FARE.\nSTEYN CITY’S MAGNIFICENT\nSENIOR VILLAGE SHOWS\nJUST HOW MUCH TIMES\nHAVE CHANGED", {
+                color: "#fff",
+                fontFamily: "var(--xp-font-grotesk)",
+                fontSize: "clamp(.29rem,.42vw,.47rem)",
+                fontWeight: 760,
+                lineHeight: 1.18,
+                textAlign: "center",
+                whiteSpace: "pre-line",
+              }, "span"),
+            ],
+          },
+          {
+            id: "senior-white-scoop",
+            type: "frame",
+            style: {
+              position: "absolute",
+              left: "6.5%",
+              top: "34%",
+              width: "14%",
+              height: "8%",
+              background: "#faf8f4",
+              borderRadius: "50% 50% 0 0 / 100% 100% 0 0",
+              zIndex: 5,
+            },
+          },
+          image("senior-small-portrait", lounge, "Senior Village lifestyle portrait detail", {
+            position: "absolute",
+            left: "27.2%",
+            top: "35.2%",
+            width: "7.3%",
+            aspectRatio: "1 / 1",
+            borderRadius: "50%",
+            objectFit: "cover",
+            objectPosition: "47% 50%",
+            outline: "5px solid rgba(255,255,255,.95)",
+            boxShadow: "0 7px 18px rgba(0,0,0,.16)",
+            zIndex: 9,
+          }),
+          {
+            id: "senior-copy-columns",
+            type: "grid",
+            style: {
+              position: "absolute",
+              left: "4.5%",
+              top: "42%",
+              width: "42.5%",
+              bottom: "5.2%",
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr 1fr",
+              gap: "1.05rem",
+              zIndex: 6,
+            },
+            children: [
+              {
+                id: "senior-copy-a",
+                type: "text",
+                props: {
+                  as: "p",
+                  text: "Chrissie Vermaak, Care Manager at TOTALCARE, the appointed healthcare provider managing the Senior Village, explains that today living at an address that is equivalent to staying at a nice hotel is comparable to saying at your favourite hotel: ‘It’s all about lifestyle’. People want to be active from well into their golden years; they want freedom and independence without the effort of maintaining a household.\n\nLIVING YOUR BEST LIFE\n\nSteyn City’s Senior Village ticks all of those boxes. It brings beautifully considered homes together with social spaces, wellness and care close at hand, so residents can stay independent without giving up convenience or community.",
+                  dropCap: true,
+                  dropCapLines: 4,
+                  dropCapColor: "#2a2421",
+                },
+                style: {
+                  color: "#2f2925",
+                  fontFamily: "var(--xp-font-editorial)",
+                  fontSize: "clamp(.46rem,.60vw,.63rem)",
+                  lineHeight: 1.46,
+                  whiteSpace: "pre-line",
+                },
+              },
+              text("senior-copy-b", "The idea is to allow people to live independently, while offering services that increase quality of life as they age. Home-based support, healthcare and access to the on-site care centre make it possible to add help gradually as needs change.\n\nThe wider Senior Village is designed around easy movement, comfortable shared spaces and a daily rhythm that still feels like home. Residents remain connected to Steyn City’s parkland, dining, retail and wellness facilities.", {
+                color: "#2f2925",
+                fontFamily: "var(--xp-font-editorial)",
+                fontSize: "clamp(.46rem,.60vw,.63rem)",
+                lineHeight: 1.46,
+                whiteSpace: "pre-line",
+              }),
+              text("senior-copy-c", "A GOLDEN THREAD\n\nThe accent on community ties the Senior Village experience together. There is dignity in the way care sits quietly in the background while everyday life stays social, active and personal.\n\nSTAGGERED CARE TO MEET YOUR NEEDS\n\nSupport can increase as needs change, from everyday wellness and home-based assistance through to professional nursing and access to the dedicated care facility.", {
+                color: "#2f2925",
+                fontFamily: "var(--xp-font-editorial)",
+                fontSize: "clamp(.46rem,.60vw,.63rem)",
+                lineHeight: 1.46,
+                whiteSpace: "pre-line",
+              }),
+            ],
+          },
+
+          text("senior-right-kicker", "SENIOR VILLAGE │", {
+            position: "absolute",
+            right: "2.6%",
+            top: "6.6%",
+            width: "11.5%",
+            color: "#5a524c",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(.48rem,.66vw,.72rem)",
+            letterSpacing: ".05em",
+          }, "span"),
+          text("senior-right-heading", "WHAT MAKES\nSTEYN CITY’S SENIOR\nVILLAGE SO SPECIAL?", {
+            position: "absolute",
+            right: "2.6%",
+            top: "13.5%",
+            width: "11.4%",
+            color: "#39322d",
+            fontFamily: "var(--xp-font-grotesk)",
+            fontSize: "clamp(.33rem,.47vw,.53rem)",
+            fontWeight: 820,
+            lineHeight: 1.18,
+            letterSpacing: ".1em",
+            whiteSpace: "pre-line",
+          }, "h3"),
+          text("senior-right-list", "• 100 apartment homes with integrated kitchens\n\n• Sky Bar & Lounge, recreation spaces and restaurant\n\n• Frail care and assisted care, with support available on site\n\n• Hydro Centre with heated pool, spa bath, sauna and steam room\n\n• Fitness centre and movement studio\n\n• Gardens, promenades and wider estate facilities\n\n• 24-hour care available through the dedicated care facility", {
+            position: "absolute",
+            right: "2.6%",
+            top: "20.2%",
+            width: "11.4%",
+            color: "#463f3a",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(.30rem,.43vw,.47rem)",
+            lineHeight: 1.44,
+            whiteSpace: "pre-line",
+          }),
+          {
+            id: "senior-price-tag",
+            type: "frame",
+            style: {
+              position: "absolute",
+              right: "5.4%",
+              bottom: "24%",
+              width: "7.1%",
+              minHeight: "5.3%",
+              padding: ".55rem .4rem",
+              background: "#078fb7",
+              clipPath: "polygon(0 0,100% 0,100% 78%,50% 100%,0 78%)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              zIndex: 7,
+            },
+            children: [
+              text("senior-price-copy", "Apartment\nhomes from\nR1.9m", {
+                color: "#fff",
+                fontFamily: "var(--xp-font-editorial)",
+                fontSize: "clamp(.33rem,.48vw,.52rem)",
+                fontStyle: "italic",
+                fontWeight: 700,
+                lineHeight: 1.05,
+                textAlign: "center",
+                whiteSpace: "pre-line",
+              }, "span"),
+            ],
+          },
+          text("senior-folio-left", "14", {
+            position: "absolute", left: "4.9%", bottom: "2.2%", color: "#2e2925",
+            fontFamily: "var(--xp-font-grotesk)", fontSize: ".45rem", fontWeight: 800,
+          }, "span"),
+          text("senior-brand-left", "STEYN CITY", {
+            position: "absolute", left: "8.0%", bottom: "2.2%", color: "#2e2925",
+            fontFamily: "var(--xp-font-grotesk)", fontSize: ".42rem", fontWeight: 720, letterSpacing: ".08em",
+          }, "span"),
+          text("senior-brand-right", "STEYN CITY", {
+            position: "absolute", right: "6.0%", bottom: "2.2%", color: "#fff",
+            fontFamily: "var(--xp-font-grotesk)", fontSize: ".42rem", fontWeight: 720, letterSpacing: ".08em",
+            textShadow: "0 1px 8px rgba(0,0,0,.35)",
+          }, "span"),
+          text("senior-folio-right", "15", {
+            position: "absolute", right: "3.0%", bottom: "2.2%", color: "#fff",
+            fontFamily: "var(--xp-font-grotesk)", fontSize: ".45rem", fontWeight: 800,
+            textShadow: "0 1px 8px rgba(0,0,0,.35)",
+          }, "span"),
+        ],
+      },
+
+      mediaPiece(
+        "steyn-senior-top-video-piece",
+        "senior-village-video",
+        "Inside Steyn City Senior Village",
+        video("senior-top-video", seniorVillageVideo, "A look at Steyn City Senior Village", {
+          position: "absolute", inset: 0,
+        }),
+        { position: "absolute", left: "50%", top: 0, width: "34.6%", height: "34.2%", zIndex: 6 },
+        true,
+      ),
+
+      mediaPiece(
+        "steyn-senior-frail-care-image-piece",
+        "senior-frail-care",
+        "Frail care facility",
+        image("senior-frail-care-image", apartmentTwo, "Senior Village apartment interior", {
+          position: "absolute", inset: 0, width: "100%", height: "100%", objectPosition: "center 52%",
+        }),
+        { position: "absolute", left: "50%", top: "36.1%", width: "16.3%", height: "21.4%", zIndex: 6 },
+        false,
+      ),
+
+      mediaPiece(
+        "steyn-senior-living-image-piece",
+        "senior-living-area",
+        "Open plan living area",
+        image("senior-living-image", apartmentThree, "Steyn City Senior Village living area", {
+          position: "absolute", inset: 0, width: "100%", height: "100%", objectPosition: "center center",
+        }),
+        { position: "absolute", left: "67.6%", top: "36.1%", width: "16.9%", height: "21.4%", zIndex: 6 },
+        true,
+      ),
+
+      mediaPiece(
+        "steyn-senior-bottom-video-piece",
+        "senior-lifestyle-video",
+        "Steyn City apartment lifestyle",
+        video("senior-bottom-video", apartmentVideo, "Steyn City apartment lifestyle", {
+          position: "absolute", inset: 0,
+        }),
+        { position: "absolute", left: "50%", bottom: 0, width: "50%", height: "40.4%", zIndex: 5 },
+        false,
+      ),
+
+      {
+        id: "steyn-senior-mobile-left-piece",
+        slug: "senior-mobile-left",
+        title: "Glowing Through the Golden Years",
+        kind: "article",
+        region: "left",
+        gutterBehaviour: "clip",
+        engagement,
+        style: {
+          position: "absolute",
+          left: "2.8%",
+          top: "3.5%",
+          width: "44.4%",
+          height: "93%",
+          display: "none",
+          background: "#faf8f4",
+          zIndex: 70,
+          padding: "clamp(.95rem,3.8vw,1.4rem)",
+          overflow: "auto",
+        },
+        elements: [
+          text("senior-mobile-title", "GLOWING THROUGH\nTHE GOLDEN YEARS", {
+            color: "#2d2722",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(1.55rem,6.8vw,2.05rem)",
+            lineHeight: .94,
+            whiteSpace: "pre-line",
+            marginBottom: ".8rem",
+          }, "h2"),
+          image("senior-mobile-hero", hero, "Steyn City Senior Village", {
+            width: "100%", height: "12rem", objectFit: "cover", objectPosition: "center 52%",
+            marginBottom: ".85rem",
+          }),
+          text("senior-mobile-standfirst", "Independent living, beautifully designed homes and care close by when you need it.", {
+            color: "#078fb7",
+            fontFamily: "var(--xp-font-grotesk)",
+            fontSize: "clamp(1rem,3.9vw,1.16rem)",
+            fontWeight: 760,
+            lineHeight: 1.3,
+            marginBottom: ".8rem",
+          }),
+          {
+            id: "senior-mobile-copy",
+            type: "text",
+            props: {
+              as: "p",
+              text: "Steyn City’s Senior Village brings beautifully considered homes together with social spaces, wellness and professional care close at hand. Residents can keep their independence and daily rhythm while knowing support can increase gradually as their needs change.\n\nThe wider community remains part of the experience: parkland, dining, retail and wellness are all close by, keeping later life connected, active and personal.",
+              dropCap: true,
+              dropCapLines: 4,
+              dropCapColor: "#2d2722",
+            },
+            style: {
+              color: "#2f2925",
+              fontFamily: "var(--xp-font-editorial)",
+              fontSize: "clamp(1rem,3.8vw,1.14rem)",
+              lineHeight: 1.56,
+              whiteSpace: "pre-line",
+            },
+          },
+        ],
+      },
+
+      {
+        id: "steyn-senior-mobile-right-piece",
+        slug: "senior-mobile-right",
+        title: "Senior Village highlights",
+        kind: "feature",
+        region: "right",
+        gutterBehaviour: "clip",
+        engagement: noEngagement,
+        style: {
+          position: "absolute",
+          left: "52.8%",
+          top: "3.5%",
+          width: "44.4%",
+          height: "93%",
+          display: "none",
+          background: "#fbfaf8",
+          zIndex: 70,
+          padding: "clamp(.9rem,3.6vw,1.35rem)",
+          overflow: "auto",
+        },
+        elements: [
+          text("senior-mobile-kicker", "SENIOR VILLAGE", {
+            color: "#5a524c",
+            fontFamily: "var(--xp-font-grotesk)",
+            fontSize: ".78rem",
+            fontWeight: 800,
+            letterSpacing: ".13em",
+            marginBottom: ".65rem",
+          }, "span"),
+          video("senior-mobile-video-a", seniorVillageVideo, "Inside Steyn City Senior Village", {
+            width: "100%", height: "11.5rem", marginBottom: ".9rem",
+          }),
+          {
+            id: "senior-mobile-image-row",
+            type: "grid",
+            style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: ".55rem", marginBottom: ".9rem" },
+            children: [
+              image("senior-mobile-img-a", apartmentTwo, "Senior Village apartment", { width: "100%", height: "7.6rem", objectFit: "cover" }),
+              image("senior-mobile-img-b", lounge, "Steyn City apartment lounge", { width: "100%", height: "7.6rem", objectFit: "cover" }),
+            ],
+          },
+          text("senior-mobile-heading", "WHAT MAKES THE SENIOR VILLAGE SPECIAL?", {
+            color: "#39322d",
+            fontFamily: "var(--xp-font-grotesk)",
+            fontSize: ".82rem",
+            fontWeight: 820,
+            letterSpacing: ".08em",
+            lineHeight: 1.25,
+            marginBottom: ".55rem",
+          }, "h3"),
+          text("senior-mobile-list", "100 apartment homes, social and dining spaces, Hydro Centre and fitness facilities, home-based support, and access to the dedicated care centre — all within the wider Steyn City lifestyle.", {
+            color: "#463f3a",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(1rem,3.8vw,1.14rem)",
+            lineHeight: 1.52,
+            marginBottom: ".9rem",
+          }),
+          video("senior-mobile-video-b", apartmentVideo, "Steyn City apartment lifestyle", {
+            width: "100%", height: "11.5rem",
+          }),
+        ],
+      },
+    ],
+  };
+}
+
 function placeholderPage(
   issueId: string,
   pageNo: number,
@@ -3233,7 +3725,7 @@ export function getSteynCity2026Magazine(): MagazineGlobalDefinition {
         props: { label: "STEYN CITY" },
       },
     },
-    spreads: [cityLivingSpread(issueId), bentleyAdvertSpread(issueId), contentsGolfSpread(issueId), golfTraditionSpread(issueId), golfTraditionContinuationSpread(issueId), cyclingSpread(issueId)],
+    spreads: [cityLivingSpread(issueId), bentleyAdvertSpread(issueId), contentsGolfSpread(issueId), golfTraditionSpread(issueId), golfTraditionContinuationSpread(issueId), cyclingSpread(issueId), seniorVillageSpread(issueId)],
     pages,
   };
 }
