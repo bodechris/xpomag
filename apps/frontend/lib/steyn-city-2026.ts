@@ -1210,7 +1210,7 @@ function cityLivingSpread(issueId: string): MagazineSpreadDefinition {
 function bentleyAdvertSpread(issueId: string): MagazineSpreadDefinition {
   const poster = "/resources/studio/steyn/bentley-img-01.webp";
   const logo = "/resources/studio/steyn/bentley-logo-1.webp";
-  const videoSrc = "https://www.pexels.com/download/video/30787543/";
+  const videoSrc = "https://videos.pexels.com/video-files/30787543/13168478_3840_2160_25fps.mp4";
 
   return {
     id: "steyn-bentley-flying-spur-spread",
@@ -1248,6 +1248,7 @@ function bentleyAdvertSpread(issueId: string): MagazineSpreadDefinition {
             poster,
             title: "Bentley Flying Spur driving film",
             autoplay: true,
+            autoplayDelayMs: 4000,
             muted: true,
             loop: true,
             controls: false,
