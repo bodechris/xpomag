@@ -489,7 +489,8 @@ export function MagazineReader({
   const [spreadIndex, setSpreadIndex] = useState(0);
   const initialPageIndex = Math.max(0, issue.pages.findIndex((page) => page.slug === initialPageSlug));
   const [motion, setMotion] = useState<Motion | null>(null);
-  const [isFullscreen, setIsFullscreen] = useState(false);\n  const [readerMenuOpen, setReaderMenuOpen] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [readerMenuOpen, setReaderMenuOpen] = useState(false);
 
   // Keep the reader backwards-compatible during local HMR / staggered pulls.
   // Older server output can briefly render the new client component without
