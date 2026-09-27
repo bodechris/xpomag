@@ -4543,3 +4543,7 @@ html.xp-nav-open body {
 .xp-city-picker__menu button b{background:#111;color:#fff}
 .xp-city-picker__menu button em{background:#f2f0ea;color:#6d6a63}
 .xp-city-picker__menu>p{padding:16px!important;margin:0!important;font-size:14px!important}
+
+.xp-issue-picker__trigger{width:100%;min-height:49px;padding:12px 0;border:0;border-bottom:1px solid #aaa;background:transparent;display:flex;align-items:center;justify-content:space-between;text-align:left;font-size:16px;font-weight:600}
+.xp-issue-picker__trigger:hover,.xp-issue-picker__trigger[aria-expanded="true"]{border-color:#111}
+.xp-issue-picker__menu{max-height:320px}
