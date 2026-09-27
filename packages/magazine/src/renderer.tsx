@@ -74,6 +74,39 @@ export function DesignElement({ node, registry, renderComposerNodeOverlay, onCom
       const fetchPriority = props.fetchPriority === "high" || props.fetchPriority === "low" ? props.fetchPriority : "auto";
       return <img src={src} alt={alt} style={style} loading={loading} fetchPriority={fetchPriority} decoding="async" />;
     }
+    case "video": {
+      const src = typeof props.src === "string" ? props.src : "";
+      const title = typeof props.title === "string" ? props.title : "Magazine video";
+      const poster = typeof props.poster === "string" ? props.poster : undefined;
+      const autoplay = props.autoplay === true;
+      const muted = props.muted !== false;
+      const loop = props.loop === true;
+      if (!src) return null;
+      if (/youtube\.com|youtu\.be/.test(src)) {
+        return (
+          <iframe
+            src={src}
+            title={title}
+            style={{ border: 0, ...style }}
+            allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+            allowFullScreen
+          />
+        );
+      }
+      return (
+        <video
+          src={src}
+          title={title}
+          poster={poster}
+          autoPlay={autoplay}
+          muted={muted}
+          loop={loop}
+          playsInline
+          controls={props.controls !== false}
+          style={style}
+        />
+      );
+    }
     case "background": {
       const layers = Array.isArray(props.layers) ? props.layers.filter((layer): layer is Record<string, unknown> => Boolean(layer) && typeof layer === "object") : [];
       return (
