@@ -298,3 +298,5 @@ html, body { margin: 0; }
   .xp-auth__card h2 { font-size: 36px; }
   .xp-auth__hero p { font-size: 15px; }
 }
+
+.xp-recovery .xp-auth__left{background:radial-gradient(circle at 78% 18%,rgba(40,71,255,.11),transparent 26%),linear-gradient(180deg,#f6f4ee 0%,#ebe8df 100%)}.xp-recovery__back{display:inline-block;margin-top:26px;color:#111;font-size:12px;font-weight:700;text-decoration:none}.xp-recovery__back:hover{text-decoration:underline;text-underline-offset:4px}.xp-recovery__sent{display:grid;gap:8px;margin-top:26px;padding:20px;border:1px solid var(--xp-line);border-radius:16px;background:#faf9f6}.xp-recovery__sent span{font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--xp-muted)}.xp-recovery__sent strong{font-size:16px}.xp-recovery__sent button{width:max-content;margin-top:8px;padding:0;border:0;background:transparent;font:inherit;font-size:12px;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
