@@ -97,6 +97,40 @@ export function DesignElement({ node, registry, renderComposerNodeOverlay, onCom
       const loop = props.loop === true;
       if (!src) return null;
       if (/youtube\.com|youtu\.be/.test(src)) {
+        const cover = props.cover === true;
+        if (cover) {
+          return (
+            <div
+              data-design-element="video"
+              data-video-fit="cover"
+              style={{
+                position: "relative",
+                overflow: "hidden",
+                containerType: "size",
+                background: "#000",
+                ...style,
+              }}
+            >
+              <iframe
+                src={src}
+                title={title}
+                style={{
+                  position: "absolute",
+                  left: "50%",
+                  top: "50%",
+                  width: "max(100cqw, 177.7778cqh)",
+                  height: "max(100cqh, 56.25cqw)",
+                  maxWidth: "none",
+                  border: 0,
+                  transform: "translate(-50%, -50%)",
+                  pointerEvents: props.interactive === true ? "auto" : "none",
+                }}
+                allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+                allowFullScreen
+              />
+            </div>
+          );
+        }
         return (
           <iframe
             src={src}
