@@ -612,6 +612,303 @@ function coverPage(issueId: string, tone: Tone): MagazinePageDefinition {
   ]);
 }
 
+
+function steynPhoto(
+  id: string,
+  src: string,
+  alt: string,
+  style: DesignElementNode["style"] = {},
+): DesignElementNode {
+  return {
+    id,
+    type: "image",
+    props: { src, alt },
+    style: {
+      width: "100%",
+      height: "100%",
+      objectFit: "cover",
+      display: "block",
+      ...style,
+    },
+  };
+}
+
+function insideFrontGalleryPage(issueId: string): MagazinePageDefinition {
+  const root = "/resources/studio/steyn/city-living";
+
+  return page(
+    issueId,
+    "inside-front-gallery",
+    "City Living · Steyn City",
+    "advert",
+    "utility-full",
+    { bg: "#ffffff", ink: "#141414", accent: "#171717" },
+    [
+      section(
+        "inside-front-gallery-main",
+        "City Living Gallery",
+        "main",
+        [
+          grid(
+            "inside-front-gallery-grid",
+            [
+              steynPhoto(
+                "inside-front-aerial",
+                `${root}/aerial.svg`,
+                "Aerial view across Steyn City and its lagoon",
+                {
+                  gridColumn: "1 / -1",
+                  gridRow: "1 / span 6",
+                  objectPosition: "center 47%",
+                },
+              ),
+              steynPhoto(
+                "inside-front-terrace",
+                `${root}/terrace-blue.svg`,
+                "Terrace lounge overlooking Steyn City",
+                {
+                  gridColumn: "1 / span 7",
+                  gridRow: "7 / span 6",
+                  objectPosition: "center 55%",
+                },
+              ),
+              steynPhoto(
+                "inside-front-sunset",
+                `${root}/sunset-balcony.svg`,
+                "Steyn City apartment balcony at sunset",
+                {
+                  gridColumn: "8 / -1",
+                  gridRow: "7 / span 3",
+                  objectPosition: "center 53%",
+                },
+              ),
+              steynPhoto(
+                "inside-front-kitchen",
+                `${root}/kitchen.svg`,
+                "Contemporary Steyn City kitchen and dining interior",
+                {
+                  gridColumn: "8 / -1",
+                  gridRow: "10 / span 3",
+                  objectPosition: "center 52%",
+                },
+              ),
+            ],
+            {
+              position: "absolute",
+              inset: 0,
+              display: "grid",
+              gridTemplateColumns: "repeat(12,minmax(0,1fr))",
+              gridTemplateRows: "repeat(12,minmax(0,1fr))",
+              gap: "clamp(3px,.42vw,7px)",
+              background: "#fff",
+              padding: 0,
+            },
+          ),
+        ],
+        {
+          position: "relative",
+          padding: 0,
+          overflow: "hidden",
+          background: "#fff",
+        },
+        false,
+      ),
+    ],
+  );
+}
+
+function insideFrontPropertyPage(issueId: string): MagazinePageDefinition {
+  const steynMark = "/resources/studio/steyn/steyn-city-logo-mark.svg";
+  const steynWordmark = "/resources/studio/steyn/steyn-city-text-logo.svg";
+  const pamGolding = "/resources/studio/steyn/city-living/pam-golding-logo.svg";
+
+  return page(
+    issueId,
+    "inside-front-property",
+    "City Living Reimagined",
+    "advert",
+    "utility-full",
+    { bg: "#fbfaf8", ink: "#2a2927", accent: "#292725" },
+    [
+      section(
+        "inside-front-property-main",
+        "City Living Reimagined",
+        "main",
+        [
+          stack(
+            "inside-front-property-lockup",
+            [
+              steynPhoto(
+                "inside-front-steyn-mark",
+                steynMark,
+                "Steyn City",
+                {
+                  width: "clamp(4.1rem,8.5vw,7.2rem)",
+                  height: "clamp(4.1rem,8.5vw,7.2rem)",
+                  objectFit: "contain",
+                  filter: "none",
+                  flex: "0 0 auto",
+                },
+              ),
+              steynPhoto(
+                "inside-front-steyn-wordmark",
+                steynWordmark,
+                "Steyn City",
+                {
+                  width: "clamp(8rem,18vw,14rem)",
+                  height: "auto",
+                  maxHeight: "3.2rem",
+                  objectFit: "contain",
+                  filter: "none",
+                  flex: "0 0 auto",
+                },
+              ),
+              stack(
+                "inside-front-heading",
+                [
+                  stack(
+                    "inside-front-heading-line",
+                    [
+                      text(
+                        "inside-front-city",
+                        "CITY",
+                        {
+                          color: "#373432",
+                          fontFamily: serif,
+                          fontSize: "clamp(1.25rem,2.15vw,2.25rem)",
+                          fontWeight: 400,
+                          lineHeight: .92,
+                          letterSpacing: ".08em",
+                        },
+                        "span",
+                      ),
+                      text(
+                        "inside-front-living",
+                        "LIVING",
+                        {
+                          color: "#373432",
+                          fontFamily: serif,
+                          fontSize: "clamp(1.3rem,2.25vw,2.35rem)",
+                          fontWeight: 650,
+                          fontStyle: "italic",
+                          lineHeight: .92,
+                          letterSpacing: ".055em",
+                        },
+                        "span",
+                      ),
+                    ],
+                    {
+                      flexDirection: "row",
+                      alignItems: "baseline",
+                      justifyContent: "center",
+                      gap: "clamp(.25rem,.5vw,.5rem)",
+                    },
+                  ),
+                  text(
+                    "inside-front-reimagined",
+                    "REIMAGINED",
+                    {
+                      color: "#373432",
+                      fontFamily: serif,
+                      fontSize: "clamp(1.15rem,1.9vw,2rem)",
+                      fontWeight: 400,
+                      lineHeight: .9,
+                      letterSpacing: ".115em",
+                      textAlign: "center",
+                    },
+                    "h2",
+                  ),
+                ],
+                { gap: ".08rem", alignItems: "center" },
+              ),
+              text(
+                "inside-front-copy",
+                "Exquisite apartments. Lush outdoor living.\nCity convenience with retail, dining, wellness\nand leisure. City Centre, where every day\nis extraordinary, and life is beautiful.",
+                {
+                  color: "#3c3935",
+                  fontFamily: serif,
+                  fontSize: "clamp(.6rem,.92vw,.84rem)",
+                  fontStyle: "italic",
+                  lineHeight: 1.5,
+                  textAlign: "center",
+                  whiteSpace: "pre-line",
+                  maxWidth: "24rem",
+                },
+              ),
+              {
+                id: "inside-front-qr",
+                type: "frame",
+                style: {
+                  width: "clamp(2.5rem,4.2vw,3.7rem)",
+                  height: "clamp(2.5rem,4.2vw,3.7rem)",
+                  background:
+                    "repeating-conic-gradient(#1d1d1b 0 25%,#fff 0 50%) 50% / 8px 8px",
+                  border: "4px solid #fff",
+                  boxShadow: "0 0 0 1px rgba(0,0,0,.38)",
+                  flex: "0 0 auto",
+                },
+              },
+              text(
+                "inside-front-scan",
+                "To learn more, scan this QR code.",
+                {
+                  color: "#494541",
+                  fontFamily: serif,
+                  fontSize: "clamp(.46rem,.64vw,.58rem)",
+                  fontStyle: "italic",
+                  textAlign: "center",
+                },
+                "span",
+              ),
+              steynPhoto(
+                "inside-front-pam",
+                pamGolding,
+                "Pam Golding Properties",
+                {
+                  width: "clamp(6rem,12vw,9.5rem)",
+                  height: "auto",
+                  maxHeight: "4.2rem",
+                  objectFit: "contain",
+                  flex: "0 0 auto",
+                  marginTop: "clamp(1rem,2.8vh,2rem)",
+                },
+              ),
+              text(
+                "inside-front-contact",
+                "Contact Mark Harrison on 083 539 3999 or\nWillem on 072 454 4583 to book a viewing.\nsteyncity.co.za",
+                {
+                  color: "#4c4844",
+                  fontFamily: serif,
+                  fontSize: "clamp(.42rem,.56vw,.52rem)",
+                  fontStyle: "italic",
+                  lineHeight: 1.45,
+                  textAlign: "center",
+                  whiteSpace: "pre-line",
+                },
+                "span",
+              ),
+            ],
+            {
+              position: "absolute",
+              inset: "7% 8% 6%",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "clamp(.65rem,1.65vh,1.15rem)",
+            },
+          ),
+        ],
+        {
+          position: "relative",
+          padding: 0,
+          overflow: "hidden",
+          background: "#fbfaf8",
+        },
+        false,
+      ),
+    ],
+  );
+}
+
 function placeholderPage(
   issueId: string,
   pageNo: number,
@@ -688,10 +985,10 @@ export function getSteynCity2026Magazine(): MagazineGlobalDefinition {
 
   const pages: MagazinePageDefinition[] = [
     coverPage(issueId, forest),
-    placeholderPage(issueId, 2, "inside-front-cover", "WELCOME TO\nSTEYN CITY 2026", paper),
-    heroPage(issueId, 3, "opening-i", "2026 EDITION", "AN EXTRAORDINARY\nCITY WITHIN A CITY", "A new XpoMag treatment of Steyn City’s 2026 magazine — rebuilt as a living, interactive editorial experience.", forest, { number: "26", numberLabel: "THE 2026 EDITION" }),
-    editorialPage(issueId, 4, "opening-ii", "INTRODUCTION", "THE YEAR\nIN VIEW", "A calm editorial opener for the estate, its people, its landscape and the year’s defining stories.", paper),
-    placeholderPage(issueId, 5, "opening-visual", "THE EXTRAORDINARY\nLIFESTYLE", lagoon),
+    insideFrontGalleryPage(issueId),
+    insideFrontPropertyPage(issueId),
+    heroPage(issueId, 4, "opening-i", "2026 EDITION", "AN EXTRAORDINARY\nCITY WITHIN A CITY", "A new XpoMag treatment of Steyn City’s 2026 magazine — rebuilt as a living, interactive editorial experience.", forest, { number: "26", numberLabel: "THE 2026 EDITION" }),
+    editorialPage(issueId, 5, "opening-ii", "INTRODUCTION", "THE YEAR\nIN VIEW", "A calm editorial opener for the estate, its people, its landscape and the year’s defining stories.", paper),
     contentsPage(issueId, paper),
     heroPage(issueId, 7, "liv-opener", "GOLF", "LIV YOUR\nBEST LIFE", "A cinematic opener into the event, the course, the crowd and Steyn City’s place on the global golf stage.", night, { quote: "HOME OF LIV GOLF", number: "54", numberLabel: "A graphic nod to LIV" }),
     heroPage(issueId, 8, "golf-tradition-i", "GOLF · 08–11", "A NEW TAKE ON AN\nESTABLISHED TRADITION", "The main golf feature begins with scale, spectacle and the atmosphere surrounding LIV Golf at Steyn City.", forest, { quote: "A TRADITION REFRAMED FOR A NEW GENERATION." }),
