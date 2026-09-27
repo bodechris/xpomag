@@ -1,0 +1,1 @@
+import { PublicationAdmin } from "../../components/publication-admin"; export default function PublicationsPage(){return <PublicationAdmin/>}

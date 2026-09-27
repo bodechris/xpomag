@@ -14,6 +14,7 @@ import { mountBetterAuth } from "./auth-bootstrap.js";
 import { accountRouter } from "./routes/account.js";
 import { getComposition, getRevisions, publishDraft, saveDraft } from "./modules/composer/repository.js";
 import { addComment, createCollection, deleteComment, getEngagementSummary, getSaveCollectionsForTarget, listCollections, listComments, listSavedItems, recordShare, setReaction, setSaved, setSavedCollections } from "./modules/engagement/repository.js";
+import { getPublication, listPublications, setPublicationFollow, upsertPublication } from "./modules/publications/repository.js";
 
 
 const reactionSchema = z.enum(["like", "love", "insightful", "celebrate"]);
@@ -129,6 +130,45 @@ app.get("/v1/composer/:issueSlug/:pageSlug/revisions", async (req, res, next) =>
 });
 
 
+
+const publicationInputSchema = z.object({
+  name: z.string().trim().min(2).max(120),
+  slug: z.string().trim().min(2).max(100).regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
+  type: z.enum(["CITY","INTEREST","COMMUNITY"]).default("CITY"),
+  city: z.string().trim().max(120).nullable().optional(),
+  country: z.string().trim().max(120).nullable().optional(),
+  countryCode: z.string().trim().max(3).nullable().optional(),
+  description: z.string().trim().max(600).nullable().optional(),
+  tagline: z.string().trim().max(180).nullable().optional(),
+  coverImage: z.string().trim().max(1000).nullable().optional(),
+  logo: z.string().trim().max(1000).nullable().optional(),
+  status: z.enum(["DRAFT","COMING_SOON","ACTIVE","ARCHIVED"]).default("DRAFT"),
+  launchDate: z.string().date().nullable().optional(),
+  featured: z.boolean().default(false),
+});
+
+app.get("/v1/publications", async (req,res,next) => {
+  try { res.json({ ok:true, publications: await listPublications(viewerId(req), req.query.admin === "1") }); }
+  catch (error) { next(error); }
+});
+app.get("/v1/publications/:slug", async (req,res,next) => {
+  try {
+    const publication = await getPublication(req.params.slug, viewerId(req));
+    if (!publication) return res.status(404).json({ ok:false,error:"Publication not found" });
+    res.json({ ok:true, publication });
+  } catch (error) { next(error); }
+});
+app.put("/v1/publications/:slug/follow", async (req,res,next) => {
+  try {
+    const userId=requireViewer(req,res); if(!userId) return;
+    const { following }=z.object({ following:z.boolean() }).parse(req.body);
+    res.json({ ok:true, publication: await setPublicationFollow(req.params.slug,userId,following) });
+  } catch(error){ next(error); }
+});
+app.post("/v1/admin/publications", async (req,res,next) => {
+  try { res.status(201).json({ ok:true, publication: await upsertPublication(publicationInputSchema.parse(req.body)) }); }
+  catch(error){ next(error); }
+});
 
 app.get("/v1/engagement/collections", async (req, res, next) => {
   try {
