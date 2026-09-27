@@ -48,8 +48,11 @@ export function FloatingSiteNav({
 
       {open ? (
         <nav className="xp-floating-site-nav__menu xp-floating-site-nav__menu--compact" aria-label="XpoMag navigation">
-          <a href="/" onClick={() => setOpen(false)}>Discover</a>\n          <a href="/explore" onClick={() => setOpen(false)}>Explore cities</a>
-          <a href="/about" onClick={() => setOpen(false)}>About</a>
+          <a href="/" onClick={() => setOpen(false)}>Home</a>
+          <a href="/explore" onClick={() => setOpen(false)}>Explore</a>
+          <a href="/contribute" onClick={() => setOpen(false)}>Contribute</a>
+          <a href="/studio" onClick={() => setOpen(false)}>Studio</a>
+          <a href="/about" onClick={() => setOpen(false)}>About XpoMag</a>
           <a href="/auth" onClick={() => setOpen(false)}>Sign in</a>
         </nav>
       ) : null}
