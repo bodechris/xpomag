@@ -721,7 +721,7 @@ function insideFrontGalleryPage(issueId: string): MagazinePageDefinition {
 function insideFrontPropertyPage(issueId: string): MagazinePageDefinition {
   const steynMark = "/resources/studio/steyn/steyn-city-logo-mark.svg";
   const steynWordmark = "/resources/studio/steyn/steyn-city-text-logo.svg";
-  const pamGolding = "/resources/studio/steyn/city-living/pam-golding-logo.svg";
+  const pamGolding = "/resources/studio/steyn/pam-golding-properties.png";
 
   return page(
     issueId,
@@ -912,11 +912,11 @@ function insideFrontPropertyPage(issueId: string): MagazinePageDefinition {
 
 
 function cityLivingSpread(issueId: string): MagazineSpreadDefinition {
-  const aerial = "/resources/studio/steyn/city-living/aerial.svg";
-  const terrace = "/resources/studio/steyn/city-living/terrace-blue.svg";
-  const sunset = "/resources/studio/steyn/city-living/sunset-balcony.svg";
+  const aerial = "/resources/studio/steyn/city-living-terrace.webp";
+  const terrace = "/resources/studio/steyn/city-living-sunset.webp";
+  const sunset = "/resources/studio/steyn/city-living-kitchen.webp";
   const sunsetPortrait = "/resources/studio/steyn/city-living-sunset.webp";
-  const kitchen = "/resources/studio/steyn/city-living/kitchen.svg";
+  const kitchen = "/resources/studio/steyn/city-living-kitchen.webp";
   const staircase = "/resources/studio/steyn/city-living/staircase.webp";
   const wineWall = "/resources/studio/steyn/city-living/wine-wall.webp";
   const restaurant = "/resources/studio/steyn/city-living/restaurant.webp";
