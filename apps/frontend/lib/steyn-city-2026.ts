@@ -233,7 +233,7 @@ function editorialPage(
       text(`${id}-deck`, deck, {
         color: tone.ink,
         fontSize: "clamp(.72rem,1vw,.95rem)",
-        lineHeight: 1.48,
+        lineHeight: 1.44,
         maxWidth: "38rem",
         opacity: .76,
       }),
@@ -1670,14 +1670,14 @@ function contentsGolfSpread(issueId: string): MagazineSpreadDefinition {
                       as: "p",
                       text: "Hosting LIV Golf South Africa 2026 is not only an enormous honour but also a profound responsibility, both for our estate and for our country; giving us the opportunity to showcase to the world the spirit of our people and the excellence of our offering.\n\nI marvel that an event of this magnitude and distinction will be hosted at Steyn City. I honestly can’t think LIV Golf could have chosen a better golf course and lifestyle estate to be the stage for a global sporting spectacle.",
                       dropCap: true,
-                      dropCapLines: 3,
+                      dropCapLines: 4,
                       dropCapColor: "#18464a",
                     },
                     style: {
                       color: "#3a3531",
                       fontFamily: "var(--xp-font-editorial)",
-                      fontSize: "clamp(.46rem,.62vw,.68rem)",
-                      lineHeight: 1.48,
+                      fontSize: "clamp(.43rem,.56vw,.61rem)",
+                      lineHeight: 1.44,
                       whiteSpace: "pre-line",
                     },
                   },
@@ -1686,8 +1686,8 @@ function contentsGolfSpread(issueId: string): MagazineSpreadDefinition {
                     {
                       color: "#3a3531",
                       fontFamily: "var(--xp-font-editorial)",
-                      fontSize: "clamp(.46rem,.62vw,.68rem)",
-                      lineHeight: 1.48,
+                      fontSize: "clamp(.43rem,.56vw,.61rem)",
+                      lineHeight: 1.44,
                       whiteSpace: "pre-line",
                     }
                   ),
