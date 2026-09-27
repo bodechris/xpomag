@@ -912,12 +912,18 @@ function insideFrontPropertyPage(issueId: string): MagazinePageDefinition {
 
 
 function cityLivingSpread(issueId: string): MagazineSpreadDefinition {
-  const hero = "/resources/studio/steyn/city-living-sunset.webp";
-  const sunset = "/resources/studio/steyn/city-living-sunset.webp";
-  const kitchen = "/resources/studio/steyn/city-living-kitchen.webp";
+  const aerial = "/resources/studio/steyn/city-living/aerial.svg";
+  const terrace = "/resources/studio/steyn/city-living/terrace-blue.svg";
+  const sunset = "/resources/studio/steyn/city-living/sunset-balcony.svg";
+  const kitchen = "/resources/studio/steyn/city-living/kitchen.svg";
+  const staircase = "/resources/studio/steyn/city-living/staircase.webp";
+  const wineWall = "/resources/studio/steyn/city-living/wine-wall.webp";
+  const restaurant = "/resources/studio/steyn/city-living/restaurant.webp";
+  const pinkLiving = "/resources/studio/steyn/city-living/pink-living.webp";
+  const qrCode = "/resources/studio/steyn/city-living/qr-code-steyn-city.png";
   const steynMark = "/resources/studio/steyn/steyn-city-logo-mark.svg";
   const steynWordmark = "/resources/studio/steyn/steyn-city-text-logo.svg";
-  const pamGolding = "/resources/studio/steyn/pam-golding-properties.png";
+  const pamGolding = "/resources/studio/steyn/city-living/pam-golding-logo.svg";
 
   const image = (
     id: string,
@@ -965,99 +971,86 @@ function cityLivingSpread(issueId: string): MagazineSpreadDefinition {
         background: "#fff",
       },
       elements: [
-        image("city-living-hero", hero, "Steyn City indoor-outdoor living", {
+        image("city-living-aerial", aerial, "Aerial view of Steyn City and the lagoon", {
           position: "absolute",
           left: 0,
           top: 0,
-          width: "45%",
-          height: "42%",
-          objectPosition: "center 50%",
+          width: "75%",
+          height: "49%",
+          objectPosition: "center 48%",
           borderRight: gutter,
           borderBottom: gutter,
         }),
 
-        image("city-living-kitchen-top", kitchen, "Contemporary kitchen and dining interior", {
-          position: "absolute",
-          left: "45%",
-          top: 0,
-          width: "30%",
-          height: "27%",
-          objectPosition: "center 46%",
-          borderRight: gutter,
-          borderBottom: gutter,
-        }),
-
-        image("city-living-sunset-top-right", sunset, "Sunset terrace at Steyn City", {
-          position: "absolute",
-          left: "45%",
-          top: "27%",
-          width: "30%",
-          height: "15%",
-          objectPosition: "center 62%",
-          borderRight: gutter,
-          borderBottom: gutter,
-        }),
-
-        image("city-living-kitchen-left", kitchen, "Dining space detail at Steyn City", {
+        image("city-living-terrace", terrace, "Blue and white terrace overlooking Steyn City", {
           position: "absolute",
           left: 0,
-          top: "42%",
-          width: "27%",
-          height: "33%",
-          objectPosition: "24% center",
-          borderRight: gutter,
-          borderBottom: gutter,
-        }),
-
-        image("city-living-sunset-middle", sunset, "Luxury apartment terrace detail", {
-          position: "absolute",
-          left: "27%",
-          top: "42%",
-          width: "25%",
-          height: "33%",
-          objectPosition: "63% center",
-          borderRight: gutter,
-          borderBottom: gutter,
-        }),
-
-        image("city-living-kitchen-right", kitchen, "Modern Steyn City interior", {
-          position: "absolute",
-          left: "52%",
-          top: "42%",
-          width: "23%",
-          height: "33%",
-          objectPosition: "72% center",
-          borderRight: gutter,
-          borderBottom: gutter,
-        }),
-
-        image("city-living-sunset-bottom-left", sunset, "Steyn City sunset view", {
-          position: "absolute",
-          left: 0,
-          top: "75%",
-          width: "35%",
-          height: "25%",
-          objectPosition: "center 58%",
+          top: "49%",
+          width: "36%",
+          height: "51%",
+          objectPosition: "center 48%",
           borderRight: gutter,
         }),
 
-        image("city-living-kitchen-bottom-middle", kitchen, "Kitchen and dining detail", {
+        image("city-living-sunset", sunset, "Apartment terrace at sunset", {
           position: "absolute",
-          left: "35%",
-          top: "75%",
+          left: "36%",
+          top: "49%",
           width: "20%",
-          height: "25%",
-          objectPosition: "40% center",
+          height: "25.5%",
+          objectPosition: "center 55%",
+          borderRight: gutter,
+          borderBottom: gutter,
+        }),
+
+        image("city-living-kitchen", kitchen, "Contemporary kitchen and dining interior", {
+          position: "absolute",
+          left: "56%",
+          top: "49%",
+          width: "19%",
+          height: "25.5%",
+          objectPosition: "center 48%",
+          borderRight: gutter,
+          borderBottom: gutter,
+        }),
+
+        image("city-living-staircase", staircase, "Contemporary Steyn City staircase interior", {
+          position: "absolute",
+          left: "36%",
+          top: "74.5%",
+          width: "9.75%",
+          height: "25.5%",
+          objectPosition: "center center",
           borderRight: gutter,
         }),
 
-        image("city-living-sunset-bottom-right", sunset, "Apartment terrace at dusk", {
+        image("city-living-wine-wall", wineWall, "Wine wall and art in a Steyn City residence", {
           position: "absolute",
-          left: "55%",
-          top: "75%",
-          width: "20%",
-          height: "25%",
-          objectPosition: "78% center",
+          left: "45.75%",
+          top: "74.5%",
+          width: "9.75%",
+          height: "25.5%",
+          objectPosition: "center center",
+          borderRight: gutter,
+        }),
+
+        image("city-living-restaurant", restaurant, "Steyn City dining and hospitality interior", {
+          position: "absolute",
+          left: "55.5%",
+          top: "74.5%",
+          width: "9.75%",
+          height: "25.5%",
+          objectPosition: "center center",
+          borderRight: gutter,
+        }),
+
+        image("city-living-pink-lounge", pinkLiving, "Colourful contemporary Steyn City living room", {
+          position: "absolute",
+          left: "65.25%",
+          top: "74.5%",
+          width: "9.75%",
+          height: "25.5%",
+          objectPosition: "center center",
           borderRight: gutter,
         }),
 
@@ -1154,20 +1147,12 @@ function cityLivingSpread(issueId: string): MagazineSpreadDefinition {
               }
             ),
 
-            {
-              id: "city-living-qr",
-              type: "frame",
-              style: {
-                width: "clamp(1.9rem,2.8vw,3rem)",
-                aspectRatio: "1",
-                background: [
-                  "linear-gradient(90deg,#171717 14%,transparent 14% 28%,#171717 28% 42%,transparent 42% 56%,#171717 56% 72%,transparent 72%)",
-                  "linear-gradient(#171717 14%,transparent 14% 28%,#171717 28% 42%,transparent 42% 56%,#171717 56% 72%,transparent 72%)",
-                ].join(","),
-                boxShadow: "0 0 0 1px rgba(0,0,0,.22)",
-                marginBottom: ".5rem",
-              },
-            },
+            image("city-living-qr", qrCode, "QR code to learn more about Steyn City", {
+              width: "clamp(2.25rem,3vw,3.3rem)",
+              height: "auto",
+              objectFit: "contain",
+              marginBottom: ".55rem",
+            }),
 
             text("city-living-qr-note", "To learn more, scan this QR code.", {
               color: "#57514d",
