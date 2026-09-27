@@ -148,6 +148,7 @@ export function DesignElement({ node, registry, renderComposerNodeOverlay, onCom
           title={title}
           poster={poster}
           autoplay={autoplay}
+          autoplayDelayMs={typeof props.autoplayDelayMs === "number" ? props.autoplayDelayMs : 0}
           muted={muted}
           loop={loop}
           controls={props.controls !== false}
