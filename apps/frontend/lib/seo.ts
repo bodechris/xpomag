@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import type { DesignElementNode, MagazineGlobalDefinition, MagazinePageDefinition } from "@xpomag/magazine";
+import { isStandaloneArticleKind } from "./magazine-reader-data";
 
 export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://xpomag-frontend.vercel.app").replace(/\/$/, "");
 
