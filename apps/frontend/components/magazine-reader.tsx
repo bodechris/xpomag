@@ -1,11 +1,11 @@
 "use client";
 
 import { MagazinePageRenderer, type ComposerNode, type MagazinePageDefinition } from "@xpomag/magazine";
-import { ArrowLeft, ArrowRight, LockKeyhole, Maximize2, Minimize2, Pause, Play, RotateCcw, X } from "lucide-react";
+import { ArrowLeft, ArrowRight, BookOpen, LockKeyhole, Maximize2, Minimize2, Pause, Play, RotateCcw, X } from "lucide-react";
 import type { CSSProperties, MouseEvent as ReactMouseEvent, PointerEvent as ReactPointerEvent } from "react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import type { MagazineReaderIssue } from "../lib/magazine-reader-data";
+import { isStandaloneArticleKind, type MagazineReaderIssue } from "../lib/magazine-reader-data";
 import { MagazineResourcePreloader } from "./magazine-resource-preloader";
 import { SectionEngagementBar } from "./section-engagement";
 
@@ -528,6 +528,8 @@ export function MagazineReader({
   const readerRef = useRef<HTMLElement | null>(null);
   const stageRef = useRef<HTMLDivElement | null>(null);
   const pointerGuideRef = useRef<HTMLDivElement | null>(null);
+  const wheelDeltaRef = useRef(0);
+  const wheelResetRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Responsive mode changes rebuild the spread array (desktop spreads <-> mobile pages).
   // React renders once before the effect below can clamp spreadIndex, so always
@@ -750,6 +752,51 @@ export function MagazineReader({
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [navigate]);
+
+  useEffect(() => {
+    const stage = stageRef.current;
+    if (!stage) return;
+
+    const resetWheel = () => {
+      wheelDeltaRef.current = 0;
+      if (wheelResetRef.current) clearTimeout(wheelResetRef.current);
+      wheelResetRef.current = null;
+    };
+
+    const onWheel = (event: WheelEvent) => {
+      if (motion || isInteractiveTarget(event.target)) return;
+
+      const dominant = Math.abs(event.deltaY) >= Math.abs(event.deltaX) ? event.deltaY : event.deltaX;
+      if (Math.abs(dominant) < 2) return;
+
+      // On reflowed/single-page layouts, let the article itself scroll first.
+      // Reaching either edge turns the page naturally with the same gesture.
+      if (singlePageMode) {
+        const paper = stage.querySelector<HTMLElement>(".xp-magazine__spread-layer--current .xp-magazine__paper");
+        if (paper && paper.scrollHeight > paper.clientHeight + 2) {
+          const atTop = paper.scrollTop <= 1;
+          const atBottom = paper.scrollTop + paper.clientHeight >= paper.scrollHeight - 1;
+          if ((dominant > 0 && !atBottom) || (dominant < 0 && !atTop)) return;
+        }
+      }
+
+      event.preventDefault();
+      wheelDeltaRef.current += dominant;
+      if (wheelResetRef.current) clearTimeout(wheelResetRef.current);
+      wheelResetRef.current = setTimeout(resetWheel, 180);
+
+      if (Math.abs(wheelDeltaRef.current) < 54) return;
+      const direction: Direction = wheelDeltaRef.current > 0 ? "next" : "previous";
+      resetWheel();
+      void navigate(direction);
+    };
+
+    stage.addEventListener("wheel", onWheel, { passive: false });
+    return () => {
+      stage.removeEventListener("wheel", onWheel);
+      resetWheel();
+    };
+  }, [motion, navigate, singlePageMode]);
 
   useEffect(() => () => clearMotionTimer(), [clearMotionTimer]);
 
@@ -1125,6 +1172,16 @@ export function MagazineReader({
           ) : null}
           <span>{firstPage.title}</span>
           <span>{firstPage.index + 1} / {issue.pages.length}</span>
+          {isStandaloneArticleKind(firstPage.kind) ? (
+            <a
+              className="xp-magazine__article-link"
+              href={`/article/${encodeURIComponent(issue.slug)}/${encodeURIComponent(firstPage.slug)}`}
+              data-magazine-interactive
+              data-no-page-turn
+            >
+              <BookOpen size={14} /><span>Read article</span>
+            </a>
+          ) : null}
           <button className="xp-magazine__icon-button" type="button" onClick={toggleFullscreen} aria-label={isFullscreen ? "Exit fullscreen" : "Open fullscreen"}>
             {isFullscreen ? <Minimize2 size={15} /> : <Maximize2 size={15} />}
           </button>
@@ -1193,7 +1250,7 @@ export function MagazineReader({
           ))}
         </div>
 
-        <p className="xp-magazine__hint">Drag the page · or use ← →</p>
+        <p className="xp-magazine__hint">Scroll · drag the page · or use ← →</p>
 
         <div className="xp-magazine__controls">
           <button type="button" className="xp-magazine__nav" onClick={() => navigate("previous")} disabled={!canGoBack || Boolean(motion)} aria-label="Previous spread">

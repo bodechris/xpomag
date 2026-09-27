@@ -35,3 +35,10 @@ export function createMagazineReaderPayload(
     initialPages: initialPage ? [initialPage] : [],
   };
 }
+
+
+const STANDALONE_ARTICLE_KINDS = new Set(["editorial", "feature", "guide", "directory"]);
+
+export function isStandaloneArticleKind(kind: string): boolean {
+  return STANDALONE_ARTICLE_KINDS.has(kind);
+}

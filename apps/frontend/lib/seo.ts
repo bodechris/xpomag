@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import type { DesignElementNode, MagazineGlobalDefinition, MagazinePageDefinition } from "@xpomag/magazine";
+import { isStandaloneArticleKind } from "./magazine-reader-data";
 
 export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://xpomag-frontend.vercel.app").replace(/\/$/, "");
 
@@ -43,10 +44,10 @@ export function pageHeroImage(page: MagazinePageDefinition): string | undefined 
 }
 
 export function buildPageMetadata(issue: MagazineGlobalDefinition, page: MagazinePageDefinition): Metadata {
-  const canonical = `${SITE_URL}/magazine/${encodeURIComponent(issue.slug)}/${encodeURIComponent(page.slug)}`;
+  const canonical = page.kind === "cover"\n    ? `${SITE_URL}/magazine/${encodeURIComponent(issue.slug)}/${encodeURIComponent(page.slug)}`\n    : `${SITE_URL}/article/${encodeURIComponent(issue.slug)}/${encodeURIComponent(page.slug)}`;
   const description = pageDescription(issue, page);
   const title = page.kind === "cover" ? `${issue.title} · ${issue.monthLabel}` : page.title;
-  const ogImage = `${canonical}/opengraph-image`;
+  const ogImage = `${SITE_URL}/magazine/${encodeURIComponent(issue.slug)}/${encodeURIComponent(page.slug)}/opengraph-image`;
 
   return {
     title,
@@ -77,7 +78,7 @@ export function buildPageMetadata(issue: MagazineGlobalDefinition, page: Magazin
 }
 
 export function articleJsonLd(issue: MagazineGlobalDefinition, page: MagazinePageDefinition) {
-  const url = `${SITE_URL}/magazine/${issue.slug}/${page.slug}`;
+  const url = page.kind === "cover"\n    ? `${SITE_URL}/magazine/${issue.slug}/${page.slug}`\n    : `${SITE_URL}/article/${issue.slug}/${page.slug}`;
   const image = pageHeroImage(page);
   return {
     "@context": "https://schema.org",
