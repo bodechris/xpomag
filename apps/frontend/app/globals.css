@@ -3318,3 +3318,38 @@ img, picture, video, canvas, svg { display: block; max-width: 100%; }
     object-position: left top !important;
   }
 }
+
+
+/* Desktop reader density pass: maximize the spread while keeping the entire book visible. */
+@media (min-width: 821px) {
+  .xp-home-shell {
+    padding-bottom: .5rem;
+  }
+
+  .xp-magazine {
+    height: calc(100dvh - 58px);
+    max-height: none;
+    grid-template-rows: 42px minmax(0, 1fr) 50px;
+  }
+
+  .xp-magazine__toolbar {
+    min-height: 42px;
+    padding-inline: 0;
+  }
+
+  .xp-magazine__stage {
+    padding: .15rem .25rem;
+  }
+
+  .xp-magazine__stage[data-mode="spread"] .xp-magazine__book {
+    height: min(100%, calc((100vw - 1rem) / 1.44));
+    max-height: 100%;
+    width: auto;
+    max-width: 100%;
+  }
+
+  .xp-magazine__footer {
+    min-height: 50px;
+    padding-top: .15rem;
+  }
+}
