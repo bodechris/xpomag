@@ -3,6 +3,7 @@ import type {
   MagazineGlobalDefinition,
   MagazinePageDefinition,
   MagazineSection,
+  type MagazineSpreadDefinition,
 } from "@xpomag/magazine";
 
 type Tone = {
@@ -909,6 +910,262 @@ function insideFrontPropertyPage(issueId: string): MagazinePageDefinition {
   );
 }
 
+
+function cityLivingSpread(issueId: string): MagazineSpreadDefinition {
+  const aerial = "https://www.steyncity.co.za/wp-content/uploads/2021/08/SC_15112023-0503-Pano-Edit.webp";
+  const terrace = "/resources/studio/steyn/city-living-terrace.webp";
+  const sunset = "/resources/studio/steyn/city-living-sunset.webp";
+  const kitchen = "/resources/studio/steyn/city-living-kitchen.webp";
+  const steynMark = "/resources/studio/steyn/steyn-city-logo-mark.svg";
+  const steynWordmark = "/resources/studio/steyn/steyn-city-text-logo.svg";
+  const pamGolding = "/resources/studio/steyn/pam-golding-properties.png";
+
+  const image = (
+    id: string,
+    src: string,
+    alt: string,
+    style: DesignElementNode["style"],
+  ): DesignElementNode => ({
+    id,
+    type: "image",
+    props: { src, alt },
+    style,
+  });
+
+  return {
+    id: "steyn-city-living-spread",
+    issueId,
+    slug: "city-living-reimagined",
+    title: "City Living Reimagined",
+    kind: "advert",
+    pageIds: ["inside-front-cover", "opening-i"],
+    style: {
+      background: "#fff",
+    },
+    pieces: [{
+      id: "steyn-city-living-piece",
+      slug: "city-living-reimagined-piece",
+      title: "City Living Reimagined",
+      kind: "advert",
+      region: "spread",
+      gutterBehaviour: "cross",
+      engagement: {
+        reactions: false,
+        comments: false,
+        share: true,
+        save: false,
+      },
+      style: {
+        position: "absolute",
+        inset: 0,
+        overflow: "hidden",
+        background: "#fff",
+      },
+      elements: [
+        image("city-living-aerial", aerial, "Aerial view across Steyn City and the lagoon", {
+          position: "absolute",
+          left: 0,
+          top: 0,
+          width: "68.2%",
+          height: "50.2%",
+          objectFit: "cover",
+          objectPosition: "center 48%",
+          borderRight: "clamp(3px,.35vw,7px) solid #fff",
+          borderBottom: "clamp(3px,.35vw,7px) solid #fff",
+        }),
+
+        image("city-living-terrace", terrace, "Steyn City apartment terrace overlooking the estate", {
+          position: "absolute",
+          left: 0,
+          bottom: 0,
+          width: "37.2%",
+          height: "49.8%",
+          objectFit: "cover",
+          objectPosition: "center 47%",
+          borderRight: "clamp(3px,.35vw,7px) solid #fff",
+        }),
+
+        image("city-living-sunset", sunset, "Contemporary Steyn City apartment opening to a sunset terrace", {
+          position: "absolute",
+          left: "37.2%",
+          top: "50.2%",
+          width: "31%",
+          height: "24.9%",
+          objectFit: "cover",
+          objectPosition: "center 55%",
+          borderRight: "clamp(3px,.35vw,7px) solid #fff",
+          borderBottom: "clamp(3px,.35vw,7px) solid #fff",
+        }),
+
+        image("city-living-kitchen", kitchen, "Contemporary Steyn City kitchen and dining interior", {
+          position: "absolute",
+          left: "37.2%",
+          bottom: 0,
+          width: "31%",
+          height: "24.9%",
+          objectFit: "cover",
+          objectPosition: "center 52%",
+          borderRight: "clamp(3px,.35vw,7px) solid #fff",
+        }),
+
+        {
+          id: "city-living-copy-panel",
+          type: "frame",
+          style: {
+            position: "absolute",
+            right: 0,
+            top: 0,
+            bottom: 0,
+            width: "31.8%",
+            background: "#fff",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            textAlign: "center",
+            padding: "clamp(2.2rem,4.6vw,5.4rem) clamp(1.5rem,3vw,3.8rem) clamp(1.25rem,2.2vw,2.5rem)",
+            boxSizing: "border-box",
+            color: "#211f1d",
+          },
+          children: [
+            image("city-living-steyn-mark", steynMark, "Steyn City emblem", {
+              width: "clamp(3.6rem,5vw,5.6rem)",
+              height: "clamp(3.8rem,5.3vw,5.9rem)",
+              objectFit: "contain",
+              marginBottom: "clamp(.7rem,1.1vw,1.15rem)",
+            }),
+            image("city-living-steyn-wordmark", steynWordmark, "Steyn City", {
+              width: "clamp(8.4rem,13vw,14.5rem)",
+              height: "auto",
+              objectFit: "contain",
+              marginBottom: "clamp(2.25rem,4.2vw,4.8rem)",
+            }),
+
+            stack("city-living-headline", [
+              stack("city-living-headline-row", [
+                text("city-living-city", "CITY", {
+                  color: "#2b2826",
+                  fontFamily: '"Bodoni Moda", var(--xp-font-editorial)',
+                  fontSize: "clamp(1.35rem,2.35vw,2.55rem)",
+                  fontWeight: 400,
+                  lineHeight: .92,
+                  letterSpacing: ".07em",
+                }, "span"),
+                text("city-living-liv", "LIV", {
+                  color: "#2b2826",
+                  fontFamily: '"Bodoni Moda", var(--xp-font-editorial)',
+                  fontSize: "clamp(1.5rem,2.6vw,2.8rem)",
+                  fontWeight: 600,
+                  fontStyle: "italic",
+                  lineHeight: .86,
+                  letterSpacing: ".015em",
+                }, "span"),
+                text("city-living-ing", "ING", {
+                  color: "#2b2826",
+                  fontFamily: '"Bodoni Moda", var(--xp-font-editorial)',
+                  fontSize: "clamp(1.35rem,2.35vw,2.55rem)",
+                  fontWeight: 400,
+                  lineHeight: .92,
+                  letterSpacing: ".07em",
+                }, "span"),
+              ], {
+                flexDirection: "row",
+                alignItems: "baseline",
+                justifyContent: "center",
+                gap: "clamp(.2rem,.4vw,.45rem)",
+              }),
+              text("city-living-reimagined", "REIMAGINED", {
+                color: "#2b2826",
+                fontFamily: '"Bodoni Moda", var(--xp-font-editorial)',
+                fontSize: "clamp(1.35rem,2.35vw,2.55rem)",
+                fontWeight: 400,
+                lineHeight: .92,
+                letterSpacing: ".07em",
+                whiteSpace: "nowrap",
+              }, "h2"),
+            ], {
+              alignItems: "center",
+              gap: ".08rem",
+              marginBottom: "clamp(1.15rem,1.8vw,1.75rem)",
+            }),
+
+            text("city-living-copy",
+              "Exquisite apartments. Lush outdoor living.\nCity convenience with retail, dining, wellness\nand leisure. City Centre, where every day\nis extraordinary, and life is beautiful.",
+              {
+                color: "#4b4642",
+                fontFamily: "var(--xp-font-editorial)",
+                fontSize: "clamp(.65rem,.9vw,.9rem)",
+                fontStyle: "italic",
+                lineHeight: 1.45,
+                whiteSpace: "pre-line",
+                maxWidth: "23rem",
+                marginBottom: "clamp(1.5rem,2.5vw,2.7rem)",
+              }
+            ),
+
+            {
+              id: "city-living-qr",
+              type: "frame",
+              style: {
+                width: "clamp(2.1rem,3.4vw,3.6rem)",
+                aspectRatio: "1",
+                background: [
+                  "linear-gradient(90deg,#171717 14%,transparent 14% 28%,#171717 28% 42%,transparent 42% 56%,#171717 56% 72%,transparent 72%)",
+                  "linear-gradient(#171717 14%,transparent 14% 28%,#171717 28% 42%,transparent 42% 56%,#171717 56% 72%,transparent 72%)",
+                ].join(","),
+                backgroundSize: "100% 100%",
+                outline: "3px solid #fff",
+                boxShadow: "0 0 0 1px rgba(0,0,0,.18)",
+                marginBottom: ".65rem",
+              },
+            },
+
+            text("city-living-qr-note", "To learn more, scan this QR code.", {
+              color: "#57514d",
+              fontFamily: "var(--xp-font-editorial)",
+              fontSize: "clamp(.48rem,.62vw,.62rem)",
+              fontStyle: "italic",
+              lineHeight: 1.25,
+            }, "span"),
+
+            {
+              id: "city-living-panel-spacer",
+              type: "frame",
+              style: { flex: "1 1 auto", minHeight: "1rem" },
+            },
+
+            image("city-living-pam-golding", pamGolding, "Pam Golding Properties", {
+              width: "clamp(6.5rem,9vw,10rem)",
+              height: "auto",
+              objectFit: "contain",
+              marginBottom: ".4rem",
+            }),
+
+            text("city-living-contact",
+              "Contact Mark Williams on 082 559 2989 or\nWilhelm Khumalo on 072 045 4388 to book a viewing.",
+              {
+                color: "#5b5551",
+                fontFamily: "var(--xp-font-editorial)",
+                fontSize: "clamp(.42rem,.55vw,.56rem)",
+                fontStyle: "italic",
+                lineHeight: 1.32,
+                whiteSpace: "pre-line",
+              }
+            ),
+            text("city-living-url", "steyncity.co.za", {
+              color: "#393532",
+              fontFamily: "var(--xp-font-grotesk)",
+              fontSize: "clamp(.38rem,.48vw,.5rem)",
+              fontWeight: 650,
+              letterSpacing: ".04em",
+              marginTop: ".22rem",
+            }, "span"),
+          ],
+        },
+      ],
+    }],
+  };
+}
+
 function placeholderPage(
   issueId: string,
   pageNo: number,
@@ -1073,6 +1330,7 @@ export function getSteynCity2026Magazine(): MagazineGlobalDefinition {
         props: { label: "STEYN CITY" },
       },
     },
+    spreads: [cityLivingSpread(issueId)],
     pages,
   };
 }
