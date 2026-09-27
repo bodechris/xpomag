@@ -312,6 +312,58 @@ img, picture, video, canvas, svg { display: block; max-width: 100%; }
 .xp-magazine__spread-layer--target { z-index: 1; pointer-events: none; }
 .xp-magazine__spread-layer--current { z-index: 2; pointer-events: auto; }
 
+/* Native spread-authored issues render one authoritative canvas across both
+   leaves. Page-turn faces still use clipped leaves, but the resting spread is
+   not duplicated in the DOM. */
+.xp-magazine__spread-layer.is-native-spread {
+  display: block;
+  overflow: hidden;
+}
+
+.xp-magazine__native-spread {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #fff;
+  border-radius: 2px;
+  box-shadow:
+    -22px 24px 55px rgba(0,0,0,.09),
+    22px 24px 55px rgba(0,0,0,.09);
+  transform: translateZ(0);
+}
+
+.xp-magazine__native-spread::after {
+  content: "";
+  position: absolute;
+  z-index: 30;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 5.5%;
+  pointer-events: none;
+  transform: translateX(-50%);
+  background:
+    linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(0,0,0,.045) 34%,
+      rgba(0,0,0,.11) 48%,
+      rgba(255,255,255,.08) 52%,
+      rgba(0,0,0,.045) 66%,
+      transparent 100%
+    );
+  mix-blend-mode: multiply;
+}
+
+.xp-magazine__spread-layer.is-native-spread[data-hidden-side="right"] .xp-magazine__native-spread {
+  clip-path: inset(0 50% 0 0);
+}
+
+.xp-magazine__spread-layer.is-native-spread[data-hidden-side="left"] .xp-magazine__native-spread {
+  clip-path: inset(0 0 0 50%);
+}
+
+
 .xp-magazine__spread-layer.is-single .xp-magazine__sheet { width: 50%; flex: 0 0 50%; }
 .xp-magazine__spread-layer.is-spread .xp-magazine__sheet { width: 50%; flex: 0 0 50%; }
 
