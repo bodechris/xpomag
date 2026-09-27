@@ -915,6 +915,7 @@ function cityLivingSpread(issueId: string): MagazineSpreadDefinition {
   const aerial = "/resources/studio/steyn/city-living/aerial.svg";
   const terrace = "/resources/studio/steyn/city-living/terrace-blue.svg";
   const sunset = "/resources/studio/steyn/city-living/sunset-balcony.svg";
+  const sunsetPortrait = "/resources/studio/steyn/city-living-sunset.webp";
   const kitchen = "/resources/studio/steyn/city-living/kitchen.svg";
   const staircase = "/resources/studio/steyn/city-living/staircase.webp";
   const wineWall = "/resources/studio/steyn/city-living/wine-wall.webp";
@@ -975,9 +976,20 @@ function cityLivingSpread(issueId: string): MagazineSpreadDefinition {
           position: "absolute",
           left: 0,
           top: 0,
-          width: "75%",
+          width: "56%",
           height: "49%",
           objectPosition: "center 48%",
+          borderRight: gutter,
+          borderBottom: gutter,
+        }),
+
+        image("city-living-sunset-portrait", sunsetPortrait, "Sunset view from a Steyn City residence", {
+          position: "absolute",
+          left: "56%",
+          top: 0,
+          width: "19%",
+          height: "49%",
+          objectPosition: "center 50%",
           borderRight: gutter,
           borderBottom: gutter,
         }),
