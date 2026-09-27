@@ -5545,3 +5545,39 @@ p[data-drop-cap-lines="6"] .xp-editorial-drop-cap { font-size: 5.85em; }
     min-height: 9rem;
   }
 }
+
+
+.xp-youtube-video__open-hero {
+  opacity: .96;
+  transition: transform 160ms ease, background 160ms ease, opacity 160ms ease;
+}
+
+.xp-youtube-video__open-hero:hover {
+  transform: translate(-50%, -50%) scale(1.04) !important;
+  background: rgba(8,8,8,.9) !important;
+}
+
+.xp-youtube-video:hover .xp-youtube-video__open-hero,
+.xp-youtube-video:focus-within .xp-youtube-video__open-hero {
+  opacity: 1;
+}
+
+@container (max-width: 180px) {
+  .xp-youtube-video__hero-label,
+  .xp-youtube-video__open-label {
+    display: none;
+  }
+
+  .xp-youtube-video__open-hero {
+    min-width: 40px !important;
+    min-height: 40px !important;
+    width: 40px !important;
+    height: 40px !important;
+    padding: 0 !important;
+  }
+
+  .xp-youtube-video__controls {
+    right: 5px !important;
+    bottom: 5px !important;
+  }
+}
