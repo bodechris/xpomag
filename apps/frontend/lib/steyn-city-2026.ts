@@ -344,7 +344,7 @@ function coverPage(issueId: string, tone: Tone): MagazinePageDefinition {
   const aerial = "https://www.steyncity.co.za/wp-content/uploads/2021/08/SC_15112023-0503-Pano-Edit.webp";
   const steynTextLogo = "/resources/studio/steyn/steyn-city-text-logo.svg";
   const steynMark = "/resources/studio/steyn/steyn-city-logo-mark.svg";
-  const golfSaLogo = "/resources/studio/steyn/golf-sa-logo.png";
+  const golfSaLogo = "/resources/studio/steyn/golf-sa-logo-new.svg";
   const corner = "/resources/studio/steyn/corner-shape.svg";
 
   const image = (
@@ -556,7 +556,6 @@ function coverPage(issueId: string, tone: Tone): MagazinePageDefinition {
             display: "grid",
             placeItems: "center",
             isolation: "isolate",
-            border: "5px solid red",
             boxSizing: "border-box",
           },
           children: [
@@ -564,10 +563,10 @@ function coverPage(issueId: string, tone: Tone): MagazinePageDefinition {
               position: "absolute",
               left: "50%",
               top: "50%",
-              width: "82%",
-              height: "82%",
-              maxWidth: "82%",
-              maxHeight: "82%",
+              width: "100%",
+              height: "100%",
+              maxWidth: "100%",
+              maxHeight: "100%",
               objectFit: "contain",
               objectPosition: "center",
               display: "block",
