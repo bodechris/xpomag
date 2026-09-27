@@ -4234,3 +4234,117 @@ html.xp-nav-open body {
     border-radius: 24px;
   }
 }
+
+
+/* ==========================================================================
+   SOLID WHITE FLOATING UI
+   Reliable, high-contrast chrome with no backdrop-filter dependency.
+   ========================================================================== */
+
+.xp-floating-site-nav__trigger,
+.xp-floating-site-nav__drawer,
+.xp-reader-page .xp-magazine__meta,
+.xp-reader-page .xp-magazine__page-meta,
+.xp-reader-page .xp-magazine__progress,
+.xp-reader-page .xp-magazine__hint,
+.xp-reader-page .xp-magazine__controls,
+.xp-reader-page .xp-reader-menu,
+.xp-reader-page .xp-magazine__icon-button,
+.xp-reader-page .xp-magazine__article-link,
+.xp-reader-page .xp-magazine__nav {
+  background: #ffffff !important;
+  border-color: rgba(17,17,17,.10) !important;
+  box-shadow: 0 12px 32px rgba(17,17,17,.10) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.xp-floating-site-nav__trigger::before,
+.xp-floating-site-nav__drawer::before,
+.xp-reader-page .xp-magazine__meta::before,
+.xp-reader-page .xp-magazine__page-meta::before,
+.xp-reader-page .xp-magazine__progress::before,
+.xp-reader-page .xp-magazine__hint::before,
+.xp-reader-page .xp-magazine__controls::before,
+.xp-reader-page .xp-reader-menu::before {
+  display: none !important;
+}
+
+.xp-floating-site-nav__overlay {
+  background: rgba(17,17,17,.08) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.xp-floating-site-nav__drawer {
+  background: #ffffff !important;
+}
+
+.xp-floating-site-nav__drawer-top button,
+.xp-reader-page .xp-reader-menu__top button {
+  background: #f3f2ee !important;
+}
+
+.xp-floating-site-nav__links a:hover,
+.xp-reader-page .xp-reader-menu > a:hover {
+  background: #f3f2ee !important;
+}
+
+
+/* Restore the compact anchored navigation popover while keeping solid surfaces. */
+.xp-floating-site-nav__menu {
+  position: absolute;
+  top: calc(100% + .55rem);
+  left: 0;
+  width: min(18rem, calc(100vw - 2rem));
+  padding: .55rem;
+  border: 1px solid rgba(17,17,17,.10) !important;
+  border-radius: 20px;
+  overflow: hidden;
+  background: #fff !important;
+  box-shadow: 0 18px 46px rgba(17,17,17,.12) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.xp-floating-site-nav__menu-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .75rem;
+  padding: .45rem .5rem .55rem;
+}
+
+.xp-floating-site-nav__menu-top strong {
+  font-size: 1rem;
+  letter-spacing: -.035em;
+}
+
+.xp-floating-site-nav__menu-top button {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border: 0;
+  border-radius: 999px;
+  background: #f3f2ee;
+}
+
+.xp-floating-site-nav__menu > a {
+  display: flex;
+  align-items: center;
+  min-height: 42px;
+  padding: 0 .7rem;
+  border-radius: 13px;
+  font-size: .8rem;
+  font-weight: 700;
+}
+
+.xp-floating-site-nav__menu > a:hover {
+  background: #f3f2ee;
+}
+
+.xp-floating-site-nav__overlay,
+.xp-floating-site-nav__drawer {
+  display: none !important;
+}
