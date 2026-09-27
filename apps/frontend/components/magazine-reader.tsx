@@ -1147,10 +1147,17 @@ export function MagazineReader({
   };
 
   function resolveNativeSpread(masterSpread: MagazineMasterSpread | null | undefined) {
-    if (!masterSpread || masterSpread.pageIndexes.length === 1) return undefined;
+    if (!masterSpread) return undefined;
     const spreadPageIds = masterSpread.pageIndexes
       .map((pageIndex) => issue.pages[pageIndex]?.id)
       .filter((id): id is string => Boolean(id));
+
+    if (spreadPageIds.length === 1) {
+      return issue.spreads?.find((candidate) =>
+        candidate.pieces.length > 0 &&
+        candidate.pageIds?.includes(spreadPageIds[0]!));
+    }
+
     return issue.spreads?.find((candidate) =>
       candidate.pieces.length > 0 &&
       candidate.pageIds?.length === spreadPageIds.length &&
@@ -1164,6 +1171,45 @@ export function MagazineReader({
   ) => {
     const isSingle = spreadToRender.pageIndexes.length === 1;
     const nativeSpread = resolveNativeSpread(spreadToRender);
+
+    if (nativeSpread && isSingle) {
+      const pageIndex = spreadToRender.pageIndexes[0]!;
+      const manifest = issue.pages[pageIndex]!;
+      const nativePagePosition = nativeSpread.pageIds.indexOf(manifest.id);
+      const leafSide = nativePagePosition === 1 ? "right" : "left";
+      return (
+        <div
+          className={`xp-magazine__spread-layer xp-magazine__spread-layer--${role} is-single is-native-leaf`}
+          aria-hidden={role === "target" ? true : undefined}
+        >
+          <article
+            className="xp-magazine__sheet xp-magazine__sheet--solo"
+            aria-label={role === "current" ? `${manifest.title}, page ${pageIndex + 1}` : undefined}
+          >
+            <div className="xp-magazine__paper">
+              <MagazineSpreadLeaf
+                spread={nativeSpread}
+                side={leafSide}
+                globalElements={issue.designElements}
+                renderEngagement={role === "current" ? (piece) => (
+                  <SectionEngagementBar
+                    issueSlug={issue.slug}
+                    pageSlug={manifest.slug}
+                    sectionId={piece.id}
+                    sectionSlug={piece.slug}
+                    authenticated={viewerAuthenticated}
+                    config={piece.engagement}
+                    appearance="light"
+                  />
+                ) : undefined}
+              />
+              <span className="xp-magazine__folio" aria-hidden="true">{String(pageIndex + 1).padStart(2, "0")}</span>
+            </div>
+          </article>
+        </div>
+      );
+    }
+
     if (nativeSpread && !isSingle) {
       const hiddenSide = hiddenPageIndex == null
         ? undefined
