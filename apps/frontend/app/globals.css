@@ -4933,13 +4933,13 @@ p[data-drop-cap-lines="6"] .xp-editorial-drop-cap { font-size: 5.85em; }
 /* LIV Golf tradition spread engagement */
 [data-spread-piece-id="steyn-golf-tradition-piece"] > .xp-section-engagement--inline {
   position: absolute !important;
-  left: 54.3% !important;
+  left: 54.2% !important;
   right: auto !important;
-  top: 64.8% !important;
-  bottom: auto !important;
+  top: auto !important;
+  bottom: 2.2% !important;
   z-index: 120 !important;
   width: max-content !important;
-  max-width: 27% !important;
+  max-width: 19% !important;
   opacity: 1 !important;
   visibility: visible !important;
   pointer-events: auto !important;
@@ -4991,11 +4991,12 @@ p[data-drop-cap-lines="6"] .xp-editorial-drop-cap { font-size: 5.85em; }
 @media (max-width: 720px) {
   [data-spread-piece-id="steyn-golf-tradition-piece"] > .xp-section-engagement--inline {
     left: 53.5% !important;
-    top: 64.4% !important;
-    max-width: 31% !important;
+    top: auto !important;
+    bottom: 1.8% !important;
+    max-width: 34% !important;
     padding: 4px 8px !important;
-    transform: scale(.86);
-    transform-origin: left top;
+    transform: scale(.82);
+    transform-origin: left bottom;
   }
 
   [data-spread-piece-id="steyn-golf-tradition-liv-sign-piece"] > .xp-section-engagement--inline,
