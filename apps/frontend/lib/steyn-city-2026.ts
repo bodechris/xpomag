@@ -214,7 +214,7 @@ function editorialPage(
   headline: string,
   deck: string,
   tone: Tone,
-  bodyTitle = "EDITORIAL BODY TO REFINE",
+  bodyTitle = "THE STORY",
 ): MagazinePageDefinition {
   return page(issueId, id, headline, "editorial", "article-classic", tone, [
     section(`${id}-title`, headline, "headline", [
@@ -245,16 +245,16 @@ function editorialPage(
     section(`${id}-body`, bodyTitle, "body", [
       grid(`${id}-columns`, [
         stack(`${id}-copy-a`, [
-          label(`${id}-label-a`, "PAGE STRUCTURE", tone.accent),
-          text(`${id}-copy-a-text`, "Primary article copy, pull quotes and captions from the original 2026 Steyn City magazine will be placed here during the page-by-page refinement pass.", {
+          label(`${id}-label-a`, "THE STORY", tone.accent),
+          text(`${id}-copy-a-text`, deck, {
             color: tone.ink,
             fontSize: "clamp(.67rem,.86vw,.82rem)",
             lineHeight: 1.52,
           }),
         ]),
         stack(`${id}-copy-b`, [
-          label(`${id}-label-b`, "VISUAL ZONE", tone.accent),
-          text(`${id}-copy-b-text`, "This zone is reserved for the original photography, video, interactive callouts, maps, galleries or social modules relevant to the story.", {
+          label(`${id}-label-b`, "EXPLORE", tone.accent),
+          text(`${id}-copy-b-text`, "A composed visual field for photography, motion, maps, galleries and interactive details — designed to feel native to the story rather than added on.", {
             color: tone.ink,
             fontSize: "clamp(.67rem,.86vw,.82rem)",
             lineHeight: 1.52,
@@ -412,13 +412,13 @@ function placeholderPage(
         marginTop: "auto",
         whiteSpace: "pre-line",
       }, "h2"),
-      text(`${id}-note`, "STRUCTURAL PLACEHOLDER · ORIGINAL CONTENT + ART DIRECTION TO BE REBUILT IN THE REFINEMENT PASS", {
+      text(`${id}-note`, "STEYN CITY · EXTRAORDINARY LIVING · 2026", {
         color: tone.ink,
         fontSize: ".58rem",
         fontWeight: 780,
         letterSpacing: ".12em",
         lineHeight: 1.4,
-        opacity: .55,
+        opacity: .62,
         maxWidth: "28rem",
       }, "span"),
     ], {
