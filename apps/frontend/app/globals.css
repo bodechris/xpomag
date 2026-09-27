@@ -4492,3 +4492,26 @@ html.xp-nav-open body {
 
 /* Compact magazine engagement: one insight trigger, Facebook-like reaction state inside popover. */
 .xp-magazine-engagement__menu{position:relative}.xp-magazine-engagement__trigger{height:34px;min-width:58px;display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:0 12px;border:0;border-radius:28px;background:#111;color:#fff;cursor:pointer}.xp-magazine-engagement__trigger strong{font-size:12px;font-weight:800}.xp-magazine-engagement__popover{position:absolute;left:50%;bottom:calc(100% + 10px);transform:translate(-50%,8px);width:max-content;min-width:250px;padding:10px;border:1px solid rgba(0,0,0,.1);border-radius:28px;background:rgba(255,255,255,.96);box-shadow:0 18px 50px rgba(0,0,0,.18);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .16s ease,transform .16s ease,visibility .16s}.xp-magazine-engagement__popover[data-open="true"]{opacity:1;visibility:visible;pointer-events:auto;transform:translate(-50%,0)}.xp-magazine-engagement__popover-head{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:5px 8px 9px}.xp-magazine-engagement__popover-head strong{font-size:12px}.xp-magazine-engagement__popover-head span{font-size:10px;color:#777}.xp-magazine-engagement__popover .xp-engagement__actions{display:flex!important;align-items:center!important;gap:4px!important}.xp-magazine-engagement__popover .xp-engagement__action{height:36px!important;min-width:48px!important;padding:0 9px!important;border-radius:24px!important}.xp-magazine-engagement__popover .xp-engagement__action span{display:inline!important;font-size:11px!important}.xp-magazine-engagement__popover .xp-engagement__action.is-active{background:#eef3ff!important;color:#1769e0!important}.xp-magazine-engagement__popover .xp-engagement__reactions{border-radius:36px!important}.xp-magazine-engagement__popover .xp-engagement__reaction{border-radius:50%!important}.xp-magazine-engagement__popover .xp-engagement__reaction>span{border-radius:28px!important}.xp-magazine-engagement__popover .xp-engagement__reaction.is-selected{transform:translateY(-3px) scale(1.08);background:#eef3ff!important;color:#1769e0!important}@media(max-width:620px){.xp-magazine-engagement__popover{min-width:230px;left:auto;right:-55px;transform:translateY(8px)}.xp-magazine-engagement__popover[data-open="true"]{transform:translateY(0)}}
+
+/* Magazine engagement popover: equal action columns. */
+.xp-magazine-engagement__popover .xp-engagement__actions{
+  display:grid!important;
+  grid-template-columns:repeat(4,minmax(48px,1fr))!important;
+  align-items:center!important;
+  gap:6px!important;
+  width:100%!important;
+}
+.xp-magazine-engagement__popover .xp-engagement__action{
+  width:100%!important;
+  min-width:0!important;
+  height:38px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:5px!important;
+  padding:0 8px!important;
+  border-radius:24px!important;
+}
+.xp-magazine-engagement__popover{
+  min-width:276px;
+}
