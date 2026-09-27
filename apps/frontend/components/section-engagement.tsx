@@ -45,6 +45,7 @@ type Props = {
   config?: MagazineEngagementConfig;
   variant?: "inline" | "panel" | "dock";
   appearance?: "auto" | "light" | "dark";
+  onSummaryChange?: (summary: EngagementSummary) => void;
 };
 
 const EMPTY_SUMMARY: EngagementSummary = {
@@ -68,7 +69,7 @@ function compactCount(value: number) {
   return new Intl.NumberFormat(undefined, { notation: value >= 1000 ? "compact" : "standard", maximumFractionDigits: 1 }).format(value);
 }
 
-export function SectionEngagementBar({ issueSlug, pageSlug, sectionId, sectionSlug, authenticated = false, config, variant = "inline", appearance = "auto" }: Props) {
+export function SectionEngagementBar({ issueSlug, pageSlug, sectionId, sectionSlug, authenticated = false, config, variant = "inline", appearance = "auto", onSummaryChange }: Props) {
   const { data: session } = authClient.useSession();
   const viewerAuthenticated = Boolean(session?.user) || authenticated;
   const viewerId = session?.user?.id ?? null;
@@ -439,6 +440,8 @@ export function SectionEngagementBar({ issueSlug, pageSlug, sectionId, sectionSl
     };
   }, [shareOpen]);
 
+  useEffect(() => { onSummaryChange?.(summary); }, [summary, onSummaryChange]);
+
   const selectedReaction = summary.viewerReaction ? reactionMeta[summary.viewerReaction] : reactionMeta.like;
   const SelectedReactionIcon = selectedReaction.icon;
 
@@ -484,11 +487,11 @@ export function SectionEngagementBar({ issueSlug, pageSlug, sectionId, sectionSl
           </div>
         ) : null}
 
-        {enabled.comments ? <button type="button" className="xp-engagement__action" onClick={openComments} aria-label={`${summary.comments} comments`}><MessageCircle size={variant === "inline" ? 12 : 17} /><span>{variant === "inline" ? compactCount(summary.comments) : "Comment"}</span></button> : null}
+        {enabled.comments ? <button type="button" className="xp-engagement__action" onClick={openComments} aria-label={`${summary.comments} comments`}><MessageCircle size={variant === "inline" || variant === "dock" ? 12 : 17} /><span>{variant === "inline" || variant === "dock" ? compactCount(summary.comments) : "Comment"}</span></button> : null}
 
         {enabled.share ? (
           <div className="xp-engagement__popover-wrap">
-            <button ref={shareButtonRef} type="button" className="xp-engagement__action" onClick={() => { if (requireAuth()) setShareOpen((value) => !value); }} aria-expanded={shareOpen} aria-label={`${summary.shares} shares`}><Share2 size={variant === "inline" ? 12 : 17} /><span>{variant === "inline" ? compactCount(summary.shares) : "Share"}</span></button>
+            <button ref={shareButtonRef} type="button" className="xp-engagement__action" onClick={() => { if (requireAuth()) setShareOpen((value) => !value); }} aria-expanded={shareOpen} aria-label={`${summary.shares} shares`}><Share2 size={variant === "inline" || variant === "dock" ? 12 : 17} /><span>{variant === "inline" || variant === "dock" ? compactCount(summary.shares) : "Share"}</span></button>
             {typeof document !== "undefined" && shareOpen && sharePopoverPosition ? createPortal(
               <div
                 className="xp-engagement__share-popover xp-engagement__share-popover--portal"
@@ -512,7 +515,7 @@ export function SectionEngagementBar({ issueSlug, pageSlug, sectionId, sectionSl
 
         {enabled.save ? (
           <div className="xp-engagement__popover-wrap">
-            <button type="button" className={`xp-engagement__action ${summary.viewerSaved ? "is-active" : ""}`} onClick={openSavePicker} aria-expanded={saveOpen} aria-label={summary.viewerSaved ? `Saved by ${summary.saves}` : `${summary.saves} saves`}><Bookmark size={variant === "inline" ? 12 : 17} fill={summary.viewerSaved ? "currentColor" : "none"} /><span>{variant === "inline" ? compactCount(summary.saves) : summary.viewerSaved ? "Saved" : "Save"}</span></button>
+            <button type="button" className={`xp-engagement__action ${summary.viewerSaved ? "is-active" : ""}`} onClick={openSavePicker} aria-expanded={saveOpen} aria-label={summary.viewerSaved ? `Saved by ${summary.saves}` : `${summary.saves} saves`}><Bookmark size={variant === "inline" || variant === "dock" ? 12 : 17} fill={summary.viewerSaved ? "currentColor" : "none"} /><span>{variant === "inline" || variant === "dock" ? compactCount(summary.saves) : summary.viewerSaved ? "Saved" : "Save"}</span></button>
           </div>
         ) : null}
       </div>
