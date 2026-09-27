@@ -114,10 +114,6 @@ function AuthPageContent() {
   return (
     <main className="xp-auth">
       <section className="xp-auth__left">
-        <a className="xp-brand" href="/">
-          XpoMag
-          <span className="xp-brand__city">ROSEBANK + SANDTON</span>
-        </a>
 
         <div className="xp-auth__hero">
           <p className="xp-eyebrow">YOUR CITY, CURATED</p>
