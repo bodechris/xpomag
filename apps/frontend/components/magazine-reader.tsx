@@ -1,7 +1,7 @@
 "use client";
 
 import { MagazinePageRenderer, type ComposerNode, type MagazinePageDefinition } from "@xpomag/magazine";
-import { ArrowLeft, ArrowRight, BookOpen, LockKeyhole, Maximize2, Minimize2, Pause, Play, RotateCcw, X } from "lucide-react";
+import { ArrowLeft, ArrowRight, BookOpen, LockKeyhole, Maximize2, Menu, Minimize2, Pause, Play, RotateCcw, X } from "lucide-react";
 import type { CSSProperties, MouseEvent as ReactMouseEvent, PointerEvent as ReactPointerEvent } from "react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
@@ -489,7 +489,7 @@ export function MagazineReader({
   const [spreadIndex, setSpreadIndex] = useState(0);
   const initialPageIndex = Math.max(0, issue.pages.findIndex((page) => page.slug === initialPageSlug));
   const [motion, setMotion] = useState<Motion | null>(null);
-  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);\n  const [readerMenuOpen, setReaderMenuOpen] = useState(false);
 
   // Keep the reader backwards-compatible during local HMR / staggered pulls.
   // Older server output can briefly render the new client component without
@@ -1158,19 +1158,44 @@ export function MagazineReader({
     >
       <MagazineResourcePreloader resources={issue.resources} />
       <div className="xp-magazine__toolbar">
-        <div className="xp-magazine__meta">
-          <span>{issue.city}</span>
-          <span aria-hidden="true">/</span>
-          <span>{issue.monthLabel}</span>
-          <span aria-hidden="true">/</span>
-          <span>{issue.issueLabel}</span>
+        <div className="xp-magazine__meta-wrap">
+          <div className="xp-magazine__meta">
+            <button
+              type="button"
+              className="xp-reader-brand"
+              onClick={() => setReaderMenuOpen((value) => !value)}
+              aria-expanded={readerMenuOpen}
+              aria-label="Open XpoMag navigation"
+              data-magazine-interactive
+              data-no-page-turn
+            >
+              <Menu size={15} />
+              <strong>XpoMag</strong>
+            </button>
+            <span className="xp-reader-meta-separator" aria-hidden="true" />
+            <span>{issue.city}</span>
+            <span aria-hidden="true">/</span>
+            <span>{issue.issueLabel}</span>
+          </div>
+          {readerMenuOpen ? (
+            <nav className="xp-reader-menu" aria-label="XpoMag navigation" data-magazine-interactive data-no-page-turn>
+              <div className="xp-reader-menu__top">
+                <strong>XpoMag</strong>
+                <button type="button" onClick={() => setReaderMenuOpen(false)} aria-label="Close navigation"><X size={16} /></button>
+              </div>
+              <a href="/">Discover</a>
+              <a href="/#about">About XpoMag</a>
+              {viewerAuthenticated ? <a href="/saved">Saved collections</a> : <a href="/login">Sign in</a>}
+              <a href={`/magazine/${encodeURIComponent(issue.slug)}/cover`}>Issue cover</a>
+            </nav>
+          ) : null}
         </div>
 
         <div className="xp-magazine__page-meta" aria-live="polite">
           {activePages.some((page) => page.access === "member") ? (
             <span className="xp-magazine__member"><LockKeyhole size={13} /> Member</span>
           ) : null}
-          <span>{firstPage.title}</span>
+          <span className="xp-magazine__page-title" title={firstPage.title}>{firstPage.title}</span>
           <span>{firstPage.index + 1} / {issue.pages.length}</span>
           {isStandaloneArticleKind(firstPage.kind) ? (
             <a

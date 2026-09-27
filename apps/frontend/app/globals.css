@@ -3603,3 +3603,173 @@ img, picture, video, canvas, svg { display: block; max-width: 100%; }
     overflow: visible;
   }
 }
+
+
+/* Floating reader chrome refinements: stronger glass, compact titles, global nav. */
+.xp-reader-page .xp-magazine__meta-wrap {
+  position: relative;
+  pointer-events: auto;
+}
+
+.xp-reader-page .xp-magazine__meta,
+.xp-reader-page .xp-magazine__page-meta,
+.xp-reader-page .xp-magazine__progress,
+.xp-reader-page .xp-magazine__hint,
+.xp-reader-page .xp-magazine__controls,
+.xp-reader-page .xp-reader-menu {
+  background: rgba(247, 245, 239, .52);
+  box-shadow:
+    0 18px 46px rgba(18, 14, 9, .14),
+    0 3px 10px rgba(18, 14, 9, .06);
+  backdrop-filter: blur(36px) saturate(1.28);
+  -webkit-backdrop-filter: blur(36px) saturate(1.28);
+}
+
+.xp-reader-page .xp-magazine__meta {
+  gap: .5rem;
+}
+
+.xp-reader-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  min-height: 28px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--xp-color-ink);
+  font-size: .82rem;
+  font-weight: 780;
+  letter-spacing: -.03em;
+  text-transform: none;
+}
+
+.xp-reader-brand strong {
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.xp-reader-meta-separator {
+  width: 1px;
+  height: 18px;
+  background: rgba(0,0,0,.14);
+}
+
+.xp-reader-menu {
+  position: absolute;
+  top: calc(100% + .55rem);
+  left: 0;
+  width: min(18rem, calc(100vw - 2rem));
+  padding: .55rem;
+  border: 1px solid rgba(255,255,255,.7);
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.xp-reader-menu__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .75rem;
+  padding: .45rem .5rem .55rem;
+}
+
+.xp-reader-menu__top strong {
+  font-size: 1rem;
+  letter-spacing: -.035em;
+  text-transform: none;
+}
+
+.xp-reader-menu__top button {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(255,255,255,.55);
+}
+
+.xp-reader-menu > a {
+  display: flex;
+  align-items: center;
+  min-height: 42px;
+  padding: 0 .7rem;
+  border-radius: 13px;
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .02em;
+  text-transform: none;
+}
+
+.xp-reader-menu > a:hover {
+  background: rgba(255,255,255,.62);
+}
+
+.xp-reader-page .xp-magazine__page-meta {
+  width: auto;
+  max-width: min(43vw, 35rem);
+  overflow: hidden;
+}
+
+.xp-reader-page .xp-magazine__page-title {
+  display: block;
+  min-width: 0;
+  max-width: min(17vw, 13rem);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (min-width: 821px) {
+  /* Keep floating controls in protected chrome lanes rather than over page content. */
+  .xp-reader-page .xp-magazine__stage {
+    padding:
+      4.25rem
+      max(1.5rem, 2.5vw);
+  }
+
+  .xp-reader-page .xp-magazine__stage[data-mode="spread"] .xp-magazine__book {
+    height: min(
+      calc(100dvh - 8.5rem),
+      calc((100vw - max(3rem, 5vw)) / 1.44)
+    );
+    max-height: calc(100dvh - 8.5rem);
+  }
+
+  @media (max-width: 1180px) {
+    .xp-reader-page .xp-magazine__page-title {
+      display: none;
+    }
+
+    .xp-reader-page .xp-magazine__page-meta {
+      max-width: 46vw;
+    }
+  }
+}
+
+@media (max-width: 820px) {
+  .xp-reader-page .xp-magazine__meta {
+    max-width: 52vw;
+  }
+
+  .xp-reader-page .xp-reader-brand strong {
+    display: none;
+  }
+
+  .xp-reader-page .xp-reader-meta-separator {
+    display: none;
+  }
+
+  .xp-reader-page .xp-magazine__page-title {
+    display: none;
+  }
+
+  .xp-reader-page .xp-magazine__page-meta {
+    max-width: 42vw;
+  }
+
+  .xp-reader-page .xp-reader-menu {
+    top: calc(100% + .45rem);
+  }
+}
