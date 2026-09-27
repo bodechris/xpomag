@@ -3469,8 +3469,11 @@ export function selectDemoMagazine(city: string, options: DemoMagazineOptions = 
     },
     resources: {
       fonts: [
-        { id: "ui-sans", family: "Geist", weight: "100 900", preload: true },
-        { id: "editorial-serif", family: "Georgia", preload: false },
+        { id: "ui-sans", family: "Manrope", weight: "400 800", preload: true },
+        { id: "editorial-display", family: "Bodoni Moda", weight: "400 600", preload: true },
+        { id: "editorial-body", family: "Newsreader", weight: "400 600", preload: true },
+        { id: "display-sans", family: "Oswald", weight: "500 700", preload: false },
+        { id: "grotesk", family: "DM Sans", weight: "400 700", preload: false },
       ],
       images: (options.alphaCoverAssets ?? []).slice(0, 12).map((src, index) => ({
         id: `alpha-subject-${index + 1}`,
