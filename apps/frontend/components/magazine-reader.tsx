@@ -1303,7 +1303,7 @@ export function MagazineReader({
                         />
                       </div>
                     ) : null}
-                    renderEngagement={(section) => role !== "current" || page.kind === "cover" ? null : (
+                    renderEngagement={(section) => role !== "current" ? null : (
                       <SectionEngagementBar
                         issueSlug={issue.slug}
                         pageSlug={page.slug}
