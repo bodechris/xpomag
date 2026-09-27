@@ -12,7 +12,9 @@ type CityInput = {
   source?: "detected" | "selected"
 }
 
-type CitySuggestion = { id:string; name:string; region:string|null; country:string|null; countryCode:string|null; population:number }\n\ntype Category = {
+type CitySuggestion = { id:string; name:string; region:string|null; country:string|null; countryCode:string|null; population:number }
+
+type Category = {
   id: string
   name: string
   slug: string
@@ -34,7 +36,12 @@ export default function OnboardingPage() {
   const router = useRouter()
   const [bootstrap, setBootstrap] = useState<Bootstrap | null>(null)
   const [cities, setCities] = useState<CityInput[]>([])
-  const [cityDraft, setCityDraft] = useState("")\n  const [citySuggestions,setCitySuggestions]=useState<CitySuggestion[]>([])\n  const [citySearching,setCitySearching]=useState(false)\n  const [cityMenuOpen,setCityMenuOpen]=useState(false)\n  const [cityActiveIndex,setCityActiveIndex]=useState(0)\n  const citySearchRequest=useRef(0)
+  const [cityDraft, setCityDraft] = useState("")
+  const [citySuggestions,setCitySuggestions]=useState<CitySuggestion[]>([])
+  const [citySearching,setCitySearching]=useState(false)
+  const [cityMenuOpen,setCityMenuOpen]=useState(false)
+  const [cityActiveIndex,setCityActiveIndex]=useState(0)
+  const citySearchRequest=useRef(0)
   const [selectedCategories, setSelectedCategories] = useState<string[]>([])
   const [error, setError] = useState("")
   const [busy, setBusy] = useState(false)
