@@ -1,4 +1,4 @@
-import type { MagazineGlobalDefinition, MagazinePageDefinition } from "@xpomag/magazine";
+import { legacyPagesToSpreadDefinitions, type MagazineGlobalDefinition, type MagazinePageDefinition } from "@xpomag/magazine";
 
 export type MagazinePageManifestItem = Pick<
   MagazinePageDefinition,
@@ -24,6 +24,7 @@ export function createMagazineReaderPayload(
   return {
     issue: {
       ...issue,
+      spreads: issue.spreads?.length ? issue.spreads : legacyPagesToSpreadDefinitions(issue.id, issue.pages),
       pages: issue.pages.map(({ id, slug, title, kind, access }) => ({
         id,
         slug,
