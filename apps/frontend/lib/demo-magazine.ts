@@ -2776,7 +2776,7 @@ export function selectDemoMagazine(city: string, options: DemoMagazineOptions = 
     issueLabel: "Issue 001",
     monthLabel: "November 2026",
     metadata: {
-      edition: editionCity,
+      edition: editionCity,\n      publicationSlug: /johannesburg|rosebank|sandton/i.test(requestedCity) ? "joburg" : slugCity,\n      publicationName: `XpoMag ${/johannesburg|rosebank|sandton/i.test(requestedCity) ? "Joburg" : requestedCity}`,
       issueNumber: 1,
       publicationFrequency: "monthly",
       demo: true,
