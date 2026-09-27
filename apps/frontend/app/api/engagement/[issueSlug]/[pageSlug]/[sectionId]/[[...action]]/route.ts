@@ -22,10 +22,7 @@ async function proxy(request: NextRequest, context: RouteContext) {
     return Response.json({ ok: false, error: "Authentication required" }, { status: 401 })
   }
 
-  const target = new URL(
-    `/v1/engagement/${encodeURIComponent(issueSlug)}/${encodeURIComponent(pageSlug)}/${encodeURIComponent(sectionId)}${action.length ? `/${action.map(encodeURIComponent).join("/")}` : ""}`,
-    apiOrigin(),
-  )
+  const path = `/v1/engagement/${encodeURIComponent(issueSlug)}/${encodeURIComponent(pageSlug)}/${encodeURIComponent(sectionId)}${action.length ? `/${action.map(encodeURIComponent).join("/")}` : ""}`
 
   const headers = new Headers()
   headers.set("accept", "application/json")
@@ -34,17 +31,32 @@ async function proxy(request: NextRequest, context: RouteContext) {
   if (process.env.ENGAGEMENT_INTERNAL_SECRET) headers.set("x-xpomag-internal-key", process.env.ENGAGEMENT_INTERNAL_SECRET)
 
   const body = request.method === "GET" || request.method === "HEAD" ? undefined : await request.text()
-  const response = await fetch(target, {
-    method: request.method,
-    headers,
-    body,
-    cache: "no-store",
-  })
+  const origins = [...new Set([
+    apiOrigin(),
+    process.env.NODE_ENV !== "production" ? "http://127.0.0.1:4000" : null,
+  ].filter(Boolean) as string[])]
 
-  const responseBody = await response.arrayBuffer()
-  const responseHeaders = new Headers()
-  responseHeaders.set("content-type", response.headers.get("content-type") ?? "application/json")
-  return new Response(responseBody, { status: response.status, headers: responseHeaders })
+  let lastError: unknown = null
+  for (const origin of origins) {
+    try {
+      const response = await fetch(new URL(path, origin), {
+        method: request.method,
+        headers,
+        body,
+        cache: "no-store",
+      })
+
+      const responseBody = await response.arrayBuffer()
+      const responseHeaders = new Headers()
+      responseHeaders.set("content-type", response.headers.get("content-type") ?? "application/json")
+      return new Response(responseBody, { status: response.status, headers: responseHeaders })
+    } catch (error) {
+      lastError = error
+    }
+  }
+
+  console.error("[xpomag] engagement API unavailable", { path, error: lastError })
+  return Response.json({ ok: false, error: "API unavailable" }, { status: 503 })
 }
 
 export const GET = proxy
