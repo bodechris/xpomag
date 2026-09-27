@@ -1086,16 +1086,16 @@ function cityLivingSpread(issueId: string): MagazineSpreadDefinition {
           },
           children: [
             image("city-living-steyn-mark", steynMark, "Steyn City emblem", {
-              width: "clamp(3rem,4.5vw,5rem)",
-              height: "clamp(3.2rem,4.8vw,5.2rem)",
+              width: "clamp(1.9rem,3.4vw,4rem)",
+              height: "clamp(2rem,3.6vw,4.2rem)",
               objectFit: "contain",
               marginBottom: "clamp(.55rem,.9vw,.9rem)",
             }),
             image("city-living-steyn-wordmark", steynWordmark, "Steyn City", {
-              width: "clamp(7rem,10.5vw,11.5rem)",
+              width: "clamp(5.5rem,8.6vw,9.8rem)",
               height: "auto",
               objectFit: "contain",
-              marginBottom: "clamp(1.6rem,3vw,3.2rem)",
+              marginBottom: "clamp(1.15rem,2.2vw,2.5rem)",
             }),
 
             stack("city-living-headline", [
@@ -1169,7 +1169,7 @@ function cityLivingSpread(issueId: string): MagazineSpreadDefinition {
             text("city-living-qr-note", "To learn more, scan this QR code.", {
               color: "#57514d",
               fontFamily: "var(--xp-font-editorial)",
-              fontSize: "clamp(.4rem,.5vw,.52rem)",
+              fontSize: "clamp(.46rem,.55vw,.6rem)",
               fontStyle: "italic",
               lineHeight: 1.25,
             }, "span"),
@@ -1181,7 +1181,7 @@ function cityLivingSpread(issueId: string): MagazineSpreadDefinition {
             },
 
             image("city-living-pam-golding", pamGolding, "Pam Golding Properties", {
-              width: "clamp(5.7rem,7.7vw,8.4rem)",
+              width: "clamp(6.4rem,8.4vw,9.2rem)",
               height: "auto",
               objectFit: "contain",
               marginBottom: ".28rem",
@@ -1192,7 +1192,7 @@ function cityLivingSpread(issueId: string): MagazineSpreadDefinition {
               {
                 color: "#5b5551",
                 fontFamily: "var(--xp-font-editorial)",
-                fontSize: "clamp(.35rem,.43vw,.46rem)",
+                fontSize: "clamp(.52rem,.58vw,.64rem)",
                 fontStyle: "italic",
                 lineHeight: 1.3,
                 whiteSpace: "pre-line",
@@ -1201,7 +1201,7 @@ function cityLivingSpread(issueId: string): MagazineSpreadDefinition {
             text("city-living-url", "steyncity.co.za", {
               color: "#393532",
               fontFamily: "var(--xp-font-grotesk)",
-              fontSize: "clamp(.33rem,.4vw,.43rem)",
+              fontSize: "clamp(.46rem,.52vw,.58rem)",
               fontWeight: 650,
               letterSpacing: ".04em",
               marginTop: ".18rem",
