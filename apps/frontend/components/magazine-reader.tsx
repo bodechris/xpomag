@@ -1146,7 +1146,7 @@ export function MagazineReader({
     if (pointerGuideRef.current) pointerGuideRef.current.dataset.visible = "false";
   };
 
-  const resolveNativeSpread = (masterSpread: MagazineMasterSpread | null | undefined) => {
+  function resolveNativeSpread(masterSpread: MagazineMasterSpread | null | undefined) {
     if (!masterSpread || masterSpread.pageIndexes.length === 1) return undefined;
     const spreadPageIds = masterSpread.pageIndexes
       .map((pageIndex) => issue.pages[pageIndex]?.id)
@@ -1155,7 +1155,7 @@ export function MagazineReader({
       candidate.pieces.length > 0 &&
       candidate.pageIds?.length === spreadPageIds.length &&
       candidate.pageIds.every((id, index) => id === spreadPageIds[index]));
-  };
+  }
 
   const renderSpread = (
     spreadToRender: MagazineMasterSpread,
@@ -1249,7 +1249,7 @@ export function MagazineReader({
                         />
                       </div>
                     ) : null}
-                    renderEngagement={(section) => page.kind === "cover" ? null : (
+                    renderEngagement={(section) => role !== "current" || page.kind === "cover" ? null : (
                       <SectionEngagementBar
                         issueSlug={issue.slug}
                         pageSlug={page.slug}
