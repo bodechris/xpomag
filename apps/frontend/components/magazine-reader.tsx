@@ -5,7 +5,7 @@ import { ArrowLeft, ArrowRight, BookOpen, LockKeyhole, Maximize2, Minimize2, Pau
 import type { CSSProperties, MouseEvent as ReactMouseEvent, PointerEvent as ReactPointerEvent } from "react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import type { MagazineReaderIssue } from "../lib/magazine-reader-data";
+import { isStandaloneArticleKind, type MagazineReaderIssue } from "../lib/magazine-reader-data";
 import { MagazineResourcePreloader } from "./magazine-resource-preloader";
 import { SectionEngagementBar } from "./section-engagement";
 
@@ -1172,7 +1172,7 @@ export function MagazineReader({
           ) : null}
           <span>{firstPage.title}</span>
           <span>{firstPage.index + 1} / {issue.pages.length}</span>
-          {firstPage.kind !== "cover" ? (
+          {isStandaloneArticleKind(firstPage.kind) ? (
             <a
               className="xp-magazine__article-link"
               href={`/article/${encodeURIComponent(issue.slug)}/${encodeURIComponent(firstPage.slug)}`}
