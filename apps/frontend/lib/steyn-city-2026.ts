@@ -1676,8 +1676,8 @@ function contentsGolfSpread(issueId: string): MagazineSpreadDefinition {
                     style: {
                       color: "#3a3531",
                       fontFamily: "var(--xp-font-editorial)",
-                      fontSize: "clamp(.38rem,.50vw,.54rem)",
-                      lineHeight: 1.43,
+                      fontSize: "clamp(.46rem,.62vw,.68rem)",
+                      lineHeight: 1.48,
                       whiteSpace: "pre-line",
                     },
                   },
@@ -1686,8 +1686,8 @@ function contentsGolfSpread(issueId: string): MagazineSpreadDefinition {
                     {
                       color: "#3a3531",
                       fontFamily: "var(--xp-font-editorial)",
-                      fontSize: "clamp(.38rem,.50vw,.54rem)",
-                      lineHeight: 1.43,
+                      fontSize: "clamp(.46rem,.62vw,.68rem)",
+                      lineHeight: 1.48,
                       whiteSpace: "pre-line",
                     }
                   ),
