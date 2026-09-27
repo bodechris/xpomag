@@ -34,7 +34,7 @@ export function ExplorePublications({ initialPublications, authenticated }: { in
       <div className="xp-publication-grid">{active.map((p,index)=><article className={`xp-publication-card xp-publication-card--${index%2?"dark":"light"}`} key={p.id}>
         <div className="xp-publication-card__top"><span>{p.country}</span><span>LIVE</span></div>
         <div><p className="xp-publication-card__label">XPOMAG</p><h3>{p.city ?? p.name.replace("XpoMag ","")}</h3><p>{p.tagline ?? p.description}</p></div>
-        <div className="xp-publication-card__actions"><button disabled={busy===p.slug} onClick={()=>toggle(p)}>{p.viewerFollowing?"✓ Following":"+ Follow"}</button><a href={`/magazine/demo-${(p.city ?? p.slug).toLowerCase().replace(/\s+/g,"-")}-001/cover`}>Open issue →</a></div>
+        <div className="xp-publication-card__actions"><button disabled={busy===p.slug} onClick={()=>toggle(p)}>{p.viewerFollowing?"✓ Following":"+ Follow"}</button><a href={`/city/${p.slug}`}>View city →</a></div>
         <small>{p.followerCount ? `${p.followerCount.toLocaleString()} follower${p.followerCount===1?"":"s"}` : "Be among the first to follow"}</small>
       </article>)}</div>
     </section>
