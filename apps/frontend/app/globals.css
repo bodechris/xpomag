@@ -543,6 +543,30 @@ img, picture, video, canvas, svg { display: block; max-width: 100%; }
   visibility: hidden;
 }
 
+/* Native spread canvases use one 200%-leaf-authoring surface rather than
+   independent .xp-magazine__sheet nodes. Mirror the legacy stationary-leaf
+   travel during edge transitions so opening/closing the cover keeps the same
+   physical hinge and does not jump when a native spread is involved. */
+.xp-magazine__stage[data-edge="single-to-spread"][data-direction="next"]
+  .xp-magazine__spread-layer--target.is-native-spread .xp-magazine__native-spread {
+  transform: translateX(calc((1 - var(--xp-turn-progress)) * -25%)) translateZ(0);
+}
+
+.xp-magazine__stage[data-edge="single-to-spread"][data-direction="previous"]
+  .xp-magazine__spread-layer--target.is-native-spread .xp-magazine__native-spread {
+  transform: translateX(calc((1 - var(--xp-turn-progress)) * 25%)) translateZ(0);
+}
+
+.xp-magazine__stage[data-edge="spread-to-single"][data-direction="previous"]
+  .xp-magazine__spread-layer--current.is-native-spread .xp-magazine__native-spread {
+  transform: translateX(calc(var(--xp-turn-progress) * -25%)) translateZ(0);
+}
+
+.xp-magazine__stage[data-edge="spread-to-single"][data-direction="next"]
+  .xp-magazine__spread-layer--current.is-native-spread .xp-magazine__native-spread {
+  transform: translateX(calc(var(--xp-turn-progress) * 25%)) translateZ(0);
+}
+
 /* Closed single page -> open spread.
    Forward: cover/back-face becomes the left page; the right page starts directly
    beneath the closed cover and travels outward as the binding finds center. */
@@ -590,6 +614,7 @@ img, picture, video, canvas, svg { display: block; max-width: 100%; }
 .xp-magazine__stage[data-phase="animating"] .xp-magazine__turn-sheet,
 .xp-magazine__stage[data-phase="animating"] .xp-magazine__spread-layer,
 .xp-magazine__stage[data-phase="animating"] .xp-magazine__sheet,
+.xp-magazine__stage[data-phase="animating"] .xp-magazine__native-spread,
 .xp-magazine__stage[data-phase="animating"] .xp-magazine__book-shadow {
   transition:
     transform 560ms var(--xp-ease-page),
