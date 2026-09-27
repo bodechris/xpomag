@@ -3014,6 +3014,55 @@ function showcaseLayoutPage(
   return page(issueId, original.id, title, original.kind, layoutId, paper, slotSections);
 }
 
+
+function applyPremiumDropCap(
+  page: MagazinePageDefinition,
+  pageIndex: number,
+): MagazinePageDefinition {
+  if (!["editorial", "feature"].includes(page.kind)) return page;
+
+  const excludedSlots = new Set(["headline", "title", "hero", "media", "quote", "aside", "number", "ad"]);
+  const accentCycle = ["#b72318", "#3157ff", "#8b5e3c", "#2d6a4f", "#a04d28", "#7b2f53"];
+  const accent = accentCycle[pageIndex % accentCycle.length]!;
+  let applied = false;
+
+  const markNode = (node: DesignElementNode): DesignElementNode => {
+    if (applied) return node;
+    if (
+      node.type === "text" &&
+      (node.props?.as == null || node.props?.as === "p") &&
+      typeof node.props?.text === "string" &&
+      node.props.text.trim().length >= 110
+    ) {
+      applied = true;
+      return {
+        ...node,
+        props: {
+          ...(node.props ?? {}),
+          dropCap: true,
+          dropCapLines: pageIndex % 7 === 0 ? 6 : 5,
+          dropCapColor: accent,
+        },
+        style: {
+          ...(node.style ?? {}),
+          fontFamily: "var(--xp-font-editorial-body)",
+          lineHeight: 1.54,
+        },
+      };
+    }
+    if (!node.children?.length) return node;
+    return { ...node, children: node.children.map(markNode) };
+  };
+
+  return {
+    ...page,
+    sections: page.sections.map((section) => {
+      if (applied || excludedSlots.has(section.slot)) return section;
+      return { ...section, elements: section.elements.map(markNode) };
+    }),
+  };
+}
+
 function prepareDemoPages(
   issueId: string,
   rawPages: MagazinePageDefinition[],
@@ -3124,7 +3173,7 @@ function prepareDemoPages(
       node.children?.forEach(rewrite);
     };
     next.sections.forEach((section) => section.elements.forEach(rewrite));
-    return next;
+    return applyPremiumDropCap(next, index);
   });
 }
 
@@ -3279,13 +3328,23 @@ function buildDemoShowcaseSpreads(
         whiteSpace: "pre-line", textTransform: "uppercase",
         textShadow: variant === 2 ? "0 10px 40px rgba(0,0,0,.35)" : undefined,
       }, "h2"),
-      stack(`spread-${variant}-copy`, copy.map((paragraph, index) =>
-        text(`spread-${variant}-p-${index}`, paragraph, {
+      stack(`spread-${variant}-copy`, copy.map((paragraph, index) => ({
+        ...text(`spread-${variant}-p-${index}`, paragraph, {
           color: variant === 2 ? "#fff" : ink,
           fontFamily: "var(--xp-font-editorial-body)",
           fontSize: "clamp(.62rem,.76vw,.82rem)", lineHeight: 1.5,
         }),
-      ), {
+        props: {
+          as: "p",
+          text: paragraph,
+          ...(index === 0 ? {
+            dropCap: true,
+            dropCapLines: variant === 0 ? 6 : 5,
+            dropCapColor: accent,
+          } : {}),
+        },
+      })),
+      {
         position: "absolute",
         left: variant === 1 ? "4%" : variant === 4 ? "51%" : variant === 3 ? "4%" : "56%",
         right: variant === 1 ? "55%" : "4%",
