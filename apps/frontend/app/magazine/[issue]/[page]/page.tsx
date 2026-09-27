@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { headers } from "next/headers";
 import { auth, ensureAuthInfrastructure } from "../../../../lib/auth-server";
 import { MagazineReader } from "../../../../components/magazine-reader";
-import { SiteHeader } from "../../../../components/site-header";
 import { getDemoMagazineBySlug } from "../../../../lib/demo-magazine";
 import { getAlphaCoverAssets } from "../../../../lib/cover-assets";
 import { getComposerDocument } from "../../../../lib/composer-persistence";
@@ -44,7 +43,6 @@ export default async function MagazinePageRoute({ params, searchParams }: RouteP
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
         />
       ) : null}
-      <SiteHeader city={issue.city} />
       <div className="xp-container xp-home-shell">
         <MagazineReader issue={readerPayload.issue} initialPages={readerPayload.initialPages} initialPageSlug={pageSlug} viewerAuthenticated={viewerAuthenticated} />
       </div>
