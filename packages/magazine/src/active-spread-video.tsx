@@ -10,6 +10,7 @@ type ActiveSpreadVideoProps = {
   autoplayDelayMs?: number;
   muted?: boolean;
   loop?: boolean;
+  maxLoops?: number;
   controls?: boolean;
   style?: CSSProperties;
 };
@@ -22,31 +23,53 @@ export function ActiveSpreadVideo({
   autoplayDelayMs = 0,
   muted = true,
   loop = false,
+  maxLoops,
   controls = true,
   style,
 }: ActiveSpreadVideoProps) {
-  const ref = useRef<HTMLVideoElement>(null);
+  const frameRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const delayTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const [activated, setActivated] = useState(false);
-  const [visible, setVisible] = useState(false);
-  const [playReady, setPlayReady] = useState(false);
+  const loopCountRef = useRef(0);
+
+  const [isCurrentAndVisible, setIsCurrentAndVisible] = useState(false);
+  const [videoReady, setVideoReady] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
 
   useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
+    const frame = frameRef.current;
+    if (!frame) return;
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        const nextVisible = Boolean(entry?.isIntersecting && entry.intersectionRatio >= 0.55);
-        setVisible(nextVisible);
-        if (nextVisible) setActivated(true);
-      },
-      { threshold: [0, 0.25, 0.55, 0.8] },
-    );
+    const spreadLayer = frame.closest(".xp-magazine__spread-layer");
+    if (!spreadLayer) return;
 
-    observer.observe(el);
-    return () => observer.disconnect();
+    const evaluate = () => {
+      const isCurrent = spreadLayer.classList.contains("xp-magazine__spread-layer--current");
+      const isHidden = spreadLayer.getAttribute("aria-hidden") === "true";
+      const rect = frame.getBoundingClientRect();
+      const viewportW = window.innerWidth || document.documentElement.clientWidth;
+      const viewportH = window.innerHeight || document.documentElement.clientHeight;
+      const visibleW = Math.max(0, Math.min(rect.right, viewportW) - Math.max(rect.left, 0));
+      const visibleH = Math.max(0, Math.min(rect.bottom, viewportH) - Math.max(rect.top, 0));
+      const visibleArea = visibleW * visibleH;
+      const area = Math.max(1, rect.width * rect.height);
+      setIsCurrentAndVisible(isCurrent && !isHidden && visibleArea / area >= 0.55);
+    };
+
+    const observer = new IntersectionObserver(evaluate, { threshold: [0, 0.25, 0.55, 0.8, 1] });
+    observer.observe(frame);
+
+    const mutation = new MutationObserver(evaluate);
+    mutation.observe(spreadLayer, { attributes: true, attributeFilter: ["class", "aria-hidden"] });
+
+    evaluate();
+    window.addEventListener("resize", evaluate);
+
+    return () => {
+      observer.disconnect();
+      mutation.disconnect();
+      window.removeEventListener("resize", evaluate);
+    };
   }, []);
 
   useEffect(() => {
@@ -55,24 +78,32 @@ export function ActiveSpreadVideo({
       delayTimerRef.current = null;
     }
 
-    if (!visible || !autoplay) {
-      setPlayReady(false);
+    const video = videoRef.current;
+
+    if (!isCurrentAndVisible || !autoplay) {
+      setVideoReady(false);
       setHasStarted(false);
-      const el = ref.current;
-      if (el) {
-        el.pause();
-        try { el.currentTime = 0; } catch {}
+      loopCountRef.current = 0;
+      if (video) {
+        video.pause();
+        try {
+          video.currentTime = 0;
+        } catch {}
       }
       return;
     }
 
+    setVideoReady(false);
+    setHasStarted(false);
+    loopCountRef.current = 0;
+
     if (autoplayDelayMs <= 0) {
-      setPlayReady(true);
+      setVideoReady(true);
       return;
     }
 
     delayTimerRef.current = setTimeout(() => {
-      setPlayReady(true);
+      setVideoReady(true);
       delayTimerRef.current = null;
     }, autoplayDelayMs);
 
@@ -82,34 +113,46 @@ export function ActiveSpreadVideo({
         delayTimerRef.current = null;
       }
     };
-  }, [autoplay, autoplayDelayMs, visible]);
+  }, [autoplay, autoplayDelayMs, isCurrentAndVisible]);
 
   useEffect(() => {
-    const el = ref.current;
-    if (!el || !activated || !autoplay) return;
+    const video = videoRef.current;
+    if (!video || !videoReady || !autoplay || !isCurrentAndVisible) return;
 
     const syncPlayback = () => {
-      if (visible && playReady && document.visibilityState === "visible") {
-        void el.play().catch(() => undefined);
+      if (document.visibilityState === "visible" && isCurrentAndVisible) {
+        void video.play().catch(() => undefined);
       } else {
-        el.pause();
+        video.pause();
       }
     };
 
     syncPlayback();
     document.addEventListener("visibilitychange", syncPlayback);
     return () => document.removeEventListener("visibilitychange", syncPlayback);
-  }, [activated, autoplay, playReady, visible]);
+  }, [autoplay, isCurrentAndVisible, videoReady]);
 
-  const {
-    objectFit,
-    objectPosition,
-    background,
-    ...frameStyle
-  } = style ?? {};
+  const handleEnded = () => {
+    const video = videoRef.current;
+    if (!video || !loop || !isCurrentAndVisible) return;
+
+    loopCountRef.current += 1;
+    if (typeof maxLoops === "number" && maxLoops > 0 && loopCountRef.current >= maxLoops) {
+      video.pause();
+      return;
+    }
+
+    try {
+      video.currentTime = 0;
+    } catch {}
+    void video.play().catch(() => undefined);
+  };
+
+  const { objectFit, objectPosition, background, ...frameStyle } = style ?? {};
 
   return (
     <div
+      ref={frameRef}
       data-design-element="active-spread-video"
       style={{
         ...frameStyle,
@@ -117,27 +160,30 @@ export function ActiveSpreadVideo({
         background: background ?? "#000",
       }}
     >
-      <video
-        ref={ref}
-        src={activated ? src : undefined}
-        title={title}
-        muted={muted}
-        loop={loop}
-        playsInline
-        controls={controls}
-        preload={activated ? "metadata" : "none"}
-        onPlaying={() => setHasStarted(true)}
-        style={{
-          position: "absolute",
-          inset: 0,
-          width: "100%",
-          height: "100%",
-          maxWidth: "none",
-          objectFit: objectFit ?? "cover",
-          objectPosition: objectPosition ?? "center",
-          opacity: hasStarted ? 1 : 0,
-        }}
-      />
+      {videoReady ? (
+        <video
+          ref={videoRef}
+          src={src}
+          title={title}
+          muted={muted}
+          playsInline
+          controls={controls}
+          preload="metadata"
+          onPlaying={() => setHasStarted(true)}
+          onEnded={handleEnded}
+          style={{
+            position: "absolute",
+            inset: 0,
+            width: "100%",
+            height: "100%",
+            maxWidth: "none",
+            objectFit: objectFit ?? "cover",
+            objectPosition: objectPosition ?? "center",
+            opacity: hasStarted ? 1 : 0,
+          }}
+        />
+      ) : null}
+
       {poster ? (
         <img
           src={poster}
