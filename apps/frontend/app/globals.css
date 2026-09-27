@@ -4843,3 +4843,46 @@ p[data-drop-cap-lines="6"] .xp-editorial-drop-cap { font-size: 5.85em; }
     transform-origin: left bottom;
   }
 }
+
+
+/* Bentley advert engagement: keep the controls visibly anchored over the media,
+   above the copy rail, without covering the headline/specification text. */
+[data-spread-piece-id="steyn-bentley-flying-spur-piece"] {
+  overflow: visible !important;
+}
+
+[data-spread-piece-id="steyn-bentley-flying-spur-piece"] > .xp-section-engagement--inline {
+  position: absolute !important;
+  left: clamp(14px, 2vw, 28px) !important;
+  right: auto !important;
+  top: auto !important;
+  bottom: calc(15.2% + clamp(12px, 1.25vw, 20px)) !important;
+  z-index: 120 !important;
+  width: max-content !important;
+  max-width: calc(100% - 40px) !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  padding: 5px 11px !important;
+  border-radius: 999px !important;
+  color: #111 !important;
+  background: rgba(255,255,255,.9) !important;
+  box-shadow: 0 10px 28px rgba(0,0,0,.16) !important;
+  backdrop-filter: blur(14px) saturate(1.08) !important;
+  -webkit-backdrop-filter: blur(14px) saturate(1.08) !important;
+}
+
+[data-spread-piece-id="steyn-bentley-flying-spur-piece"] > .xp-section-engagement--inline .xp-engagement__action {
+  color: #111 !important;
+}
+
+@media (max-width: 720px) {
+  [data-spread-piece-id="steyn-bentley-flying-spur-piece"] > .xp-section-engagement--inline {
+    left: 8px !important;
+    bottom: calc(15.2% + 8px) !important;
+    max-width: calc(100% - 16px) !important;
+    padding: 4px 8px !important;
+    transform: scale(.9);
+    transform-origin: left bottom;
+  }
+}
