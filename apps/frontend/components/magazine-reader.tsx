@@ -505,7 +505,7 @@ export function MagazineReader({
   const [motion, setMotion] = useState<Motion | null>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [readerMenuOpen, setReaderMenuOpen] = useState(false);
-  const [spreadVideoModal, setSpreadVideoModal] = useState<{ src: string; title: string } | null>(null);
+  const [spreadVideoModal, setSpreadVideoModal] = useState<{ src: string; title: string; poster?: string } | null>(null);
 
   // Keep the reader backwards-compatible during local HMR / staggered pulls.
   // Older server output can briefly render the new client component without
@@ -978,14 +978,21 @@ export function MagazineReader({
         return {
           src: String(found.props?.src ?? ""),
           title: typeof found.props?.title === "string" ? found.props.title : activeNativeSpread.title,
+          poster: typeof found.props?.poster === "string" ? found.props.poster : undefined,
         };
       }
     }
     return null;
   }, [activeNativeSpread]);
 
+  const modalVideoIsYouTube = useMemo(
+    () => Boolean(spreadVideoModal?.src && /youtube\.com|youtu\.be/.test(spreadVideoModal.src)),
+    [spreadVideoModal],
+  );
+
   const modalVideoSrc = useMemo(() => {
     if (!spreadVideoModal?.src) return "";
+    if (!modalVideoIsYouTube) return spreadVideoModal.src;
     try {
       const url = new URL(spreadVideoModal.src);
       url.searchParams.set("autoplay", "1");
@@ -997,7 +1004,7 @@ export function MagazineReader({
     } catch {
       return spreadVideoModal.src;
     }
-  }, [spreadVideoModal]);
+  }, [modalVideoIsYouTube, spreadVideoModal]);
 
   const issueThemeStyle = Object.fromEntries([
     ...Object.entries(issue.colors).map(([key, value]) => [`--mag-color-${key}`, value]),
@@ -1512,12 +1519,25 @@ export function MagazineReader({
             <X size={20} />
           </button>
           <div className="xp-video-modal__inner">
-            <iframe
-              src={modalVideoSrc}
-              title={spreadVideoModal.title}
-              allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
-              allowFullScreen
-            />
+            {modalVideoIsYouTube ? (
+              <iframe
+                src={modalVideoSrc}
+                title={spreadVideoModal.title}
+                allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+                allowFullScreen
+              />
+            ) : (
+              <video
+                key={modalVideoSrc}
+                src={modalVideoSrc}
+                title={spreadVideoModal.title}
+                poster={spreadVideoModal.poster}
+                autoPlay
+                controls
+                playsInline
+                preload="metadata"
+              />
+            )}
             <div className="xp-video-modal__caption">
               <span>XPOMAG / FILM</span>
               <strong>{spreadVideoModal.title}</strong>
