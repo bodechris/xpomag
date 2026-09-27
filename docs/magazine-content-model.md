@@ -1,8 +1,10 @@
 # XpoMag Magazine Content Model
 
-The canonical composition tree is:
+The canonical composition tree is now:
 
-`Magazine -> Page -> Layout -> Section / Design Piece -> Design Elements`
+`Magazine -> Master Spread -> Spread -> Spread Layout -> Spread Piece / Section -> Element Composition -> Design Elements`
+
+A **spread is the authoritative visual design unit**. A page is no longer authored as an isolated composition. The physical left and right pages are **leaves**: clipped viewports onto one continuous two-page spread canvas.
 
 ## Magazine global definition
 
@@ -12,95 +14,141 @@ Every published issue owns one global configuration object containing:
 - colors: issue-wide named color tokens
 - fonts: semantic font roles used across the issue
 - styles: issue-wide design tokens
-- resources: fonts, images and stylesheets that should be preloaded once for the issue
-- designElements: reusable global design elements such as the XpoMag masthead, recurring labels or branded marks
-- pages
+- resources: fonts, images and stylesheets preloaded once for the issue
+- designElements: reusable global design elements and compositions
+- spreads: native spread-authored editorial compositions
+- pages: retained during migration for routing, article views and legacy content
 
-Global design elements can be reused by a `reference` design element rather than duplicated into every page tree.
+Global design elements can be reused by a `reference` design element rather than duplicated into every spread tree.
 
-## Page definition
+## Master spread
 
-Every page, including front and back covers, contains:
+A master spread owns the physical reading mechanics:
+
+- left leaf
+- right leaf
+- page/leaf indices
+- clipping
+- perspective and turning surfaces
+- front/back faces
+- stacking, fold shadows and highlights
+
+The master spread does **not** own editorial design. Its job is to present a spread through physical leaves.
+
+Legacy page-authored magazines are normalized with `buildMasterSpreadsFromPages()`, so the old Rosebank/Sandton samples and new spread-authored issues use the same reader/navigation architecture.
+
+## Spread
+
+A spread is one continuous two-page canvas and owns:
 
 - stable `id` and `slug`
-- type/kind
-- access level
-- `layoutId` from the predefined layout registry
-- page-specific resource manifest
-- page-specific styles
-- ordered sections
+- title and optional kind
+- spread-level resources and styles
+- one spread background
+- ordered spread pieces
+- optional transitional page references
 
-Page resources are loaded when the page enters the rendered reader. Target pages are mounted underneath a turning page during the page-turn animation, so their resource hints are emitted before they become fully visible.
+All visual coordinates are conceptually relative to the full spread. The gutter sits at 50% of the canvas.
 
-## Sections / design pieces
+`MagazineSpreadCanvas` renders the authoritative full composition once conceptually. `MagazineSpreadLeaf` clips that same composition into the left or right physical leaf rather than reconstructing two independent designs.
 
-A section is an addressable unit of content. It has:
+## Spread pieces / sections
 
-- stable ID and URL-safe slug
-- a named layout slot
-- section-specific resources
-- engagement permissions
-- design elements
+A spread piece is an addressable editorial unit and can target:
 
-Sections are the primary engagement target. Reactions, comments and saves attach to a section rather than to arbitrary nested visual nodes.
+- `spread` — may occupy or cross the complete two-page canvas
+- `left` — constrained to the left leaf
+- `right` — constrained to the right leaf
 
-## Design elements
+Pieces also declare gutter behaviour:
 
-Design elements remain small, serializable presentation primitives such as frame, grid, stack, text, image, divider, spacer and brand mark. A `reference` element resolves a reusable item from the magazine's global design-element registry.
+- `cross`
+- `avoid`
+- `clip`
+- `duplicate`
+- `reflow`
+
+Sections/pieces remain the primary engagement target. Reactions, comments and saves attach to an editorial piece rather than arbitrary nested visual nodes.
+
+## Element compositions and design elements
+
+Design elements remain small serializable presentation primitives such as frame, grid, stack, text, image, divider, spacer, background, composer canvas and brand mark.
+
+Nested element trees are reusable **element compositions**. This keeps the model flexible enough for recurring editorial treatments such as a portrait + pull quote, title systems, sponsor lockups and data cards without turning every treatment into a hard-coded page component.
+
+## Content geometry vs physical geometry
+
+Keep these responsibilities separate.
+
+**Spread/content geometry owns:**
+
+- typography
+- imagery
+- editorial hierarchy
+- positioning
+- backgrounds
+- piece composition
+- gutter intent
+
+**Master spread/physical geometry owns:**
+
+- page turning
+- perspective
+- leaf clipping
+- fold/gutter mechanics
+- shadows/highlights
+- drag thresholds
+- stacking order
+
+A spread can therefore be shown as a desktop two-page composition, clipped leaves during a flip, or a compact single-leaf view without changing its authored design.
+
+## Page compatibility layer
+
+`MagazinePageDefinition` remains available while existing samples and article routes migrate.
+
+The reader no longer creates a private page-pair structure. It calls `buildMasterSpreadsFromPages(issue.pages, singleLeaf)`, which means every existing issue participates in the master-spread architecture immediately.
+
+New editorial work — starting with Steyn City — should be authored natively as `MagazineSpreadDefinition[]`. Do not introduce new page-first design templates.
 
 ## URL model
 
-Page deep link:
+During migration, page deep links remain:
 
 `/magazine/:issueSlug/:pageSlug`
 
-Section deep link:
+Section deep links remain:
 
 `/magazine/:issueSlug/:pageSlug#:sectionSlug`
 
-Example:
+This preserves existing shared links and SEO while the visual authoring model becomes spread-first.
 
-`/magazine/demo-johannesburg-001/founder#founder-main`
+## Layout philosophy
 
-The reader keeps the URL synchronized as the reader changes spread while preserving a requested right-hand page when a desktop spread contains two pages.
+Spread layouts should deliberately support editorial relationships across the gutter:
 
-## Layout registry
+- cinematic full-bleed spread
+- editorial contrast
+- typography bridge
+- object/image bridge
+- asymmetric grid
+- full-bleed + inset
+- diptych
+- sequential narrative
+- data/directory spread
+- advertising takeover
 
-`packages/magazine/src/layouts.ts` contains 50 predefined layout definitions. Layout definitions are data, not hard-coded React components. A new layout only needs:
+Body copy, faces, logos and small UI should normally avoid the gutter. Backgrounds, large imagery, decorative geometry and selected display typography may deliberately cross it.
 
-- id
-- name/category/description
-- `grid` or `flex` mode
-- CSS layout styles
-- named slots
+## Rendering API
 
-The admin builder can therefore present the same registry as a visual layout picker.
+The shared `@xpomag/magazine` package now exports:
 
-## Engagement
+- `MagazineSpreadDefinition`
+- `MagazineSpreadPiece`
+- `MagazineMasterSpread`
+- `buildMasterSpreadsFromPages`
+- `MagazineSpreadCanvas`
+- `MagazineSpreadLeaf`
+- `MagazineMasterSpreadRenderer`
 
-The data model includes:
-
-- section reactions: like, love, insightful, celebrate
-- section comments and replies
-- personal collections
-- collection-section saves
-
-The frontend includes a member-only section engagement control surface. It is intentionally gated behind `viewerAuthenticated`; production authentication and API persistence are the next wiring step.
-
-## Background design element
-
-Every page owns an explicit `background` design element. Background art is not a special CSS escape hatch: it is part of the page design model and can be edited by the builder like every other design element.
-
-Supported background layer directions include:
-
-- solid color
-- linear/radial/conic gradients
-- image layers
-- transparent PNG/WebP/AVIF art
-- SVG/image shape layers
-- gobo/light textures
-- opacity, filters, transforms and CSS blend modes
-
-Background layers render behind layout sections inside an isolated page stacking context. This keeps them independent from the editorial grid while still serializable in the page document and database.
-
-The database stores the page background independently as `background_design`, making it possible to swap cover/background art without replacing the page's section content.
+These are foundational XpoMag primitives, not Steyn City-specific components.
