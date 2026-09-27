@@ -4928,3 +4928,84 @@ p[data-drop-cap-lines="6"] .xp-editorial-drop-cap { font-size: 5.85em; }
     transform-origin: left bottom;
   }
 }
+
+
+/* LIV Golf tradition spread engagement */
+[data-spread-piece-id="steyn-golf-tradition-piece"] > .xp-section-engagement--inline {
+  position: absolute !important;
+  left: 54.3% !important;
+  right: auto !important;
+  top: 64.8% !important;
+  bottom: auto !important;
+  z-index: 120 !important;
+  width: max-content !important;
+  max-width: 27% !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  padding: 5px 11px !important;
+  border-radius: 999px !important;
+  color: #111 !important;
+  background: rgba(255,255,255,.92) !important;
+  box-shadow: 0 10px 28px rgba(0,0,0,.13) !important;
+  backdrop-filter: blur(14px) saturate(1.08) !important;
+  -webkit-backdrop-filter: blur(14px) saturate(1.08) !important;
+}
+
+[data-spread-piece-id="steyn-golf-tradition-liv-sign-piece"],
+[data-spread-piece-id="steyn-golf-tradition-group-piece"],
+[data-spread-piece-id="steyn-golf-tradition-golfers-piece"] {
+  overflow: visible !important;
+}
+
+[data-spread-piece-id="steyn-golf-tradition-liv-sign-piece"] > .xp-section-engagement--inline,
+[data-spread-piece-id="steyn-golf-tradition-group-piece"] > .xp-section-engagement--inline,
+[data-spread-piece-id="steyn-golf-tradition-golfers-piece"] > .xp-section-engagement--inline {
+  position: absolute !important;
+  left: 8px !important;
+  right: auto !important;
+  top: auto !important;
+  bottom: 8px !important;
+  z-index: 120 !important;
+  width: max-content !important;
+  max-width: calc(100% - 16px) !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  padding: 4px 9px !important;
+  border-radius: 999px !important;
+  color: #111 !important;
+  background: rgba(255,255,255,.9) !important;
+  box-shadow: 0 8px 22px rgba(0,0,0,.16) !important;
+  backdrop-filter: blur(12px) saturate(1.06) !important;
+  -webkit-backdrop-filter: blur(12px) saturate(1.06) !important;
+}
+
+[data-spread-piece-id="steyn-golf-tradition-piece"] > .xp-section-engagement--inline .xp-engagement__action,
+[data-spread-piece-id="steyn-golf-tradition-liv-sign-piece"] > .xp-section-engagement--inline .xp-engagement__action,
+[data-spread-piece-id="steyn-golf-tradition-group-piece"] > .xp-section-engagement--inline .xp-engagement__action,
+[data-spread-piece-id="steyn-golf-tradition-golfers-piece"] > .xp-section-engagement--inline .xp-engagement__action {
+  color: #111 !important;
+}
+
+@media (max-width: 720px) {
+  [data-spread-piece-id="steyn-golf-tradition-piece"] > .xp-section-engagement--inline {
+    left: 53.5% !important;
+    top: 64.4% !important;
+    max-width: 31% !important;
+    padding: 4px 8px !important;
+    transform: scale(.86);
+    transform-origin: left top;
+  }
+
+  [data-spread-piece-id="steyn-golf-tradition-liv-sign-piece"] > .xp-section-engagement--inline,
+  [data-spread-piece-id="steyn-golf-tradition-group-piece"] > .xp-section-engagement--inline,
+  [data-spread-piece-id="steyn-golf-tradition-golfers-piece"] > .xp-section-engagement--inline {
+    left: 6px !important;
+    bottom: 6px !important;
+    max-width: calc(100% - 12px) !important;
+    padding: 3px 7px !important;
+    transform: scale(.82);
+    transform-origin: left bottom;
+  }
+}
