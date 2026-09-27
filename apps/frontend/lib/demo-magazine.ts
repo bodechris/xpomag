@@ -5,6 +5,7 @@ import {
   type MagazineGlobalDefinition,
   type MagazinePageDefinition,
   type MagazineSection,
+  type MagazineSpreadDefinition,
 } from "@xpomag/magazine";
 import { getSteynCity2026Magazine } from "./steyn-city-2026";
 
@@ -2705,6 +2706,302 @@ function buildIssuePages(issueId: string, options: DemoMagazineOptions, cover: M
   return pages;
 }
 
+
+function collectDesignNodes(nodes: DesignElementNode[]): DesignElementNode[] {
+  return nodes.flatMap((node) => [node, ...(node.children ? collectDesignNodes(node.children) : [])]);
+}
+
+function pageEditorialText(page: MagazinePageDefinition): string[] {
+  return page.sections
+    .flatMap((section) => collectDesignNodes(section.elements))
+    .filter((node) => node.type === "text" && typeof node.props?.text === "string")
+    .map((node) => String(node.props?.text ?? "").trim())
+    .filter((value) => value.length > 42 && !value.startsWith("SOURCE"));
+}
+
+function pageHeroImage(page: MagazinePageDefinition): string | undefined {
+  return page.sections
+    .flatMap((section) => collectDesignNodes(section.elements))
+    .find((node) => node.type === "image" && typeof node.props?.src === "string")
+    ?.props?.src as string | undefined;
+}
+
+function demoArticleParagraphs(
+  title: string,
+  sourceParagraphs: string[],
+  spreadIndex: number,
+): string[] {
+  const seed = sourceParagraphs.length
+    ? sourceParagraphs
+    : [
+        `${title} is treated here as a city story rather than a listing. The point is to show how a digital magazine can give a subject room to breathe, move and accumulate context across a complete spread.`,
+      ];
+
+  const connective = [
+    `The interesting part is what happens around the subject. In Rosebank and Sandton, work, hospitality, retail, transport, culture and social life overlap within a relatively small radius. That overlap changes how a place is experienced and how a business earns attention.`,
+    `A conventional directory compresses this into a name, category and address. Editorial can do the opposite: slow the reader down, introduce texture, add voices, show the environment and create enough context for the subject to become memorable.`,
+    `That is the behaviour this demo is designed to make visible. Photography can run through the gutter, display type can become part of the image, and long-form copy can remain readable without making every screen look like the same card template.`,
+    `The spread also creates pacing. Some moments should be loud and immediate; others should reward a reader who stays. The magazine can move from a cinematic opener into dense reporting, then into an interactive game, a video, a directory, an advert or a quiet photographic pause without leaving the same product.`,
+    `For businesses, the value is not simply exposure. It is context. A restaurant can sit inside a story about how a district changes after five. A property can sit inside a story about the five-minute city. A founder can be introduced through a portrait, a quote, a long interview and a set of related places rather than a single promotional tile.`,
+    `For readers, this creates a different kind of discovery. The experience is designed to feel closer to browsing a beautifully art-directed object than scrolling through a feed, while preserving the web advantages of interaction, links, video, comments, saves and permanent URLs.`,
+  ];
+
+  const target = spreadIndex % 5 === 0 ? 10 : spreadIndex % 3 === 0 ? 7 : 5;
+  const result = [...seed];
+  let i = 0;
+  while (result.length < target) {
+    result.push(connective[(spreadIndex + i) % connective.length]!);
+    i += 1;
+  }
+  return result.slice(0, target);
+}
+
+function demoTextNode(
+  id: string,
+  value: string,
+  style: DesignElementNode["style"] = {},
+  as: "h1" | "h2" | "h3" | "p" | "span" = "p",
+): DesignElementNode {
+  return { id, type: "text", props: { as, text: value }, style };
+}
+
+function buildDemoShowcaseSpreads(
+  issueId: string,
+  pages: MagazinePageDefinition[],
+): MagazineSpreadDefinition[] {
+  const interactive = new Set(["november-events", "xpomag-12", "ad-thread"]);
+  const spreads: MagazineSpreadDefinition[] = [];
+
+  for (let pageIndex = 1, spreadIndex = 1; pageIndex < pages.length; pageIndex += 2, spreadIndex += 1) {
+    const left = pages[pageIndex];
+    const right = pages[pageIndex + 1];
+    if (!left || !right) continue;
+
+    // Keep the game / quiz / puzzle as native per-leaf interactions.
+    if (interactive.has(left.slug) || interactive.has(right.slug)) continue;
+
+    const title = right.title && right.title !== left.title
+      ? `${left.title} / ${right.title}`
+      : left.title;
+    const paragraphs = demoArticleParagraphs(
+      title,
+      [...pageEditorialText(left), ...pageEditorialText(right)],
+      spreadIndex,
+    );
+    const hero = pageHeroImage(left) ?? pageHeroImage(right);
+    const mode = spreadIndex % 5;
+    const dark = mode === 2 || mode === 4;
+    const ink = dark ? "#fff" : "#111";
+    const paper = dark ? "#101114" : mode === 1 ? "#e9dfcc" : mode === 3 ? "#dce7df" : "#f3f0e8";
+    const accent = mode === 0 ? "#f3cf20" : mode === 1 ? "#ef5a24" : mode === 2 ? "#8ec5ff" : mode === 3 ? "#3157ff" : "#e9ff58";
+    const articleColumnCount = spreadIndex % 5 === 0 ? 3 : 2;
+    const videoSpread = spreadIndex === 4 || spreadIndex === 12 || spreadIndex === 22;
+
+    const pieces: MagazineSpreadDefinition["pieces"] = [
+      {
+        id: `demo-spread-${spreadIndex}-canvas`,
+        slug: `demo-spread-${spreadIndex}-canvas`,
+        title,
+        kind: "editorial",
+        region: "spread",
+        gutterBehaviour: "cross",
+        engagement: { reactions: true, comments: true, share: true, save: true },
+        elements: [
+          ...(videoSpread
+            ? [{
+                id: `demo-spread-${spreadIndex}-video`,
+                type: "video" as const,
+                props: {
+                  src: "https://www.youtube.com/embed/_1UeG71MOJM?autoplay=1&mute=1&controls=0&loop=1&playlist=_1UeG71MOJM&playsinline=1&rel=0",
+                  title: "Johannesburg in motion",
+                  autoplay: true,
+                  muted: true,
+                  loop: true,
+                  controls: false,
+                },
+                style: {
+                  position: "absolute",
+                  inset: 0,
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  filter: "saturate(.72) contrast(1.05)",
+                },
+              } satisfies DesignElementNode]
+            : hero
+              ? [{
+                  id: `demo-spread-${spreadIndex}-image`,
+                  type: "image" as const,
+                  props: { src: hero, alt: title },
+                  style: {
+                    position: "absolute",
+                    inset: 0,
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    objectPosition: spreadIndex % 2 ? "center 30%" : "center",
+                    filter: dark ? "grayscale(.15) contrast(1.08)" : "grayscale(.35) contrast(1.02)",
+                    opacity: mode === 1 || mode === 3 ? .33 : .82,
+                    transform: "scale(1.025)",
+                  },
+                } satisfies DesignElementNode]
+              : []),
+          {
+            id: `demo-spread-${spreadIndex}-wash`,
+            type: "frame",
+            style: {
+              position: "absolute",
+              inset: 0,
+              background: videoSpread
+                ? "linear-gradient(90deg,rgba(0,0,0,.74),rgba(0,0,0,.12) 52%,rgba(0,0,0,.65))"
+                : hero
+                  ? dark
+                    ? "linear-gradient(90deg,rgba(8,8,10,.84),rgba(8,8,10,.16) 50%,rgba(8,8,10,.68))"
+                    : "linear-gradient(90deg,rgba(243,240,232,.96),rgba(243,240,232,.36) 48%,rgba(243,240,232,.86))"
+                  : paper,
+            },
+          },
+          demoTextNode(
+            `demo-spread-${spreadIndex}-eyebrow`,
+            `XPOMAG / ROSEBANK + SANDTON / SPREAD ${String(spreadIndex).padStart(2, "0")}`,
+            {
+              position: "absolute",
+              left: "4%",
+              top: "4%",
+              zIndex: 5,
+              color: videoSpread ? "#fff" : accent,
+              fontFamily: "var(--xp-font-sans)",
+              fontSize: "clamp(.52rem,.72vw,.8rem)",
+              fontWeight: 850,
+              letterSpacing: ".16em",
+            },
+            "span",
+          ),
+          demoTextNode(
+            `demo-spread-${spreadIndex}-title`,
+            title.toUpperCase().replace(/ · /g, "\n"),
+            {
+              position: "absolute",
+              left: "4%",
+              right: "3%",
+              top: mode === 3 ? "8%" : "10%",
+              zIndex: 5,
+              color: videoSpread ? "#fff" : ink,
+              fontFamily: "var(--xp-font-display-sans)",
+              fontSize: spreadIndex % 4 === 0 ? "clamp(5rem,11vw,12.5rem)" : "clamp(4rem,8.7vw,10rem)",
+              fontWeight: 850,
+              lineHeight: .74,
+              letterSpacing: "-.065em",
+              textTransform: "uppercase",
+              whiteSpace: "pre-line",
+              maxWidth: "94%",
+              textShadow: videoSpread || dark ? "0 8px 40px rgba(0,0,0,.32)" : undefined,
+            },
+            "h2",
+          ),
+          {
+            id: `demo-spread-${spreadIndex}-article-panel`,
+            type: "frame",
+            style: {
+              position: "absolute",
+              left: spreadIndex % 2 ? "4%" : "46%",
+              right: spreadIndex % 2 ? "46%" : "4%",
+              bottom: "4%",
+              maxHeight: spreadIndex % 5 === 0 ? "58%" : "48%",
+              overflow: "hidden",
+              zIndex: 6,
+              padding: "clamp(1rem,1.6vw,1.8rem)",
+              background: videoSpread
+                ? "rgba(8,8,10,.82)"
+                : dark
+                  ? "rgba(12,13,16,.88)"
+                  : "rgba(248,246,240,.92)",
+              color: videoSpread || dark ? "#fff" : "#1a1814",
+              backdropFilter: "blur(12px)",
+              borderTop: `5px solid ${accent}`,
+            },
+            children: [
+              demoTextNode(
+                `demo-spread-${spreadIndex}-dek`,
+                spreadIndex % 5 === 0
+                  ? "A long-form demonstration: this spread deliberately carries enough copy to show that XpoMag can behave like a real editorial publication, not only a visual brochure."
+                  : "A spread-led city story designed to be read, watched, saved, shared and explored.",
+                {
+                  fontFamily: "var(--xp-font-editorial)",
+                  fontSize: "clamp(1rem,1.45vw,1.6rem)",
+                  lineHeight: 1.02,
+                  letterSpacing: "-.025em",
+                  marginBottom: ".9rem",
+                },
+                "h3",
+              ),
+              {
+                id: `demo-spread-${spreadIndex}-article-columns`,
+                type: "frame",
+                style: {
+                  columnCount: articleColumnCount,
+                  columnGap: "clamp(1rem,1.8vw,2rem)",
+                  columnRule: "1px solid rgba(127,127,127,.24)",
+                },
+                children: paragraphs.map((paragraph, paragraphIndex) =>
+                  demoTextNode(
+                    `demo-spread-${spreadIndex}-p-${paragraphIndex}`,
+                    paragraph,
+                    {
+                      fontFamily: "var(--xp-font-editorial-body)",
+                      fontSize: "clamp(.65rem,.78vw,.86rem)",
+                      lineHeight: 1.5,
+                      margin: paragraphIndex ? ".75rem 0 0" : 0,
+                      breakInside: "avoid",
+                      opacity: .9,
+                    },
+                  ),
+                ),
+              },
+            ],
+          },
+          demoTextNode(
+            `demo-spread-${spreadIndex}-folio-left`,
+            String(pageIndex + 1).padStart(2, "0"),
+            { position: "absolute", left: "2%", bottom: "2%", zIndex: 8, color: videoSpread ? "#fff" : ink, fontSize: ".58rem", fontWeight: 800 },
+            "span",
+          ),
+          demoTextNode(
+            `demo-spread-${spreadIndex}-folio-right`,
+            String(pageIndex + 2).padStart(2, "0"),
+            { position: "absolute", right: "2%", bottom: "2%", zIndex: 8, color: videoSpread ? "#fff" : ink, fontSize: ".58rem", fontWeight: 800 },
+            "span",
+          ),
+        ],
+        style: { position: "absolute", inset: 0, overflow: "hidden" },
+      },
+    ];
+
+    spreads.push({
+      id: `demo-master-spread-${spreadIndex}`,
+      issueId,
+      slug: `demo-spread-${spreadIndex}`,
+      title,
+      kind: videoSpread ? "feature" : left.kind === right.kind ? left.kind : "editorial",
+      pageIds: [left.id, right.id],
+      style: { background: paper },
+      pieces,
+    });
+  }
+
+  return spreads;
+}
+
+function prioritiseDemoInteractions(pages: MagazinePageDefinition[]): MagazinePageDefinition[] {
+  const prioritySlugs = ["november-events", "xpomag-12", "ad-thread"];
+  const priority = prioritySlugs
+    .map((slug) => pages.find((page) => page.slug === slug))
+    .filter((page): page is MagazinePageDefinition => Boolean(page));
+  const rest = pages.filter((page) => !prioritySlugs.includes(page.slug));
+  // Cover, inside cover, opening feature and editor's note remain first.
+  return [...rest.slice(0, 4), ...priority, ...rest.slice(4)];
+}
+
 export function selectDemoMagazine(city: string, options: DemoMagazineOptions = {}): DemoMagazineIssue {
   const requestedCity = city.trim() || "Johannesburg";
   const editionCity = /johannesburg|rosebank|sandton/i.test(requestedCity) ? "Rosebank + Sandton" : requestedCity;
@@ -2754,7 +3051,7 @@ export function selectDemoMagazine(city: string, options: DemoMagazineOptions = 
     }],
   };
 
-  const pages = buildIssuePages(issueId, options, cover);
+  const pages = prioritiseDemoInteractions(buildIssuePages(issueId, options, cover));
 
   // Issue 001 interactive interlude: preserve the 64-page count while replacing
   // three late-issue pages with native game / quiz / puzzle experiences.
@@ -2815,6 +3112,7 @@ export function selectDemoMagazine(city: string, options: DemoMagazineOptions = 
     designElements: {
       masthead: { id: "global-masthead", type: "brandMark", props: { label: "XpoMag" } },
     },
+    spreads: buildDemoShowcaseSpreads(issueId, pages),
     pages,
   };
 }
