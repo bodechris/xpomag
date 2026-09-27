@@ -16,12 +16,12 @@ const designStyleValueSchema = z.union([z.string(), z.number(), z.undefined()]);
 export const designStyleSchema = z.record(z.string(), designStyleValueSchema);
 
 export type DesignStyle = z.infer<typeof designStyleSchema>;
-export type DesignElementType = "frame" | "stack" | "grid" | "text" | "brandMark" | "image" | "background" | "divider" | "spacer" | "reference" | "composerCanvas";
+export type DesignElementType = "frame" | "stack" | "grid" | "text" | "brandMark" | "image" | "video" | "background" | "divider" | "spacer" | "reference" | "composerCanvas";
 
 export type DesignElementNode = { id: string; type: DesignElementType; props?: Record<string, unknown>; style?: DesignStyle; children?: DesignElementNode[]; };
 
 export const designElementSchema: z.ZodType<DesignElementNode> = z.lazy(() => z.object({
-  id: z.string().min(1), type: z.enum(["frame", "stack", "grid", "text", "brandMark", "image", "background", "divider", "spacer", "reference", "composerCanvas"]),
+  id: z.string().min(1), type: z.enum(["frame", "stack", "grid", "text", "brandMark", "image", "video", "background", "divider", "spacer", "reference", "composerCanvas"]),
   props: z.record(z.string(), z.unknown()).optional(), style: designStyleSchema.optional(), children: z.array(designElementSchema).optional()
 }));
 
