@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
+import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 
 type InteractiveYouTubeVideoProps = {
   src: string;
@@ -21,32 +21,31 @@ function withParams(src: string, params: Record<string, string>) {
   }
 }
 
+function youtubeId(src: string) {
+  try {
+    const url = new URL(src);
+    if (url.hostname.includes("youtu.be")) return url.pathname.split("/").filter(Boolean)[0] ?? "";
+    const embedMatch = url.pathname.match(/\/embed\/([^/?]+)/);
+    if (embedMatch?.[1]) return embedMatch[1];
+    return url.searchParams.get("v") ?? "";
+  } catch {
+    const match = src.match(/(?:embed\/|youtu\.be\/|v=)([A-Za-z0-9_-]{6,})/);
+    return match?.[1] ?? "";
+  }
+}
+
 export function InteractiveYouTubeVideo({
   src,
   title,
-  autoplay = true,
-  muted = true,
   style,
 }: InteractiveYouTubeVideoProps) {
-  const frameRef = useRef<HTMLIFrameElement>(null);
-  const shellRef = useRef<HTMLDivElement>(null);
   const dialogRef = useRef<HTMLDialogElement>(null);
-  const restorePlaybackRef = useRef(false);
-  const [playing, setPlaying] = useState(autoplay);
   const [modalOpen, setModalOpen] = useState(false);
-  const [visible, setVisible] = useState(true);
 
-  const inlineSrc = useMemo(
-    () => withParams(src, {
-      autoplay: autoplay ? "1" : "0",
-      mute: muted ? "1" : "0",
-      controls: "0",
-      playsinline: "1",
-      rel: "0",
-      modestbranding: "1",
-      enablejsapi: "1",
-    }),
-    [autoplay, muted, src],
+  const videoId = useMemo(() => youtubeId(src), [src]);
+  const thumbnailSrc = useMemo(
+    () => videoId ? `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg` : "",
+    [videoId],
   );
 
   const modalSrc = useMemo(
@@ -61,50 +60,6 @@ export function InteractiveYouTubeVideo({
     [src],
   );
 
-  const send = useCallback((command: "playVideo" | "pauseVideo") => {
-    frameRef.current?.contentWindow?.postMessage(
-      JSON.stringify({ event: "command", func: command, args: [] }),
-      "*",
-    );
-  }, []);
-
-  const play = useCallback(() => {
-    setPlaying(true);
-    send("playVideo");
-  }, [send]);
-
-  const pause = useCallback(() => {
-    setPlaying(false);
-    send("pauseVideo");
-  }, [send]);
-
-  useEffect(() => {
-    const shell = shellRef.current;
-    if (!shell) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        const isVisible = Boolean(entry?.isIntersecting && entry.intersectionRatio >= 0.45);
-        setVisible(isVisible);
-        if (!isVisible) send("pauseVideo");
-        else if (playing && !modalOpen) send("playVideo");
-      },
-      { threshold: [0, 0.45, 0.75, 1] },
-    );
-
-    observer.observe(shell);
-    return () => observer.disconnect();
-  }, [modalOpen, playing, send]);
-
-  useEffect(() => {
-    const onVisibility = () => {
-      if (document.visibilityState !== "visible") send("pauseVideo");
-      else if (visible && playing && !modalOpen) send("playVideo");
-    };
-    document.addEventListener("visibilitychange", onVisibility);
-    return () => document.removeEventListener("visibilitychange", onVisibility);
-  }, [modalOpen, playing, send, visible]);
-
   useEffect(() => {
     const dialog = dialogRef.current;
     if (!dialog) return;
@@ -112,25 +67,13 @@ export function InteractiveYouTubeVideo({
     if (!modalOpen && dialog.open) dialog.close();
   }, [modalOpen]);
 
-  const openModal = () => {
-    restorePlaybackRef.current = playing;
-    pause();
-    setModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setModalOpen(false);
-    if (restorePlaybackRef.current && visible) {
-      window.setTimeout(play, 80);
-    }
-  };
-
+  const openModal = () => setModalOpen(true);
+  const closeModal = () => setModalOpen(false);
   const frameStyle = style ?? {};
 
   return (
     <>
       <div
-        ref={shellRef}
         data-design-element="video"
         data-video-fit="cover"
         data-magazine-interactive
@@ -139,10 +82,7 @@ export function InteractiveYouTubeVideo({
         role="button"
         tabIndex={0}
         aria-label={"Play " + title}
-        onClick={(event) => {
-          if (event.target instanceof Element && event.target.closest("button")) return;
-          openModal();
-        }}
+        onClick={openModal}
         onKeyDown={(event) => {
           if (event.key === "Enter" || event.key === " ") {
             event.preventDefault();
@@ -152,42 +92,40 @@ export function InteractiveYouTubeVideo({
         style={{
           position: "relative",
           overflow: "hidden",
-          containerType: "size",
           background: "#000",
           cursor: "pointer",
           ...frameStyle,
         }}
       >
-        <iframe
-          ref={frameRef}
-          src={inlineSrc}
-          title={title}
-          tabIndex={-1}
-          style={{
-            position: "absolute",
-            left: "50%",
-            top: "50%",
-            width: "max(100cqw, 177.7778cqh)",
-            height: "max(100cqh, 56.25cqw)",
-            maxWidth: "none",
-            border: 0,
-            transform: "translate(-50%, -50%)",
-            pointerEvents: "none",
-          }}
-          allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
-          allowFullScreen
-        />
+        {thumbnailSrc ? (
+          <img
+            src={thumbnailSrc}
+            alt=""
+            aria-hidden="true"
+            draggable={false}
+            style={{
+              position: "absolute",
+              inset: 0,
+              width: "100%",
+              height: "100%",
+              maxWidth: "none",
+              objectFit: "cover",
+              objectPosition: "center",
+              pointerEvents: "none",
+              userSelect: "none",
+            }}
+          />
+        ) : null}
 
         <div
           aria-hidden="true"
           style={{
             position: "absolute",
             inset: 0,
-            background: "linear-gradient(180deg,transparent 48%,rgba(0,0,0,.34) 100%)",
+            background: "linear-gradient(180deg,rgba(0,0,0,.02),rgba(0,0,0,.12))",
             pointerEvents: "none",
           }}
         />
-
       </div>
 
       <dialog
