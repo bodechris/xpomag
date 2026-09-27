@@ -2,6 +2,7 @@ import type { CSSProperties, ReactNode } from "react";
 import type { DesignElementNode } from "./schema.js";
 import type { ComposerDocument, ComposerNode } from "./editor.js";
 import { ComposerCanvas } from "./composer-renderer.js";
+import { ActiveSpreadVideo } from "./active-spread-video.js";
 
 type DesignElementInteractionProps = {
   renderComposerNodeOverlay?: (node: ComposerNode) => ReactNode;
@@ -142,14 +143,13 @@ export function DesignElement({ node, registry, renderComposerNodeOverlay, onCom
         );
       }
       return (
-        <video
+        <ActiveSpreadVideo
           src={src}
           title={title}
           poster={poster}
-          autoPlay={autoplay}
+          autoplay={autoplay}
           muted={muted}
           loop={loop}
-          playsInline
           controls={props.controls !== false}
           style={style}
         />
