@@ -1,6 +1,6 @@
 "use client";
 
-import { MagazinePageRenderer, type ComposerNode, type MagazinePageDefinition } from "@xpomag/magazine";
+import { buildMasterSpreadsFromPages, MagazinePageRenderer, type ComposerNode, type MagazineMasterSpread, type MagazinePageDefinition } from "@xpomag/magazine";
 import { ArrowLeft, ArrowRight, BookOpen, LockKeyhole, Maximize2, Menu, Minimize2, Pause, Play, RotateCcw, X } from "lucide-react";
 import { MagazineEngagementDock } from "./magazine-engagement-dock";
 import type { CSSProperties, MouseEvent as ReactMouseEvent, PointerEvent as ReactPointerEvent } from "react";
@@ -13,11 +13,6 @@ import { SectionEngagementBar } from "./section-engagement";
 type Direction = "next" | "previous";
 type MotionKind = "flip" | "slide";
 type MotionPhase = "dragging" | "animating";
-
-type Spread = {
-  id: string;
-  pageIndexes: number[];
-};
 
 type Motion = {
   direction: Direction;
@@ -51,18 +46,6 @@ const INTERACTIVE_SELECTOR = [
 
 function isInteractiveTarget(target: EventTarget | null) {
   return target instanceof Element && Boolean(target.closest(INTERACTIVE_SELECTOR));
-}
-
-function buildSpreads(pageCount: number, singlePage: boolean): Spread[] {
-  if (singlePage) {
-    return Array.from({ length: pageCount }, (_, index) => ({ id: `spread-${index}`, pageIndexes: [index] }));
-  }
-
-  const spreads: Spread[] = [{ id: "spread-cover", pageIndexes: [0] }];
-  for (let index = 1; index < pageCount; index += 2) {
-    spreads.push({ id: `spread-${index}`, pageIndexes: [index, index + 1].filter((i) => i < pageCount) });
-  }
-  return spreads;
 }
 
 function transitionKind(singlePage: boolean, from: number, to: number): MotionKind {
@@ -486,7 +469,10 @@ export function MagazineReader({
   viewerAuthenticated?: boolean;
 }) {
   const [singlePageMode, setSinglePageMode] = useState(false);
-  const spreads = useMemo(() => buildSpreads(issue.pages.length, singlePageMode), [issue.pages.length, singlePageMode]);
+  const spreads = useMemo(
+    () => buildMasterSpreadsFromPages(issue.pages, singlePageMode),
+    [issue.pages, singlePageMode],
+  );
   const [spreadIndex, setSpreadIndex] = useState(0);
   const initialPageIndex = Math.max(0, issue.pages.findIndex((page) => page.slug === initialPageSlug));
   const [motion, setMotion] = useState<Motion | null>(null);
@@ -586,7 +572,7 @@ export function MagazineReader({
     return request;
   }, [issue.pages, issue.slug]);
 
-  const ensureSpreadLoaded = useCallback(async (spreadToLoad: Spread | null | undefined) => {
+  const ensureSpreadLoaded = useCallback(async (spreadToLoad: MagazineMasterSpread | null | undefined) => {
     if (!spreadToLoad) return false;
     const pages = await Promise.all(spreadToLoad.pageIndexes.map((pageIndex) => loadPage(pageIndex)));
     return pages.every(Boolean);
@@ -1047,7 +1033,7 @@ export function MagazineReader({
   };
 
   const renderSpread = (
-    spreadToRender: Spread,
+    spreadToRender: MagazineMasterSpread,
     role: "current" | "target",
     hiddenPageIndex?: number,
   ) => {
