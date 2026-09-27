@@ -478,6 +478,7 @@ export function MagazineReader({
   const [motion, setMotion] = useState<Motion | null>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [readerMenuOpen, setReaderMenuOpen] = useState(false);
+  const [spreadVideoModal, setSpreadVideoModal] = useState<{ src: string; title: string } | null>(null);
 
   // Keep the reader backwards-compatible during local HMR / staggered pulls.
   // Older server output can briefly render the new client component without
@@ -885,6 +886,47 @@ export function MagazineReader({
     };
   }, [safeSpreadIndex, singlePageMode, motion]);
 
+
+  const activeNativeSpread = resolveNativeSpread(spread);
+  const activeSpreadVideo = useMemo(() => {
+    if (!activeNativeSpread) return null;
+    const visit = (nodes: import("@xpomag/magazine").DesignElementNode[]): import("@xpomag/magazine").DesignElementNode | null => {
+      for (const node of nodes) {
+        if (node.type === "video" && typeof node.props?.src === "string") return node;
+        if (node.children?.length) {
+          const found = visit(node.children);
+          if (found) return found;
+        }
+      }
+      return null;
+    };
+    for (const piece of activeNativeSpread.pieces) {
+      const found = visit(piece.elements);
+      if (found) {
+        return {
+          src: String(found.props?.src ?? ""),
+          title: typeof found.props?.title === "string" ? found.props.title : activeNativeSpread.title,
+        };
+      }
+    }
+    return null;
+  }, [activeNativeSpread]);
+
+  const modalVideoSrc = useMemo(() => {
+    if (!spreadVideoModal?.src) return "";
+    try {
+      const url = new URL(spreadVideoModal.src);
+      url.searchParams.set("autoplay", "1");
+      url.searchParams.set("mute", "0");
+      url.searchParams.set("controls", "1");
+      url.searchParams.set("rel", "0");
+      url.searchParams.set("playsinline", "1");
+      return url.toString();
+    } catch {
+      return spreadVideoModal.src;
+    }
+  }, [spreadVideoModal]);
+
   const issueThemeStyle = Object.fromEntries([
     ...Object.entries(issue.colors).map(([key, value]) => [`--mag-color-${key}`, value]),
     ...Object.entries(issue.fonts).map(([key, value]) => [`--mag-font-${key}`, value]),
@@ -1263,6 +1305,23 @@ export function MagazineReader({
             : null}
           {renderSpread(spread, "current", motion?.kind === "flip" ? currentTurnPageIndex : undefined)}
 
+          {activeSpreadVideo && !motion ? (
+            <button
+              type="button"
+              className="xp-spread-video-launch"
+              onClick={() => setSpreadVideoModal(activeSpreadVideo)}
+              data-magazine-interactive
+              data-no-page-turn
+              aria-label={`Play ${activeSpreadVideo.title}`}
+            >
+              <span className="xp-spread-video-launch__icon"><Play size={16} fill="currentColor" /></span>
+              <span className="xp-spread-video-launch__copy">
+                <small>Watch the film</small>
+                <strong>Play video</strong>
+              </span>
+            </button>
+          ) : null}
+
           {motion?.kind === "flip" && currentTurnPage && backTurnPage ? (
             <div className={`xp-magazine__turn-sheet xp-magazine__turn-sheet--${motion.direction}`} aria-hidden="true">
               <div className="xp-magazine__turn-face xp-magazine__turn-face--front">
@@ -1293,6 +1352,41 @@ export function MagazineReader({
           ) : null}
         </div>
       </div>
+
+      {spreadVideoModal ? createPortal(
+        <div
+          className="xp-video-modal"
+          role="dialog"
+          aria-modal="true"
+          aria-label={spreadVideoModal.title}
+          data-magazine-interactive
+          onClick={(event) => {
+            if (event.target === event.currentTarget) setSpreadVideoModal(null);
+          }}
+        >
+          <button
+            className="xp-video-modal__close"
+            type="button"
+            onClick={() => setSpreadVideoModal(null)}
+            aria-label="Close video"
+          >
+            <X size={20} />
+          </button>
+          <div className="xp-video-modal__inner">
+            <iframe
+              src={modalVideoSrc}
+              title={spreadVideoModal.title}
+              allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+              allowFullScreen
+            />
+            <div className="xp-video-modal__caption">
+              <span>XPOMAG / FILM</span>
+              <strong>{spreadVideoModal.title}</strong>
+            </div>
+          </div>
+        </div>,
+        document.body,
+      ) : null}
 
       <div className="xp-magazine__footer">
         <div className="xp-magazine__progress" aria-label="Magazine progress">
