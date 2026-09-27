@@ -1,6 +1,6 @@
 "use client"
 
-import { FormEvent, useEffect, useMemo, useState } from "react"
+import { FormEvent, KeyboardEvent, useEffect, useMemo, useRef, useState } from "react"
 import { useRouter } from "next/navigation"
 import { accountFetch } from "../../../lib/account-api"
 
@@ -12,7 +12,7 @@ type CityInput = {
   source?: "detected" | "selected"
 }
 
-type Category = {
+type CitySuggestion = { id:string; name:string; region:string|null; country:string|null; countryCode:string|null; population:number }\n\ntype Category = {
   id: string
   name: string
   slug: string
@@ -34,7 +34,7 @@ export default function OnboardingPage() {
   const router = useRouter()
   const [bootstrap, setBootstrap] = useState<Bootstrap | null>(null)
   const [cities, setCities] = useState<CityInput[]>([])
-  const [cityDraft, setCityDraft] = useState("")
+  const [cityDraft, setCityDraft] = useState("")\n  const [citySuggestions,setCitySuggestions]=useState<CitySuggestion[]>([])\n  const [citySearching,setCitySearching]=useState(false)\n  const [cityMenuOpen,setCityMenuOpen]=useState(false)\n  const [cityActiveIndex,setCityActiveIndex]=useState(0)\n  const citySearchRequest=useRef(0)
   const [selectedCategories, setSelectedCategories] = useState<string[]>([])
   const [error, setError] = useState("")
   const [busy, setBusy] = useState(false)
@@ -85,30 +85,11 @@ export default function OnboardingPage() {
       .join(", ")
   }, [bootstrap])
 
-  function addCity() {
-    const name = cityDraft.trim()
-    if (name.length < 2) return
+  useEffect(()=>{const query=cityDraft.trim();if(query.length<2){setCitySuggestions([]);setCityMenuOpen(false);return}const requestId=++citySearchRequest.current;const timer=window.setTimeout(async()=>{setCitySearching(true);try{const response=await fetch(`/api/cities?q=${encodeURIComponent(query)}`);const data=await response.json();if(requestId!==citySearchRequest.current)return;setCitySuggestions(data.results??[]);setCityActiveIndex(0);setCityMenuOpen(true)}catch{if(requestId===citySearchRequest.current)setCitySuggestions([])}finally{if(requestId===citySearchRequest.current)setCitySearching(false)}},220);return()=>window.clearTimeout(timer)},[cityDraft])
 
-    if (
-      cities.some(
-        (city) => city.name.toLowerCase() === name.toLowerCase(),
-      )
-    ) {
-      setCityDraft("")
-      return
-    }
+  function selectCity(city:CitySuggestion){const duplicate=cities.some(item=>item.name.toLowerCase()===city.name.toLowerCase()&&item.countryCode===city.countryCode);if(!duplicate)setCities(current=>[...current,{name:city.name,region:city.region,countryCode:city.countryCode,isPrimary:current.length===0,source:"selected"}]);setCityDraft("");setCitySuggestions([]);setCityMenuOpen(false)}
 
-    setCities((current) => [
-      ...current,
-      {
-        name,
-        isPrimary: current.length === 0,
-        source: "selected",
-      },
-    ])
-
-    setCityDraft("")
-  }
+  function cityKeyDown(event:KeyboardEvent<HTMLInputElement>){if(!cityMenuOpen||!citySuggestions.length)return;if(event.key==="ArrowDown"){event.preventDefault();setCityActiveIndex(i=>(i+1)%citySuggestions.length)}else if(event.key==="ArrowUp"){event.preventDefault();setCityActiveIndex(i=>(i-1+citySuggestions.length)%citySuggestions.length)}else if(event.key==="Enter"){event.preventDefault();selectCity(citySuggestions[cityActiveIndex])}else if(event.key==="Escape")setCityMenuOpen(false)}
 
   function removeCity(index: number) {
     setCities((current) => {
@@ -247,26 +228,16 @@ export default function OnboardingPage() {
               </div>
             </div>
 
-            <div className="flowInline">
-              <input
-                className="flowInput"
-                value={cityDraft}
-                onChange={(event) => setCityDraft(event.target.value)}
-                onKeyDown={(event) => {
-                  if (event.key === "Enter") {
-                    event.preventDefault()
-                    addCity()
-                  }
-                }}
-                placeholder="Add a city"
-              />
-              <button
-                className="flowAdd"
-                type="button"
-                onClick={addCity}
-              >
-                Add city
-              </button>
+            <div className="flowCitySearch">
+              <div className="flowCitySearch__input">
+                <span aria-hidden="true">⌕</span>
+                <input className="flowInput" value={cityDraft} onChange={event=>setCityDraft(event.target.value)} onFocus={()=>citySuggestions.length&&setCityMenuOpen(true)} onKeyDown={cityKeyDown} placeholder="Search any city worldwide…" role="combobox" aria-expanded={cityMenuOpen} aria-controls="city-suggestions" aria-autocomplete="list" />
+                {citySearching?<small>Searching…</small>:cityDraft?<button type="button" onClick={()=>{setCityDraft("");setCityMenuOpen(false)}} aria-label="Clear city search">×</button>:null}
+              </div>
+              {cityMenuOpen?<div className="flowCityResults" id="city-suggestions" role="listbox">
+                {citySuggestions.length?citySuggestions.map((city,index)=><button type="button" role="option" aria-selected={index===cityActiveIndex} data-active={index===cityActiveIndex} key={city.id} onMouseEnter={()=>setCityActiveIndex(index)} onClick={()=>selectCity(city)}><span><strong>{city.name}</strong><small>{[city.region,city.country].filter(Boolean).join(", ")}</small></span><b>{city.countryCode}</b></button>):<p>No matching cities found.</p>}
+                <div className="flowCityResults__credit">Location data: Open-Meteo / GeoNames</div>
+              </div>:null}
             </div>
 
             {cities.length ? (
