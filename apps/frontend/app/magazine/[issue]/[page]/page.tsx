@@ -37,7 +37,7 @@ export default async function MagazinePageRoute({ params, searchParams }: RouteP
   const jsonLd = page ? articleJsonLd(issue, page) : null;
 
   return (
-    <main>
+    <main className="xp-reader-page">
       {jsonLd ? (
         <script
           type="application/ld+json"
