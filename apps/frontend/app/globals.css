@@ -4547,3 +4547,5 @@ html.xp-nav-open body {
 .xp-issue-picker__trigger{width:100%;min-height:49px;padding:12px 0;border:0;border-bottom:1px solid #aaa;background:transparent;display:flex;align-items:center;justify-content:space-between;text-align:left;font-size:16px;font-weight:600}
 .xp-issue-picker__trigger:hover,.xp-issue-picker__trigger[aria-expanded="true"]{border-color:#111}
 .xp-issue-picker__menu{max-height:320px}
+
+.xp-social-fields{border:0;padding:0;margin:24px 0 8px}.xp-social-fields legend{font-size:13px;font-weight:850;letter-spacing:.08em}.xp-social-fields legend em{font-weight:400;opacity:.5}.xp-social-fields>p{font-size:14px!important;line-height:1.45!important;opacity:.6!important;margin:7px 0 12px!important}.xp-social-fields__grid{display:grid;grid-template-columns:1fr 1fr;gap:8px 22px}.xp-social-fields__grid label{margin:8px 0}.xp-social-fields__grid input{font-size:15px}@media(max-width:620px){.xp-social-fields__grid{grid-template-columns:1fr}}
