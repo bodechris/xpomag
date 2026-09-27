@@ -980,11 +980,125 @@ export function MagazineReader({
           title: typeof found.props?.title === "string" ? found.props.title : activeNativeSpread.title,
           poster: typeof found.props?.poster === "string" ? found.props.poster : undefined,
           autoplay: found.props?.autoplay === true,
+          managedAutoplay: found.props?.managedAutoplay === true,
+          autoplayDelayMs: typeof found.props?.autoplayDelayMs === "number" ? found.props.autoplayDelayMs : 4000,
+          maxLoops: typeof found.props?.maxLoops === "number" ? found.props.maxLoops : 10,
+          muted: found.props?.muted !== false,
         };
       }
     }
     return null;
   }, [activeNativeSpread]);
+
+
+
+  useEffect(() => {
+    if (!activeSpreadVideo?.managedAutoplay || motion) return;
+
+    let cancelled = false;
+    let startTimer: ReturnType<typeof setTimeout> | null = null;
+    let retryTimer: ReturnType<typeof setTimeout> | null = null;
+    let managedVideo: HTMLVideoElement | null = null;
+    let cleanupEnded: (() => void) | null = null;
+
+    const mountManagedVideo = () => {
+      if (cancelled) return;
+
+      const currentLayer = stageRef.current?.querySelector<HTMLElement>(".xp-magazine__spread-layer--current");
+      const frame = currentLayer?.querySelector<HTMLElement>('[data-design-element="active-spread-video"]');
+      if (!frame) {
+        retryTimer = setTimeout(mountManagedVideo, 80);
+        return;
+      }
+
+      const poster = frame.querySelector<HTMLImageElement>("img");
+      if (poster) {
+        poster.style.opacity = "1";
+        poster.style.transition = "opacity 520ms ease";
+      }
+
+      // Ensure stale package-managed videos cannot bypass the required cover hold.
+      frame.querySelectorAll<HTMLVideoElement>("video").forEach((existing) => {
+        existing.pause();
+        existing.remove();
+      });
+
+      startTimer = setTimeout(() => {
+        if (cancelled) return;
+
+        const video = document.createElement("video");
+        managedVideo = video;
+        video.src = activeSpreadVideo.src;
+        video.muted = activeSpreadVideo.muted;
+        video.playsInline = true;
+        video.preload = "auto";
+        video.controls = false;
+        video.loop = false;
+        video.setAttribute("aria-label", activeSpreadVideo.title);
+        video.dataset.readerManagedSpreadVideo = "true";
+        Object.assign(video.style, {
+          position: "absolute",
+          inset: "0",
+          width: "100%",
+          height: "100%",
+          maxWidth: "none",
+          objectFit: "cover",
+          objectPosition: "center 52%",
+          opacity: "0",
+          transition: "opacity 520ms ease",
+          zIndex: "3",
+        });
+
+        frame.appendChild(video);
+
+        let loops = 0;
+        const onPlaying = () => {
+          video.style.opacity = "1";
+          if (poster) poster.style.opacity = "0";
+        };
+        const onEnded = () => {
+          loops += 1;
+          if (loops >= Math.max(1, activeSpreadVideo.maxLoops)) {
+            video.pause();
+            video.style.opacity = "0";
+            if (poster) poster.style.opacity = "1";
+            return;
+          }
+          try { video.currentTime = 0; } catch {}
+          void video.play().catch(() => undefined);
+        };
+
+        video.addEventListener("playing", onPlaying);
+        video.addEventListener("ended", onEnded);
+        cleanupEnded = () => {
+          video.removeEventListener("playing", onPlaying);
+          video.removeEventListener("ended", onEnded);
+        };
+
+        void video.play().catch(() => {
+          // Keep the cover visible if browser autoplay is blocked.
+          video.style.opacity = "0";
+          if (poster) poster.style.opacity = "1";
+        });
+      }, Math.max(0, activeSpreadVideo.autoplayDelayMs));
+    };
+
+    // Start only after the page-turn animation has completed and this spread is actually current.
+    requestAnimationFrame(() => requestAnimationFrame(mountManagedVideo));
+
+    return () => {
+      cancelled = true;
+      if (startTimer) clearTimeout(startTimer);
+      if (retryTimer) clearTimeout(retryTimer);
+      cleanupEnded?.();
+      if (managedVideo) {
+        managedVideo.pause();
+        managedVideo.removeAttribute("src");
+        managedVideo.load();
+        managedVideo.remove();
+      }
+    };
+  }, [activeSpreadVideo, motion, safeSpreadIndex]);
 
   const modalVideoIsYouTube = useMemo(
     () => Boolean(spreadVideoModal?.src && /youtube\.com|youtu\.be/.test(spreadVideoModal.src)),
@@ -1452,7 +1566,7 @@ export function MagazineReader({
             : null}
           {renderSpread(spread, "current", motion?.kind === "flip" ? currentTurnPageIndex : undefined)}
 
-          {activeSpreadVideo && !activeSpreadVideo.autoplay && !motion ? (
+          {activeSpreadVideo && !activeSpreadVideo.autoplay && !activeSpreadVideo.managedAutoplay && !motion ? (
             <button
               type="button"
               className="xp-spread-video-launch"
