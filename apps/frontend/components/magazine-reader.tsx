@@ -1032,21 +1032,24 @@ export function MagazineReader({
     if (pointerGuideRef.current) pointerGuideRef.current.dataset.visible = "false";
   };
 
+  const resolveNativeSpread = (masterSpread: MagazineMasterSpread | null | undefined) => {
+    if (!masterSpread || masterSpread.pageIndexes.length === 1) return undefined;
+    const spreadPageIds = masterSpread.pageIndexes
+      .map((pageIndex) => issue.pages[pageIndex]?.id)
+      .filter((id): id is string => Boolean(id));
+    return issue.spreads?.find((candidate) =>
+      candidate.pieces.length > 0 &&
+      candidate.pageIds?.length === spreadPageIds.length &&
+      candidate.pageIds.every((id, index) => id === spreadPageIds[index]));
+  };
+
   const renderSpread = (
     spreadToRender: MagazineMasterSpread,
     role: "current" | "target",
     hiddenPageIndex?: number,
   ) => {
     const isSingle = spreadToRender.pageIndexes.length === 1;
-    const spreadPageIds = spreadToRender.pageIndexes
-      .map((pageIndex) => issue.pages[pageIndex]?.id)
-      .filter((id): id is string => Boolean(id));
-    const nativeSpread = !isSingle
-      ? issue.spreads?.find((candidate) =>
-          candidate.pieces.length > 0 &&
-          candidate.pageIds?.length === spreadPageIds.length &&
-          candidate.pageIds.every((id, index) => id === spreadPageIds[index]))
-      : undefined;
+    const nativeSpread = resolveNativeSpread(spreadToRender);
     return (
       <div
         className={`xp-magazine__spread-layer xp-magazine__spread-layer--${role} ${isSingle ? "is-single" : "is-spread"}`}
@@ -1150,6 +1153,8 @@ export function MagazineReader({
 
   const currentTurnPage = currentTurnPageIndex == null ? null : loadedPages[issue.pages[currentTurnPageIndex]?.slug ?? ""];
   const backTurnPage = backTurnPageIndex == null ? null : loadedPages[issue.pages[backTurnPageIndex]?.slug ?? ""];
+  const currentTurnNativeSpread = resolveNativeSpread(spread);
+  const backTurnNativeSpread = resolveNativeSpread(targetSpread);
 
   const currentIsSingle = spread.pageIndexes.length === 1;
   const targetIsSingle = targetSpread?.pageIndexes.length === 1;
@@ -1261,10 +1266,26 @@ export function MagazineReader({
           {motion?.kind === "flip" && currentTurnPage && backTurnPage ? (
             <div className={`xp-magazine__turn-sheet xp-magazine__turn-sheet--${motion.direction}`} aria-hidden="true">
               <div className="xp-magazine__turn-face xp-magazine__turn-face--front">
-                <MagazinePageRenderer page={currentTurnPage} globalElements={issue.designElements} />
+                {currentTurnNativeSpread ? (
+                  <MagazineSpreadLeaf
+                    spread={currentTurnNativeSpread}
+                    side={motion.direction === "next" ? "right" : "left"}
+                    globalElements={issue.designElements}
+                  />
+                ) : (
+                  <MagazinePageRenderer page={currentTurnPage} globalElements={issue.designElements} />
+                )}
               </div>
               <div className="xp-magazine__turn-face xp-magazine__turn-face--back">
-                <MagazinePageRenderer page={backTurnPage} globalElements={issue.designElements} />
+                {backTurnNativeSpread ? (
+                  <MagazineSpreadLeaf
+                    spread={backTurnNativeSpread}
+                    side={motion.direction === "next" ? "left" : "right"}
+                    globalElements={issue.designElements}
+                  />
+                ) : (
+                  <MagazinePageRenderer page={backTurnPage} globalElements={issue.designElements} />
+                )}
               </div>
               <div className="xp-magazine__fold-shadow" />
               <div className="xp-magazine__fold-highlight" />
