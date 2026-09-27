@@ -15,6 +15,7 @@ import { accountRouter } from "./routes/account.js";
 import { getComposition, getRevisions, publishDraft, saveDraft } from "./modules/composer/repository.js";
 import { addComment, createCollection, deleteComment, getEngagementSummary, getSaveCollectionsForTarget, listCollections, listComments, listSavedItems, recordShare, setReaction, setSaved, setSavedCollections } from "./modules/engagement/repository.js";
 import { getPublication, listPublications, setPublicationFollow, upsertPublication } from "./modules/publications/repository.js";
+import { createSubmission, listSubmissions, updateSubmissionStatus } from "./modules/submissions/repository.js";
 
 
 const reactionSchema = z.enum(["like", "love", "insightful", "celebrate"]);
@@ -169,6 +170,11 @@ app.post("/v1/admin/publications", async (req,res,next) => {
   try { res.status(201).json({ ok:true, publication: await upsertPublication(publicationInputSchema.parse(req.body)) }); }
   catch(error){ next(error); }
 });
+
+const submissionSchema=z.object({city:z.string().trim().min(2).max(120),submissionType:z.enum(["STORY","PERSON","BUSINESS","PLACE","EVENT","NEWS","PHOTO_STORY","VIDEO","PRODUCT_LAUNCH","COMMUNITY_STORY","OTHER"]),contributorType:z.enum(["INDIVIDUAL","BUSINESS","BRAND","CREATOR","JOURNALIST","PR_AGENCY","MEDIA_ORGANISATION","NONPROFIT","GOVERNMENT_INSTITUTION","OTHER"]),title:z.string().trim().min(4).max(180),summary:z.string().trim().min(20).max(1600),story:z.string().trim().max(12000).nullable().optional(),links:z.string().trim().max(3000).nullable().optional(),contactName:z.string().trim().min(2).max(120),contactEmail:z.string().email().max(200),socialProfiles:z.string().trim().max(1500).nullable().optional(),desiredIssue:z.string().trim().max(120).nullable().optional(),assets:z.array(z.any()).max(20).optional()});
+app.post("/v1/submissions",async(req,res,next)=>{try{const submission=await createSubmission(submissionSchema.parse(req.body),viewerId(req));res.status(201).json({ok:true,submission})}catch(error){next(error)}});
+app.get("/v1/admin/submissions",async(req,res,next)=>{try{res.json({ok:true,submissions:await listSubmissions({status:typeof req.query.status==="string"?req.query.status:undefined,city:typeof req.query.city==="string"?req.query.city:undefined})})}catch(error){next(error)}});
+app.patch("/v1/admin/submissions/:id",async(req,res,next)=>{try{const input=z.object({status:z.enum(["INCOMING","REVIEWING","SHORTLISTED","RESEARCH","APPROVED","DESIGNING","SCHEDULED","PUBLISHED","REJECTED","ARCHIVED"]),editorNotes:z.string().max(4000).nullable().optional()}).parse(req.body);const submission=await updateSubmissionStatus(req.params.id,input.status,input.editorNotes);if(!submission)return res.status(404).json({ok:false,error:"Submission not found"});res.json({ok:true,submission})}catch(error){next(error)}});
 
 app.get("/v1/engagement/collections", async (req, res, next) => {
   try {
