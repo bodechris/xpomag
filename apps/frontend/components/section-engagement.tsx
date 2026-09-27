@@ -125,6 +125,34 @@ export function SectionEngagementBar({ issueSlug, pageSlug, sectionId, sectionSl
       }
 
       const section = root.closest<HTMLElement>("[data-magazine-section]");
+      const spreadPiece = root.closest<HTMLElement>("[data-magazine-spread-piece]");
+
+      if (!section && spreadPiece) {
+        const leaf = root.closest<HTMLElement>("[data-magazine-leaf]");
+        const side = leaf?.dataset.magazineLeaf;
+        const safe = 12;
+        const pieceWidth = spreadPiece.offsetWidth || spreadPiece.getBoundingClientRect().width;
+        const rootWidth = root.getBoundingClientRect().width;
+
+        // In single-page native leaf mode the authored spread canvas remains 200% wide.
+        // Put the engagement bar inside the visible half instead of allowing it to be clipped away.
+        const left = side === "right"
+          ? Math.max(safe, pieceWidth * .5 + safe)
+          : safe;
+
+        setInlinePosition({
+          position: "absolute",
+          left,
+          right: "auto",
+          top: "auto",
+          bottom: safe,
+          width: "max-content",
+          maxWidth: side ? `calc(50% - ${safe * 2}px)` : `calc(100% - ${safe * 2}px)`,
+          zIndex: 80,
+        });
+        return;
+      }
+
       if (!section) return;
       const sectionRect = section.getBoundingClientRect();
       const scaleX = sectionRect.width / Math.max(1, section.offsetWidth || sectionRect.width);
@@ -159,8 +187,10 @@ export function SectionEngagementBar({ issueSlug, pageSlug, sectionId, sectionSl
 
     place();
     const section = root.closest<HTMLElement>("[data-magazine-section]");
+    const spreadPiece = root.closest<HTMLElement>("[data-magazine-spread-piece]");
     const observer = typeof ResizeObserver !== "undefined" ? new ResizeObserver(place) : null;
     if (section) observer?.observe(section);
+    if (spreadPiece) observer?.observe(spreadPiece);
     window.addEventListener("resize", place);
     return () => {
       observer?.disconnect();
