@@ -5222,10 +5222,10 @@ p[data-drop-cap-lines="6"] .xp-editorial-drop-cap { font-size: 5.85em; }
   box-sizing: border-box;
 }
 
-[data-spread-piece-id="steyn-senior-top-video-piece"],
+[data-spread-piece-id="steyn-senior-bedroom-media-piece"],
 [data-spread-piece-id="steyn-senior-frail-care-image-piece"],
 [data-spread-piece-id="steyn-senior-living-image-piece"],
-[data-spread-piece-id="steyn-senior-bottom-video-piece"],
+[data-spread-piece-id="steyn-senior-hydro-media-piece"],
 [data-spread-piece-id="steyn-senior-mobile-left-piece"],
 [data-spread-piece-id="steyn-senior-mobile-right-piece"] {
   overflow: visible !important;
@@ -5237,7 +5237,7 @@ p[data-drop-cap-lines="6"] .xp-editorial-drop-cap { font-size: 5.85em; }
 }
 
 [data-spread-piece-id="steyn-senior-editorial-piece"] > .xp-section-engagement--inline,
-[data-spread-piece-id="steyn-senior-top-video-piece"] > .xp-section-engagement--inline,
+[data-spread-piece-id="steyn-senior-bedroom-media-piece"] > .xp-section-engagement--inline,
 [data-spread-piece-id="steyn-senior-living-image-piece"] > .xp-section-engagement--inline {
   position: absolute !important;
   left: 8px !important;
@@ -5271,10 +5271,10 @@ p[data-drop-cap-lines="6"] .xp-editorial-drop-cap { font-size: 5.85em; }
 
 @media (max-width: 820px) {
   [data-spread-piece-id="steyn-senior-editorial-piece"],
-  [data-spread-piece-id="steyn-senior-top-video-piece"],
+  [data-spread-piece-id="steyn-senior-bedroom-media-piece"],
   [data-spread-piece-id="steyn-senior-frail-care-image-piece"],
   [data-spread-piece-id="steyn-senior-living-image-piece"],
-  [data-spread-piece-id="steyn-senior-bottom-video-piece"] {
+  [data-spread-piece-id="steyn-senior-hydro-media-piece"] {
     display: none !important;
   }
 
