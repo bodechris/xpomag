@@ -4416,3 +4416,42 @@ html.xp-nav-open body {
   background: #b9b9b5 !important;
   border-color: #b9b9b5 !important;
 }
+
+
+/* Final compact navigation treatment. */
+.xp-floating-site-nav__menu--compact {
+  top: calc(100% + .42rem) !important;
+  left: 0 !important;
+  width: 168px !important;
+  min-width: 0 !important;
+  padding: .35rem !important;
+  border-radius: 14px !important;
+  background: #fff !important;
+  border: 1px solid rgba(17,17,17,.10) !important;
+  box-shadow: 0 12px 28px rgba(17,17,17,.10) !important;
+}
+
+.xp-floating-site-nav__menu--compact > a {
+  min-height: 36px !important;
+  padding: 0 .65rem !important;
+  border-radius: 10px !important;
+  font-size: .76rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+}
+
+.xp-floating-site-nav__menu--compact > a:hover {
+  background: #f3f2ee !important;
+}
+
+.xp-floating-site-nav__menu--compact .xp-floating-site-nav__menu-top,
+.xp-floating-site-nav__menu--compact .xp-floating-site-nav__drawer-top,
+.xp-floating-site-nav__menu--compact .xp-floating-site-nav__note {
+  display: none !important;
+}
+
+@media (max-width: 820px) {
+  .xp-floating-site-nav__menu--compact {
+    width: 156px !important;
+  }
+}
