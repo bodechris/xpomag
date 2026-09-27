@@ -4455,3 +4455,19 @@ html.xp-nav-open body {
     width: 156px !important;
   }
 }
+
+
+/* Engagement hover-label regression guard.
+   Magazine-wide span wrapping rules must never collapse reaction tooltips vertically. */
+[data-magazine-page] .xp-engagement__reactions .xp-engagement__reaction > span,
+.xp-section-engagement .xp-engagement__reactions .xp-engagement__reaction > span {
+  display: block !important;
+  width: max-content !important;
+  min-width: max-content !important;
+  max-width: none !important;
+  white-space: nowrap !important;
+  word-break: keep-all !important;
+  overflow-wrap: normal !important;
+  text-wrap: nowrap !important;
+  writing-mode: horizontal-tb !important;
+}
