@@ -1658,7 +1658,8 @@ function contentsGolfSpread(issueId: string): MagazineSpreadDefinition {
               style: {
                 position: "relative",
                 padding: "clamp(1.05rem,2.15vw,2.2rem) clamp(1.35rem,3.2vw,3.35rem) clamp(1rem,2vw,2rem)",
-                overflow: "hidden",
+                overflow: "visible",
+                zIndex: 6,
               },
               children: [
                 grid("contents-golf-article-grid", [
@@ -1713,15 +1714,15 @@ function contentsGolfSpread(issueId: string): MagazineSpreadDefinition {
                 image("contents-golf-portrait", portrait, "Steven Louw, CEO, Steyn City Properties", {
                   position: "absolute",
                   right: "2.8%",
-                  top: "-19%",
-                  width: "20.5%",
+                  top: "-24%",
+                  width: "21.5%",
                   aspectRatio: "1 / 1",
                   borderRadius: "50%",
                   objectFit: "cover",
                   objectPosition: "center 18%",
                   border: "clamp(.18rem,.28vw,.3rem) solid #f4f0eb",
                   boxShadow: "0 8px 24px rgba(0,0,0,.14)",
-                  zIndex: 9,
+                  zIndex: 20,
                 }),
                 text("contents-golf-signoff", "Steven Louw (CEO, Steyn City Properties)", {
                   position: "absolute",
