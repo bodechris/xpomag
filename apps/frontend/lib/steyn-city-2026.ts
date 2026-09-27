@@ -3071,10 +3071,12 @@ function cyclingSpread(issueId: string): MagazineSpreadDefinition {
 
 
 function seniorVillageSpread(issueId: string): MagazineSpreadDefinition {
-  const hero = "https://www.steyncity.co.za/wp-content/uploads/2025/12/City-Centre-luxe-apartment-living.webp";
-  const apartmentTwo = "https://www.steyncity.co.za/wp-content/uploads/2026/09/SV-2bedroom-scaled.webp";
-  const apartmentThree = "https://www.steyncity.co.za/wp-content/uploads/2026/09/SV-3bedroom-scaled.webp";
-  const lounge = "https://www.steyncity.co.za/wp-content/uploads/2025/12/City-Centre-Show-Apartment-Lounge-patio-view.webp";
+  const hero = "/resources/studio/steyn/steyn-city-xpomag-spread-6-01.webp";
+  const portrait = "/resources/studio/steyn/steyn-city-xpomag-spread-6-02.webp";
+  const bedroom = "/resources/studio/steyn/steyn-city-xpomag-spread-6-03.webp";
+  const frailCare = "/resources/studio/steyn/steyn-city-xpomag-spread-6-04.webp";
+  const livingArea = "/resources/studio/steyn/steyn-city-xpomag-spread-6-05.webp";
+  const hydro = "/resources/studio/steyn/steyn-city-xpomag-spread-6-06.webp";
 
   const seniorVillageVideo = "https://www.youtube.com/embed/WmoNsAdM7-I?autoplay=1&mute=1&controls=1&playsinline=1&rel=0";
   const apartmentVideo = "https://www.youtube.com/embed/qKiizstxMXU?autoplay=1&mute=1&controls=1&playsinline=1&rel=0";
@@ -3241,7 +3243,7 @@ function seniorVillageSpread(issueId: string): MagazineSpreadDefinition {
               zIndex: 5,
             },
           },
-          image("senior-small-portrait", lounge, "Senior Village lifestyle portrait detail", {
+          image("senior-small-portrait", portrait, "Senior Village care manager portrait", {
             position: "absolute",
             left: "27.2%",
             top: "35.2%",
@@ -3249,7 +3251,7 @@ function seniorVillageSpread(issueId: string): MagazineSpreadDefinition {
             aspectRatio: "1 / 1",
             borderRadius: "50%",
             objectFit: "cover",
-            objectPosition: "47% 50%",
+            objectPosition: "50% 32%",
             outline: "5px solid rgba(255,255,255,.95)",
             boxShadow: "0 7px 18px rgba(0,0,0,.16)",
             zIndex: 9,
@@ -3389,22 +3391,74 @@ function seniorVillageSpread(issueId: string): MagazineSpreadDefinition {
         ],
       },
 
-      mediaPiece(
-        "steyn-senior-top-video-piece",
-        "senior-village-video",
-        "Inside Steyn City Senior Village",
-        video("senior-top-video", seniorVillageVideo, "A look at Steyn City Senior Village", {
-          position: "absolute", inset: 0,
-        }),
-        { position: "absolute", left: "50%", top: 0, width: "34.6%", height: "34.2%", zIndex: 6 },
-        true,
-      ),
+      {
+        id: "steyn-senior-bedroom-media-piece",
+        slug: "senior-bedroom-media",
+        title: "En-suite master bedroom",
+        kind: "feature",
+        region: "spread",
+        gutterBehaviour: "clip",
+        engagement,
+        style: {
+          position: "absolute",
+          left: "50%",
+          top: 0,
+          width: "34.6%",
+          height: "34.2%",
+          zIndex: 6,
+          overflow: "hidden",
+          background: "#e7e1da",
+        },
+        elements: [
+          image("senior-bedroom-image", bedroom, "En-suite master bedroom", {
+            position: "absolute",
+            inset: 0,
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            objectPosition: "center center",
+          }),
+          {
+            id: "senior-bedroom-video-inset",
+            type: "frame",
+            style: {
+              position: "absolute",
+              right: "2.5%",
+              bottom: "4%",
+              width: "34%",
+              aspectRatio: "16 / 9",
+              border: "2px solid rgba(255,255,255,.92)",
+              boxShadow: "0 8px 24px rgba(0,0,0,.24)",
+              overflow: "hidden",
+              zIndex: 4,
+              background: "#000",
+            },
+            children: [
+              video("senior-top-video", seniorVillageVideo, "Inside Steyn City Senior Village", {
+                position: "absolute",
+                inset: 0,
+              }),
+            ],
+          },
+          text("senior-bedroom-caption", "En-suite master bedroom", {
+            position: "absolute",
+            right: "2.6%",
+            bottom: "1.3%",
+            color: "#fff",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(.28rem,.39vw,.42rem)",
+            fontStyle: "italic",
+            textShadow: "0 1px 6px rgba(0,0,0,.55)",
+            zIndex: 5,
+          }, "span"),
+        ],
+      },
 
       mediaPiece(
         "steyn-senior-frail-care-image-piece",
         "senior-frail-care",
         "Frail care facility",
-        image("senior-frail-care-image", apartmentTwo, "Senior Village apartment interior", {
+        image("senior-frail-care-image", frailCare, "Frail care facility", {
           position: "absolute", inset: 0, width: "100%", height: "100%", objectPosition: "center 52%",
         }),
         { position: "absolute", left: "50%", top: "36.1%", width: "16.3%", height: "21.4%", zIndex: 6 },
@@ -3415,23 +3469,75 @@ function seniorVillageSpread(issueId: string): MagazineSpreadDefinition {
         "steyn-senior-living-image-piece",
         "senior-living-area",
         "Open plan living area",
-        image("senior-living-image", apartmentThree, "Steyn City Senior Village living area", {
+        image("senior-living-image", livingArea, "Open plan living area", {
           position: "absolute", inset: 0, width: "100%", height: "100%", objectPosition: "center center",
         }),
         { position: "absolute", left: "67.6%", top: "36.1%", width: "16.9%", height: "21.4%", zIndex: 6 },
         true,
       ),
 
-      mediaPiece(
-        "steyn-senior-bottom-video-piece",
-        "senior-lifestyle-video",
-        "Steyn City apartment lifestyle",
-        video("senior-bottom-video", apartmentVideo, "Steyn City apartment lifestyle", {
-          position: "absolute", inset: 0,
-        }),
-        { position: "absolute", left: "50%", bottom: 0, width: "50%", height: "40.4%", zIndex: 5 },
-        false,
-      ),
+      {
+        id: "steyn-senior-hydro-media-piece",
+        slug: "senior-hydro-media",
+        title: "Hydro Centre",
+        kind: "feature",
+        region: "spread",
+        gutterBehaviour: "clip",
+        engagement: noEngagement,
+        style: {
+          position: "absolute",
+          left: "50%",
+          bottom: 0,
+          width: "50%",
+          height: "40.4%",
+          zIndex: 5,
+          overflow: "hidden",
+          background: "#e7e1da",
+        },
+        elements: [
+          image("senior-hydro-image", hydro, "Hydro Centre pool", {
+            position: "absolute",
+            inset: 0,
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            objectPosition: "center 52%",
+          }),
+          {
+            id: "senior-hydro-video-inset",
+            type: "frame",
+            style: {
+              position: "absolute",
+              left: "2.2%",
+              top: "4%",
+              width: "27%",
+              aspectRatio: "16 / 9",
+              border: "2px solid rgba(255,255,255,.92)",
+              boxShadow: "0 8px 24px rgba(0,0,0,.24)",
+              overflow: "hidden",
+              zIndex: 4,
+              background: "#000",
+            },
+            children: [
+              video("senior-bottom-video", apartmentVideo, "Steyn City apartment lifestyle", {
+                position: "absolute",
+                inset: 0,
+              }),
+            ],
+          },
+          text("senior-hydro-caption", "Hydro Centre", {
+            position: "absolute",
+            left: "47%",
+            top: "3%",
+            color: "#fff",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(.28rem,.39vw,.42rem)",
+            fontStyle: "italic",
+            textShadow: "0 1px 6px rgba(0,0,0,.55)",
+            zIndex: 5,
+          }, "span"),
+        ],
+      },
 
       {
         id: "steyn-senior-mobile-left-piece",
@@ -3465,6 +3571,10 @@ function seniorVillageSpread(issueId: string): MagazineSpreadDefinition {
           image("senior-mobile-hero", hero, "Steyn City Senior Village", {
             width: "100%", height: "12rem", objectFit: "cover", objectPosition: "center 52%",
             marginBottom: ".85rem",
+          }),
+          image("senior-mobile-portrait", portrait, "Senior Village care manager portrait", {
+            width: "5.2rem", height: "5.2rem", objectFit: "cover", objectPosition: "50% 30%",
+            borderRadius: "50%", marginBottom: ".8rem",
           }),
           text("senior-mobile-standfirst", "Independent living, beautifully designed homes and care close by when you need it.", {
             color: "#078fb7",
@@ -3524,16 +3634,19 @@ function seniorVillageSpread(issueId: string): MagazineSpreadDefinition {
             letterSpacing: ".13em",
             marginBottom: ".65rem",
           }, "span"),
+          image("senior-mobile-bedroom", bedroom, "En-suite master bedroom", {
+            width: "100%", height: "11.5rem", objectFit: "cover", marginBottom: ".7rem",
+          }),
           video("senior-mobile-video-a", seniorVillageVideo, "Inside Steyn City Senior Village", {
-            width: "100%", height: "11.5rem", marginBottom: ".9rem",
+            width: "100%", height: "9.5rem", marginBottom: ".9rem",
           }),
           {
             id: "senior-mobile-image-row",
             type: "grid",
             style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: ".55rem", marginBottom: ".9rem" },
             children: [
-              image("senior-mobile-img-a", apartmentTwo, "Senior Village apartment", { width: "100%", height: "7.6rem", objectFit: "cover" }),
-              image("senior-mobile-img-b", lounge, "Steyn City apartment lounge", { width: "100%", height: "7.6rem", objectFit: "cover" }),
+              image("senior-mobile-img-a", frailCare, "Frail care facility", { width: "100%", height: "7.6rem", objectFit: "cover" }),
+              image("senior-mobile-img-b", livingArea, "Open plan living area", { width: "100%", height: "7.6rem", objectFit: "cover" }),
             ],
           },
           text("senior-mobile-heading", "WHAT MAKES THE SENIOR VILLAGE SPECIAL?", {
@@ -3552,8 +3665,11 @@ function seniorVillageSpread(issueId: string): MagazineSpreadDefinition {
             lineHeight: 1.52,
             marginBottom: ".9rem",
           }),
+          image("senior-mobile-hydro", hydro, "Hydro Centre pool", {
+            width: "100%", height: "10rem", objectFit: "cover", objectPosition: "center 52%", marginBottom: ".7rem",
+          }),
           video("senior-mobile-video-b", apartmentVideo, "Steyn City apartment lifestyle", {
-            width: "100%", height: "11.5rem",
+            width: "100%", height: "9.5rem",
           }),
         ],
       },
