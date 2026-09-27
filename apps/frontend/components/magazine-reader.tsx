@@ -1,7 +1,7 @@
 "use client";
 
 import { MagazinePageRenderer, type ComposerNode, type MagazinePageDefinition } from "@xpomag/magazine";
-import { ArrowLeft, ArrowRight, BookOpen, LockKeyhole, Maximize2, Menu, Minimize2, Pause, Play, RotateCcw, X } from "lucide-react";
+import { ArrowLeft, ArrowRight, BookOpen, LockKeyhole, Maximize2, Menu, Minimize2, Pause, Play, RotateCcw, X } from "lucide-react";\nimport { MagazineEngagementDock } from "./magazine-engagement-dock";
 import type { CSSProperties, MouseEvent as ReactMouseEvent, PointerEvent as ReactPointerEvent } from "react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
@@ -1276,7 +1276,12 @@ export function MagazineReader({
           ))}
         </div>
 
-        <p className="xp-magazine__hint">Scroll · drag the page · or use ← →</p>
+        <MagazineEngagementDock
+          issueSlug={issue.slug}
+          publicationSlug={(issue.metadata?.publicationSlug as string | undefined) ?? (/johannesburg|rosebank|sandton/i.test(issue.city) ? "joburg" : issue.city.toLowerCase().replace(/\\s+/g, "-"))}
+          publicationName={(issue.metadata?.publicationName as string | undefined) ?? `XpoMag ${/johannesburg|rosebank|sandton/i.test(issue.city) ? "Joburg" : issue.city}`}
+          authenticated={viewerAuthenticated}
+        />
 
         <div className="xp-magazine__controls">
           <button type="button" className="xp-magazine__nav" onClick={() => navigate("previous")} disabled={!canGoBack || Boolean(motion)} aria-label="Previous spread">
