@@ -327,7 +327,7 @@ function CityTetrisGame() {
         if (event.key === " ") hardDrop();
       }}
     >
-      <div className="xp-play-page__eyebrow">XPOMAG / PLAY / 56</div>
+      <div className="xp-play-page__eyebrow">XPOMAG / PLAYGROUND / GAME</div>
       <h1>CITY BLOCKS</h1>
       <p>Build the city upward. Complete streets to clear them, score points and keep the skyline alive.</p>
       <div className="xp-game-hud">
@@ -400,7 +400,7 @@ function IssueQuiz() {
   const score = Object.entries(answers).reduce((total, [i, value]) => total + (QUIZ_ITEMS[Number(i)]?.answer === value ? 1 : 0), 0);
   return (
     <div className="xp-play-page xp-play-page--quiz" data-magazine-interactive data-no-page-turn>
-      <div className="xp-play-page__eyebrow">XPOMAG / QUIZ / 57</div>
+      <div className="xp-play-page__eyebrow">XPOMAG / PLAYGROUND / QUIZ</div>
       <h1>HOW WELL DID YOU READ THE CITY?</h1>
       <p>Five quick questions from Issue 001. Answers lock as you choose them.</p>
       <div className="xp-quiz-grid">
@@ -436,7 +436,7 @@ function CityWordPuzzle() {
   const correct = values.filter((value, index) => value.trim().toUpperCase() === PUZZLE_WORDS[index]!.answer).length;
   return (
     <div className="xp-play-page xp-play-page--puzzle" data-magazine-interactive data-no-page-turn>
-      <div className="xp-play-page__eyebrow">XPOMAG / PUZZLE / 58</div>
+      <div className="xp-play-page__eyebrow">XPOMAG / PLAYGROUND / PUZZLE</div>
       <h1>UNSCRAMBLE THE CITY</h1>
       <p>Four names from this issue have been scrambled. Use the clue, type the word, then check the grid.</p>
       <div className="xp-puzzle-list">
