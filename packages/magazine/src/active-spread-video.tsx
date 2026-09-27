@@ -139,6 +139,7 @@ export function ActiveSpreadVideo({
     loopCountRef.current += 1;
     if (typeof maxLoops === "number" && maxLoops > 0 && loopCountRef.current >= maxLoops) {
       video.pause();
+      setHasStarted(false);
       return;
     }
 
@@ -180,6 +181,7 @@ export function ActiveSpreadVideo({
             objectFit: objectFit ?? "cover",
             objectPosition: objectPosition ?? "center",
             opacity: hasStarted ? 1 : 0,
+            transition: "opacity 520ms ease",
           }}
         />
       ) : null}
