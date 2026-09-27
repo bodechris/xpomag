@@ -2794,7 +2794,8 @@ function buildDemoShowcaseSpreads(
     const ink = dark ? "#fff" : "#111";
     const paper = dark ? "#101114" : mode === 1 ? "#e9dfcc" : mode === 3 ? "#dce7df" : "#f3f0e8";
     const accent = mode === 0 ? "#f3cf20" : mode === 1 ? "#ef5a24" : mode === 2 ? "#8ec5ff" : mode === 3 ? "#3157ff" : "#e9ff58";
-    const articleColumnCount = spreadIndex % 5 === 0 ? 3 : 2;
+    const isLongRead = spreadIndex % 5 === 0;
+    const articleColumnCount = isLongRead ? 4 : 2;
     const videoSpread = spreadIndex === 4 || spreadIndex === 12 || spreadIndex === 22;
 
     const pieces: MagazineSpreadDefinition["pieces"] = [
@@ -2904,10 +2905,10 @@ function buildDemoShowcaseSpreads(
             type: "frame",
             style: {
               position: "absolute",
-              left: spreadIndex % 2 ? "4%" : "46%",
-              right: spreadIndex % 2 ? "46%" : "4%",
+              left: isLongRead ? "4%" : spreadIndex % 2 ? "4%" : "46%",
+              right: isLongRead ? "4%" : spreadIndex % 2 ? "46%" : "4%",
               bottom: "4%",
-              maxHeight: spreadIndex % 5 === 0 ? "58%" : "48%",
+              maxHeight: isLongRead ? "58%" : "48%",
               overflow: "hidden",
               zIndex: 6,
               padding: "clamp(1rem,1.6vw,1.8rem)",
@@ -2923,7 +2924,7 @@ function buildDemoShowcaseSpreads(
             children: [
               demoTextNode(
                 `demo-spread-${spreadIndex}-dek`,
-                spreadIndex % 5 === 0
+                isLongRead
                   ? "A long-form demonstration: this spread deliberately carries enough copy to show that XpoMag can behave like a real editorial publication, not only a visual brochure."
                   : "A spread-led city story designed to be read, watched, saved, shared and explored.",
                 {
