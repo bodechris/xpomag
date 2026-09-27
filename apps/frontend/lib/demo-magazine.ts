@@ -3188,7 +3188,7 @@ function buildDemoShowcaseSpreads(
   const editorialPairs = new Map<string, number>([
     ["rosebank-0642|editors-note", 0],
     ["new-table-i|new-table-ii", 1],
-    ["rosebank-art-i|rosebank-art-ii", 2],
+    ["pulse-ii|rosebank-numbers", 2],
     ["mixed-use-i|mixed-use-ii", 3],
     ["wellness-i|wellness-ii", 4],
   ]);
@@ -3285,7 +3285,7 @@ function buildDemoShowcaseSpreads(
             props: {
               src: "https://www.youtube.com/embed/KbmTGjaCsXk?autoplay=1&mute=1&controls=0&loop=1&playlist=KbmTGjaCsXk&playsinline=1&rel=0",
               title: "Johannesburg art and city motion",
-              autoplay: true, muted: true, loop: true, controls: false,
+              autoplay: true, muted: true, loop: true, controls: false, cover: true,
             },
             style: { position: "absolute", inset: 0, width: "100%", height: "100%" },
           } satisfies DesignElementNode]
