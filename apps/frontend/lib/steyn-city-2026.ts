@@ -373,8 +373,8 @@ function coverPage(issueId: string, tone: Tone): MagazinePageDefinition {
       filter: "invert(1)",
       opacity: .98,
       transform: align === "left"
-        ? "translate(-10px, 10px) scaleX(-1)"
-        : "translate(10px, 10px)",
+        ? "translate(-5px, 10px) scaleX(-1)"
+        : "translate(5px, 10px)",
       transformOrigin: "center",
       alignSelf: align === "right" ? "flex-end" : "flex-start",
       marginBottom: "clamp(.06rem,.12vw,.12rem)",
@@ -503,21 +503,21 @@ function coverPage(issueId: string, tone: Tone): MagazinePageDefinition {
         justifyContent: "flex-end",
         gap: "clamp(.22rem,.38vw,.36rem)",
         whiteSpace: "nowrap",
-        transform: "translateY(10px) rotate(-3deg)",
+        transform: "translateY(-5px) rotate(-3deg)",
       }),
 
       coverline(
         "cover-senior",
         "SENIOR\nLIVING",
         "a new take on\nthe golden years",
-        { left: "8.0%", top: "34.6%", width: "28.2%" },
+        { left: "8.0%", top: "35.4%", width: "28.2%" },
       ),
 
       coverline(
         "cover-liv",
         "HOME OF LIV GOLF\nSOUTH AFRICA\n2026",
         "making history",
-        { right: "7.7%", top: "37.0%", width: "43%" },
+        { right: "7.7%", top: "35.4%", width: "43%" },
         "right",
       ),
 
@@ -525,14 +525,14 @@ function coverPage(issueId: string, tone: Tone): MagazinePageDefinition {
         "cover-easy",
         "LIVING THE\nEASY LIFE",
         "convenient world-class\nfacilities and services",
-        { left: "7.2%", top: "59.1%", width: "36%" },
+        { left: "7.2%", top: "60.0%", width: "36%" },
       ),
 
       coverline(
         "cover-nature",
         "BIRDS\n& BEES",
         "where nature\nthrives",
-        { right: "7.7%", top: "64.8%", width: "21%" },
+        { right: "7.7%", top: "60.0%", width: "21%" },
         "right",
       ),
 
@@ -545,19 +545,21 @@ function coverPage(issueId: string, tone: Tone): MagazinePageDefinition {
           filter: "invert(1) brightness(4)",
         }),
         image("cover-golf-sa-logo", golfSaLogo, "LIV Golf South Africa — Steyn City", {
-          width: "clamp(3.5rem,5.9vw,5.6rem)",
-          height: "clamp(3.5rem,5.9vw,5.6rem)",
+          width: "clamp(3.8rem,6.3vw,6rem)",
+          height: "clamp(3.8rem,6.3vw,6rem)",
           maxWidth: "none",
           objectFit: "contain",
           objectPosition: "center",
           display: "block",
+          transform: "scale(.82)",
+          transformOrigin: "center",
           filter: "drop-shadow(0 4px 12px rgba(0,0,0,.32))",
         }),
       ], {
         position: "absolute",
         zIndex: 9,
         left: "50%",
-        bottom: "4.6%",
+        bottom: "5.3%",
         transform: "translateX(-50%)",
         flexDirection: "row",
         alignItems: "center",
