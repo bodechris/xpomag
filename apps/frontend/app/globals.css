@@ -3773,3 +3773,27 @@ img, picture, video, canvas, svg { display: block; max-width: 100%; }
     top: calc(100% + .45rem);
   }
 }
+
+
+/* Final reader chrome override: one header only, visibly frosted glass. */
+.xp-reader-page .xp-magazine__meta,
+.xp-reader-page .xp-magazine__page-meta,
+.xp-reader-page .xp-magazine__progress,
+.xp-reader-page .xp-magazine__hint,
+.xp-reader-page .xp-magazine__controls,
+.xp-reader-page .xp-reader-menu {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.34), rgba(255,255,255,.20)) !important;
+  border-color: rgba(255,255,255,.72) !important;
+  box-shadow:
+    0 18px 48px rgba(18,14,9,.16),
+    inset 0 1px 0 rgba(255,255,255,.56),
+    inset 0 -1px 0 rgba(255,255,255,.14) !important;
+  backdrop-filter: blur(36px) saturate(180%) brightness(1.06) !important;
+  -webkit-backdrop-filter: blur(36px) saturate(180%) brightness(1.06) !important;
+}
+
+.xp-reader-page .xp-magazine__toolbar,
+.xp-reader-page .xp-magazine__footer {
+  isolation: isolate;
+}
