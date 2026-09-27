@@ -1,16 +1,11 @@
 import Link from "next/link"
 import "./about.css"
+import { FloatingSiteNav } from "../../components/floating-site-nav"
 
 export default function AboutPage() {
   return (
     <main className="aboutPage">
-      <header className="aboutHeader">
-        <Link href="/" className="aboutBrand">XpoMag</Link>
-        <nav className="aboutNav" aria-label="Primary">
-          <Link href="/about" aria-current="page">About</Link>
-          <Link href="/auth" className="aboutSignIn">Sign in</Link>
-        </nav>
-      </header>
+      <FloatingSiteNav />
 
       <section className="aboutHero">
         <div className="aboutKicker">A CITY MAGAZINE FOR THE INTERNET</div>
