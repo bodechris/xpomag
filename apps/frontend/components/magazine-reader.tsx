@@ -1176,8 +1176,8 @@ export function MagazineReader({
             </button>
             <span className="xp-reader-meta-separator" aria-hidden="true" />
             <span>{issue.city}</span>
-            <span aria-hidden="true">/</span>
-            <span>{issue.issueLabel}</span>
+            <span aria-hidden="true">·</span>
+            <span>{issue.monthLabel}</span>
           </div>
           {readerMenuOpen ? (
             <nav className="xp-reader-menu" aria-label="XpoMag navigation" data-magazine-interactive data-no-page-turn>
