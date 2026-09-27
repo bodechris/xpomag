@@ -3561,3 +3561,45 @@ img, picture, video, canvas, svg { display: block; max-width: 100%; }
     padding-bottom: max(clamp(1.15rem, 5vw, 1.65rem), 4.75rem) !important;
   }
 }
+
+
+/* Preserve the complete physical book + page-turn perspective inside the viewport. */
+@media (min-width: 821px) {
+  .xp-reader-page {
+    overflow: hidden;
+  }
+
+  .xp-reader-page .xp-magazine__stage {
+    height: 100dvh;
+    padding:
+      max(2.25rem, 5dvh)
+      max(1.5rem, 2.5vw);
+    overflow: visible;
+    perspective: 2600px;
+    perspective-origin: 50% 50%;
+  }
+
+  .xp-reader-page .xp-magazine__stage[data-mode="spread"] .xp-magazine__book {
+    height: min(
+      calc(100dvh - max(4.5rem, 10dvh)),
+      calc((100vw - max(3rem, 5vw)) / 1.44)
+    );
+    max-height: calc(100dvh - max(4.5rem, 10dvh));
+    max-width: calc(100vw - max(3rem, 5vw));
+    width: auto;
+    margin: auto;
+  }
+
+  .xp-reader-page .xp-magazine__book-shadow {
+    bottom: 0;
+    left: 10%;
+    right: 10%;
+    height: 8%;
+    transform: translateY(48%) scaleX(calc(.72 + (var(--xp-turn-progress) * .16)));
+  }
+
+  .xp-reader-page .xp-magazine__turn-sheet,
+  .xp-reader-page .xp-magazine__spread-layer {
+    overflow: visible;
+  }
+}
