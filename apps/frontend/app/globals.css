@@ -1708,6 +1708,22 @@ img, picture, video, canvas, svg { display: block; max-width: 100%; }
   transform: translate3d(calc(var(--xp-pointer-x) - 8px), calc(var(--xp-pointer-y) - 8px), 0) scale(1);
 }
 .xp-magazine__pointer-guide[data-mode="interactive"]::after { content: ""; }
+.xp-magazine__pointer-guide[data-mode="video"] {
+  width: 96px;
+  height: 38px;
+  border-color: rgba(255,255,255,.72);
+  background: rgba(17,17,17,.72);
+  box-shadow: 0 8px 24px rgba(0,0,0,.2);
+  transform: translate3d(calc(var(--xp-pointer-x) - 48px), calc(var(--xp-pointer-y) - 19px), 0) scale(1);
+}
+
+.xp-magazine__pointer-guide[data-mode="video"]::after {
+  content: attr(data-label);
+  white-space: nowrap;
+  font-size: .68rem;
+  letter-spacing: .015em;
+}
+
 
 @media (pointer: fine) {
   .xp-magazine__stage { cursor: none; }
