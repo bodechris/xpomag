@@ -721,7 +721,7 @@ function insideFrontGalleryPage(issueId: string): MagazinePageDefinition {
 function insideFrontPropertyPage(issueId: string): MagazinePageDefinition {
   const steynMark = "/resources/studio/steyn/steyn-city-logo-mark.svg";
   const steynWordmark = "/resources/studio/steyn/steyn-city-text-logo.svg";
-  const pamGolding = "/resources/studio/steyn/city-living/pam-golding-properties-logo.webp";
+  const pamGolding = "/resources/studio/steyn/pam-golding-properties-logo.webp";
 
   return page(
     issueId,
@@ -912,19 +912,23 @@ function insideFrontPropertyPage(issueId: string): MagazinePageDefinition {
 
 
 function cityLivingSpread(issueId: string): MagazineSpreadDefinition {
-  // Eight distinct source images: no duplicate URLs in this bento.
-  const aerial = "/resources/studio/steyn/city-living/steyn-city-img-03.webp";
-  const sunsetPortrait = "/resources/studio/steyn/city-living-sunset.webp";
-  const terrace = "/resources/studio/steyn/city-living-terrace.webp";
-  const sunset = "/resources/studio/steyn/city-living-kitchen.webp";
-  const kitchen = "/resources/studio/steyn/city-living/steyn-city-img-01.webp";
-  const wineWall = "/resources/studio/steyn/city-living/steyn-city-img-02.webp";
-  const restaurant = "/resources/studio/steyn/city-living/steyn-city-img-06.webp";
-  const pinkLiving = "/resources/studio/steyn/city-living/steyn-city-img-07.webp";
-  const qrCode = "/resources/studio/steyn/city-living/qr-code-steyn-city.png";
+  // All Steyn City spread assets live directly in /public/resources/studio/steyn.
+  // Browser URLs intentionally omit /public because Next.js serves public/ at the site root.
+  // Every bento tile below uses a different source image.
+  const aerial = "/resources/studio/steyn/steyn-city-img-03.webp";
+  const sunsetPortrait = "/resources/studio/steyn/steyn-city-img-04.webp";
+  const terrace = "/resources/studio/steyn/steyn-city-img-05.webp";
+  const sunset = "/resources/studio/steyn/city-living-sunset.webp";
+  const kitchen = "/resources/studio/steyn/city-living-kitchen.webp";
+  const staircase = "/resources/studio/steyn/steyn-city-img-01.webp";
+  const wineWall = "/resources/studio/steyn/steyn-city-img-02.webp";
+  const restaurant = "/resources/studio/steyn/steyn-city-img-06.webp";
+  const pinkLiving = "/resources/studio/steyn/steyn-city-img-07.webp";
+  const dramatic = "/resources/studio/steyn/Dramatic-n-Authentic8564.webp";
+  const qrCode = "/resources/studio/steyn/qr-code-steyn-city.png";
   const steynMark = "/resources/studio/steyn/steyn-city-logo-mark.svg";
   const steynWordmark = "/resources/studio/steyn/steyn-city-text-logo.svg";
-  const pamGolding = "/resources/studio/steyn/city-living/pam-golding-properties-logo.webp";
+  const pamGolding = "/resources/studio/steyn/pam-golding-properties-logo.webp";
 
   const image = (
     id: string,
@@ -1046,7 +1050,7 @@ function cityLivingSpread(issueId: string): MagazineSpreadDefinition {
           borderRight: gutter,
         }),
 
-        image("city-living-pink-lounge", pinkLiving, "Colourful contemporary Steyn City living room", {
+        image("city-living-pink-lounge", dramatic, "Contemporary Steyn City interior", {
           position: "absolute",
           left: "62%",
           top: "74.5%",
