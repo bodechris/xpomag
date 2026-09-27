@@ -1,5 +1,6 @@
 const modules = [
-  ["Publications", "Manage city publications, launch status and follower demand."],\n  ["Issues", "Generate, schedule and publish city issues."],
+  ["Publications", "Manage city publications, launch status and follower demand."],
+  ["Issues", "Generate, schedule and publish city issues."],
   ["Cover builder", "Art-direct the cover with layers, free positioning, typography, imagery and background stacks."],
   ["Page builder", "Edit individual magazine pages with reusable design elements."],
   ["Editorial queue", "Review business submissions and assign them to issues."],
