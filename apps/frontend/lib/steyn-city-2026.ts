@@ -1207,6 +1207,194 @@ function cityLivingSpread(issueId: string): MagazineSpreadDefinition {
   };
 }
 
+function bentleyAdvertSpread(issueId: string): MagazineSpreadDefinition {
+  const poster = "/resources/studio/steyn/bentley-img-01.webp";
+  const logo = "/resources/studio/steyn/bentley-logo-1.webp";
+  const videoSrc = "https://www.pexels.com/download/video/30787543/";
+
+  return {
+    id: "steyn-bentley-flying-spur-spread",
+    issueId,
+    slug: "bentley-flying-spur",
+    title: "Bentley Flying Spur",
+    kind: "advert",
+    pageIds: ["opening-i", "opening-ii"],
+    style: { background: "#fff" },
+    pieces: [{
+      id: "steyn-bentley-flying-spur-piece",
+      slug: "bentley-flying-spur-piece",
+      title: "Bentley Flying Spur",
+      kind: "advert",
+      region: "spread",
+      gutterBehaviour: "cross",
+      engagement: {
+        reactions: false,
+        comments: false,
+        share: true,
+        save: false,
+      },
+      style: {
+        position: "absolute",
+        inset: 0,
+        overflow: "hidden",
+        background: "#fff",
+      },
+      elements: [
+        {
+          id: "bentley-video",
+          type: "video",
+          props: {
+            src: videoSrc,
+            poster,
+            title: "Bentley Flying Spur driving film",
+            autoplay: true,
+            muted: true,
+            loop: true,
+            controls: false,
+          },
+          style: {
+            position: "absolute",
+            left: 0,
+            top: 0,
+            width: "100%",
+            height: "84.8%",
+            objectFit: "cover",
+            objectPosition: "center 52%",
+            background: "#dfe8ec",
+          },
+        },
+        {
+          id: "bentley-logo",
+          type: "image",
+          props: {
+            src: logo,
+            alt: "Bentley",
+            loading: "eager",
+            fetchPriority: "high",
+          },
+          style: {
+            position: "absolute",
+            top: "4.3%",
+            left: "68.5%",
+            width: "14.5%",
+            height: "9%",
+            objectFit: "contain",
+            objectPosition: "center",
+            zIndex: 4,
+          },
+        },
+        {
+          id: "bentley-bottom-rail",
+          type: "frame",
+          style: {
+            position: "absolute",
+            left: 0,
+            right: 0,
+            bottom: 0,
+            height: "15.2%",
+            background: "rgba(255,255,255,.985)",
+            borderTop: "1px solid rgba(0,0,0,.08)",
+            display: "grid",
+            gridTemplateColumns: "1.15fr .85fr",
+            alignItems: "stretch",
+            boxSizing: "border-box",
+            zIndex: 5,
+          },
+          children: [
+            {
+              id: "bentley-copy-left",
+              type: "stack",
+              style: {
+                justifyContent: "center",
+                padding: "clamp(.8rem,1.25vw,1.45rem) clamp(1.35rem,2.8vw,3.25rem)",
+                gap: "clamp(.18rem,.32vw,.34rem)",
+              },
+              children: [
+                text("bentley-power", "The power of the possible.", {
+                  color: "#141414",
+                  fontFamily: "var(--xp-font-sans)",
+                  fontSize: "clamp(1rem,1.55vw,1.7rem)",
+                  fontWeight: 420,
+                  lineHeight: 1.05,
+                  letterSpacing: "-.025em",
+                }, "h2"),
+                text("bentley-flying-spur", "Flying Spur Speed.", {
+                  color: "#141414",
+                  fontFamily: "var(--xp-font-sans)",
+                  fontSize: "clamp(.62rem,.76vw,.84rem)",
+                  fontWeight: 760,
+                  lineHeight: 1.15,
+                }, "span"),
+                text("bentley-description",
+                  "Discover unprecedented power in luxurious comfort with a phenomenal new Ultra-Performance Hybrid V8 Powertrain.",
+                  {
+                    color: "#303030",
+                    fontFamily: "var(--xp-font-sans)",
+                    fontSize: "clamp(.44rem,.52vw,.58rem)",
+                    lineHeight: 1.35,
+                    maxWidth: "48rem",
+                  }
+                ),
+                text("bentley-legal-left",
+                  "Visit bentleymotors.com or contact Bentley South Africa on 010 020 4000.",
+                  {
+                    color: "#555",
+                    fontFamily: "var(--xp-font-sans)",
+                    fontSize: "clamp(.34rem,.39vw,.44rem)",
+                    lineHeight: 1.25,
+                  },
+                  "span"
+                ),
+              ],
+            },
+            {
+              id: "bentley-copy-right",
+              type: "stack",
+              style: {
+                alignItems: "flex-end",
+                justifyContent: "center",
+                textAlign: "right",
+                padding: "clamp(.8rem,1.25vw,1.45rem) clamp(1.35rem,2.8vw,3.25rem)",
+                gap: "clamp(.22rem,.34vw,.38rem)",
+              },
+              children: [
+                text("bentley-sa", "BENTLEY SOUTH AFRICA", {
+                  color: "#151515",
+                  fontFamily: "var(--xp-font-sans)",
+                  fontSize: "clamp(.62rem,.72vw,.8rem)",
+                  fontWeight: 620,
+                  letterSpacing: ".05em",
+                }, "span"),
+                text("bentley-specs",
+                  "Power: 575 kW · Torque: 1000 Nm\n0–100 km/h: 3.5 seconds · Maximum speed: 285 km/h",
+                  {
+                    color: "#3a3a3a",
+                    fontFamily: "var(--xp-font-sans)",
+                    fontSize: "clamp(.42rem,.48vw,.54rem)",
+                    lineHeight: 1.35,
+                    whiteSpace: "pre-line",
+                  }
+                ),
+                text("bentley-price",
+                  "Model shown: Flying Spur Speed",
+                  {
+                    color: "#555",
+                    fontFamily: "var(--xp-font-sans)",
+                    fontSize: "clamp(.34rem,.39vw,.44rem)",
+                    lineHeight: 1.2,
+                  },
+                  "span"
+                ),
+              ],
+            },
+          ],
+        },
+      ],
+    }],
+  };
+}
+
+
 function placeholderPage(
   issueId: string,
   pageNo: number,
@@ -1371,7 +1559,7 @@ export function getSteynCity2026Magazine(): MagazineGlobalDefinition {
         props: { label: "STEYN CITY" },
       },
     },
-    spreads: [cityLivingSpread(issueId)],
+    spreads: [cityLivingSpread(issueId), bentleyAdvertSpread(issueId)],
     pages,
   };
 }
