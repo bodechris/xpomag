@@ -16,6 +16,7 @@ import { getComposition, getRevisions, publishDraft, saveDraft } from "./modules
 import { addComment, createCollection, deleteComment, getEngagementSummary, getSaveCollectionsForTarget, listCollections, listComments, listSavedItems, recordShare, setReaction, setSaved, setSavedCollections } from "./modules/engagement/repository.js";
 import { getPublication, listPublications, setPublicationFollow, upsertPublication } from "./modules/publications/repository.js";
 import { createSubmission, listSubmissions, updateSubmission } from "./modules/submissions/repository.js";
+import { createStoryFromSubmission, listStories, updateStory } from "./modules/stories/repository.js";
 
 
 const reactionSchema = z.enum(["like", "love", "insightful", "celebrate"]);
@@ -175,6 +176,10 @@ const submissionSchema=z.object({city:z.string().trim().min(2).max(120),submissi
 app.post("/v1/submissions",async(req,res,next)=>{try{const submission=await createSubmission(submissionSchema.parse(req.body),viewerId(req));res.status(201).json({ok:true,submission})}catch(error){next(error)}});
 app.get("/v1/admin/submissions",async(req,res,next)=>{try{res.json({ok:true,submissions:await listSubmissions({status:typeof req.query.status==="string"?req.query.status:undefined,city:typeof req.query.city==="string"?req.query.city:undefined})})}catch(error){next(error)}});
 app.patch("/v1/admin/submissions/:id",async(req,res,next)=>{try{const input=z.object({status:z.enum(["INCOMING","REVIEWING","SHORTLISTED","RESEARCH","APPROVED","DESIGNING","SCHEDULED","PUBLISHED","REJECTED","ARCHIVED"]).optional(),editorNotes:z.string().max(4000).nullable().optional(),assignedIssue:z.string().max(120).nullable().optional(),neighbourhood:z.string().max(120).nullable().optional(),category:z.string().max(120).nullable().optional(),aiSummary:z.string().max(2000).nullable().optional(),aiMissingInfo:z.array(z.string().max(240)).max(12).optional()}).parse(req.body);const submission=await updateSubmission(req.params.id,input);if(!submission)return res.status(404).json({ok:false,error:"Submission not found"});res.json({ok:true,submission})}catch(error){next(error)}});
+
+app.post("/v1/admin/submissions/:id/story",async(req,res,next)=>{try{const input=z.object({publicationSlug:z.string().trim().min(1).max(120),issueLabel:z.string().trim().min(1).max(120),kind:z.enum(["EDITORIAL","SPONSORED"]).default("EDITORIAL")}).parse(req.body);res.status(201).json({ok:true,story:await createStoryFromSubmission(req.params.id,input)})}catch(error){next(error)}});
+app.get("/v1/admin/stories",async(req,res,next)=>{try{res.json({ok:true,stories:await listStories({status:typeof req.query.status==="string"?req.query.status:undefined,publicationSlug:typeof req.query.publicationSlug==="string"?req.query.publicationSlug:undefined})})}catch(error){next(error)}});
+app.patch("/v1/admin/stories/:id",async(req,res,next)=>{try{const input=z.object({title:z.string().trim().min(1).max(180).optional(),dek:z.string().max(1600).nullable().optional(),body:z.string().max(20000).nullable().optional(),category:z.string().max(120).nullable().optional(),neighbourhood:z.string().max(120).nullable().optional(),authorName:z.string().max(120).nullable().optional(),kind:z.enum(["EDITORIAL","SPONSORED"]).optional(),sponsorshipLabel:z.string().max(120).nullable().optional(),status:z.enum(["DRAFT","READY_FOR_DESIGN","SCHEDULED","PUBLISHED","ARCHIVED"]).optional(),scheduledAt:z.string().datetime().nullable().optional()}).parse(req.body);const story=await updateStory(req.params.id,input);if(!story)return res.status(404).json({ok:false,error:"Story not found"});res.json({ok:true,story})}catch(error){next(error)}});
 
 app.get("/v1/engagement/collections", async (req, res, next) => {
   try {
