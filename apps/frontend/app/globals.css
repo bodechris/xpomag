@@ -3306,3 +3306,15 @@ img, picture, video, canvas, svg { display: block; max-width: 100%; }
     line-height: 1.68;
   }
 }
+
+
+/* Editorial image crop policy: preserve the subject's top/left edge when cover-cropping. */
+.xp-article-post__content img {
+  object-position: left top !important;
+}
+
+@media (max-width: 820px) {
+  .xp-magazine__paper [data-magazine-page]:not([data-magazine-page="cover"]) [data-magazine-section] img {
+    object-position: left top !important;
+  }
+}
