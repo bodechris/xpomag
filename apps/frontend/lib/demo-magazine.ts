@@ -6,6 +6,7 @@ import {
   type MagazinePageDefinition,
   type MagazineSection,
 } from "@xpomag/magazine";
+import { getSteynCity2026Magazine } from "./steyn-city-2026";
 
 export type DemoMagazineIssue = MagazineGlobalDefinition;
 
@@ -2816,6 +2817,7 @@ export function selectDemoMagazine(city: string, options: DemoMagazineOptions = 
 }
 
 export function getDemoMagazineBySlug(issueSlug: string, options: DemoMagazineOptions = {}): DemoMagazineIssue {
+  if (issueSlug === "steyn-city-2026") return getSteynCity2026Magazine();
   const cityPart = issueSlug.replace(/^demo-/, "").replace(/-001$/, "");
   const city = cityPart
     .split("-")
