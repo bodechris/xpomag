@@ -2665,6 +2665,388 @@ function golfTraditionContinuationSpread(issueId: string): MagazineSpreadDefinit
 }
 
 
+
+function cyclingSpread(issueId: string): MagazineSpreadDefinition {
+  const mtb = "https://cyclelabmtbseries.co.za/sites/default/files/2023-03/prime-view_0.jpg";
+  const kids = "https://cansa-active.org.za/files/2020/03/JOBURG-CLASSIC-KIDS.jpg";
+  const road = "https://gsport.co.za/wp-content/uploads/2024/04/20240421-Cycling-Joanna-van-de-Winkel-Wins-aQuelle-Tour-Durban-2.jpg";
+  const aerial = "/resources/studio/steyn/steyn-city-img-03.webp";
+
+  const image = (
+    id: string,
+    src: string,
+    alt: string,
+    style: DesignElementNode["style"],
+  ): DesignElementNode => ({
+    id,
+    type: "image",
+    props: { src, alt, loading: "eager", fetchPriority: "high" },
+    style: { display: "block", objectFit: "cover", ...style },
+  });
+
+  const engagement = { reactions: true, comments: true, share: true, save: true };
+
+  const photoPiece = (
+    id: string,
+    slug: string,
+    title: string,
+    src: string,
+    alt: string,
+    style: Record<string, unknown>,
+    objectPosition = "center center",
+  ): any => ({
+    id,
+    slug,
+    title,
+    kind: "feature",
+    region: "spread",
+    gutterBehaviour: "clip",
+    engagement,
+    style: { ...style, overflow: "hidden", background: "#d8e4ec" },
+    elements: [
+      image(`${id}-image`, src, alt, {
+        position: "absolute",
+        inset: 0,
+        width: "100%",
+        height: "100%",
+        objectFit: "cover",
+        objectPosition,
+      }),
+    ],
+  });
+
+  return {
+    id: "steyn-cycling-spread",
+    issueId,
+    slug: "cycling-feature",
+    title: "Steyn City: Superb for Cyclists!",
+    kind: "feature",
+    pageIds: ["cycling", "cycling-visual"],
+    style: { background: "#f7f6f2" },
+    pieces: [
+      {
+        id: "steyn-cycling-editorial-piece",
+        slug: "cycling-editorial",
+        title: "Steyn City: Superb for Cyclists!",
+        kind: "article",
+        region: "spread",
+        gutterBehaviour: "cross",
+        engagement,
+        style: {
+          position: "absolute",
+          inset: 0,
+          overflow: "hidden",
+          background: "#f7f6f2",
+        },
+        elements: [
+          {
+            id: "cycling-left-blue-field",
+            type: "frame",
+            style: {
+              position: "absolute",
+              left: 0,
+              top: 0,
+              width: "50%",
+              height: "100%",
+              background: "linear-gradient(180deg,#5689db 0%,#6e99dc 58%,#829fce 100%)",
+            },
+          },
+          text("cycling-kicker-left", "│ CYCLING", {
+            position: "absolute",
+            left: "4.8%",
+            top: "6.2%",
+            color: "#18304f",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(.45rem,.63vw,.68rem)",
+            letterSpacing: ".09em",
+          }, "span"),
+          text("cycling-kicker-right", "CYCLING │", {
+            position: "absolute",
+            right: "4.5%",
+            top: "6.2%",
+            color: "#423e3a",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(.45rem,.63vw,.68rem)",
+            letterSpacing: ".09em",
+          }, "span"),
+          text("cycling-title", "STEYN CITY: SUPERB\nFOR CYCLISTS!", {
+            position: "absolute",
+            left: "8.2%",
+            top: "10.5%",
+            width: "33.6%",
+            color: "#162b48",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(1.15rem,2.35vw,2.55rem)",
+            fontWeight: 400,
+            lineHeight: .96,
+            letterSpacing: ".055em",
+            textAlign: "center",
+            whiteSpace: "pre-line",
+          }, "h2"),
+          text("cycling-byline", "Former South African mountain-bike\nchampion, Fritz Pienaar", {
+            position: "absolute",
+            left: "13%",
+            top: "20.2%",
+            width: "24%",
+            color: "#17324f",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(.34rem,.49vw,.53rem)",
+            fontStyle: "italic",
+            textAlign: "center",
+            whiteSpace: "pre-line",
+          }),
+          {
+            id: "cycling-copy-left",
+            type: "text",
+            props: {
+              as: "p",
+              text: "The world is your track. The exhilaration of a challenge in the great outdoors and that ‘no pain, no gain’ thrill is part of everyday life when an exceptional cycling route starts almost at your front door.\n\nSteyn City’s purpose-built mountain-bike trails combine flowing sections, climbs and technical features in a protected landscape, giving residents an energising ride without leaving the estate.\n\nFROM THE SADDLE TO BEHIND THE SCENES\nThe route has evolved with the riders who use it: more rhythm, more variety and more reasons to head out again.",
+              dropCap: true,
+              dropCapLines: 4,
+              dropCapColor: "#18304f",
+            },
+            style: {
+              position: "absolute",
+              left: "4.8%",
+              top: "25.2%",
+              width: "16.1%",
+              color: "#18304f",
+              fontFamily: "var(--xp-font-editorial)",
+              fontSize: "clamp(.34rem,.47vw,.51rem)",
+              lineHeight: 1.44,
+              whiteSpace: "pre-line",
+            },
+          },
+          text("cycling-copy-right",
+            "The 947 Ride Joburg MTB has become a favourite way to experience the estate at speed, with routes designed to reward both confident riders and those building experience.\n\nSTEYN CITY: LOVE AT FIRST SIGHT\nA great cycling environment is not only about distance. It is about flow, visibility, safety and a landscape that makes every kilometre memorable.\n\nSADDLE SPECTACULAR\nFrom family rides to competitive events, Steyn City has become a natural stage for cycling in Johannesburg.",
+            {
+              position: "absolute",
+              left: "37.4%",
+              top: "25.2%",
+              width: "10.4%",
+              color: "#18304f",
+              fontFamily: "var(--xp-font-editorial)",
+              fontSize: "clamp(.33rem,.45vw,.49rem)",
+              lineHeight: 1.43,
+              whiteSpace: "pre-line",
+            }
+          ),
+
+          text("cycling-track-heading", "STEYN CITY’S MTB TRACK:\nTHE HIGHLIGHTS, ACCORDING\nTO FRITZ PIENAAR", {
+            position: "absolute",
+            right: "3.2%",
+            top: "12.2%",
+            width: "13.1%",
+            color: "#4b4742",
+            fontFamily: "var(--xp-font-grotesk)",
+            fontSize: "clamp(.38rem,.55vw,.59rem)",
+            fontWeight: 760,
+            letterSpacing: ".11em",
+            lineHeight: 1.22,
+            whiteSpace: "pre-line",
+          }, "h3"),
+          text("cycling-track-copy",
+            "A compact route guide:\n• Big open spaces\n• Excellent infrastructure\n• Great trails\n• Clear route options and markings\n• Pump track and skills areas\n• Secure parking and easy access",
+            {
+              position: "absolute",
+              right: "3.2%",
+              top: "22.4%",
+              width: "13.1%",
+              color: "#4b4742",
+              fontFamily: "var(--xp-font-editorial)",
+              fontSize: "clamp(.32rem,.44vw,.48rem)",
+              lineHeight: 1.42,
+              whiteSpace: "pre-line",
+            }
+          ),
+          {
+            id: "cycling-fritz-bubble",
+            type: "frame",
+            style: {
+              position: "absolute",
+              right: "5.1%",
+              top: "39.8%",
+              width: "10.6%",
+              aspectRatio: "1 / 1",
+              borderRadius: "50%",
+              background: "#4f84df",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: ".8rem",
+              zIndex: 12,
+            },
+            children: [
+              text("cycling-fritz-bubble-copy", "CATCHING\nUP WITH FRITZ\nFavourite place to cycle:\nSteyn City\nBest post-ride reward:\ncoffee + a long view", {
+                color: "#fff",
+                fontFamily: "var(--xp-font-grotesk)",
+                fontSize: "clamp(.31rem,.44vw,.47rem)",
+                fontWeight: 720,
+                lineHeight: 1.18,
+                textAlign: "center",
+                whiteSpace: "pre-line",
+              }, "span"),
+            ],
+          },
+          text("cycling-folio-left", "12", {
+            position: "absolute", left: "4.3%", bottom: "2.6%", color: "#fff",
+            fontFamily: "var(--xp-font-grotesk)", fontSize: ".45rem", fontWeight: 800,
+          }, "span"),
+          text("cycling-brand-left", "STEYN CITY", {
+            position: "absolute", left: "7.4%", bottom: "2.6%", color: "#fff",
+            fontFamily: "var(--xp-font-grotesk)", fontSize: ".42rem", fontWeight: 700, letterSpacing: ".08em",
+          }, "span"),
+          text("cycling-brand-right", "STEYN CITY", {
+            position: "absolute", right: "5.5%", bottom: "2.6%", color: "#fff",
+            fontFamily: "var(--xp-font-grotesk)", fontSize: ".42rem", fontWeight: 700, letterSpacing: ".08em",
+            textShadow: "0 1px 8px rgba(0,0,0,.35)",
+          }, "span"),
+          text("cycling-folio-right", "13", {
+            position: "absolute", right: "2.9%", bottom: "2.6%", color: "#fff",
+            fontFamily: "var(--xp-font-grotesk)", fontSize: ".45rem", fontWeight: 800,
+            textShadow: "0 1px 8px rgba(0,0,0,.35)",
+          }, "span"),
+        ],
+      },
+
+      photoPiece(
+        "steyn-cycling-main-rider-piece",
+        "cycling-main-rider",
+        "Mountain biking at Steyn City",
+        mtb,
+        "Mountain bikers riding a Steyn City-style trail",
+        { position: "absolute", left: "17.4%", top: "31.2%", width: "25.8%", height: "62.5%", zIndex: 5 },
+        "center 46%",
+      ),
+      photoPiece(
+        "steyn-cycling-top-photo-piece",
+        "cycling-top-photo",
+        "947 Ride Joburg MTB",
+        mtb,
+        "Mountain bike racing action",
+        { position: "absolute", left: "50%", top: 0, width: "33.7%", height: "35.5%", zIndex: 6 },
+        "center 42%",
+      ),
+      photoPiece(
+        "steyn-cycling-kids-photo-piece",
+        "cycling-kids-photo",
+        "947 Ride Joburg Kids",
+        kids,
+        "Children taking part in a cycling event",
+        { position: "absolute", left: "50%", top: "37.2%", width: "16.7%", height: "20.5%", zIndex: 6 },
+        "center center",
+      ),
+      photoPiece(
+        "steyn-cycling-road-photo-piece",
+        "cycling-road-photo",
+        "Cycling race action",
+        road,
+        "Competitive cyclists riding in formation",
+        { position: "absolute", left: "68.3%", top: "37.2%", width: "15.4%", height: "20.5%", zIndex: 6 },
+        "center center",
+      ),
+      photoPiece(
+        "steyn-cycling-aerial-piece",
+        "cycling-aerial-photo",
+        "Steyn City cycling landscape",
+        aerial,
+        "Aerial view across Steyn City parkland",
+        { position: "absolute", left: "50%", bottom: 0, width: "50%", height: "40.7%", zIndex: 5 },
+        "center 58%",
+      ),
+
+      {
+        id: "steyn-cycling-mobile-left-piece",
+        slug: "cycling-mobile-left",
+        title: "Steyn City: Superb for Cyclists!",
+        kind: "article",
+        region: "left",
+        gutterBehaviour: "clip",
+        engagement,
+        style: {
+          position: "absolute",
+          left: "2.8%",
+          top: "4%",
+          width: "44.4%",
+          height: "91%",
+          display: "none",
+          background: "#5e8ed8",
+          zIndex: 70,
+          padding: "clamp(.9rem,3.6vw,1.35rem)",
+          overflow: "hidden",
+        },
+        elements: [
+          text("cycling-mobile-left-kicker", "CYCLING", {
+            color: "#17324f", fontFamily: "var(--xp-font-grotesk)", fontSize: ".72rem",
+            fontWeight: 800, letterSpacing: ".14em", marginBottom: ".55rem",
+          }, "span"),
+          text("cycling-mobile-left-title", "STEYN CITY:\nSUPERB FOR CYCLISTS!", {
+            color: "#17324f", fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(1.45rem,6.8vw,2rem)", lineHeight: .94, letterSpacing: ".015em",
+            whiteSpace: "pre-line", marginBottom: ".8rem",
+          }, "h2"),
+          image("cycling-mobile-left-image", mtb, "Mountain bikers riding a trail", {
+            width: "100%", height: "42%", objectFit: "cover", objectPosition: "center 43%",
+            marginBottom: ".8rem",
+          }),
+          text("cycling-mobile-left-copy", "Steyn City’s purpose-built MTB trails put movement right on the doorstep. Flowing sections, technical moments and secure access make the estate a natural home for everyday riders and major cycling events alike.", {
+            color: "#17324f", fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(.78rem,3vw,.95rem)", lineHeight: 1.48,
+          }),
+        ],
+      },
+      {
+        id: "steyn-cycling-mobile-right-piece",
+        slug: "cycling-mobile-right",
+        title: "Cycling at Steyn City",
+        kind: "article",
+        region: "right",
+        gutterBehaviour: "clip",
+        engagement,
+        style: {
+          position: "absolute",
+          left: "52.8%",
+          top: "4%",
+          width: "44.4%",
+          height: "91%",
+          display: "none",
+          background: "#fbfaf8",
+          zIndex: 70,
+          padding: "clamp(.85rem,3.2vw,1.25rem)",
+          overflow: "hidden",
+        },
+        elements: [
+          text("cycling-mobile-right-kicker", "CYCLING", {
+            color: "#514c46", fontFamily: "var(--xp-font-grotesk)", fontSize: ".7rem",
+            fontWeight: 800, letterSpacing: ".14em", marginBottom: ".6rem",
+          }, "span"),
+          image("cycling-mobile-right-hero", mtb, "Mountain bike racing action", {
+            width: "100%", height: "31%", objectFit: "cover", objectPosition: "center 42%",
+            marginBottom: ".5rem",
+          }),
+          {
+            id: "cycling-mobile-photo-row",
+            type: "grid",
+            style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: ".45rem", marginBottom: ".7rem" },
+            children: [
+              image("cycling-mobile-kids", kids, "Children cycling", { width: "100%", height: "7.8rem", objectFit: "cover" }),
+              image("cycling-mobile-road", road, "Road cyclists", { width: "100%", height: "7.8rem", objectFit: "cover" }),
+            ],
+          },
+          text("cycling-mobile-right-heading", "THE TRACK, THE EVENTS, THE LIFESTYLE", {
+            color: "#4b4742", fontFamily: "var(--xp-font-grotesk)",
+            fontSize: ".76rem", fontWeight: 800, letterSpacing: ".1em", marginBottom: ".4rem",
+          }, "h3"),
+          text("cycling-mobile-right-copy", "The route is built for repeat riding: well-marked lines, varied terrain and enough challenge to keep the experience fresh. On event weekends, the same landscape becomes a vivid stage for families, young riders and competitive cyclists.", {
+            color: "#4b4742", fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(.76rem,2.9vw,.92rem)", lineHeight: 1.46,
+          }),
+        ],
+      },
+    ],
+  };
+}
+
 function placeholderPage(
   issueId: string,
   pageNo: number,
@@ -2829,7 +3211,7 @@ export function getSteynCity2026Magazine(): MagazineGlobalDefinition {
         props: { label: "STEYN CITY" },
       },
     },
-    spreads: [cityLivingSpread(issueId), bentleyAdvertSpread(issueId), contentsGolfSpread(issueId), golfTraditionSpread(issueId), golfTraditionContinuationSpread(issueId)],
+    spreads: [cityLivingSpread(issueId), bentleyAdvertSpread(issueId), contentsGolfSpread(issueId), golfTraditionSpread(issueId), golfTraditionContinuationSpread(issueId), cyclingSpread(issueId)],
     pages,
   };
 }
