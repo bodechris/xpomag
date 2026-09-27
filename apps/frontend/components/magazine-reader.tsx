@@ -979,6 +979,7 @@ export function MagazineReader({
           src: String(found.props?.src ?? ""),
           title: typeof found.props?.title === "string" ? found.props.title : activeNativeSpread.title,
           poster: typeof found.props?.poster === "string" ? found.props.poster : undefined,
+          autoplay: found.props?.autoplay === true,
         };
       }
     }
@@ -1451,7 +1452,7 @@ export function MagazineReader({
             : null}
           {renderSpread(spread, "current", motion?.kind === "flip" ? currentTurnPageIndex : undefined)}
 
-          {activeSpreadVideo && !motion ? (
+          {activeSpreadVideo && !activeSpreadVideo.autoplay && !motion ? (
             <button
               type="button"
               className="xp-spread-video-launch"
