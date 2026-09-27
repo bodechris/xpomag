@@ -4,7 +4,6 @@ import { FormEvent, Suspense, useState } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { authClient } from "../../../lib/auth-client"
 import { accountFetch } from "../../../lib/account-api"
-import { FloatingSiteNav } from "../../../components/floating-site-nav"
 
 type Mode = "signin" | "signup"
 
