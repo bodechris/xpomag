@@ -609,6 +609,30 @@ img, picture, video, canvas, svg { display: block; max-width: 100%; }
   transform: translateX(calc(var(--xp-turn-progress) * -50%));
 }
 
+/* Native two-page spreads use one canvas instead of two .sheet nodes.
+   Mirror the same physical edge geometry so opening/closing the cover stays
+   buttery-smooth when the first spread is a native cross-spread composition. */
+.xp-magazine__stage[data-edge="single-to-spread"][data-direction="next"]
+  .xp-magazine__spread-layer--target.is-native-spread[data-hidden-side="left"]
+  .xp-magazine__native-spread {
+  transform: translateX(calc((1 - var(--xp-turn-progress)) * -25%));
+}
+.xp-magazine__stage[data-edge="single-to-spread"][data-direction="previous"]
+  .xp-magazine__spread-layer--target.is-native-spread[data-hidden-side="right"]
+  .xp-magazine__native-spread {
+  transform: translateX(calc((1 - var(--xp-turn-progress)) * 25%));
+}
+.xp-magazine__stage[data-edge="spread-to-single"][data-direction="next"]
+  .xp-magazine__spread-layer--current.is-native-spread[data-hidden-side="right"]
+  .xp-magazine__native-spread {
+  transform: translateX(calc(var(--xp-turn-progress) * 25%));
+}
+.xp-magazine__stage[data-edge="spread-to-single"][data-direction="previous"]
+  .xp-magazine__spread-layer--current.is-native-spread[data-hidden-side="left"]
+  .xp-magazine__native-spread {
+  transform: translateX(calc(var(--xp-turn-progress) * -25%));
+}
+
 /* Programmatic completion / threshold completion gets a smooth finish.
    Dragging is fully direct and has no transition lag. */
 .xp-magazine__stage[data-phase="animating"] .xp-magazine__turn-sheet,
