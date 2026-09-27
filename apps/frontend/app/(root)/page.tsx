@@ -1,7 +1,6 @@
 import { headers } from "next/headers";
 import { auth, ensureAuthInfrastructure } from "../../lib/auth-server";
 import { MagazineReader } from "../../components/magazine-reader";
-import { SiteHeader } from "../../components/site-header";
 import { selectDemoMagazine } from "../../lib/demo-magazine";
 import { getRequestCity } from "../../lib/location";
 import { getAlphaCoverAssets } from "../../lib/cover-assets";
@@ -26,8 +25,7 @@ export default async function Home() {
   const readerPayload = createMagazineReaderPayload(curatedIssue, "cover");
 
   return (
-    <main>
-      <SiteHeader city={curatedIssue.city} />
+    <main className="xp-reader-page">
       <div className="xp-container xp-home-shell">
         <MagazineReader issue={readerPayload.issue} initialPages={readerPayload.initialPages} viewerAuthenticated={viewerAuthenticated} />
       </div>
