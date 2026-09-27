@@ -1751,6 +1751,353 @@ function contentsGolfSpread(issueId: string): MagazineSpreadDefinition {
 }
 
 
+function golfTraditionSpread(issueId: string): MagazineSpreadDefinition {
+  const livSign = "/resources/studio/steyn/steyn-city-xpomag-spread-3-01.webp";
+  const group = "/resources/studio/steyn/steyn-city-xpomag-spread-3-02.webp";
+  const golfers = "/resources/studio/steyn/steyn-city-xpomag-spread-3-03.webp";
+
+  const image = (
+    id: string,
+    src: string,
+    alt: string,
+    style: DesignElementNode["style"],
+  ): DesignElementNode => ({
+    id,
+    type: "image",
+    props: { src, alt, loading: "eager", fetchPriority: "high" },
+    style,
+  });
+
+  return {
+    id: "steyn-golf-tradition-spread",
+    issueId,
+    slug: "golf-tradition",
+    title: "A New Take on an Established Tradition",
+    kind: "feature",
+    pageIds: ["golf-tradition-i", "golf-tradition-ii"],
+    style: { background: "#f7f5f0" },
+    pieces: [{
+      id: "steyn-golf-tradition-piece",
+      slug: "steyn-golf-tradition-piece",
+      title: "A New Take on an Established Tradition",
+      kind: "article",
+      region: "spread",
+      gutterBehaviour: "cross",
+      engagement: { reactions: true, comments: true, share: true, save: true },
+      style: {
+        position: "absolute",
+        inset: 0,
+        overflow: "hidden",
+        background: "#f7f5f0",
+      },
+      elements: [
+        text("golf-tradition-kicker-left", "│ LIV GOLF: A NEW ERA", {
+          position: "absolute",
+          left: "4.8%",
+          top: "4.2%",
+          color: "#3b3834",
+          fontFamily: "var(--xp-font-editorial)",
+          fontSize: "clamp(.42rem,.62vw,.66rem)",
+          letterSpacing: ".09em",
+          lineHeight: 1,
+        }, "span"),
+        text("golf-tradition-kicker-right", "LIV GOLF: A NEW ERA │", {
+          position: "absolute",
+          right: "4.8%",
+          top: "4.2%",
+          color: "#3b3834",
+          fontFamily: "var(--xp-font-editorial)",
+          fontSize: "clamp(.42rem,.62vw,.66rem)",
+          letterSpacing: ".09em",
+          lineHeight: 1,
+          textAlign: "right",
+        }, "span"),
+
+        text("golf-tradition-title", "A NEW TAKE ON\nAN ESTABLISHED\nTRADITION", {
+          position: "absolute",
+          left: "5.2%",
+          top: "11.7%",
+          width: "28%",
+          color: "#173f3e",
+          fontFamily: "var(--xp-font-editorial)",
+          fontSize: "clamp(1.65rem,3.3vw,3.45rem)",
+          fontWeight: 400,
+          lineHeight: .93,
+          letterSpacing: ".035em",
+          whiteSpace: "pre-line",
+          textAlign: "center",
+        }, "h2"),
+
+        text("golf-tradition-section-label", "THE START OF IT ALL", {
+          position: "absolute",
+          left: "33.6%",
+          top: "12.8%",
+          width: "12.8%",
+          color: "#59534d",
+          fontFamily: "var(--xp-font-grotesk)",
+          fontSize: "clamp(.3rem,.43vw,.46rem)",
+          fontWeight: 800,
+          letterSpacing: ".17em",
+        }, "span"),
+
+        {
+          id: "golf-tradition-left-copy",
+          type: "text",
+          props: {
+            as: "p",
+            text: "When you think of a golf tournament, you probably envisage striped grass, crowds and lots of quiet applause as the players focus on their shots and the tension builds over a long day out on the course.\n\nThe LIV Golf experience could not be more different: just 54 holes cut a new spin on cricket, so this new format has revolutionised golf with a faster pace and an accent on immersive fan experiences.\n\nThis new approach is all about reimagining how golf is played, presented and experienced, opening up new markets and accelerating the way audiences connect with the game.",
+            dropCap: true,
+            dropCapLines: 4,
+            dropCapColor: "#d5a500",
+          },
+          style: {
+            position: "absolute",
+            left: "33.6%",
+            top: "15.6%",
+            width: "12.8%",
+            color: "#38332f",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(.36rem,.49vw,.53rem)",
+            lineHeight: 1.43,
+            whiteSpace: "pre-line",
+          },
+        },
+
+        image("golf-tradition-liv-sign", livSign, "LIV Golf sign at Steyn City", {
+          position: "absolute",
+          left: "5.0%",
+          top: "31.5%",
+          width: "27.1%",
+          height: "27%",
+          objectFit: "cover",
+          objectPosition: "center 55%",
+        }),
+
+        {
+          id: "golf-tradition-yellow-quote",
+          type: "frame",
+          style: {
+            position: "absolute",
+            left: "23.4%",
+            top: "29.2%",
+            width: "11.5%",
+            aspectRatio: "1 / 1",
+            borderRadius: "50%",
+            background: "#f4b400",
+            zIndex: 5,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "1rem",
+            boxShadow: "0 8px 22px rgba(0,0,0,.08)",
+          },
+          children: [
+            text("golf-tradition-yellow-copy",
+              "WITH\nALL THE\nENERGY OF A ROCK\nCONCERT AND AN\nIRRESISTIBLE VIBE, LIV\nGOLF HAS TRANSFORMED\nONE OF THE WORLD’S\nFAVOURITE SPORTS INTO\nA HIGH-ENERGY, FAN-\nFOCUSED GLOBAL\nENTERTAINMENT\nEXPERIENCE",
+              {
+                color: "#44300a",
+                fontFamily: "var(--xp-font-grotesk)",
+                fontSize: "clamp(.31rem,.41vw,.44rem)",
+                fontWeight: 760,
+                lineHeight: 1.08,
+                textAlign: "center",
+                letterSpacing: ".055em",
+                whiteSpace: "pre-line",
+              },
+              "span"
+            ),
+          ],
+        },
+
+        image("golf-tradition-group", group, "LIV Golf South Africa launch group at Steyn City", {
+          position: "absolute",
+          left: "5.0%",
+          bottom: "8.2%",
+          width: "41.5%",
+          height: "27.5%",
+          objectFit: "cover",
+          objectPosition: "center 42%",
+        }),
+
+        text("golf-tradition-group-caption",
+          "Announced from left: leadership and partners at the LIV Golf South Africa launch at Steyn City.",
+          {
+            position: "absolute",
+            left: "6%",
+            bottom: "9.2%",
+            width: "39.5%",
+            color: "#ffffff",
+            fontFamily: "var(--xp-font-grotesk)",
+            fontSize: "clamp(.28rem,.36vw,.39rem)",
+            fontWeight: 650,
+            lineHeight: 1.25,
+            textShadow: "0 2px 8px rgba(0,0,0,.75)",
+          },
+          "span"
+        ),
+
+        text("golf-tradition-middle-copy",
+          "Dynamic in 2026, with the advent of a four-day event and 72-hole competition, thereby aligning with official World Golf Ranking requirements with the top 10 LIV Golf players now eligible for World Ranking Points at each LIV Golf event.\n\nThe atmosphere is very different, too: more akin to a festival than a tournament, with music concerts, good food and a high-energy atmosphere as much a part of the event as the competition itself.\n\nSmall wonder, then, that the league has been well supported since its establishment, with global greats like Bryson DeChambeau, Jon Rahm and Cameron Smith among its stars.",
+          {
+            position: "absolute",
+            left: "54.3%",
+            top: "10.5%",
+            width: "12.7%",
+            color: "#38332f",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(.36rem,.49vw,.53rem)",
+            lineHeight: 1.43,
+            whiteSpace: "pre-line",
+          }
+        ),
+
+        text("golf-tradition-looking-south", "LOOKING SOUTH", {
+          position: "absolute",
+          left: "54.3%",
+          top: "46%",
+          width: "12.7%",
+          color: "#6b625a",
+          fontFamily: "var(--xp-font-grotesk)",
+          fontSize: "clamp(.29rem,.4vw,.42rem)",
+          fontWeight: 800,
+          letterSpacing: ".18em",
+        }, "span"),
+
+        text("golf-tradition-looking-copy",
+          "LIV Golf’s debut at Steyn City is the first time the event is being played on African soil, but South Africa’s presence has been visible from inception. The league has grown its fan base across the continent and, in bringing LIV Golf to South Africa, extends that relationship in a way that feels both global and distinctly local.\n\nWith this in mind, the team hosts a mixture of sport, arts and culture, giving fans a rich experience well beyond the fairways.",
+          {
+            position: "absolute",
+            left: "54.3%",
+            top: "49%",
+            width: "12.7%",
+            color: "#38332f",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(.35rem,.47vw,.51rem)",
+            lineHeight: 1.42,
+            whiteSpace: "pre-line",
+          }
+        ),
+
+        image("golf-tradition-golfers", golfers, "Golfers walking the Steyn City course", {
+          position: "absolute",
+          right: 0,
+          top: "9.5%",
+          width: "32.2%",
+          height: "55%",
+          objectFit: "cover",
+          objectPosition: "center 42%",
+        }),
+
+        text("golf-tradition-photo-caption",
+          "Southern Guards GC – Dean Burmester and Charl Schwartzel walk the course at Steyn City during range day.",
+          {
+            position: "absolute",
+            right: "1.4%",
+            top: "60.8%",
+            width: "29.4%",
+            color: "#ffffff",
+            fontFamily: "var(--xp-font-grotesk)",
+            fontSize: "clamp(.28rem,.36vw,.39rem)",
+            fontWeight: 650,
+            lineHeight: 1.22,
+            textShadow: "0 2px 8px rgba(0,0,0,.8)",
+          },
+          "span"
+        ),
+
+        text("golf-tradition-right-copy",
+          "With this in mind, Louis and his team hosted Minister of Sport, Arts and Culture, Gayton McKenzie, and a broad group of partners and guests as LIV Golf South Africa prepares to make its mark.\n\nMinister McKenzie was quick to spot the opportunities and advantages that would arise out of an African event, and the journey to bringing LIV Golf to South Africa began. Creating a venue that is secure, beautiful and geared to a global audience was central to that ambition.",
+          {
+            position: "absolute",
+            right: "17.4%",
+            top: "68.2%",
+            width: "14.2%",
+            color: "#38332f",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(.35rem,.47vw,.51rem)",
+            lineHeight: 1.42,
+            whiteSpace: "pre-line",
+          }
+        ),
+
+        {
+          id: "golf-tradition-fast-fact",
+          type: "frame",
+          style: {
+            position: "absolute",
+            right: "4.8%",
+            bottom: "8.5%",
+            width: "10.5%",
+            minHeight: "24%",
+            background: "#f4b400",
+            padding: "clamp(.75rem,1.25vw,1.35rem)",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            textAlign: "center",
+          },
+          children: [
+            text("golf-tradition-fast-fact-label", "FAST FACT", {
+              color: "#5b4104",
+              fontFamily: "var(--xp-font-grotesk)",
+              fontSize: "clamp(.3rem,.42vw,.45rem)",
+              fontWeight: 850,
+              letterSpacing: ".16em",
+              marginBottom: ".5rem",
+            }, "span"),
+            text("golf-tradition-fast-fact-copy",
+              "The launch of LIV Golf represents a new chapter for African golf audiences. For many, the Southern Guards GC members have provided a platform to help make the tournament feel unmistakably local while remaining part of a global sporting spectacle.",
+              {
+                color: "#493607",
+                fontFamily: "var(--xp-font-editorial)",
+                fontSize: "clamp(.33rem,.44vw,.47rem)",
+                lineHeight: 1.35,
+              }
+            ),
+          ],
+        },
+
+        text("golf-tradition-folio-left", "8", {
+          position: "absolute",
+          left: "1.5%",
+          bottom: "2.2%",
+          color: "#3e3934",
+          fontFamily: "var(--xp-font-editorial)",
+          fontSize: "clamp(.35rem,.48vw,.52rem)",
+        }, "span"),
+        text("golf-tradition-brand-left", "STEYN CITY", {
+          position: "absolute",
+          left: "4.3%",
+          bottom: "2.2%",
+          color: "#3e3934",
+          fontFamily: "var(--xp-font-editorial)",
+          fontSize: "clamp(.35rem,.48vw,.52rem)",
+          letterSpacing: ".04em",
+        }, "span"),
+        text("golf-tradition-brand-right", "STEYN CITY", {
+          position: "absolute",
+          right: "6.7%",
+          bottom: "2.2%",
+          color: "#3e3934",
+          fontFamily: "var(--xp-font-editorial)",
+          fontSize: "clamp(.35rem,.48vw,.52rem)",
+          letterSpacing: ".04em",
+        }, "span"),
+        text("golf-tradition-folio-right", "9", {
+          position: "absolute",
+          right: "1.5%",
+          bottom: "2.2%",
+          color: "#3e3934",
+          fontFamily: "var(--xp-font-editorial)",
+          fontSize: "clamp(.35rem,.48vw,.52rem)",
+        }, "span"),
+      ],
+    }],
+  };
+}
+
+
 function placeholderPage(
   issueId: string,
   pageNo: number,
@@ -1915,7 +2262,7 @@ export function getSteynCity2026Magazine(): MagazineGlobalDefinition {
         props: { label: "STEYN CITY" },
       },
     },
-    spreads: [cityLivingSpread(issueId), bentleyAdvertSpread(issueId), contentsGolfSpread(issueId)],
+    spreads: [cityLivingSpread(issueId), bentleyAdvertSpread(issueId), contentsGolfSpread(issueId), golfTraditionSpread(issueId)],
     pages,
   };
 }
