@@ -2251,6 +2251,236 @@ function golfTraditionSpread(issueId: string): MagazineSpreadDefinition {
 }
 
 
+function golfTraditionContinuationSpread(issueId: string): MagazineSpreadDefinition {
+  const academy = "/resources/studio/steyn/steyn-city-xpomag-spread-4-01.webp";
+  const inspection = "/resources/studio/steyn/steyn-city-xpomag-spread-4-02.webp";
+  const cheque = "/resources/studio/steyn/steyn-city-xpomag-spread-4-03.webp";
+  const hospitality = "/resources/studio/steyn/steyn-city-xpomag-spread-4-04.webp";
+
+  const photoPiece = (
+    id: string,
+    slug: string,
+    title: string,
+    src: string,
+    alt: string,
+    style: DesignElementNode["style"],
+    objectPosition = "center center",
+  ): MagazineSpreadDefinition["pieces"][number] => ({
+    id,
+    slug,
+    title,
+    kind: "feature",
+    region: "spread",
+    gutterBehaviour: "clip",
+    engagement: { reactions: true, comments: true, share: true, save: true },
+    style: {
+      ...style,
+      overflow: "hidden",
+      background: "#ece9e2",
+      zIndex: 6,
+    },
+    elements: [{
+      id: `${id}-image`,
+      type: "image",
+      props: { src, alt, loading: "eager", fetchPriority: "high" },
+      style: {
+        position: "absolute",
+        inset: 0,
+        width: "100%",
+        height: "100%",
+        objectFit: "cover",
+        objectPosition,
+      },
+    }],
+  });
+
+  return {
+    id: "steyn-golf-tradition-continuation-spread",
+    issueId,
+    slug: "golf-tradition-continued",
+    title: "LIV Golf: A New Era — continued",
+    kind: "feature",
+    pageIds: ["golf-tradition-iii", "golf-tradition-iv"],
+    style: { background: "#f7f5f0" },
+    pieces: [
+      {
+        id: "steyn-golf-tradition-continuation-article",
+        slug: "liv-golf-new-era-continued",
+        title: "LIV Golf: A New Era — continued",
+        kind: "article",
+        region: "spread",
+        gutterBehaviour: "cross",
+        engagement: { reactions: true, comments: true, share: true, save: true },
+        style: {
+          position: "absolute",
+          inset: 0,
+          overflow: "hidden",
+          background: "#f7f5f0",
+          zIndex: 1,
+        },
+        elements: [
+          text("golf-cont-kicker-left", "│ LIV GOLF: A NEW ERA", {
+            position: "absolute", left: "4.8%", top: "4.1%",
+            color: "#3b3834", fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(.44rem,.62vw,.68rem)", letterSpacing: ".09em",
+          }, "span"),
+          text("golf-cont-kicker-right", "LIV GOLF: A NEW ERA │", {
+            position: "absolute", right: "4.8%", top: "4.1%",
+            color: "#3b3834", fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(.44rem,.62vw,.68rem)", letterSpacing: ".09em",
+            textAlign: "right",
+          }, "span"),
+
+          text("golf-cont-left-copy-a",
+            "A number of LIV Golf executives were involved in the selection, including LIV Golf EVP, Head of Events Ross Hallett and LIV Golf South Africa regional managing director, Chris Bentley. They settled on The Club at Steyn City, which boasts the estate’s excellent infrastructure, easy access and proximity to airports while still feeling completely removed from the city rush.",
+            {
+              position: "absolute", left: "5.1%", top: "66.7%", width: "13.4%",
+              color: "#37322e", fontFamily: "var(--xp-font-editorial)",
+              fontSize: "clamp(.39rem,.52vw,.57rem)", lineHeight: 1.42,
+            }
+          ),
+          text("golf-cont-left-copy-b",
+            "The announcement that the league would be played in Africa for the first time was finally made in July 2025 at LIV Golf Rocester, UK. Minister McKenzie attended the occasion alongside Southern Guards GC captain Louis Oosthuizen and partners from across the event.",
+            {
+              position: "absolute", left: "19.1%", top: "66.7%", width: "12.3%",
+              color: "#37322e", fontFamily: "var(--xp-font-editorial)",
+              fontSize: "clamp(.39rem,.52vw,.57rem)", lineHeight: 1.42,
+            }
+          ),
+
+          text("golf-cont-building-label", "BUILDING A LEGACY", {
+            position: "absolute", left: "33.5%", top: "30.8%", width: "12.2%",
+            color: "#655d55", fontFamily: "var(--xp-font-grotesk)",
+            fontSize: "clamp(.31rem,.42vw,.45rem)", fontWeight: 800,
+            letterSpacing: ".17em",
+          }, "span"),
+          text("golf-cont-building-copy",
+            "A level of sport is something that unites all South Africans. Whether it is Bafana Bafana or vuvuzelas, South Africans support their teams in a way that defines them. This spirit is shared by the Southern Guards GC and is one of the reasons Louis has been eager to play for South African spectators at home. As Minister McKenzie commented, when visiting them in South Korea, “There is something special about these four players. They all have the South African flag on their kit, and you can’t walk more than a few steps without them talking about a happy memory of a person who impacted their career.”",
+            {
+              position: "absolute", left: "33.5%", top: "34.2%", width: "12.2%",
+              color: "#37322e", fontFamily: "var(--xp-font-editorial)",
+              fontSize: "clamp(.39rem,.52vw,.57rem)", lineHeight: 1.42,
+            }
+          ),
+          text("golf-cont-legacy-copy",
+            "Now, the Southern Guards GC have the chance to bring a similar impact to youngsters who dream of playing. Through the Southern Guards GC Foundation and its academy, opportunities are being created for children from communities around Steyn City to learn, train and imagine a future in the game.",
+            {
+              position: "absolute", left: "33.5%", top: "68.5%", width: "12.2%",
+              color: "#37322e", fontFamily: "var(--xp-font-editorial)",
+              fontSize: "clamp(.39rem,.52vw,.57rem)", lineHeight: 1.42,
+            }
+          ),
+
+          text("golf-cont-right-copy-a",
+            "But making a difference to Diepsloot’s young people, especially those who have limited access to the game, is central to the work. The foundation is our way of giving back to South Africa and giving back to our community. We want to help young people get an easier start and provide the kind of opportunity that can change a life.",
+            {
+              position: "absolute", left: "54.2%", top: "18.8%", width: "12.2%",
+              color: "#37322e", fontFamily: "var(--xp-font-editorial)",
+              fontSize: "clamp(.39rem,.52vw,.57rem)", lineHeight: 1.42,
+            }
+          ),
+          text("golf-cont-sustainability-label", "STEPS TOWARDS SUSTAINABILITY", {
+            position: "absolute", left: "54.2%", top: "70.8%", width: "12.2%",
+            color: "#655d55", fontFamily: "var(--xp-font-grotesk)",
+            fontSize: "clamp(.3rem,.41vw,.44rem)", fontWeight: 800,
+            letterSpacing: ".14em",
+          }, "span"),
+          text("golf-cont-sustainability-copy",
+            "Added to this, LIV Golf South Africa has reaffirmed its commitment to creating meaningful impact beyond the fairways. Through partnerships with the Steyn City Foundation and community programmes, the event is designed to leave a positive legacy long after the final putt.",
+            {
+              position: "absolute", left: "54.2%", top: "74.2%", width: "12.2%",
+              color: "#37322e", fontFamily: "var(--xp-font-editorial)",
+              fontSize: "clamp(.38rem,.5vw,.55rem)", lineHeight: 1.4,
+            }
+          ),
+
+          text("golf-cont-right-bottom-a",
+            "In Diepsloot, feeding over 3,300 children per day, as it works to become more sustainable, remains a key focus. What matters is building systems that can continue to support families and children consistently.",
+            {
+              position: "absolute", left: "69.1%", top: "69.3%", width: "12.3%",
+              color: "#37322e", fontFamily: "var(--xp-font-editorial)",
+              fontSize: "clamp(.39rem,.52vw,.57rem)", lineHeight: 1.42,
+            }
+          ),
+          text("golf-cont-say-label", "WHAT THEY HAVE TO SAY", {
+            position: "absolute", left: "69.1%", top: "84.1%", width: "12.3%",
+            color: "#655d55", fontFamily: "var(--xp-font-grotesk)",
+            fontSize: "clamp(.3rem,.41vw,.44rem)", fontWeight: 800,
+            letterSpacing: ".15em",
+          }, "span"),
+          text("golf-cont-right-bottom-b",
+            "“Seeing golf in Diepsloot and bringing a major event here makes the sport feel closer, more possible and more connected to our own community.”",
+            {
+              position: "absolute", right: "5.1%", top: "80.3%", width: "12.4%",
+              color: "#37322e", fontFamily: "var(--xp-font-editorial)",
+              fontSize: "clamp(.39rem,.52vw,.57rem)", lineHeight: 1.42,
+            }
+          ),
+
+          text("golf-cont-folio-left", "10", {
+            position: "absolute", left: "1.7%", bottom: "2.1%",
+            color: "#3e3934", fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(.36rem,.49vw,.53rem)",
+          }, "span"),
+          text("golf-cont-brand-left", "STEYN CITY", {
+            position: "absolute", left: "4.7%", bottom: "2.1%",
+            color: "#3e3934", fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(.36rem,.49vw,.53rem)", letterSpacing: ".04em",
+          }, "span"),
+          text("golf-cont-brand-right", "STEYN CITY", {
+            position: "absolute", right: "7.2%", bottom: "2.1%",
+            color: "#3e3934", fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(.36rem,.49vw,.53rem)", letterSpacing: ".04em",
+          }, "span"),
+          text("golf-cont-folio-right", "11", {
+            position: "absolute", right: "1.7%", bottom: "2.1%",
+            color: "#3e3934", fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(.36rem,.49vw,.53rem)",
+          }, "span"),
+        ],
+      },
+
+      photoPiece(
+        "steyn-golf-cont-academy-piece",
+        "liv-golf-foundation-academy",
+        "Southern Guards GC Foundation Academy",
+        academy,
+        "Southern Guards GC Foundation Academy group at Steyn City",
+        { position: "absolute", left: 0, top: "11.2%", width: "31.8%", height: "32.4%" },
+        "center 45%",
+      ),
+      photoPiece(
+        "steyn-golf-cont-inspection-piece",
+        "liv-golf-course-inspection",
+        "Course inspection at Steyn City",
+        inspection,
+        "LIV Golf course inspection at Steyn City",
+        { position: "absolute", left: 0, top: "45.2%", width: "31.8%", height: "28.7%" },
+        "center 45%",
+      ),
+      photoPiece(
+        "steyn-golf-cont-cheque-piece",
+        "liv-golf-foundation-support",
+        "Steyn City Foundation support",
+        cheque,
+        "LIV Golf and Steyn City Foundation cheque presentation",
+        { position: "absolute", right: 0, top: "11.2%", width: "31.9%", height: "31.7%" },
+        "center 43%",
+      ),
+      photoPiece(
+        "steyn-golf-cont-hospitality-piece",
+        "liv-golf-hospitality-inspection",
+        "Hospitality structures inspection",
+        hospitality,
+        "LIV Golf hospitality structures inspection at Steyn City",
+        { position: "absolute", right: 0, top: "45.2%", width: "31.9%", height: "28.3%" },
+        "center 45%",
+      ),
+    ],
+  };
+}
+
+
 function placeholderPage(
   issueId: string,
   pageNo: number,
@@ -2415,7 +2645,7 @@ export function getSteynCity2026Magazine(): MagazineGlobalDefinition {
         props: { label: "STEYN CITY" },
       },
     },
-    spreads: [cityLivingSpread(issueId), bentleyAdvertSpread(issueId), contentsGolfSpread(issueId), golfTraditionSpread(issueId)],
+    spreads: [cityLivingSpread(issueId), bentleyAdvertSpread(issueId), contentsGolfSpread(issueId), golfTraditionSpread(issueId), golfTraditionContinuationSpread(issueId)],
     pages,
   };
 }
