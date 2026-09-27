@@ -5406,3 +5406,46 @@ p[data-drop-cap-lines="6"] .xp-editorial-drop-cap { font-size: 5.85em; }
     min-height: 9rem;
   }
 }
+
+
+/* Interactive magazine video modal */
+.xp-youtube-dialog::backdrop {
+  background: rgba(4, 4, 5, .78);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.xp-youtube-dialog {
+  animation: xp-video-modal-in 180ms ease-out;
+}
+
+.xp-youtube-video button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.xp-youtube-video button:hover {
+  background: rgba(12,12,12,.88) !important;
+}
+
+.xp-youtube-video button:focus-visible,
+.xp-youtube-dialog button:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+@keyframes xp-video-modal-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@media (max-width: 680px) {
+  .xp-youtube-video__open-label {
+    display: none;
+  }
+
+  .xp-youtube-video__controls {
+    right: 6px !important;
+    bottom: 6px !important;
+    gap: 4px !important;
+  }
+}
