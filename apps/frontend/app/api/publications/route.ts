@@ -21,6 +21,25 @@ async function viewerHeaders(request: NextRequest) {
 }
 
 export async function GET(request: NextRequest) {
-  const response = await fetch(new URL("/v1/publications", apiOrigin()), { headers: await viewerHeaders(request), cache:"no-store" });
-  return new Response(await response.arrayBuffer(), { status:response.status, headers:{ "content-type":response.headers.get("content-type") ?? "application/json" } });
+  const headers = await viewerHeaders(request);
+  const origins = [...new Set([
+    apiOrigin(),
+    process.env.NODE_ENV !== "production" ? "http://127.0.0.1:4000" : null,
+  ].filter(Boolean) as string[])];
+
+  let lastError: unknown = null;
+  for (const origin of origins) {
+    try {
+      const response = await fetch(new URL("/v1/publications", origin), { headers, cache: "no-store" });
+      return new Response(await response.arrayBuffer(), {
+        status: response.status,
+        headers: { "content-type": response.headers.get("content-type") ?? "application/json" },
+      });
+    } catch (error) {
+      lastError = error;
+    }
+  }
+
+  console.error("[xpomag] publications API unavailable", lastError);
+  return Response.json({ ok: false, publications: [], error: "API unavailable" }, { status: 503 });
 }
