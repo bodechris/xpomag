@@ -787,7 +787,9 @@ function dataPosterPage(
     section(`${id}-main`, headline, "main", [
       stack(`${id}-title-block`, [
         label(`${id}-meta`, `XPOMAG / ${String(pageNo).padStart(2,"0")} / ROSEBANK DATA`, "#406547"),
-        text(`${id}-head`, "ROSEBANK\nBY THE\nNUMBERS", {
+        text(`${id}-head`, "ROSEBANK
+BY THE
+NUMBERS", {
           ...displaySansStyle("clamp(2.1rem,3.85vw,3.95rem)", ink), whiteSpace: "pre-line", lineHeight: .83, maxWidth: "92%",
         }, "h2"),
         text(`${id}-note`, "Density changes behaviour.", {
@@ -846,7 +848,8 @@ function signalPosterPage(
       }, "span"),
       stack(`${id}-heading`, [
         label(`${id}-meta`, `XPOMAG / ${String(pageNo).padStart(2,"0")} / SANDTON`, "#8fc8ff"),
-        text(`${id}-head`, "SANDTON\nSIGNALS", {
+        text(`${id}-head`, "SANDTON
+SIGNALS", {
           ...displaySansStyle("clamp(2.65rem,5vw,5.25rem)", ink),
           whiteSpace: "pre-line",
         }, "h2"),
@@ -1265,7 +1268,8 @@ function withCoverStoryLinks(document: ComposerDocument): ComposerDocument {
 
   const storyByNode: Record<string, { story?: NonNullable<ComposerDocument["nodes"][number]["story"]>; content?: string }> = {
     "left-headline": {
-      content: "The city\nis open.",
+      content: "The city
+is open.",
       story: { id: "cover-city-open", targetPageSlug: "power-corridor-i", targetSectionSlug: "power-corridor-i-headline", engagementAnchor: true, engagementAppearance: "dark" },
     },
     "left-copy": {
@@ -1484,7 +1488,8 @@ function notebookCulturePage(
     section(`${id}-main`, "What we're looking at", "main", [
       stack(`${id}-left`, [
         label(`${id}-kicker`, `XPOMAG / ${String(pageNo).padStart(2,"0")} / EDITOR'S NOTEBOOK`, "#b13c24"),
-        text(`${id}-headline`, "WHAT WE\'RE\nLOOKING AT", { ...displaySansStyle("clamp(3.3rem,6.7vw,6.7rem)", "#111"), whiteSpace: "pre-line" }, "h2"),
+        text(`${id}-headline`, "WHAT WE\'RE
+LOOKING AT", { ...displaySansStyle("clamp(3.3rem,6.7vw,6.7rem)", "#111"), whiteSpace: "pre-line" }, "h2"),
         text(`${id}-intro`, "A recurring visual notebook: one exhibition, one building, one material and one overlooked detail.", { fontFamily: "var(--xp-font-editorial)", fontSize: "clamp(1rem,1.5vw,1.45rem)", lineHeight: 1.05, maxWidth: "25rem" }),
       ], { position: "absolute", left: "5%", top: "5%", width: "43%", zIndex: 4, gap: ".75rem" }),
       stack(`${id}-portrait-box`, [
@@ -1540,7 +1545,10 @@ function afterHoursModesPage(
       editorialPhoto(`${id}-portrait`, portraitSrc, "After hours", { position: "absolute", left: "28%", bottom: 0, width: "44%", height: "78%", objectFit: "contain", objectPosition: "bottom center", filter: "grayscale(1) contrast(1.12)", zIndex: 2 }),
       stack(`${id}-title`, [
         label(`${id}-kicker`, `XPOMAG / ${String(pageNo).padStart(2,"0")} / AFTER HOURS`, "#d9ff4f"),
-        text(`${id}-headline`, "FOUR WAYS\nTHE CITY\nCHANGES\nAFTER 5", { ...displaySansStyle("clamp(2.9rem,5.7vw,5.6rem)", "#fff"), whiteSpace: "pre-line" }, "h2"),
+        text(`${id}-headline`, "FOUR WAYS
+THE CITY
+CHANGES
+AFTER 5", { ...displaySansStyle("clamp(2.9rem,5.7vw,5.6rem)", "#fff"), whiteSpace: "pre-line" }, "h2"),
       ], { position: "absolute", left: "5%", top: "5%", width: "36%", zIndex: 4, gap: ".6rem" }),
       grid(`${id}-cards`, cards.map((card,index)=>stack(`${id}-card-${index}`, [
         text(`${id}-num-${index}`, String(index+1).padStart(2,"0"), { color: "#d9ff4f", fontSize: "clamp(1.6rem,2.8vw,2.7rem)", fontFamily: "var(--xp-font-display-sans)", fontWeight: 900, lineHeight: .85 }, "span"),
@@ -1566,7 +1574,10 @@ function afterWorkAdvertPage(issueId: string, pageNo: number, id: string, portra
       stack(`${id}-copy`, [
         label(`${id}-kicker`, "XPOMAG / CONCEPT CAMPAIGN", "#ff5b43"),
         text(`${id}-brand`, "AFTER/WORK", { color: "#fff", fontFamily: "var(--xp-font-grotesk)", fontSize: "clamp(.8rem,1.2vw,1.15rem)", fontWeight: 900, letterSpacing: ".17em" }, "span"),
-        text(`${id}-headline`, "18:03.\nYOUR DAY\nIS NOT\nOVER.", { ...displaySansStyle("clamp(3.55rem,7vw,7rem)", "#fff"), whiteSpace: "pre-line", maxWidth: "92%" }, "h2"),
+        text(`${id}-headline`, "18:03.
+YOUR DAY
+IS NOT
+OVER.", { ...displaySansStyle("clamp(3.55rem,7vw,7rem)", "#fff"), whiteSpace: "pre-line", maxWidth: "92%" }, "h2"),
         text(`${id}-body`, "A nightlife-and-events concept placement showing how a premium partner can own the transition between work and the city after dark.", { color: "rgba(255,255,255,.82)", fontFamily: "var(--xp-font-editorial)", fontSize: "clamp(.85rem,1.2vw,1.12rem)", lineHeight: 1.14, maxWidth: "27rem" }),
         label(`${id}-disclosure`, "PARTNER PREVIEW · NOT AN ANNOUNCED SPONSOR", "rgba(255,255,255,.65)"),
       ], { position: "absolute", left: "5%", top: "6%", bottom: "6%", width: "45%", zIndex: 4, gap: ".65rem", justifyContent: "space-between" }),
@@ -1724,7 +1735,8 @@ function retailDataPage(
       }),
       stack(`${id}-head`, [
         label(`${id}-kicker`, `XPOMAG / ${String(pageNo).padStart(2,"0")} / RETAIL / ROSEBANK`, "#7b4200"),
-        text(`${id}-headline`, "LOW VACANCY.\nNEW NAMES.", { ...displaySansStyle("clamp(3.55rem,7.2vw,7rem)", "#1f1705"), whiteSpace: "pre-line", maxWidth: "88%" }, "h2"),
+        text(`${id}-headline`, "LOW VACANCY.
+NEW NAMES.", { ...displaySansStyle("clamp(3.55rem,7.2vw,7rem)", "#1f1705"), whiteSpace: "pre-line", maxWidth: "88%" }, "h2"),
         text(`${id}-deck`, "Retail is not dead. Undifferentiated retail has a harder job.", { fontFamily: "var(--xp-font-editorial)", fontSize: "clamp(1rem,1.6vw,1.5rem)", lineHeight: 1.03, maxWidth: "27rem" }),
       ], { position: "absolute", left: "5%", top: "5%", width: "52%", zIndex: 4, gap: ".65rem" }),
       grid(`${id}-cards`, cards.map((card,index)=>stack(`${id}-card-${index}`, [
@@ -1792,7 +1804,10 @@ function propertyAdvertPage(issueId: string, pageNo: number, id: string, portrai
       stack(`${id}-copy`, [
         label(`${id}-kicker`, `XPOMAG / ${String(pageNo).padStart(2,"0")} / CONCEPT CAMPAIGN`, "#dbe5ff"),
         text(`${id}-brand`, "FIELDWORK", { color: "#fff", fontFamily: "var(--xp-font-grotesk)", fontSize: "clamp(.85rem,1.2vw,1.15rem)", fontWeight: 900, letterSpacing: ".17em" }, "span"),
-        text(`${id}-headline`, "YOU DON'T LEASE\nFOUR WALLS.\nYOU LEASE\nWHAT'S AROUND THEM.", { ...displaySansStyle("clamp(3.05rem,6vw,5.9rem)", "#fff"), whiteSpace: "pre-line", maxWidth: "92%" }, "h2"),
+        text(`${id}-headline`, "YOU DON'T LEASE
+FOUR WALLS.
+YOU LEASE
+WHAT'S AROUND THEM.", { ...displaySansStyle("clamp(3.05rem,6vw,5.9rem)", "#fff"), whiteSpace: "pre-line", maxWidth: "92%" }, "h2"),
         text(`${id}-body`, "A fictional office-and-property campaign showing how commercial inventory can sit inside the magazine without pretending to be editorial.", { color: "rgba(255,255,255,.82)", fontFamily: "var(--xp-font-editorial)", fontSize: "clamp(.88rem,1.25vw,1.15rem)", lineHeight: 1.15, maxWidth: "27rem" }),
         label(`${id}-disclosure`, "PARTNER PREVIEW · NOT AN ANNOUNCED SPONSOR", "rgba(255,255,255,.66)"),
       ], { position: "absolute", left: "5%", top: "6%", bottom: "6%", width: "47%", zIndex: 4, gap: ".65rem", justifyContent: "space-between" }),
@@ -1889,7 +1904,9 @@ function runClubPage(issueId: string, pageNo: number, id: string, portraitSrc: s
       }),
       stack(`${id}-head`, [
         label(`${id}-kicker`, `XPOMAG / ${String(pageNo).padStart(2,"0")} / ROSEBANK RUNNING`, "#d8ff52"),
-        text(`${id}-headline`, "RUN FIRST.\nNETWORK\nACCIDENTALLY.", { ...displaySansStyle("clamp(3rem,6vw,5.8rem)", "#fff"), whiteSpace: "pre-line", maxWidth: "94%" }, "h2"),
+        text(`${id}-headline`, "RUN FIRST.
+NETWORK
+ACCIDENTALLY.", { ...displaySansStyle("clamp(3rem,6vw,5.8rem)", "#fff"), whiteSpace: "pre-line", maxWidth: "94%" }, "h2"),
         text(`${id}-deck`, "Movement is the visible activity. Community is the infrastructure underneath it.", { color: "#d6e1d9", fontFamily: "var(--xp-font-editorial)", fontSize: "clamp(.95rem,1.5vw,1.4rem)", lineHeight: 1.05 }),
       ], { position: "absolute", left: "5%", top: "5%", width: "35%", zIndex: 4, gap: ".65rem" }),
       grid(`${id}-clubs`, clubs.map((club,index)=>stack(`${id}-club-${index}`, [
@@ -1919,7 +1936,8 @@ function itineraryPage(issueId: string, pageNo: number, id: string, portraitSrc:
       editorialPhoto(`${id}-portrait`, portraitSrc, "48 hours in the city", { position: "absolute", right: "-2%", bottom: 0, width: "54%", height: "100%", objectFit: "contain", objectPosition: "bottom right", filter: "grayscale(1) contrast(1.08)", zIndex: 2 }),
       stack(`${id}-head`, [
         label(`${id}-kicker`, `XPOMAG / ${String(pageNo).padStart(2,"0")} / CITY ITINERARY`, "#3157ff"),
-        text(`${id}-headline`, "48\nHOURS", { ...displaySansStyle("clamp(4.4rem,8.6vw,8.4rem)", "#141b2b"), whiteSpace: "pre-line" }, "h2"),
+        text(`${id}-headline`, "48
+HOURS", { ...displaySansStyle("clamp(4.4rem,8.6vw,8.4rem)", "#141b2b"), whiteSpace: "pre-line" }, "h2"),
         text(`${id}-sub`, "ROSEBANK + SANDTON", { color: "#3157ff", fontFamily: "var(--xp-font-grotesk)", fontWeight: 900, fontSize: "clamp(1rem,1.7vw,1.6rem)", letterSpacing: ".08em" }, "span"),
         text(`${id}-deck`, "Stay inside the two-node universe and see how much city fits into it.", { color: "#141b2b", fontFamily: "var(--xp-font-editorial)", fontSize: "clamp(1rem,1.55vw,1.4rem)", lineHeight: 1.04 }),
       ], { position: "absolute", left: "5%", top: "5%", width: "36%", zIndex: 4, gap: ".55rem" }),
@@ -1943,7 +1961,9 @@ function weekendPosterPage(issueId: string, pageNo: number, id: string, portrait
       }),
       stack(`${id}-head`, [
         label(`${id}-kicker`, `XPOMAG / ${String(pageNo).padStart(2,"0")} / THE WEEKEND LIST`, "#8f3e27"),
-        text(`${id}-headline`, "12 REASONS\nNOT TO\nSTAY HOME", { ...displaySansStyle("clamp(3.45rem,6.9vw,6.7rem)", "#28170f"), whiteSpace: "pre-line" }, "h2"),
+        text(`${id}-headline`, "12 REASONS
+NOT TO
+STAY HOME", { ...displaySansStyle("clamp(3.45rem,6.9vw,6.7rem)", "#28170f"), whiteSpace: "pre-line" }, "h2"),
         text(`${id}-deck`, "Save the list. Do one thing this weekend. Leave one hour unplanned.", { fontFamily: "var(--xp-font-editorial)", color: "#28170f", fontSize: "clamp(.95rem,1.45vw,1.35rem)", lineHeight: 1.05 }),
       ], { position: "absolute", left: "5%", top: "5%", width: "43%", zIndex: 4, gap: ".6rem" }),
       grid(`${id}-items`, items.map((item,index)=>stack(`${id}-item-${index}`, [
@@ -1966,7 +1986,8 @@ function eventsCalendarPage(issueId: string, pageNo: number, id: string, portrai
       editorialPhoto(`${id}-portrait`, portraitSrc, "November events", { position: "absolute", right: "-1%", top: "9%", width: "45%", height: "89%", objectFit: "contain", objectPosition: "bottom right", filter: "grayscale(1) contrast(1.1)", zIndex: 2 }),
       stack(`${id}-head`, [
         label(`${id}-kicker`, `XPOMAG / ${String(pageNo).padStart(2,"0")} / NOVEMBER`, "#3157ff"),
-        text(`${id}-headline`, "WHAT'S\nON", { ...displaySansStyle("clamp(4.2rem,7.8vw,7.6rem)", "#171512"), whiteSpace: "pre-line" }, "h2"),
+        text(`${id}-headline`, "WHAT'S
+ON", { ...displaySansStyle("clamp(4.2rem,7.8vw,7.6rem)", "#171512"), whiteSpace: "pre-line" }, "h2"),
         text(`${id}-deck`, "Only confirmed listings belong here. This page is rechecked 7–10 days before publication.", { color: "#57534c", fontFamily: "var(--xp-font-editorial)", fontSize: "clamp(.9rem,1.35vw,1.25rem)", lineHeight: 1.05 }),
       ], { position: "absolute", left: "5%", top: "5%", width: "38%", zIndex: 4, gap: ".55rem" }),
       grid(`${id}-events`, events.map((event,index)=>stack(`${id}-event-${index}`, [
@@ -1995,7 +2016,9 @@ function xpomag12Page(issueId: string, pageNo: number, id: string, portraitSrc: 
       }),
       stack(`${id}-head`, [
         label(`${id}-kicker`, `XPOMAG / ${String(pageNo).padStart(2,"0")} / EDITOR'S NOTEBOOK`, "#d8ff52"),
-        text(`${id}-headline`, "THE\nXPOMAG\n12", { ...displaySansStyle("clamp(4rem,7.8vw,7.7rem)", "#fff"), whiteSpace: "pre-line", maxWidth: "92%" }, "h2"),
+        text(`${id}-headline`, "THE
+XPOMAG
+12", { ...displaySansStyle("clamp(4rem,7.8vw,7.7rem)", "#fff"), whiteSpace: "pre-line", maxWidth: "92%" }, "h2"),
         text(`${id}-deck`, "Not awards. Not 'best of'. Twelve things we'd save this month.", { color: "#d5d5d5", fontFamily: "var(--xp-font-editorial)", fontSize: "clamp(.95rem,1.5vw,1.35rem)", lineHeight: 1.05 }),
       ], { position: "absolute", left: "5%", top: "5%", width: "39%", zIndex: 4, gap: ".55rem" }),
       grid(`${id}-items`, items.map((item,index)=>stack(`${id}-item-${index}`, [
@@ -2018,7 +2041,9 @@ function threadAdvertPage(issueId: string, pageNo: number, id: string, portraitS
       stack(`${id}-copy`, [
         label(`${id}-kicker`, `XPOMAG / ${String(pageNo).padStart(2,"0")} / CONCEPT CAMPAIGN`, "#dcd4ff"),
         text(`${id}-brand`, "THREAD", { color: "#fff", fontFamily: "var(--xp-font-grotesk)", fontSize: "clamp(.9rem,1.3vw,1.2rem)", fontWeight: 900, letterSpacing: ".17em" }, "span"),
-        text(`${id}-headline`, "YOUR CITY\nSHOULD KNOW\nWHAT YOU LIKE.", { ...displaySansStyle("clamp(3.25rem,6.5vw,6.3rem)", "#fff"), whiteSpace: "pre-line" }, "h2"),
+        text(`${id}-headline`, "YOUR CITY
+SHOULD KNOW
+WHAT YOU LIKE.", { ...displaySansStyle("clamp(3.25rem,6.5vw,6.3rem)", "#fff"), whiteSpace: "pre-line" }, "h2"),
         text(`${id}-body`, "Local discovery reorganised around you. A fictional technology campaign intentionally close to XpoMag's save-and-collection behaviour.", { color: "rgba(255,255,255,.84)", fontFamily: "var(--xp-font-editorial)", fontSize: "clamp(.9rem,1.3vw,1.2rem)", lineHeight: 1.12, maxWidth: "28rem" }),
         label(`${id}-disclosure`, "PARTNER PREVIEW · NOT AN ANNOUNCED SPONSOR", "rgba(255,255,255,.68)"),
       ], { position: "absolute", left: "5%", top: "6%", bottom: "6%", width: "48%", zIndex: 4, gap: ".65rem", justifyContent: "space-between" }),
@@ -2047,7 +2072,8 @@ function interviewFinalePage(
       }),
       stack(`${id}-header`, [
         label(`${id}-kicker`, `XPOMAG / ${String(pageNo).padStart(2,"0")} / PEOPLE`, "#7d3d93"),
-        text(`${id}-headline`, "FIVE\nQUESTIONS", { ...displaySansStyle("clamp(3.8rem,7.3vw,7rem)", "#221628"), whiteSpace: "pre-line" }, "h2"),
+        text(`${id}-headline`, "FIVE
+QUESTIONS", { ...displaySansStyle("clamp(3.8rem,7.3vw,7rem)", "#221628"), whiteSpace: "pre-line" }, "h2"),
         text(`${id}-dek`, "A recurring interview format designed to be quick to answer, useful to read and easy to return to every month.", {
           color: "#221628", fontFamily: "var(--xp-font-editorial)", fontSize: "clamp(1rem,1.55vw,1.45rem)", lineHeight: 1.02, letterSpacing: "-.035em", maxWidth: "24rem",
         }),
@@ -2063,7 +2089,9 @@ function interviewFinalePage(
       }),
       stack(`${id}-pull`, [
         label(`${id}-pull-label`, "THE FORMAT", "#221628"),
-        text(`${id}-pull-text`, "15 MINUTES.\n5 QUESTIONS.\n1 PERSON WORTH KNOWING.", { color: "#221628", fontFamily: "var(--xp-font-editorial)", fontStyle: "italic", fontSize: "clamp(1.15rem,2vw,1.95rem)", lineHeight: .92, whiteSpace: "pre-line" }, "h3"),
+        text(`${id}-pull-text`, "15 MINUTES.
+5 QUESTIONS.
+1 PERSON WORTH KNOWING.", { color: "#221628", fontFamily: "var(--xp-font-editorial)", fontStyle: "italic", fontSize: "clamp(1.15rem,2vw,1.95rem)", lineHeight: .92, whiteSpace: "pre-line" }, "h3"),
       ], { position: "absolute", right: "4%", bottom: "6%", width: "30%", background: "#f5d34f", border: "2px solid #221628", padding: "1rem", zIndex: 5 }),
     ], { position: "relative", minHeight: "100%", padding: 0, background: "#f0dfef" }),
   ]);
@@ -2094,7 +2122,8 @@ function madeHereFinalePage(
       }),
       stack(`${id}-header`, [
         label(`${id}-kicker`, `XPOMAG / ${String(pageNo).padStart(2,"0")} / LOCAL COMMERCE`, "#8c5d2c"),
-        text(`${id}-headline`, "MADE\nHERE", { ...displaySansStyle("clamp(5rem,10vw,9.5rem)", "#1e1810"), whiteSpace: "pre-line" }, "h2"),
+        text(`${id}-headline`, "MADE
+HERE", { ...displaySansStyle("clamp(5rem,10vw,9.5rem)", "#1e1810"), whiteSpace: "pre-line" }, "h2"),
         text(`${id}-dek`, "Six things we would happily carry out of the city with us.", { color: "#1e1810", fontFamily: "var(--xp-font-editorial)", fontSize: "clamp(1.15rem,1.9vw,1.8rem)", lineHeight: .98, maxWidth: "22rem" }),
       ], { position: "absolute", left: "44%", top: "5%", right: "5%", zIndex: 4, gap: ".45rem" }),
       grid(`${id}-items`, items.map(([num,title,body], index) => stack(`${id}-item-${index}`, [
@@ -2136,7 +2165,8 @@ function issueIndexFinalePage(issueId: string, pageNo: number, id: string): Maga
     section(`${id}-main`, "Everything in this issue", "main", [
       stack(`${id}-header`, [
         label(`${id}-kicker`, `XPOMAG / ${String(pageNo).padStart(2,"0")} / REFERENCE`, "#3157ff"),
-        text(`${id}-headline`, "THE\nINDEX", { ...displaySansStyle("clamp(4.7rem,9.5vw,9.1rem)", "#151515"), whiteSpace: "pre-line" }, "h2"),
+        text(`${id}-headline`, "THE
+INDEX", { ...displaySansStyle("clamp(4.7rem,9.5vw,9.1rem)", "#151515"), whiteSpace: "pre-line" }, "h2"),
         text(`${id}-dek`, "Everything worth finding again — people, places, venues, businesses and communities from Issue 01.", { color: "#151515", fontFamily: "var(--xp-font-editorial)", fontSize: "clamp(1rem,1.5vw,1.45rem)", lineHeight: 1.02, maxWidth: "25rem" }),
       ], { position: "absolute", left: "5%", top: "5%", width: "34%", gap: ".5rem" }),
       grid(`${id}-index`, items.map((item,index) => {
@@ -2171,7 +2201,10 @@ function communityFinalePage(
       editorialPhoto(`${id}-portrait`, portraitSrc, "XpoMag community", { position: "absolute", right: "-2%", bottom: 0, width: "49%", height: "96%", objectFit: "contain", objectPosition: "bottom right", filter: "grayscale(1) contrast(1.1)", zIndex: 1 }),
       stack(`${id}-header`, [
         label(`${id}-kicker`, `XPOMAG / ${String(pageNo).padStart(2,"0")} / COMMUNITY`, "#3157ff"),
-        text(`${id}-headline`, "THIS\nMAGAZINE\nISN'T\nFINISHED", { ...displaySansStyle("clamp(3.6rem,7.2vw,7rem)", "#111"), whiteSpace: "pre-line" }, "h2"),
+        text(`${id}-headline`, "THIS
+MAGAZINE
+ISN'T
+FINISHED", { ...displaySansStyle("clamp(3.6rem,7.2vw,7rem)", "#111"), whiteSpace: "pre-line" }, "h2"),
         text(`${id}-dek`, "The next edition gets better when the city talks back.", { color: "#111", fontFamily: "var(--xp-font-editorial)", fontSize: "clamp(1.05rem,1.7vw,1.55rem)", lineHeight: .98, maxWidth: "24rem" }),
       ], { position: "absolute", left: "5%", top: "5%", width: "45%", gap: ".5rem", zIndex: 4 }),
       grid(`${id}-ctas`, ctas.map(([num,title,body],index)=>stack(`${id}-cta-${index}`, [
@@ -2181,7 +2214,8 @@ function communityFinalePage(
       ], { background: index === 2 ? "#3157ff" : "rgba(255,255,255,.58)", color: index === 2 ? "#fff" : "#111", padding: ".65rem", gap: ".18rem" })), { position: "absolute", left: "5%", bottom: "5%", width: "53%", height: "32%", gridTemplateColumns: "repeat(2,minmax(0,1fr))", gap: ".5rem", zIndex: 4 }),
       stack(`${id}-stamp`, [
         label(`${id}-stamp-a`, "ISSUE 02", "#fff"),
-        text(`${id}-stamp-b`, "ROSEBANK + SANDTON\nRETURNS NEXT MONTH.", { color: "#fff", fontFamily: "var(--xp-font-editorial)", fontStyle: "italic", fontSize: "clamp(1rem,1.65vw,1.55rem)", lineHeight: .95, whiteSpace: "pre-line" }, "h3"),
+        text(`${id}-stamp-b`, "ROSEBANK + SANDTON
+RETURNS NEXT MONTH.", { color: "#fff", fontFamily: "var(--xp-font-editorial)", fontStyle: "italic", fontSize: "clamp(1rem,1.65vw,1.55rem)", lineHeight: .95, whiteSpace: "pre-line" }, "h3"),
       ], { position: "absolute", right: "4%", top: "6%", width: "28%", padding: ".8rem", background: "#111", zIndex: 5 }),
     ], { position: "relative", minHeight: "100%", padding: 0, background: "#d8ff52" }),
   ]);
@@ -2198,7 +2232,9 @@ function insideBackCoverFinalePage(issueId: string, pageNo: number, id: string, 
       }),
       stack(`${id}-copy`, [
         label(`${id}-kicker`, `XPOMAG / ${String(pageNo).padStart(2,"0")} / INSIDE BACK COVER`, "#7b1639"),
-        text(`${id}-headline`, "BE SEEN\nWHERE THE CITY\nIS LOOKING.", { ...displaySansStyle("clamp(3.7rem,7.5vw,7.2rem)", "#1a0f13"), whiteSpace: "pre-line" }, "h2"),
+        text(`${id}-headline`, "BE SEEN
+WHERE THE CITY
+IS LOOKING.", { ...displaySansStyle("clamp(3.7rem,7.5vw,7.2rem)", "#1a0f13"), whiteSpace: "pre-line" }, "h2"),
         text(`${id}-dek`, "A premium commercial surface inside a magazine people can keep discovering, saving and sharing long after publication day.", { color: "#1a0f13", fontFamily: "var(--xp-font-editorial)", fontSize: "clamp(1rem,1.6vw,1.5rem)", lineHeight: 1.02, maxWidth: "25rem" }),
         grid(`${id}-offers`, offerings.map((offer,index)=>stack(`${id}-offer-${index}`, [
           label(`${id}-offer-n-${index}`, String(index+1).padStart(2,"0"), "#7b1639"),
@@ -2224,7 +2260,9 @@ function backCoverFinalePage(issueId: string, pageNo: number, id: string): Magaz
           label(`${id}-page`, `XPOMAG / ${String(pageNo).padStart(2,"0")} / BACK COVER`, "rgba(255,255,255,.62)"),
           label(`${id}-issue`, "ROSEBANK + SANDTON · NOVEMBER 2026", "rgba(255,255,255,.62)"),
         ], { gridTemplateColumns: "1fr auto", gap: "1rem" }),
-        text(`${id}-headline`, "THIS PAGE\nBELONGS TO\nONE BRAND.", { ...displaySansStyle("clamp(4.8rem,9.6vw,9.2rem)", "#fff"), whiteSpace: "pre-line", maxWidth: "90%" }, "h2"),
+        text(`${id}-headline`, "THIS PAGE
+BELONGS TO
+ONE BRAND.", { ...displaySansStyle("clamp(4.8rem,9.6vw,9.2rem)", "#fff"), whiteSpace: "pre-line", maxWidth: "90%" }, "h2"),
         grid(`${id}-bottom`, [
           stack(`${id}-partner`, [
             label(`${id}-partner-label`, "XPOMAG ISSUE PARTNER", "#d8ff52"),
@@ -2361,8 +2399,11 @@ function fashionAdvertPage(issueId: string, pageNo: number, id: string, portrait
       }),
       stack(`${id}-copy`, [
         label(`${id}-label`, `PAGE ${pageNo} · CONCEPT PLACEMENT`, "#60153d"),
-        text(`${id}-brand`, "STUDIO\nNINE", { ...displaySansStyle("clamp(3.2rem,6.1vw,6.2rem)", "#111"), whiteSpace: "pre-line", textShadow: "0 1px 0 rgba(255,255,255,.18)" }, "h2"),
-        text(`${id}-line`, "JOHANNESBURG,\nWEAR SOMETHING\nWORTH REMEMBERING.", { color: "#111", fontFamily: "var(--xp-font-editorial)", fontSize: "clamp(1.25rem,2.15vw,2.15rem)", lineHeight: .92, letterSpacing: "-.045em", whiteSpace: "pre-line", maxWidth: "22rem" }, "h3"),
+        text(`${id}-brand`, "STUDIO
+NINE", { ...displaySansStyle("clamp(3.2rem,6.1vw,6.2rem)", "#111"), whiteSpace: "pre-line", textShadow: "0 1px 0 rgba(255,255,255,.18)" }, "h2"),
+        text(`${id}-line`, "JOHANNESBURG,
+WEAR SOMETHING
+WORTH REMEMBERING.", { color: "#111", fontFamily: "var(--xp-font-editorial)", fontSize: "clamp(1.25rem,2.15vw,2.15rem)", lineHeight: .92, letterSpacing: "-.045em", whiteSpace: "pre-line", maxWidth: "22rem" }, "h3"),
         label(`${id}-season`, "SUMMER 2026 · XPOMAG PARTNER PREVIEW", "#60153d"),
       ], { position: "absolute", left: "4%", top: "4%", bottom: "4%", width: "43%", zIndex: 3, justifyContent: "space-between", padding: "1rem", background: "rgba(247,167,207,.90)", backdropFilter: "blur(6px)", boxShadow: "0 0 0 1px rgba(17,17,17,.08)" }),
     ], { position: "relative", minHeight: "100%", padding: 0, background: "#f7a7cf" }),
@@ -2373,9 +2414,11 @@ function buildIssuePages(issueId: string, options: DemoMagazineOptions, cover: M
   const people = options.alphaCoverAssets ?? [];
   const pages: MagazinePageDefinition[] = [cover];
 
-  pages.push(advertPage(issueId, 2, "inside-front-cover", "NORTH/01", "MOVE\nDIFFERENTLY.", "Made for the city between meetings. Electric mobility for Johannesburg. The first commercial page is treated as a campaign, not a banner.", "#f3cf20", "#0b0b0b"));
+  pages.push(advertPage(issueId, 2, "inside-front-cover", "NORTH/01", "MOVE
+DIFFERENTLY.", "Made for the city between meetings. Electric mobility for Johannesburg. The first commercial page is treated as a campaign, not a banner.", "#f3cf20", "#0b0b0b"));
 
-  pages.push(portraitFeaturePage(issueId, 3, "rosebank-0642", "OPENING / ROSEBANK", "ROSEBANK,\n06:42", [
+  pages.push(portraitFeaturePage(issueId, 3, "rosebank-0642", "OPENING / ROSEBANK", "ROSEBANK,
+06:42", [
     "A Gautrain arrives beneath Oxford Road. Coffee machines are already running. Runners disappear around corners. Delivery vehicles turn into loading bays. Someone unlocks a gallery. Someone else orders their first coffee.",
     "A city does not open all at once. It happens one person at a time. One shutter goes up. One office light appears. One table is set. One train door opens. The neighbourhood becomes itself again.",
   ], art.portraitD, { bg: "#f5f3ed", ink: "#111", accent: "#2e67a0" }, {
@@ -2384,7 +2427,8 @@ function buildIssuePages(issueId: string, options: DemoMagazineOptions, cover: M
     accentBox: "#f3cf20",
   }));
 
-  pages.push(portraitFeaturePage(issueId, 4, "editors-note", "EDITOR'S NOTE", "WHY HERE?\nWHY NOW?", [
+  pages.push(portraitFeaturePage(issueId, 4, "editors-note", "EDITOR'S NOTE", "WHY HERE?
+WHY NOW?", [
     "Rosebank and Sandton are separated by only a few kilometres, but they represent two different versions of Johannesburg. Sandton communicates scale: head offices, hotels, major retail, towers and restaurants built for occasions. Rosebank feels more compressed: offices beside apartments, galleries beside restaurants, a Sunday market on a shopping-centre roof, runners in the streets while commuters emerge from the train.",
     "Together they form something larger than a business node. They are places where people build companies, sell things, meet people, make culture, eat well and construct lives around work. XpoMag is interested in that overlap — not businesses as entries in a directory, but businesses inside the places and communities that make them meaningful. This is Issue 01.",
   ], art.portraitF, { bg: "#f7f6f2", ink: "#111", accent: "#ef5a24" }, {
@@ -2405,14 +2449,17 @@ function buildIssuePages(issueId: string, options: DemoMagazineOptions, cover: M
     { title: "64 PAGES", body: "People. Places. Food. Ideas. Property. Culture. Business. One first issue.", meta: "XPOMAG" },
   ]));
 
-  pages.push(pulseEditorialPage(issueId, 6, "pulse-i", "01—04", "12 THINGS\nMOVING THE CITY", [
+  pages.push(pulseEditorialPage(issueId, 6, "pulse-i", "01—04", "12 THINGS
+MOVING THE CITY", [
     { title: "ROSEBANK KEEPS ADDING RETAIL", body: "Rosebank Mall's tenant mix continues to move, with recent additions and upgrades reinforcing the idea that physical retail is evolving rather than disappearing.", tag: "01 · RETAIL" },
     { title: "KORA ARRIVES IN SANDTON", body: "The Marc added another destination restaurant in 2026, combining food, interiors, music and wine in a package designed to make the restaurant itself the occasion.", tag: "02 · FOOD" },
     { title: "ROSEBANK IS RUNNING", body: "Social running is becoming visible city infrastructure: routine, fitness and networking without the formality of a networking event.", tag: "03 · WELLNESS" },
     { title: "ART NIGHT RETURNS", body: "Keyes Art Mile continues to use evening programming to connect galleries, restaurants, design and street-level activity.", tag: "04 · CULTURE" },
   ], { bg: "#eee8de", ink: "#111", accent: "#b93220", muted: "#4d453f" }, art.portraitA));
 
-  pages.push(pulseEditorialPage(issueId, 7, "pulse-ii", "05—08", "THE CITY IS\nCHANGING IN\nSMALL WAYS", [
+  pages.push(pulseEditorialPage(issueId, 7, "pulse-ii", "05—08", "THE CITY IS
+CHANGING IN
+SMALL WAYS", [
     { title: "THE MARKET IS STILL HERE", body: "Rosebank Sunday Market remains one of the neighbourhood's recurring community rituals — commerce that feels personal, temporary and human.", tag: "05 · COMMUNITY" },
     { title: "WALKABILITY IS AN ASSET", body: "When retail, offices, apartments, food, art and transport sit close together, every urban improvement multiplies the number of useful connections.", tag: "06 · CITY" },
     { title: "THE OFFICE ISN'T JUST AN OFFICE", body: "Coffee shops, hotel lounges and restaurants increasingly operate as extensions of formal workplaces.", tag: "07 · WORK" },
@@ -2536,17 +2583,20 @@ function buildIssuePages(issueId: string, options: DemoMagazineOptions, cover: M
 
   pages.push(imageAdvertPage(issueId, 24, "ad-common-place", "COMMON/PLACE", "YOUR NEXT OFFICE SHOULD HAVE A NEIGHBOURHOOD.", "Workspaces for teams that want more than four walls. A fictional property campaign designed to show a full-page commercial break at editorial quality.", "#ff694f", "#101010", art.portraitE));
 
-  pages.push(hospitalityEditorialPage(issueId, 25, "new-table-i", "FOOD / I", "THE NEW\nTABLE", "Restaurants are becoming media — and the room is part of the product.", [
+  pages.push(hospitalityEditorialPage(issueId, 25, "new-table-i", "FOOD / I", "THE NEW
+TABLE", "Restaurants are becoming media — and the room is part of the product.", [
     "People photograph restaurants, tag them, meet there, celebrate there, work there and return because of how the room made them feel.",
     "Food still matters most. But service, architecture, lighting, music, identity and shareability now shape whether a restaurant earns the trip.",
   ], { bg: "#f0d9cc", ink: "#2a1510", accent: "#b3452b" }, hospitalityArt.koraTable, { quote: "THE MEAL IS THE PRODUCT. THE EXPERIENCE IS THE DISTRIBUTION.", meta: ["FOOD", "ROOM", "MUSIC", "MEMORY"] }));
 
-  pages.push(hospitalityEditorialPage(issueId, 26, "new-table-ii", "FOOD / II", "FROM PLACE\nTO OCCASION", "The city now asks more of a restaurant than whether the plate is good.", [
+  pages.push(hospitalityEditorialPage(issueId, 26, "new-table-ii", "FOOD / II", "FROM PLACE
+TO OCCASION", "The city now asks more of a restaurant than whether the plate is good.", [
     "Do I want to be there? Do I want to bring someone? Does the room make a Tuesday night feel different?",
     "Destination restaurants answer by treating arrival, soundtrack, service, interiors and after-dinner rhythm as part of the product rather than decoration around it.",
   ], { bg: "#221a15", ink: "#fff", accent: "#f0aa65" }, hospitalityArt.koraTable, { imageSide: "left", quote: "DO I WANT TO BE THERE?", meta: ["ARRIVAL", "SERVICE", "SOUND", "AFTER DARK"] }));
 
-  pages.push(hospitalityEditorialPage(issueId, 27, "new-table-iii", "FOOD / III", "THE CITY EATS\nDIFFERENTLY NOW", "Rosebank and Sandton are two versions of the same hospitality shift.", [
+  pages.push(hospitalityEditorialPage(issueId, 27, "new-table-iii", "FOOD / III", "THE CITY EATS
+DIFFERENTLY NOW", "Rosebank and Sandton are two versions of the same hospitality shift.", [
     "Rosebank's dining ecosystem sits close to art, retail and neighbourhood movement. Sandton often operates at a larger, more occasion-driven scale.",
     "What connects them is the expectation that a physical experience should give people something delivery cannot reproduce: atmosphere, encounter and memory.",
   ], { bg: "#dfead1", ink: "#192515", accent: "#4d6d39" }, art.portraitD, { quote: "THE PHYSICAL EXPERIENCE HAS TO EARN THE TRIP.", meta: ["ROSEBANK", "SANDTON", "DINNER", "DISCOVERY"] }));
@@ -2572,34 +2622,43 @@ function buildIssuePages(issueId: string, options: DemoMagazineOptions, cover: M
     { title: "19:30 · DINNER", body: "Finish somewhere that feels like the reason you left home." },
   ], { bg: "#e9db52", ink: "#1c1b0c", accent: "#8c4a1d", muted: "#4b4719" }, "Don't plan too much. The best city days need one or two gaps for discovery."));
 
-  pages.push(fullBleedVenuePage(issueId, 31, "sunday-market", "ROSEBANK / WEEKEND", "SUNDAY\nON THE ROOF", [
+  pages.push(fullBleedVenuePage(issueId, 31, "sunday-market", "ROSEBANK / WEEKEND", "SUNDAY
+ON THE ROOF", [
     "Rosebank Sunday Market remains one of the neighbourhood's recurring weekend rituals, bringing makers, shoppers and food into the same temporary marketplace.",
     "Markets make commerce feel personal: a table, a maker, an object and a conversation. That unpredictability is part of the attraction.",
   ], hospitalityArt.sundayMarket, "#f3c730", "Rosebank Sunday Market · public listing"));
 
-  pages.push(hospitalityEditorialPage(issueId, 32, "sponsored-house44-i", "SPONSORED STORY · CONCEPT", "THE HOTEL IS NO LONGER\nJUST FOR TRAVELLERS", "HOUSE/44 is a fictional partner story showing how hospitality can become neighbourhood infrastructure.", [
+  pages.push(hospitalityEditorialPage(issueId, 32, "sponsored-house44-i", "SPONSORED STORY · CONCEPT", "THE HOTEL IS NO LONGER
+JUST FOR TRAVELLERS", "HOUSE/44 is a fictional partner story showing how hospitality can become neighbourhood infrastructure.", [
     "A modern city hotel can be restaurant, meeting room, remote office, spa, event venue and social space — creating reasons for local people to enter a building they may never sleep in.",
     "The partner story follows one complete day through those uses, turning a sponsor placement into useful editorial rather than a generic advert.",
   ], { bg: "#d9d1c3", ink: "#1d1914", accent: "#755f43" }, art.portraitE, { quote: "THE BUILDING BECOMES MORE VALUABLE WHEN LOCALS FEEL INVITED IN.", meta: ["MEET", "WORK", "RESET", "DINNER"] }));
 
-  pages.push(hospitalityEditorialPage(issueId, 33, "sponsored-house44-ii", "SPONSORED STORY · CONCEPT", "HOSPITALITY AS\nCITY INFRASTRUCTURE", "The useful question is larger than the hotel: why are these spaces increasingly relevant to people who live ten minutes away?", [
+  pages.push(hospitalityEditorialPage(issueId, 33, "sponsored-house44-ii", "SPONSORED STORY · CONCEPT", "HOSPITALITY AS
+CITY INFRASTRUCTURE", "The useful question is larger than the hotel: why are these spaces increasingly relevant to people who live ten minutes away?", [
     "People need somewhere to meet, wait, eat, work, reset and celebrate. The hotel already contains many of those rooms.",
     "The opportunity is to make locals feel invited into them — and to make every room carry a reason to return.",
   ], { bg: "#ebe4d8", ink: "#211b15", accent: "#916b3f" }, art.portraitB, { imageSide: "left", quote: "A HOTEL CAN BELONG TO THE NEIGHBOURHOOD EVEN WHEN YOU NEVER STAY THE NIGHT.", meta: ["LOBBY", "TABLE", "SPA", "EVENT"] }));
 
   pages.push(fashionAdvertPage(issueId, 34, "ad-studio-nine", "/resources/images-with-alpha/lady-in-ankara-1.webp"));
 
-  pages.push(culturePosterPage(issueId, 35, "rosebank-art-i", "DESIGN + CULTURE / I", "ART DOES\nSOMETHING\nRETAIL CAN\'T", "It gives people permission to wander.", [
+  pages.push(culturePosterPage(issueId, 35, "rosebank-art-i", "DESIGN + CULTURE / I", "ART DOES
+SOMETHING
+RETAIL CAN\'T", "It gives people permission to wander.", [
     "Keyes Art Mile deliberately combines galleries, design, restaurants and urban activity. The broader Rosebank area extends that cultural ecosystem into surrounding streets.",
     "The commercial effect is subtle but important: people arrive without a shopping list. They look, walk, talk, eat, drink, discover and stay. Culture creates footfall without needing to describe itself that way.",
   ], { bg: "#d7e6f5", ink: "#111820", accent: "#3157ff" }, "/resources/images-with-alpha/african-woman-with-head-tie-1.webp", { quote: "CULTURE CAN BE ECONOMIC INFRASTRUCTURE.", note: "KEYES / CIRCA / BKhz / EVERARD READ" }));
 
-  pages.push(culturePosterPage(issueId, 36, "rosebank-art-ii", "DESIGN + CULTURE / II", "THE VALUE\nOF WANDERING", "Looking can be the entire purpose.", [
+  pages.push(culturePosterPage(issueId, 36, "rosebank-art-ii", "DESIGN + CULTURE / II", "THE VALUE
+OF WANDERING", "Looking can be the entire purpose.", [
     "Retail usually begins with intent: a shirt, a meal, a gift, a service. Art changes the rhythm because looking itself can be enough reason to arrive.",
     "That slower behaviour matters to a district. A person who wanders is available to be surprised. Gallery, café, store, restaurant and street begin to read as one connected experience.",
   ], { bg: "#f2e7cc", ink: "#241b0d", accent: "#d09a00" }, "/resources/images-with-alpha/man-with-dreadlocks-smiling-1.webp", { imageSide: "left", quote: "A PERSON WHO WANDERS IS AVAILABLE TO BE SURPRISED.", note: "LOOK / WALK / DISCOVER / STAY" }));
 
-  pages.push(culturePosterPage(issueId, 37, "rosebank-art-iii", "DESIGN + CULTURE / III", "WHEN A\nPRECINCT\nBECOMES\nA HABIT", "The goal is not one event. It is repeat behaviour.", [
+  pages.push(culturePosterPage(issueId, 37, "rosebank-art-iii", "DESIGN + CULTURE / III", "WHEN A
+PRECINCT
+BECOMES
+A HABIT", "The goal is not one event. It is repeat behaviour.", [
     "The strongest cultural districts are not visited only for openings. They become part of the ordinary mental map: somewhere to take a visitor, start a Saturday, meet after work or discover what changed.",
     "That is the deeper opportunity for Rosebank. Art is not merely a category inside the neighbourhood; it can be one of the reasons the neighbourhood keeps being chosen.",
   ], { bg: "#171415", ink: "#fff", accent: "#e9ff58" }, "/resources/images-with-alpha/lady-in-gele-1.webp", { quote: "THE GOAL IS NOT ONE EVENT. IT'S REPEAT BEHAVIOUR.", note: "ART NIGHT / SATURDAY / VISITORS / ROUTINE" }));
@@ -2620,7 +2679,8 @@ function buildIssuePages(issueId: string, options: DemoMagazineOptions, cover: M
     { title: "ONE DETAIL", body: "The thing you almost walked past. XpoMag wants to make small city discoveries worth saving." },
   ], "/resources/images-with-alpha/corporate-african-lady-smiling-1.webp"));
 
-  pages.push(afterHoursFeaturePage(issueId, 40, "after-five-i", "DON\'T GO\nHOME YET", [
+  pages.push(afterHoursFeaturePage(issueId, 40, "after-five-i", "DON\'T GO
+HOME YET", [
     "Five o'clock changes the function of the city. The meeting ends. Tables fill. Lights become warmer. Music gets louder. People who were rushing begin staying.",
     "Rosebank's evening rhythm increasingly mixes art, dining and social running. Sandton layers in hotels, destination restaurants, event programming and retail. The office district becomes something else without moving anywhere.",
   ], "/resources/images-with-alpha/dark-lady-in-dreads-smiling-1.webp"));
@@ -2634,46 +2694,62 @@ function buildIssuePages(issueId: string, options: DemoMagazineOptions, cover: M
 
   pages.push(afterWorkAdvertPage(issueId, 42, "ad-after-work", "/resources/images-with-alpha/lady-in-ankara-1.webp"));
 
-  pages.push(propertyFeaturePage(issueId, 43, "mixed-use-i", "PROPERTY / I", "THE BEST\nAMENITY MAY BE\nEVERYTHING\nNEXT DOOR", "Mixed-use changes what a building can borrow from its neighbourhood.", [
+  pages.push(propertyFeaturePage(issueId, 43, "mixed-use-i", "PROPERTY / I", "THE BEST
+AMENITY MAY BE
+EVERYTHING
+NEXT DOOR", "Mixed-use changes what a building can borrow from its neighbourhood.", [
     "The old development model separates: work here, live there, shop somewhere else, drive between them. Mixed-use districts compress those behaviours and reduce the friction between them.",
     "That compression creates convenience, but it also creates more commercial encounters. A café, gallery, gym, hotel or store benefits from the fact that people already have multiple reasons to be nearby.",
   ], { bg: "#d7dfce", ink: "#182016", accent: "#7f9a72" }, "/resources/images-with-alpha/corporate-man-full-mid-shot-1.webp", { quote: "THE NETWORK AROUND THE FRONT DOOR CAN BE PART OF THE PROPERTY VALUE.", stat: "5 MIN", statLabel: "THE RADIUS THAT CHANGES DAILY BEHAVIOUR" }));
 
-  pages.push(propertyFeaturePage(issueId, 44, "mixed-use-ii", "PROPERTY / II", "WHAT'S AROUND\nTHE FRONT\nDOOR?", "The unofficial amenity list may matter as much as the official one.", [
+  pages.push(propertyFeaturePage(issueId, 44, "mixed-use-ii", "PROPERTY / II", "WHAT'S AROUND
+THE FRONT
+DOOR?", "The unofficial amenity list may matter as much as the official one.", [
     "A building can have beautiful finishes and still sit inside a weak daily experience. The reverse is also true: a straightforward building can become dramatically more useful when everything needed sits within a short radius.",
     "Transport, food, wellness, shops, public space, hospitality and culture become part of the amenity mix — even when none of them appear inside the lease.",
   ], { bg: "#eee8dc", ink: "#221d15", accent: "#c18a42" }, "/resources/images-with-alpha/corporate-african-lady-smiling-1.webp", { imageSide: "left", quote: "YOU DON'T ONLY OCCUPY A BUILDING. YOU OCCUPY ITS CONTEXT." }));
 
-  pages.push(propertyFeaturePage(issueId, 45, "mixed-use-iii", "PROPERTY / III", "THE CITY AS\nA SHARED\nLOBBY", "The most valuable space may be the space between the buildings.", [
+  pages.push(propertyFeaturePage(issueId, 45, "mixed-use-iii", "PROPERTY / III", "THE CITY AS
+A SHARED
+LOBBY", "The most valuable space may be the space between the buildings.", [
     "The most interesting mixed-use districts make public space feel like the shared lobby between many separate businesses. The café serves the office. The gallery serves the restaurant. The transport link serves them all.",
     "That is why public-realm improvements, walkability and programming matter commercially. They improve the connective tissue rather than one tenant's box.",
   ], { bg: "#c5d7de", ink: "#132129", accent: "#4f8ea3" }, "/resources/images-with-alpha/young-corporate-man-2.webp", { quote: "GOOD DISTRICTS CREATE VALUE BETWEEN THE BUILDINGS.", stat: "1 CITY", statLabel: "MANY FRONT DOORS" }));
 
   pages.push(retailDataPage(issueId, 46, "rosebank-retail", "LOW VACANCY. NEW NAMES.", "/resources/images-with-alpha/lady-smiling-3.webp"));
 
-  pages.push(propertyFeaturePage(issueId, 47, "sandton-scale", "PROPERTY / SANDTON", "SOMETIMES\nBIG IS\nTHE POINT", "Scale can be infrastructure when choice and concentration matter.", [
+  pages.push(propertyFeaturePage(issueId, 47, "sandton-scale", "PROPERTY / SANDTON", "SOMETIMES
+BIG IS
+THE POINT", "Scale can be infrastructure when choice and concentration matter.", [
     "Sandton's defining advantage remains concentration: hotels, retail, professional services, offices, restaurants, conference infrastructure and transport inside a major commercial node.",
     "Scale can feel impersonal, but it can also feel useful. When the question is where can we host this, where can the visitor stay, or where can we find everything in one trip, bigness becomes a feature.",
   ], { bg: "#26314a", ink: "#fff", accent: "#96b5ff" }, "/resources/images-with-alpha/older-corporate-man-1.webp", { imageSide: "left", quote: "DENSITY CAN FEEL INTIMATE. SCALE CAN FEEL USEFUL." }));
 
-  pages.push(sponsoredPropertyPage(issueId, 48, "sponsored-fieldwork-i", "THE FUTURE OF\nWORK HAS A\nFRONT DOOR", "FIELDWORK is a fictional commercial-real-estate partner used to demonstrate a sponsored story about behaviour rather than square metres.", [
+  pages.push(sponsoredPropertyPage(issueId, 48, "sponsored-fieldwork-i", "THE FUTURE OF
+WORK HAS A
+FRONT DOOR", "FIELDWORK is a fictional commercial-real-estate partner used to demonstrate a sponsored story about behaviour rather than square metres.", [
     "The concept follows a company moving from a large conventional office into a smaller headquarters surrounded by shared amenities, meeting rooms, hospitality and transport.",
     "The story asks a better property question: what does a team actually need the office to do now? Culture, collaboration and identity may matter more than giving every person a permanent desk.",
   ], "/resources/images-with-alpha/corporate-lady-smiling-5.webp", { quote: "THE OFFICE IS BECOMING A FRONT DOOR INTO A LARGER WORKPLACE." }));
 
-  pages.push(sponsoredPropertyPage(issueId, 49, "sponsored-fieldwork-ii", "SMALLER OFFICE.\nBIGGER\nNEIGHBOURHOOD.", "A modern workspace can outsource some of its value to the city around it.", [
+  pages.push(sponsoredPropertyPage(issueId, 49, "sponsored-fieldwork-ii", "SMALLER OFFICE.
+BIGGER
+NEIGHBOURHOOD.", "A modern workspace can outsource some of its value to the city around it.", [
     "Lunch downstairs. Client meetings in a hotel. A run club after work. Transport nearby. Culture within walking distance. These things become part of the work environment even when the employer does not own them.",
     "That does not make the office less important. It makes location more important. The office becomes a gateway into a network rather than a self-contained island.",
   ], "/resources/images-with-alpha/corporate-man-posing-1.webp", { reversed: true, quote: "THE OFFICE CAN GET SMALLER WHILE THE WORKPLACE GETS BIGGER." }));
 
   pages.push(propertyAdvertPage(issueId, 50, "ad-fieldwork", "/resources/images-with-alpha/young-corporate-man-4.webp"));
 
-  pages.push(wellnessFeaturePage(issueId, 51, "wellness-i", "WELLNESS / I", "FITNESS FOUND\nA SOCIAL LIFE", "Running is becoming a city ritual — part exercise, part repeated social infrastructure.", [
+  pages.push(wellnessFeaturePage(issueId, 51, "wellness-i", "WELLNESS / I", "FITNESS FOUND
+A SOCIAL LIFE", "Running is becoming a city ritual — part exercise, part repeated social infrastructure.", [
     "Rosebank's public calendar includes recurring social running groups whose value goes beyond kilometres and pace. They create a dependable weekly reason for people to arrive, move together and see the precinct at street level.",
     "The useful sequence is simple: routine creates familiarity; familiarity creates community; community creates identity. People may join for the run, but many return because the group starts feeling like part of their city life.",
   ], "/resources/images-with-alpha/young-man-laughing-2.webp", { bg: "#d3efcf", ink: "#132415", accent: "#3d7a45" }, { quote: "PEOPLE JOIN FOR THE RUN. THEY RETURN FOR THE PEOPLE.", metric: "3×", metricLabel: "RECURRING RUN COMMUNITIES IN THIS ISSUE" }));
 
-  pages.push(wellnessFeaturePage(issueId, 52, "wellness-ii", "WELLNESS / II", "COMMUNITY\nWITHOUT A\nMEMBERSHIP DECK", "The strongest local communities often form around behaviour first and branding second.", [
+  pages.push(wellnessFeaturePage(issueId, 52, "wellness-ii", "WELLNESS / II", "COMMUNITY
+WITHOUT A
+MEMBERSHIP DECK", "The strongest local communities often form around behaviour first and branding second.", [
     "The most compelling thing about social fitness communities is that they do not begin by explaining community. They begin by doing something together repeatedly — then identity appears around the habit.",
     "For cafés, wellness brands and retailers, that offers a useful lesson. Sponsorship works best when it helps the ritual instead of trying to become the ritual. Water, coffee, recovery, meeting space and useful perks can fit naturally around the behaviour.",
   ], "/resources/images-with-alpha/lady-happy-vibes-1.webp", { bg: "#f0ecd2", ink: "#232112", accent: "#7c7a25" }, { imageSide: "left", quote: "BEHAVIOUR FIRST. BRANDING SECOND.", metric: "WEEKLY", metricLabel: "THE CADENCE THAT TURNS STRANGERS INTO REGULARS" }));
@@ -2776,7 +2852,9 @@ export function selectDemoMagazine(city: string, options: DemoMagazineOptions = 
     issueLabel: "Issue 001",
     monthLabel: "November 2026",
     metadata: {
-      edition: editionCity,\n      publicationSlug: /johannesburg|rosebank|sandton/i.test(requestedCity) ? "joburg" : slugCity,\n      publicationName: `XpoMag ${/johannesburg|rosebank|sandton/i.test(requestedCity) ? "Joburg" : requestedCity}`,
+      edition: editionCity,
+      publicationSlug: /johannesburg|rosebank|sandton/i.test(requestedCity) ? "joburg" : slugCity,
+      publicationName: `XpoMag ${/johannesburg|rosebank|sandton/i.test(requestedCity) ? "Joburg" : requestedCity}`,
       issueNumber: 1,
       publicationFrequency: "monthly",
       demo: true,
