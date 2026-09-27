@@ -373,7 +373,7 @@ function coverPage(issueId: string, tone: Tone): MagazinePageDefinition {
       filter: "invert(1)",
       opacity: .98,
       transform: align === "left"
-        ? "scaleX(-1) translate(-22%, 28%)"
+        ? "translate(-20px, 20px) scaleX(-1)"
         : "translate(22%, 28%)",
       transformOrigin: "center",
       alignSelf: align === "right" ? "flex-end" : "flex-start",
@@ -460,11 +460,11 @@ function coverPage(issueId: string, tone: Tone): MagazinePageDefinition {
         position: "absolute",
         zIndex: 8,
         top: "13.7%",
-        left: "7%",
-        right: "7%",
+        left: "3.5%",
+        right: "3.5%",
         color: "#fff",
         fontFamily: "var(--xp-font-editorial)",
-        fontSize: "clamp(1.12rem,2.2vw,2.05rem)",
+        fontSize: "clamp(1.2rem,2.5vw,2.35rem)",
         fontWeight: 500,
         lineHeight: .95,
         textAlign: "center",
@@ -503,7 +503,7 @@ function coverPage(issueId: string, tone: Tone): MagazinePageDefinition {
         justifyContent: "flex-end",
         gap: "clamp(.22rem,.38vw,.36rem)",
         whiteSpace: "nowrap",
-        transform: "rotate(-3deg)",
+        transform: "translateY(-20px) rotate(-3deg)",
       }),
 
       coverline(
