@@ -1164,6 +1164,44 @@ export function MagazineReader({
   ) => {
     const isSingle = spreadToRender.pageIndexes.length === 1;
     const nativeSpread = resolveNativeSpread(spreadToRender);
+    if (nativeSpread && !isSingle) {
+      const hiddenSide = hiddenPageIndex == null
+        ? undefined
+        : hiddenPageIndex === spreadToRender.pageIndexes[0]
+          ? "left"
+          : hiddenPageIndex === spreadToRender.pageIndexes[1]
+            ? "right"
+            : undefined;
+      return (
+        <div
+          className={`xp-magazine__spread-layer xp-magazine__spread-layer--${role} is-spread is-native-spread`}
+          aria-hidden={role === "target" ? true : undefined}
+          data-hidden-side={hiddenSide}
+        >
+          <article
+            className="xp-magazine__native-spread"
+            aria-label={role === "current" ? nativeSpread.title : undefined}
+          >
+            <MagazineSpreadCanvas
+              spread={nativeSpread as MagazineSpreadDefinition}
+              globalElements={issue.designElements}
+              renderEngagement={role === "current" ? (piece) => (
+                <SectionEngagementBar
+                  issueSlug={issue.slug}
+                  pageSlug={issue.pages[spreadToRender.pageIndexes[0]]?.slug ?? firstPage.slug}
+                  sectionId={piece.id}
+                  sectionSlug={piece.slug}
+                  authenticated={viewerAuthenticated}
+                  config={piece.engagement}
+                  appearance={["feature", "advert", "closing"].includes(nativeSpread.kind ?? "") ? "light" : "dark"}
+                />
+              ) : undefined}
+            />
+          </article>
+        </div>
+      );
+    }
+
     return (
       <div
         className={`xp-magazine__spread-layer xp-magazine__spread-layer--${role} ${isSingle ? "is-single" : "is-spread"}`}
@@ -1182,24 +1220,7 @@ export function MagazineReader({
               aria-busy={!page}
             >
               <div className="xp-magazine__paper">
-                {nativeSpread ? (
-                  <MagazineSpreadLeaf
-                    spread={nativeSpread as MagazineSpreadDefinition}
-                    side={slot === 0 ? "left" : "right"}
-                    globalElements={issue.designElements}
-                    renderEngagement={(piece) => (
-                      <SectionEngagementBar
-                        issueSlug={issue.slug}
-                        pageSlug={manifest.slug}
-                        sectionId={piece.id}
-                        sectionSlug={piece.slug}
-                        authenticated={viewerAuthenticated}
-                        config={piece.engagement}
-                        appearance={["feature", "advert", "closing"].includes(nativeSpread.kind ?? "") ? "light" : "dark"}
-                      />
-                    )}
-                  />
-                ) : !page ? (
+                {!page ? (
                   <div className="xp-magazine__page-loading" role="status" aria-label={`Loading ${manifest.title}`}>
                     <span />
                     <span />
