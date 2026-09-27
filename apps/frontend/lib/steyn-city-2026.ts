@@ -1397,6 +1397,366 @@ function bentleyAdvertSpread(issueId: string): MagazineSpreadDefinition {
 }
 
 
+function contentsGolfSpread(issueId: string): MagazineSpreadDefinition {
+  const hero = "/resources/studio/steyn/steyn-city-xpomag-spread-2-01.webp";
+  const portrait = "/resources/studio/steyn/steyn-city-xpomag-spread-2-02.webp";
+  const qr = "/resources/studio/steyn/QR-code-300x300.png";
+
+  const image = (
+    id: string,
+    src: string,
+    alt: string,
+    style: DesignElementNode["style"],
+  ): DesignElementNode => ({
+    id,
+    type: "image",
+    props: { src, alt, loading: "eager", fetchPriority: "high" },
+    style,
+  });
+
+  const contentsLeft = [
+    ["GOLF", "A NEW TAKE ON AN ESTABLISHED TRADITION", "8–11"],
+    ["GOLF", "WHERE GOLF MEETS EXCELLENCE", "26"],
+    ["CYCLING", "STEYN CITY: SUPERB FOR CYCLISTS!", "12"],
+    ["SENIOR VILLAGE", "GLOWING THROUGH THE GOLDEN YEARS", "14"],
+    ["LIFESTYLE", "LIVING THE EASY LIFE", "16"],
+    ["LIFESTYLE", "WHERE EVERY DAY’S A HOLIDAY!", "28"],
+    ["LIFESTYLE", "WORK, CONNECT, THRIVE", "32"],
+    ["ENVIRONMENT", "BIRDS AND BEES", "18"],
+    ["PROPERTY", "DISCOVER THE STEYN CITY RENTAL COLLECTION", "22"],
+  ];
+
+  const contentsRight = [
+    ["WINE", "CONSECUTIVE GLOBAL ACCLAIM FOR SA CHENIN BLANC", "23"],
+    ["FOOD", "ALL THINGS DELICIOUS", "24"],
+    ["SCHOOL", "WHERE VALUES SHAPE FUTURES", "30"],
+    ["WELLNESS", "HEALTH IS THE NEW WEALTH", "34"],
+    ["EQUESTRIAN", "SHOWING OFF WITH SHOWJUMPING", "36"],
+    ["COMMUNITY", "YOU SAW IT HERE FIRST!", "38"],
+  ];
+
+  const contentsColumn = (id: string, rows: string[][]): DesignElementNode =>
+    stack(id, rows.map(([category, title, pageNo], index) =>
+      grid(id + "-row-" + index, [
+        stack(id + "-copy-" + index, [
+          text(id + "-category-" + index, category, {
+            color: "#4f4a45",
+            fontFamily: "var(--xp-font-grotesk)",
+            fontSize: "clamp(.32rem,.46vw,.48rem)",
+            fontWeight: 850,
+            lineHeight: 1,
+            letterSpacing: ".09em",
+          }, "span"),
+          text(id + "-title-" + index, title, {
+            color: "#26221f",
+            fontFamily: "var(--xp-font-grotesk)",
+            fontSize: "clamp(.34rem,.49vw,.52rem)",
+            fontWeight: 670,
+            lineHeight: 1.08,
+            letterSpacing: "-.015em",
+          }, "span"),
+        ], { gap: ".12rem" }),
+        text(id + "-page-" + index, pageNo, {
+          color: "#26221f",
+          fontFamily: "var(--xp-font-grotesk)",
+          fontSize: "clamp(.34rem,.47vw,.5rem)",
+          fontWeight: 760,
+          lineHeight: 1,
+          textAlign: "right",
+        }, "span"),
+      ], {
+        gridTemplateColumns: "1fr auto",
+        alignItems: "end",
+        gap: ".45rem",
+      })
+    ), { gap: "clamp(.38rem,.62vw,.64rem)" });
+
+  return {
+    id: "steyn-contents-golf-spread",
+    issueId,
+    slug: "contents-golf",
+    title: "Home of LIV Golf South Africa 2026",
+    kind: "feature",
+    pageIds: ["contents", "liv-opener"],
+    style: { background: "#f3efea" },
+    pieces: [{
+      id: "steyn-contents-golf-piece",
+      slug: "steyn-contents-golf-piece",
+      title: "Home of LIV Golf South Africa 2026",
+      kind: "feature",
+      region: "spread",
+      gutterBehaviour: "cross",
+      engagement: { reactions: false, comments: false, share: true, save: true },
+      style: {
+        position: "absolute",
+        inset: 0,
+        overflow: "hidden",
+        background: "#f3efea",
+      },
+      elements: [
+        image("contents-golf-hero", hero, "Steyn City clubhouse and golf venue at dusk", {
+          position: "absolute",
+          left: 0,
+          top: 0,
+          width: "100%",
+          height: "56.5%",
+          objectFit: "cover",
+          objectPosition: "center 52%",
+          zIndex: 0,
+        }),
+        {
+          id: "contents-golf-hero-grade",
+          type: "frame",
+          style: {
+            position: "absolute",
+            inset: "0 0 43.5% 0",
+            zIndex: 1,
+            background: "linear-gradient(180deg,rgba(244,237,236,.12) 0%,rgba(33,27,22,.04) 60%,rgba(17,15,13,.18) 100%)",
+            pointerEvents: "none",
+          },
+        },
+        text("contents-golf-left-title", "HOME OF LIV GOLF", {
+          position: "absolute",
+          left: "8.2%",
+          top: "5.4%",
+          width: "38%",
+          color: "#251e1d",
+          fontFamily: "var(--xp-font-editorial)",
+          fontSize: "clamp(1.5rem,3.15vw,3.25rem)",
+          fontWeight: 400,
+          lineHeight: .95,
+          letterSpacing: ".025em",
+          textAlign: "left",
+          whiteSpace: "nowrap",
+          zIndex: 3,
+          textShadow: "0 1px 14px rgba(255,255,255,.45)",
+        }, "h2"),
+        text("contents-golf-right-title", "SOUTH AFRICA 2026", {
+          position: "absolute",
+          right: "7.1%",
+          top: "5.4%",
+          width: "39%",
+          color: "#251e1d",
+          fontFamily: "var(--xp-font-editorial)",
+          fontSize: "clamp(1.5rem,3.15vw,3.25rem)",
+          fontWeight: 400,
+          lineHeight: .95,
+          letterSpacing: ".025em",
+          textAlign: "right",
+          whiteSpace: "nowrap",
+          zIndex: 3,
+          textShadow: "0 1px 14px rgba(255,255,255,.45)",
+        }, "h2"),
+        {
+          id: "contents-golf-circle",
+          type: "frame",
+          style: {
+            position: "absolute",
+            left: "39.2%",
+            top: "31.8%",
+            width: "14.5%",
+            aspectRatio: "1 / 1",
+            borderRadius: "50%",
+            background: "#f5f2ef",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 5,
+            boxShadow: "0 5px 18px rgba(0,0,0,.10)",
+          },
+          children: [
+            stack("contents-golf-circle-copy", [
+              text("contents-golf-experience", "EXPERIENCE", {
+                color: "#5b554f",
+                fontFamily: "var(--xp-font-grotesk)",
+                fontSize: "clamp(.28rem,.36vw,.39rem)",
+                fontWeight: 760,
+                letterSpacing: ".16em",
+                textAlign: "center",
+              }, "span"),
+              text("contents-golf-circle-body",
+                "STEYN CITY STAND A\nCHANCE TO WIN A NIGHT FOR\nTWO AT THE STEYN CITY HOTEL\nBY SAXON, ALONG WITH A LUXE\nTREATMENT AT THE SAXON\nSPA & STEYN CITY—ALL WHILE\nDISCOVERING FIRST-HAND THE\nEXTRAORDINARY LIFESTYLE\nON OFFER. SCAN TO\nENTER.",
+                {
+                  color: "#292522",
+                  fontFamily: "var(--xp-font-grotesk)",
+                  fontSize: "clamp(.27rem,.34vw,.37rem)",
+                  fontWeight: 620,
+                  lineHeight: 1.16,
+                  letterSpacing: ".02em",
+                  textAlign: "center",
+                  whiteSpace: "pre-line",
+                }
+              ),
+              image("contents-golf-qr", qr, "QR code for Steyn City experience", {
+                width: "clamp(1.6rem,2.1vw,2.15rem)",
+                height: "auto",
+                objectFit: "contain",
+                marginTop: ".1rem",
+              }),
+            ], {
+              width: "82%",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: ".18rem",
+            }),
+          ],
+        },
+        {
+          id: "contents-golf-lower",
+          type: "frame",
+          style: {
+            position: "absolute",
+            left: 0,
+            right: 0,
+            bottom: 0,
+            height: "43.5%",
+            background: "#f4f0eb",
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            zIndex: 2,
+          },
+          children: [
+            {
+              id: "contents-golf-lower-left",
+              type: "frame",
+              style: {
+                position: "relative",
+                padding: "clamp(1rem,2.35vw,2.5rem) clamp(1.2rem,3vw,3.15rem) clamp(.8rem,1.8vw,1.8rem)",
+                borderRight: "1px solid rgba(35,29,26,.08)",
+                overflow: "hidden",
+              },
+              children: [
+                text("contents-golf-contents-title", "CONTENTS", {
+                  color: "#18464a",
+                  fontFamily: "var(--xp-font-editorial)",
+                  fontSize: "clamp(1.8rem,3.45vw,3.55rem)",
+                  fontWeight: 400,
+                  lineHeight: .92,
+                  letterSpacing: ".025em",
+                  marginBottom: "clamp(.7rem,1.2vw,1.2rem)",
+                }, "h2"),
+                grid("contents-golf-columns", [
+                  contentsColumn("contents-golf-col-a", contentsLeft),
+                  contentsColumn("contents-golf-col-b", contentsRight),
+                ], {
+                  gridTemplateColumns: "1fr 1fr",
+                  gap: "clamp(1rem,2vw,2.2rem)",
+                  alignItems: "start",
+                }),
+                {
+                  id: "contents-golf-left-rule",
+                  type: "frame",
+                  style: {
+                    position: "absolute",
+                    left: "8%",
+                    right: "8%",
+                    bottom: "4.8%",
+                    height: "1px",
+                    background: "rgba(40,33,28,.45)",
+                  },
+                },
+                text("contents-golf-left-edition", "2026 EDITION", {
+                  position: "absolute",
+                  left: "50%",
+                  bottom: "2.2%",
+                  transform: "translateX(-50%)",
+                  color: "#635e59",
+                  fontFamily: "var(--xp-font-grotesk)",
+                  fontSize: "clamp(.28rem,.38vw,.41rem)",
+                  fontWeight: 700,
+                  letterSpacing: ".14em",
+                }, "span"),
+              ],
+            },
+            {
+              id: "contents-golf-lower-right",
+              type: "frame",
+              style: {
+                position: "relative",
+                padding: "clamp(1.05rem,2.15vw,2.2rem) clamp(1.35rem,3.2vw,3.35rem) clamp(1rem,2vw,2rem)",
+                overflow: "hidden",
+              },
+              children: [
+                grid("contents-golf-article-grid", [
+                  text("contents-golf-article-a",
+                    "Hosting LIV Golf South Africa 2026 is not only an enormous honour but also a profound responsibility, both for our estate and for our country; giving us the opportunity to showcase to the world the spirit of our people and the excellence of our offering.\n\nI marvel that an event of this magnitude and distinction will be hosted at Steyn City. I honestly can’t think LIV Golf could have chosen a better golf course and lifestyle estate to be the stage for a global sporting spectacle.",
+                    {
+                      color: "#3a3531",
+                      fontFamily: "var(--xp-font-editorial)",
+                      fontSize: "clamp(.38rem,.50vw,.54rem)",
+                      lineHeight: 1.43,
+                      whiteSpace: "pre-line",
+                    }
+                  ),
+                  text("contents-golf-article-b",
+                    "We are extremely grateful for this opportunity and grateful, too, for the investment by LIV Golf and the Southern Guards GC. Their contribution to our Steyn City Foundation goes to supporting existing initiatives, while also making it possible to establish the Southern Guards GC Foundation Academy Development Programme in Gauteng.\n\nHowever, you don’t have to love golf to want to live here. Our estate caters to all interests, from mountain-biking and horse riding to swimming, yoga, pilates, aquafit and more. With our hotel, conferencing facilities, and varied workspaces, Steyn City is also an ideal destination for discerning travellers and business guests.",
+                    {
+                      color: "#3a3531",
+                      fontFamily: "var(--xp-font-editorial)",
+                      fontSize: "clamp(.38rem,.50vw,.54rem)",
+                      lineHeight: 1.43,
+                      whiteSpace: "pre-line",
+                    }
+                  ),
+                ], {
+                  gridTemplateColumns: "1fr 1fr",
+                  gap: "clamp(1rem,1.55vw,1.7rem)",
+                  alignItems: "start",
+                  paddingRight: "18%",
+                }),
+                image("contents-golf-portrait", portrait, "Steven Louw, CEO, Steyn City Properties", {
+                  position: "absolute",
+                  right: "4.2%",
+                  top: "-13%",
+                  width: "16.5%",
+                  aspectRatio: "1 / 1",
+                  borderRadius: "50%",
+                  objectFit: "cover",
+                  objectPosition: "center 20%",
+                  border: "clamp(.16rem,.25vw,.27rem) solid #f4f0eb",
+                  boxShadow: "0 4px 14px rgba(0,0,0,.10)",
+                }),
+                text("contents-golf-signoff", "Steven Louw (CEO, Steyn City Properties)", {
+                  position: "absolute",
+                  left: "8%",
+                  bottom: "4.7%",
+                  color: "#39332f",
+                  fontFamily: "var(--xp-font-editorial)",
+                  fontSize: "clamp(.34rem,.43vw,.46rem)",
+                  fontWeight: 600,
+                }, "span"),
+              ],
+            },
+          ],
+        },
+        text("contents-golf-folio-left", "06", {
+          position: "absolute",
+          left: "1.1%",
+          bottom: "1.1%",
+          color: "#312d29",
+          fontFamily: "var(--xp-font-grotesk)",
+          fontSize: "clamp(.34rem,.46vw,.5rem)",
+          fontWeight: 780,
+          letterSpacing: ".08em",
+          zIndex: 8,
+        }, "span"),
+        text("contents-golf-folio-right", "07", {
+          position: "absolute",
+          right: "1.1%",
+          bottom: "1.1%",
+          color: "#312d29",
+          fontFamily: "var(--xp-font-grotesk)",
+          fontSize: "clamp(.34rem,.46vw,.5rem)",
+          fontWeight: 780,
+          letterSpacing: ".08em",
+          zIndex: 8,
+        }, "span"),
+      ],
+    }],
+  };
+}
+
+
 function placeholderPage(
   issueId: string,
   pageNo: number,
@@ -1561,7 +1921,7 @@ export function getSteynCity2026Magazine(): MagazineGlobalDefinition {
         props: { label: "STEYN CITY" },
       },
     },
-    spreads: [cityLivingSpread(issueId), bentleyAdvertSpread(issueId)],
+    spreads: [cityLivingSpread(issueId), bentleyAdvertSpread(issueId), contentsGolfSpread(issueId)],
     pages,
   };
 }
