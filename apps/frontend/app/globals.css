@@ -3797,3 +3797,39 @@ img, picture, video, canvas, svg { display: block; max-width: 100%; }
 .xp-reader-page .xp-magazine__footer {
   isolation: isolate;
 }
+
+
+/* Reader glass final pass: sample the real page backdrop, not an isolated layer. */
+.xp-reader-page .xp-magazine__toolbar,
+.xp-reader-page .xp-magazine__footer {
+  isolation: auto !important;
+}
+
+.xp-reader-page .xp-magazine__meta,
+.xp-reader-page .xp-magazine__page-meta,
+.xp-reader-page .xp-magazine__progress,
+.xp-reader-page .xp-magazine__hint,
+.xp-reader-page .xp-magazine__controls,
+.xp-reader-page .xp-reader-menu {
+  background: rgba(248, 247, 243, .18) !important;
+  border: 1px solid rgba(255,255,255,.72) !important;
+  box-shadow:
+    0 18px 50px rgba(17,14,10,.14),
+    inset 0 1px 0 rgba(255,255,255,.56),
+    inset 0 -1px 0 rgba(255,255,255,.10) !important;
+  backdrop-filter: blur(36px) saturate(190%) contrast(1.02) !important;
+  -webkit-backdrop-filter: blur(36px) saturate(190%) contrast(1.02) !important;
+}
+
+.xp-reader-page .xp-reader-menu {
+  background: rgba(248, 247, 243, .26) !important;
+}
+
+/* Ensure all floating reader controls share the same glass behavior. */
+.xp-reader-page .xp-magazine__icon-button,
+.xp-reader-page .xp-magazine__article-link,
+.xp-reader-page .xp-magazine__nav {
+  background: rgba(255,255,255,.16) !important;
+  backdrop-filter: blur(36px) saturate(190%) !important;
+  -webkit-backdrop-filter: blur(36px) saturate(190%) !important;
+}
