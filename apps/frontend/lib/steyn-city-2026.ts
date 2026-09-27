@@ -721,7 +721,7 @@ function insideFrontGalleryPage(issueId: string): MagazinePageDefinition {
 function insideFrontPropertyPage(issueId: string): MagazinePageDefinition {
   const steynMark = "/resources/studio/steyn/steyn-city-logo-mark.svg";
   const steynWordmark = "/resources/studio/steyn/steyn-city-text-logo.svg";
-  const pamGolding = "/resources/studio/steyn/pam-golding-properties.png";
+  const pamGolding = "/resources/studio/steyn/city-living/pam-golding-properties-logo.webp";
 
   return page(
     issueId,
@@ -912,19 +912,19 @@ function insideFrontPropertyPage(issueId: string): MagazinePageDefinition {
 
 
 function cityLivingSpread(issueId: string): MagazineSpreadDefinition {
-  const aerial = "/resources/studio/steyn/city-living-terrace.webp";
-  const terrace = "/resources/studio/steyn/city-living-sunset.webp";
-  const sunset = "/resources/studio/steyn/city-living-kitchen.webp";
+  // Eight distinct source images: no duplicate URLs in this bento.
+  const aerial = "/resources/studio/steyn/city-living/steyn-city-img-03.webp";
   const sunsetPortrait = "/resources/studio/steyn/city-living-sunset.webp";
-  const kitchen = "/resources/studio/steyn/city-living-kitchen.webp";
-  const staircase = "/resources/studio/steyn/city-living/staircase.webp";
-  const wineWall = "/resources/studio/steyn/city-living/wine-wall.webp";
-  const restaurant = "/resources/studio/steyn/city-living/restaurant.webp";
-  const pinkLiving = "/resources/studio/steyn/city-living/pink-living.webp";
+  const terrace = "/resources/studio/steyn/city-living-terrace.webp";
+  const sunset = "/resources/studio/steyn/city-living-kitchen.webp";
+  const kitchen = "/resources/studio/steyn/city-living/steyn-city-img-01.webp";
+  const wineWall = "/resources/studio/steyn/city-living/steyn-city-img-02.webp";
+  const restaurant = "/resources/studio/steyn/city-living/steyn-city-img-06.webp";
+  const pinkLiving = "/resources/studio/steyn/city-living/steyn-city-img-07.webp";
   const qrCode = "/resources/studio/steyn/city-living/qr-code-steyn-city.png";
   const steynMark = "/resources/studio/steyn/steyn-city-logo-mark.svg";
   const steynWordmark = "/resources/studio/steyn/steyn-city-text-logo.svg";
-  const pamGolding = "/resources/studio/steyn/city-living/pam-golding-logo.svg";
+  const pamGolding = "/resources/studio/steyn/city-living/pam-golding-properties-logo.webp";
 
   const image = (
     id: string,
@@ -1015,7 +1015,7 @@ function cityLivingSpread(issueId: string): MagazineSpreadDefinition {
           borderBottom: gutter,
         }),
 
-        image("city-living-kitchen", kitchen, "Contemporary kitchen and dining interior", {
+        image("city-living-kitchen", kitchen, "Contemporary illuminated staircase interior", {
           position: "absolute",
           left: "56%",
           top: "49%",
@@ -1026,21 +1026,11 @@ function cityLivingSpread(issueId: string): MagazineSpreadDefinition {
           borderBottom: gutter,
         }),
 
-        image("city-living-staircase", staircase, "Contemporary Steyn City staircase interior", {
+        image("city-living-wine-wall", wineWall, "Wine wall and art in a Steyn City residence", {
           position: "absolute",
           left: "36%",
           top: "74.5%",
-          width: "9.75%",
-          height: "25.5%",
-          objectPosition: "center center",
-          borderRight: gutter,
-        }),
-
-        image("city-living-wine-wall", wineWall, "Wine wall and art in a Steyn City residence", {
-          position: "absolute",
-          left: "45.75%",
-          top: "74.5%",
-          width: "9.75%",
+          width: "13%",
           height: "25.5%",
           objectPosition: "center center",
           borderRight: gutter,
@@ -1048,9 +1038,9 @@ function cityLivingSpread(issueId: string): MagazineSpreadDefinition {
 
         image("city-living-restaurant", restaurant, "Steyn City dining and hospitality interior", {
           position: "absolute",
-          left: "55.5%",
+          left: "49%",
           top: "74.5%",
-          width: "9.75%",
+          width: "13%",
           height: "25.5%",
           objectPosition: "center center",
           borderRight: gutter,
@@ -1058,9 +1048,9 @@ function cityLivingSpread(issueId: string): MagazineSpreadDefinition {
 
         image("city-living-pink-lounge", pinkLiving, "Colourful contemporary Steyn City living room", {
           position: "absolute",
-          left: "65.25%",
+          left: "62%",
           top: "74.5%",
-          width: "9.75%",
+          width: "13%",
           height: "25.5%",
           objectPosition: "center center",
           borderRight: gutter,
