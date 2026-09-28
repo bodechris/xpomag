@@ -1,6 +1,6 @@
 "use client";
 
-import { buildMasterSpreadsFromPages, MAGAZINE_COMPACT_MAX_WIDTH, MAGAZINE_MAX_PAGE_CACHE_ENTRIES, magazineTransitionKindForMode, MagazinePageRenderer, MagazineSpreadCanvas, MagazineSpreadLeaf, type ComposerNode, type DesignElementNode, type MagazineMasterSpread, type MagazinePageDefinition, type MagazineSpreadDefinition } from "@xpomag/magazine";
+import { buildMasterSpreadsFromPages, MAGAZINE_COMPACT_MAX_WIDTH, MAGAZINE_MAX_PAGE_CACHE_ENTRIES, MagazinePageRenderer, MagazineSpreadCanvas, MagazineSpreadLeaf, type ComposerNode, type DesignElementNode, type MagazineMasterSpread, type MagazinePageDefinition, type MagazineSpreadDefinition } from "@xpomag/magazine";
 import { ArrowLeft, ArrowRight, BookOpen, LockKeyhole, Maximize2, Menu, Minimize2, Pause, Play, RotateCcw, X } from "lucide-react";
 import { MagazineEngagementDock } from "./magazine-engagement-dock";
 import type { CSSProperties, MouseEvent as ReactMouseEvent, PointerEvent as ReactPointerEvent } from "react";
@@ -87,8 +87,10 @@ function isInteractiveTarget(target: EventTarget | null) {
   return target instanceof Element && Boolean(target.closest(INTERACTIVE_SELECTOR));
 }
 
-function transitionKind(singlePage: boolean, _from: number, _to: number): MotionKind {
-  return magazineTransitionKindForMode(singlePage ? "page" : "spread");
+function transitionKind(singlePage: boolean, from: number, to: number): MotionKind {
+  if (!singlePage) return "flip";
+  const boundary = Math.min(from, to);
+  return boundary % 2 === 0 ? "flip" : "slide";
 }
 
 function clamp01(value: number) {
@@ -550,7 +552,6 @@ export function MagazineReader({
   const suppressClick = useRef(false);
   const progressRef = useRef(0);
   const motionTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const motionFrameRef = useRef<number | null>(null);
   const afterMotionRef = useRef<(() => void) | null>(null);
   const readerRef = useRef<HTMLElement | null>(null);
   const stageRef = useRef<HTMLDivElement | null>(null);
@@ -635,9 +636,7 @@ export function MagazineReader({
   const setProgress = useCallback((value: number) => {
     const next = clamp01(value);
     progressRef.current = next;
-    const stage = stageRef.current;
-    stage?.style.setProperty("--xp-turn-progress", String(next));
-    if (stage) stage.dataset.turnFace = next < 0.5 ? "front" : "back";
+    stageRef.current?.style.setProperty("--xp-turn-progress", String(next));
   }, []);
 
   const clearMotionTimer = useCallback(() => {
@@ -645,54 +644,31 @@ export function MagazineReader({
       clearTimeout(motionTimer.current);
       motionTimer.current = null;
     }
-    if (motionFrameRef.current != null) {
-      cancelAnimationFrame(motionFrameRef.current);
-      motionFrameRef.current = null;
-    }
   }, []);
 
-  const animateProgress = useCallback((to: number, onDone: () => void) => {
-    if (motionFrameRef.current != null) cancelAnimationFrame(motionFrameRef.current);
-    const from = progressRef.current;
-    const distance = Math.abs(to - from);
-    const duration = Math.max(180, MOTION_MS * distance);
-    const started = performance.now();
-
-    const ease = (t: number) => 1 - Math.pow(1 - t, 3);
-    const tick = (now: number) => {
-      const elapsed = Math.min(1, (now - started) / duration);
-      const eased = ease(elapsed);
-      setProgress(from + ((to - from) * eased));
-      if (elapsed < 1) {
-        motionFrameRef.current = requestAnimationFrame(tick);
-        return;
-      }
-      motionFrameRef.current = null;
-      setProgress(to);
-      onDone();
-    };
-
-    motionFrameRef.current = requestAnimationFrame(tick);
-  }, [setProgress]);
-
-  const finishMotion = useCallback((commit: boolean, targetIndex: number) => {
-    if (commit) setSpreadIndex(targetIndex);
-    setMotion(null);
-    setProgress(0);
-    const stage = stageRef.current;
-    if (stage) delete stage.dataset.turnFace;
-    wheelDeltaRef.current = 0;
-    wheelBlockedUntilRef.current = performance.now() + 220;
-    navigationLockRef.current = false;
-    const afterMotion = afterMotionRef.current;
-    afterMotionRef.current = null;
-    if (commit) afterMotion?.();
-  }, [setProgress]);
+  const completeMotion = useCallback((commit: boolean, targetIndex: number) => {
+    clearMotionTimer();
+    motionTimer.current = setTimeout(() => {
+      if (commit) setSpreadIndex(targetIndex);
+      setMotion(null);
+      setProgress(0);
+      motionTimer.current = null;
+      wheelDeltaRef.current = 0;
+      wheelBlockedUntilRef.current = performance.now() + 220;
+      navigationLockRef.current = false;
+      const afterMotion = afterMotionRef.current;
+      afterMotionRef.current = null;
+      if (commit) afterMotion?.();
+    }, MOTION_MS);
+  }, [clearMotionTimer, setProgress]);
 
   const animateMotion = useCallback((current: Motion, commit: boolean) => {
     setMotion({ ...current, phase: "animating" });
-    animateProgress(commit ? 1 : 0, () => finishMotion(commit, current.targetIndex));
-  }, [animateProgress, finishMotion]);
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => setProgress(commit ? 1 : 0));
+    });
+    completeMotion(commit, current.targetIndex);
+  }, [completeMotion, setProgress]);
 
   const createMotion = useCallback((direction: Direction, phase: MotionPhase): Motion | null => {
     const currentIndex = Math.min(Math.max(0, spreadIndex), Math.max(0, spreads.length - 1));
@@ -735,10 +711,11 @@ export function MagazineReader({
     setProgress(0);
     setMotion(nextMotion);
     requestAnimationFrame(() => {
-      animateProgress(1, () => finishMotion(true, targetIndex));
+      requestAnimationFrame(() => setProgress(1));
     });
+    completeMotion(true, targetIndex);
     return true;
-  }, [animateProgress, clearMotionTimer, ensureSpreadLoaded, finishMotion, motion, setProgress, singlePageMode, spreadIndex, spreads]);
+  }, [clearMotionTimer, completeMotion, ensureSpreadLoaded, motion, setProgress, singlePageMode, spreadIndex, spreads]);
 
   const openStoryTarget = useCallback((node: ComposerNode) => {
     const story = node.story;
@@ -784,9 +761,10 @@ export function MagazineReader({
     setProgress(0);
     setMotion(nextMotion);
     requestAnimationFrame(() => {
-      animateProgress(1, () => finishMotion(true, nextMotion.targetIndex));
+      requestAnimationFrame(() => setProgress(1));
     });
-  }, [animateProgress, clearMotionTimer, createMotion, ensureSpreadLoaded, finishMotion, issue.pages, motion, setProgress, singlePageMode, spread, spreads]);
+    completeMotion(true, nextMotion.targetIndex);
+  }, [clearMotionTimer, completeMotion, createMotion, ensureSpreadLoaded, issue.pages, motion, setProgress, singlePageMode, spread, spreads]);
 
   useLayoutEffect(() => {
     const media = window.matchMedia(`(max-width: ${MAGAZINE_COMPACT_MAX_WIDTH}px)`);
