@@ -8304,7 +8304,7 @@ function wellnessSpread(issueId: string): MagazineSpreadDefinition {
   const pool = "/resources/studio/steyn/steyn-city-xpomag-spread-16-02.webp";
   const recovery = "/resources/studio/steyn/steyn-city-xpomag-spread-16-03.webp";
   const pilates = "/resources/studio/steyn/steyn-city-xpomag-spread-16-04.webp";
-  const coach = "/resources/studio/steyn/steyn-city-xpomag-spread-16-05.webp";
+  const coach = "/resources/studio/steyn/steyn-city-xpomag-spread-16-04.webp";
 
   const spaVideo = "https://videos.pexels.com/video-files/37674127/15971334_1080_1920_60fps.mp4";
   const movementVideo = "https://videos.pexels.com/video-files/8616856/8616856-hd_1920_1080_25fps.mp4";
