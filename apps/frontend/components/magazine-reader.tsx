@@ -1507,7 +1507,6 @@ export function MagazineReader({
               ? "right"
               : undefined;
       const useStationaryLeafDuringFlip = Boolean(
-        role === "current" &&
         hiddenSide &&
         normalDesktopFlip
       );
