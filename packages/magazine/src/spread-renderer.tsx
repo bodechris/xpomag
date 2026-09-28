@@ -43,6 +43,47 @@ function inferredPieceSide(piece: MagazineSpreadPiece): MagazineLeafSide | "spre
   return "spread";
 }
 
+
+function inferredNodeSide(node: DesignElementNode): MagazineLeafSide | "spread" {
+  const left = node.style?.left;
+  if (typeof left === "number") return left >= 50 ? "right" : "left";
+  if (typeof left === "string" && left.trim().endsWith("%")) {
+    const value = Number.parseFloat(left);
+    if (Number.isFinite(value)) return value >= 50 ? "right" : "left";
+  }
+  return "spread";
+}
+
+function mobilePieceSide(piece: MagazineSpreadPiece): MagazineLeafSide | null {
+  if (!piece.id.includes("-mobile-")) return null;
+  if (piece.region === "left" || piece.id.includes("mobile-left")) return "left";
+  if (piece.region === "right" || piece.id.includes("mobile-right")) return "right";
+  return null;
+}
+
+function reflowPiecesForSide(spread: MagazineSpreadDefinition, side: MagazineLeafSide) {
+  const authored = spread.pieces.filter((piece) => mobilePieceSide(piece) === side);
+  if (authored.length) {
+    return authored.map((piece) => ({ piece, elements: piece.elements }));
+  }
+
+  return spread.pieces
+    .filter((piece) => !piece.id.includes("-mobile-"))
+    .flatMap((piece) => {
+      const pieceSide = inferredPieceSide(piece);
+      if (pieceSide !== "spread" && pieceSide !== side) return [];
+
+      const elements = pieceSide === side
+        ? piece.elements
+        : piece.elements.filter((node) => {
+            const nodeSide = inferredNodeSide(node);
+            return nodeSide === "spread" || nodeSide === side;
+          });
+
+      return elements.length ? [{ piece, elements }] : [];
+    });
+}
+
 function supplementalMobileMedia(spread: MagazineSpreadDefinition, mobilePiece: MagazineSpreadPiece): DesignElementNode[] {
   if (!mobilePiece.id.includes("-mobile-")) return [];
   const mobileSide = mobilePiece.region === "right" || mobilePiece.id.includes("mobile-right")
@@ -155,13 +196,57 @@ export function MagazineSpreadLeaf({
   globalElements,
   renderEngagement,
   includeSupplementalMobileMedia = true,
+  reflow = false,
 }: {
   spread: MagazineSpreadDefinition;
   side: MagazineLeafSide;
   globalElements?: Record<string, DesignElementNode>;
   renderEngagement?: SpreadPieceEngagementRenderer;
   includeSupplementalMobileMedia?: boolean;
+  reflow?: boolean;
 }) {
+  if (reflow) {
+    const groups = reflowPiecesForSide(spread, side);
+    return (
+      <div
+        data-magazine-leaf={side}
+        data-magazine-reflow={side}
+        style={{ position: "relative", width: "100%", minHeight: "100%", overflow: "visible" }}
+      >
+        {groups.map(({ piece, elements }) => {
+          const supplementalMedia = includeSupplementalMobileMedia ? supplementalMobileMedia(spread, piece) : [];
+          return (
+            <section
+              id={piece.slug}
+              key={piece.id}
+              data-magazine-spread-piece={piece.slug}
+              data-spread-piece-id={piece.id}
+              data-spread-region={piece.region ?? "spread"}
+              data-reflow-piece
+            >
+              {elements.map((element) => (
+                <DesignElement key={element.id} node={element} registry={globalElements} />
+              ))}
+              {supplementalMedia.length ? (
+                <div data-mobile-spread-media aria-label="More media from this page">
+                  {supplementalMedia.map((element, index) => (
+                    <div data-mobile-spread-media-item key={`${piece.id}-supplemental-${element.id}-${index}`}>
+                      <DesignElement
+                        node={{ ...element, id: `${piece.id}-supplemental-${element.id}-${index}` }}
+                        registry={globalElements}
+                      />
+                    </div>
+                  ))}
+                </div>
+              ) : null}
+              {renderEngagement?.(piece)}
+            </section>
+          );
+        })}
+      </div>
+    );
+  }
+
   return (
     <div
       data-magazine-leaf={side}
