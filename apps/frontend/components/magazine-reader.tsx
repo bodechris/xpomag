@@ -1444,7 +1444,7 @@ export function MagazineReader({
                     )}
                   />
                 )}
-                {role === "current" && VIDEO_STORIES[page.slug] ? <YouTubeStoryPanel story={VIDEO_STORIES[page.slug]!} /> : null}
+                {role === "current" && !motion && VIDEO_STORIES[page.slug] ? <YouTubeStoryPanel story={VIDEO_STORIES[page.slug]!} /> : null}
                   </>
                 )}
                 <span className="xp-magazine__folio" aria-hidden="true">{String(pageIndex + 1).padStart(2, "0")}</span>
