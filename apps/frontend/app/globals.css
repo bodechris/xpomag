@@ -6557,7 +6557,7 @@ p[data-drop-cap-lines="6"] .xp-editorial-drop-cap { font-size: 5.85em; }
    Below 1100px a two-page spread is no longer scaled down. Each physical page
    is recomposed as its own vertically scrollable box-model document.
    ========================================================================== */
-@media (max-width: 1100px) {
+
   .xp-magazine__stage {
     padding-inline: 0;
     perspective: 1500px;
@@ -6735,9 +6735,9 @@ p[data-drop-cap-lines="6"] .xp-editorial-drop-cap { font-size: 5.85em; }
   [data-magazine-reflow] [data-mobile-spread-media] {
     grid-template-columns: 1fr !important;
   }
-}
 
-@media (min-width: 760px) and (max-width: 1100px) {
+
+@media (min-width: 760px) {
   [data-magazine-reflow] [data-mobile-spread-media] {
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
   }
@@ -6771,7 +6771,7 @@ p[data-drop-cap-lines="6"] .xp-editorial-drop-cap { font-size: 5.85em; }
    spread-authored issues. This prevents older/future magazines from falling
    back to a scaled desktop page between tablet and mobile widths.
    ========================================================================== */
-@media (max-width: 1100px) {
+
   .xp-magazine__stage[data-mode="single"] .xp-magazine__paper {
     overflow-x: hidden;
     overflow-y: auto;
@@ -6871,4 +6871,4 @@ p[data-drop-cap-lines="6"] .xp-editorial-drop-cap { font-size: 5.85em; }
     line-height: 1.08 !important;
     text-wrap: balance !important;
   }
-}
+
