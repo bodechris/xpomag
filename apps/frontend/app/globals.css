@@ -509,58 +509,36 @@ img, picture, video, canvas, svg { display: block; max-width: 100%; }
 
 .xp-magazine__turn-sheet {
   position: absolute;
-  z-index: 10;
+  z-index: 6;
   top: 0;
   width: 50%;
   height: 100%;
   transform-style: preserve-3d;
   pointer-events: none;
   will-change: transform;
-  isolation: isolate;
 }
 
 .xp-magazine__turn-sheet--next {
   left: 50%;
   transform-origin: left center;
-  transform: translateZ(3px) rotateY(calc(var(--xp-turn-progress) * -180deg));
+  transform: rotateY(calc(var(--xp-turn-progress) * -180deg));
 }
 
 .xp-magazine__turn-sheet--previous {
   left: 0;
   transform-origin: right center;
-  transform: translateZ(3px) rotateY(calc(var(--xp-turn-progress) * 180deg));
+  transform: rotateY(calc(var(--xp-turn-progress) * 180deg));
 }
 
 .xp-magazine__turn-face {
   position: absolute;
   inset: 0;
-  overflow: hidden;
   backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
   box-shadow: 0 22px 60px rgba(0,0,0,.18);
-  transform-style: flat;
 }
 
 .xp-magazine__turn-face--back {
   transform: rotateY(180deg);
-}
-
-/* A physical sheet has exactly one visible side at a time. Explicitly switch
-   faces at 90deg instead of relying on Chromium to resolve two textured planes
-   while they are nearly edge-on. This also guarantees that a forward turn shows
-   the next spread's LEFT page on the reverse side, never a mirrored copy of the
-   outgoing RIGHT page. */
-.xp-magazine__stage[data-motion="flip"][data-turn-face="front"] .xp-magazine__turn-face--back {
-  visibility: hidden;
-}
-
-.xp-magazine__stage[data-motion="flip"][data-turn-face="back"] .xp-magazine__turn-face--front {
-  visibility: hidden;
-}
-
-.xp-magazine__stage[data-motion="flip"][data-turn-face="front"] .xp-magazine__turn-face--front,
-.xp-magazine__stage[data-motion="flip"][data-turn-face="back"] .xp-magazine__turn-face--back {
-  visibility: visible;
 }
 
 .xp-magazine__fold-shadow,
