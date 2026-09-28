@@ -8605,7 +8605,7 @@ function wellnessSpread(issueId: string): MagazineSpreadDefinition {
         engagement: noEngagement,
         style: {
           position: "absolute",
-          left: "5.0%",
+          left: "35.4%",
           top: "24.4%",
           width: "13.0%",
           aspectRatio: "1 / 1",
