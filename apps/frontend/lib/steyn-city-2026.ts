@@ -5745,8 +5745,8 @@ function allThingsDeliciousSpread(issueId: string): MagazineSpreadDefinition {
   const sushi = "/resources/studio/steyn/steyn-city-xpomag-spread-11-05.webp";
   const greenDrink = "/resources/studio/steyn/steyn-city-xpomag-spread-11-06.webp";
 
-  const pastaVideo = "https://videos.pexels.com/video-files/6216467/6216467-uhd_2160_3840_24fps.mp4";
-  const sushiVideo = "https://videos.pexels.com/video-files/32166369/13716610_2160_3840_60fps.mp4";
+  const pastaVideo = "https://www.youtube.com/embed/QDeMEbMY2wU?autoplay=1&mute=1&controls=0&playsinline=1&rel=0";
+  const sushiVideo = "https://www.youtube.com/embed/NAFbu_UFh6c?autoplay=1&mute=1&controls=0&playsinline=1&rel=0";
 
   const engagement = { reactions: true, comments: true, share: true, save: true };
   const noEngagement = { reactions: false, comments: false, share: false, save: false };
@@ -5776,9 +5776,9 @@ function allThingsDeliciousSpread(issueId: string): MagazineSpreadDefinition {
       title,
       cover: true,
       interactive: true,
-      autoplay: false,
+      autoplay: true,
       muted: true,
-      controls: true,
+      controls: false,
     },
     style: { display: "block", width: "100%", height: "100%", ...style },
   });
@@ -6094,7 +6094,7 @@ function allThingsDeliciousSpread(issueId: string): MagazineSpreadDefinition {
         elements: [
           video("food-pasta-video", pastaVideo, "Short pasta cooking video", {
             position: "absolute", inset: 0, objectFit: "cover", objectPosition: "center center",
-          }, true, pasta),
+          }),
         ],
       },
 
@@ -6160,7 +6160,7 @@ function allThingsDeliciousSpread(issueId: string): MagazineSpreadDefinition {
             children: [
               video("food-sushi-video", sushiVideo, "Short sushi preparation video", {
                 position: "absolute", inset: 0, objectFit: "cover", objectPosition: "center center",
-              }, true, sushi),
+              }),
             ],
           },
         ],
@@ -6248,7 +6248,7 @@ function allThingsDeliciousSpread(issueId: string): MagazineSpreadDefinition {
           },
           video("food-mobile-pasta-video", pastaVideo, "Short pasta cooking video", {
             width: "100%", height: "10rem", objectFit: "cover", marginBottom: ".8rem",
-          }, true, pasta),
+          }),
           image("food-mobile-luciana", luciana, "Luciana cooking", {
             width: "100%", height: "10rem", objectFit: "cover", objectPosition: "center 32%",
           }),
@@ -6296,7 +6296,7 @@ function allThingsDeliciousSpread(issueId: string): MagazineSpreadDefinition {
           }),
           video("food-mobile-sushi-video", sushiVideo, "Short sushi preparation video", {
             width: "100%", height: "10rem", objectFit: "cover", marginBottom: ".8rem",
-          }, true, sushi),
+          }),
           {
             id: "food-mobile-right-grid",
             type: "grid",
