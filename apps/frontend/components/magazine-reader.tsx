@@ -634,9 +634,7 @@ export function MagazineReader({
   const setProgress = useCallback((value: number) => {
     const next = clamp01(value);
     progressRef.current = next;
-    const stage = stageRef.current;
-    stage?.style.setProperty("--xp-turn-progress", String(next));
-    stage?.style.setProperty("--xp-turn-reveal", `${next * 100}%`);
+    stageRef.current?.style.setProperty("--xp-turn-progress", String(next));
   }, []);
 
   const clearMotionTimer = useCallback(() => {
@@ -1500,6 +1498,48 @@ export function MagazineReader({
           : hiddenPageIndex === spreadToRender.pageIndexes[1]
             ? "right"
             : undefined;
+      const useStationaryLeafDuringFlip = Boolean(
+        hiddenSide &&
+        motion?.kind === "flip" &&
+        spread.pageIndexes.length === 2 &&
+        targetSpread?.pageIndexes.length === 2
+      );
+
+      if (useStationaryLeafDuringFlip) {
+        const visibleSide = hiddenSide === "left" ? "right" : "left";
+        return (
+          <div
+            className={`xp-magazine__spread-layer xp-magazine__spread-layer--${role} is-spread is-native-stationary-leaf`}
+            aria-hidden={role === "target" ? true : undefined}
+            data-visible-side={visibleSide}
+          >
+            <article
+              className={`xp-magazine__stationary-leaf xp-magazine__stationary-leaf--${visibleSide}`}
+              aria-label={role === "current" ? nativeSpread.title : undefined}
+            >
+              <MagazineSpreadLeaf
+                spread={nativeSpread}
+                side={visibleSide}
+                globalElements={issue.designElements}
+                includeSupplementalMobileMedia={false}
+                reflow={false}
+                renderEngagement={role === "current" ? (piece) => (
+                  <SectionEngagementBar
+                    issueSlug={issue.slug}
+                    pageSlug={issue.pages[spreadToRender.pageIndexes[0]]?.slug ?? firstPage.slug}
+                    sectionId={piece.id}
+                    sectionSlug={piece.slug}
+                    authenticated={viewerAuthenticated}
+                    config={piece.engagement}
+                    appearance={["feature", "advert", "closing"].includes(nativeSpread.kind ?? "") ? "light" : "dark"}
+                  />
+                ) : undefined}
+              />
+            </article>
+          </div>
+        );
+      }
+
       return (
         <div
           className={`xp-magazine__spread-layer xp-magazine__spread-layer--${role} is-spread is-native-spread`}
@@ -1726,21 +1766,6 @@ export function MagazineReader({
               )
             : null}
           {renderSpread(spread, "current", motion?.kind === "flip" ? currentTurnPageIndex : undefined)}
-
-          {motion?.kind === "flip" && backTurnNativeSpread && !singlePageMode ? (
-            <div
-              className={`xp-magazine__turn-underlay xp-magazine__turn-underlay--${motion.direction}`}
-              aria-hidden="true"
-            >
-              <MagazineSpreadLeaf
-                spread={backTurnNativeSpread}
-                side={motion.direction === "next" ? "left" : "right"}
-                globalElements={issue.designElements}
-                includeSupplementalMobileMedia={false}
-                reflow={false}
-              />
-            </div>
-          ) : null}
 
           {activeSpreadVideo && !activeSpreadVideo.autoplay && !activeSpreadVideo.managedAutoplay && !motion ? (
             <button
