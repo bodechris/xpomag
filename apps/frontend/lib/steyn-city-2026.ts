@@ -9522,6 +9522,280 @@ function communityCalendarSpread(issueId: string): MagazineSpreadDefinition {
   };
 }
 
+
+function seniorVillageBackCoverPage(issueId: string): MagazinePageDefinition {
+  const blue = "#0792b5";
+  const steynMark = "/resources/studio/steyn/steyn-city-logo-mark.svg";
+  const hero = "/resources/studio/steyn/steyn-city-xpomag-back-cover-03.webp";
+  const living = "/resources/studio/steyn/steyn-city-xpomag-back-cover-01.webp";
+  const active = "/resources/studio/steyn/steyn-city-xpomag-back-cover-02.webp";
+  const care = "/resources/studio/steyn/steyn-city-xpomag-back-cover-04.webp";
+  const pamGolding = "/resources/studio/steyn/steyn-city-xpomag-back-cover-pam-golding-logo.webp";
+  const qr = "/resources/studio/steyn/Senior_Village_QR_enlarged.webp";
+  const lifestyleVideo = "https://www.youtube.com/embed/WmoNsAdM7-I?autoplay=1&mute=1&controls=0&playsinline=1&rel=0";
+
+  const image = (
+    id: string,
+    src: string,
+    alt: string,
+    style: DesignElementNode["style"] = {},
+  ): DesignElementNode => ({
+    id,
+    type: "image",
+    props: { src, alt, loading: "eager", fetchPriority: "high" },
+    style: { display: "block", objectFit: "cover", ...style },
+  });
+
+  const video = (
+    id: string,
+    src: string,
+    poster: string,
+    title: string,
+    style: DesignElementNode["style"] = {},
+  ): DesignElementNode => ({
+    id,
+    type: "video",
+    props: {
+      src,
+      poster,
+      title,
+      cover: true,
+      interactive: true,
+      autoplay: true,
+      muted: true,
+      loop: true,
+      controls: false,
+    },
+    style: { display: "block", width: "100%", height: "100%", ...style },
+  });
+
+  return page(issueId, "back-cover", "Senior Village at Steyn City", "ad", "utility-full", {
+    bg: "#fff",
+    ink: "#27313a",
+    accent: blue,
+    soft: "#fff",
+  }, [
+    section("back-cover-main", "Senior Village at Steyn City", "main", [
+      {
+        id: "back-cover-header",
+        type: "frame",
+        style: {
+          position: "absolute",
+          left: 0,
+          right: 0,
+          top: 0,
+          height: "26%",
+          background: blue,
+          zIndex: 2,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "clamp(.7rem,2vw,1.5rem)",
+        },
+        children: [
+          image("back-cover-steyn-mark", steynMark, "Steyn City", {
+            width: "clamp(2.25rem,7vw,4.6rem)",
+            height: "clamp(2.7rem,7.8vw,5.2rem)",
+            objectFit: "contain",
+            filter: "invert(1)",
+            marginBottom: ".35rem",
+          }),
+          text("back-cover-village-name", "SENIOR VILLAGE", {
+            color: "#fff",
+            fontFamily: "var(--xp-font-grotesk)",
+            fontSize: "clamp(.72rem,1.75vw,1.45rem)",
+            fontWeight: 400,
+            letterSpacing: ".13em",
+            lineHeight: 1,
+            textAlign: "center",
+          }, "h2"),
+          text("back-cover-at-steyn", "AT STEYN CITY", {
+            color: "#fff",
+            fontFamily: "var(--xp-font-grotesk)",
+            fontSize: "clamp(.27rem,.55vw,.45rem)",
+            fontWeight: 780,
+            letterSpacing: ".14em",
+            marginTop: ".35rem",
+          }, "span"),
+          text("back-cover-headline", "YOUR NEXT CHAPTER STARTS HERE\nTIME TO LIVE, AND THRIVE", {
+            color: "#fff",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(.78rem,1.72vw,1.55rem)",
+            fontWeight: 650,
+            fontStyle: "italic",
+            lineHeight: 1.04,
+            whiteSpace: "pre-line",
+            textAlign: "center",
+            marginTop: "clamp(.65rem,1.4vw,1rem)",
+          }, "h3"),
+        ],
+      },
+
+      image("back-cover-hero", hero, "Senior Village indoor pool", {
+        position: "absolute",
+        left: 0,
+        top: "26%",
+        width: "100%",
+        height: "35%",
+        objectFit: "cover",
+        objectPosition: "center 55%",
+        zIndex: 2,
+      }),
+
+      image("back-cover-living", living, "Senior Village apartment interior", {
+        position: "absolute",
+        left: 0,
+        top: "61.4%",
+        width: "33.1%",
+        height: "13.0%",
+        objectFit: "cover",
+        objectPosition: "center",
+        zIndex: 3,
+      }),
+
+      {
+        id: "back-cover-video-wrap",
+        type: "frame",
+        style: {
+          position: "absolute",
+          left: "33.45%",
+          top: "61.4%",
+          width: "33.1%",
+          height: "13.0%",
+          overflow: "hidden",
+          background: "#111",
+          zIndex: 4,
+        },
+        children: [
+          video("back-cover-lifestyle-video", lifestyleVideo, active, "Senior Village active lifestyle", {
+            position: "absolute",
+            inset: 0,
+            objectFit: "cover",
+            objectPosition: "center",
+          }),
+        ],
+      },
+
+      image("back-cover-care", care, "Senior Village assisted living suite", {
+        position: "absolute",
+        right: 0,
+        top: "61.4%",
+        width: "33.1%",
+        height: "13.0%",
+        objectFit: "cover",
+        objectPosition: "center",
+        zIndex: 3,
+      }),
+
+      text("back-cover-lead", "The Senior Village is created for individuals who value independence, an active lifestyle, and a strong sense of community. It offers a vibrant, multigenerational environment where those with a zest for life can truly thrive.", {
+        position: "absolute",
+        left: "6.2%",
+        top: "76.2%",
+        width: "87.6%",
+        color: blue,
+        fontFamily: "var(--xp-font-editorial)",
+        fontSize: "clamp(.42rem,.72vw,.67rem)",
+        fontWeight: 700,
+        fontStyle: "italic",
+        lineHeight: 1.42,
+        textAlign: "center",
+        zIndex: 5,
+      }),
+
+      text("back-cover-body", "Secure, convenient, and maintenance-free, the Village gives residents more time to focus on what matters most. From the Hyde Centre, Skybar, and Lounge to 2,000 acres of parkland, curated experiences, dining, and retail offerings, every element is designed to promote wellness, connection, and a healthy lifestyle. Residents enjoy independent living with TOTALCARE support and specialised frail care available on site, providing long-term peace of mind for both residents and their families.", {
+        position: "absolute",
+        left: "7.0%",
+        top: "81.0%",
+        width: "86%",
+        color: "#4d4d4d",
+        fontFamily: "var(--xp-font-editorial)",
+        fontSize: "clamp(.34rem,.55vw,.52rem)",
+        lineHeight: 1.46,
+        textAlign: "center",
+        zIndex: 5,
+      }),
+
+      text("back-cover-age", "For individuals aged 60 and older, on a Life Right model.", {
+        position: "absolute",
+        left: "12%",
+        top: "89.4%",
+        width: "76%",
+        color: blue,
+        fontFamily: "var(--xp-font-editorial)",
+        fontSize: "clamp(.36rem,.6vw,.56rem)",
+        fontWeight: 750,
+        fontStyle: "italic",
+        lineHeight: 1.2,
+        textAlign: "center",
+        zIndex: 5,
+      }),
+
+      {
+        id: "back-cover-footer",
+        type: "frame",
+        style: {
+          position: "absolute",
+          left: 0,
+          right: 0,
+          bottom: 0,
+          height: "8.0%",
+          background: blue,
+          zIndex: 3,
+        },
+        children: [
+          image("back-cover-pam-golding", pamGolding, "Pam Golding Properties", {
+            position: "absolute",
+            left: "4.2%",
+            top: "23%",
+            width: "17%",
+            height: "54%",
+            objectFit: "contain",
+          }),
+          text("back-cover-contact", "To book a viewing contact Mark Williams\nor WhatsApp 082 046 4528.", {
+            position: "absolute",
+            left: "23%",
+            top: "28%",
+            width: "31%",
+            color: "#fff",
+            fontFamily: "var(--xp-font-grotesk)",
+            fontSize: "clamp(.25rem,.42vw,.40rem)",
+            fontWeight: 650,
+            lineHeight: 1.35,
+            whiteSpace: "pre-line",
+          }),
+          image("back-cover-qr", qr, "Senior Village QR code", {
+            position: "absolute",
+            left: "67.5%",
+            top: "13%",
+            width: "8.6%",
+            height: "74%",
+            objectFit: "contain",
+            background: "#fff",
+          }),
+          text("back-cover-qr-copy", "To learn more, scan this QR code.\nwww.steyncity.co.za", {
+            position: "absolute",
+            left: "77.3%",
+            top: "28%",
+            width: "18%",
+            color: "#fff",
+            fontFamily: "var(--xp-font-grotesk)",
+            fontSize: "clamp(.24rem,.4vw,.38rem)",
+            fontWeight: 650,
+            lineHeight: 1.35,
+            whiteSpace: "pre-line",
+          }),
+        ],
+      },
+    ], {
+      position: "relative",
+      padding: 0,
+      background: "#fff",
+      overflow: "hidden",
+    }, true),
+  ]);
+}
+
 function placeholderPage(
   issueId: string,
   pageNo: number,
@@ -9636,7 +9910,7 @@ export function getSteynCity2026Magazine(): MagazineGlobalDefinition {
     editorialPage(issueId, 37, "equestrian-ii", "EQUESTRIAN", "THE SPORT,\nTHE HORSE,\nTHE MOMENT", "A follow-on page for riders, horses, training and competition.", paper),
     heroPage(issueId, 38, "community-i", "COMMUNITY", "YOU SAW IT\nHERE FIRST!", "A lively community roundup for people, events, launches and moments from across Steyn City.", gold),
     editorialPage(issueId, 39, "community-ii", "COMMUNITY", "THE CITY IN\nMOMENTS", "A gallery-led closing editorial page that can become a saveable, shareable community scrapbook.", paper),
-    placeholderPage(issueId, 40, "back-cover", "COME HOME TO\nEVERYDAY EXTRAORDINARY", forest),
+    seniorVillageBackCoverPage(issueId),
   ];
 
   return {
