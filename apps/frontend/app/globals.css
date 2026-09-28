@@ -6152,3 +6152,24 @@ p[data-drop-cap-lines="6"] .xp-editorial-drop-cap { font-size: 5.85em; }
   color: inherit !important;
   opacity: 1 !important;
 }
+
+
+/* Equestrian + Saxon Spa engagement uses the same light glass treatment
+   as the school/work/wellness spreads. */
+[data-spread-piece-id^="steyn-equestrian-"] > .xp-section-engagement--inline,
+[data-spread-piece-id^="steyn-spa-"] > .xp-section-engagement--inline {
+  opacity: 1 !important;
+  padding: .24rem .42rem !important;
+  border: 1px solid rgba(0,0,0,.09) !important;
+  border-radius: 10px !important;
+  background: rgba(255,255,255,.93) !important;
+  color: #4b4f56 !important;
+  box-shadow: 0 8px 24px rgba(0,0,0,.10) !important;
+  backdrop-filter: blur(14px) saturate(1.15) !important;
+  -webkit-backdrop-filter: blur(14px) saturate(1.15) !important;
+}
+[data-spread-piece-id^="steyn-equestrian-"] > .xp-section-engagement--inline .xp-engagement__action,
+[data-spread-piece-id^="steyn-spa-"] > .xp-section-engagement--inline .xp-engagement__action {
+  color: inherit !important;
+  opacity: 1 !important;
+}
