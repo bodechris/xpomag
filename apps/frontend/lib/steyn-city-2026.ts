@@ -8824,6 +8824,545 @@ function wellnessSpread(issueId: string): MagazineSpreadDefinition {
   };
 }
 
+
+function equestrianSpaSpread(issueId: string): MagazineSpreadDefinition {
+  const portraitBarker = "/resources/studio/steyn/steyn-city-xpomag-spread-17-01.webp";
+  const team = "/resources/studio/steyn/steyn-city-xpomag-spread-17-02.webp";
+  const portraitTrigg = "/resources/studio/steyn/steyn-city-xpomag-spread-17-03.webp";
+  const showjumping = "/resources/studio/steyn/steyn-city-xpomag-spread-17-04.webp";
+  const saxonLogo = "/resources/studio/steyn/steyn-city-xpomag-spread-17-05.webp";
+  const spaSunset = "/resources/studio/steyn/steyn-city-xpomag-spread-17-06.webp";
+  const spaGuests = "/resources/studio/steyn/steyn-city-xpomag-spread-17-07.webp";
+  const spaPool = "/resources/studio/steyn/steyn-city-xpomag-spread-17-08.webp";
+  const spaMassage = "/resources/studio/steyn/steyn-city-xpomag-spread-17-09.webp";
+
+  const horseVideo = "https://videos.pexels.com/video-files/5087893/5087893-uhd_2160_3840_25fps.mp4";
+  const spaVideo = "https://videos.pexels.com/video-files/6750890/6750890-hd_1920_1080_25fps.mp4";
+
+  const engagement = { reactions: true, comments: true, share: true, save: true };
+  const noEngagement = { reactions: false, comments: false, share: false, save: false };
+
+  const image = (
+    id: string,
+    src: string,
+    alt: string,
+    style: DesignElementNode["style"] = {},
+  ): DesignElementNode => ({
+    id,
+    type: "image",
+    props: { src, alt, loading: "eager", fetchPriority: "high" },
+    style: { display: "block", objectFit: "cover", ...style },
+  });
+
+  const autoplayVideo = (
+    id: string,
+    src: string,
+    poster: string,
+    title: string,
+    style: DesignElementNode["style"] = {},
+  ): DesignElementNode => ({
+    id,
+    type: "video",
+    props: {
+      src,
+      poster,
+      title,
+      autoplay: true,
+      muted: true,
+      loop: true,
+      controls: false,
+      interactive: true,
+    },
+    style: { display: "block", width: "100%", height: "100%", ...style },
+  });
+
+  const mediaPiece = (
+    id: string,
+    slug: string,
+    title: string,
+    node: DesignElementNode,
+    style: Record<string, unknown>,
+    withEngagement = false,
+  ): any => ({
+    id,
+    slug,
+    title,
+    kind: "feature",
+    region: "spread",
+    gutterBehaviour: "clip",
+    engagement: withEngagement ? engagement : noEngagement,
+    style: { ...style, overflow: "hidden", background: "#f3f0ea" },
+    elements: [node],
+  });
+
+  return {
+    id: "steyn-equestrian-spa-spread",
+    issueId,
+    slug: "showjumping-and-saxon-spa",
+    title: "Showing Off With Showjumping",
+    kind: "feature",
+    pageIds: ["equestrian-i", "equestrian-ii"],
+    style: { background: "#fbfaf7" },
+    pieces: [
+      {
+        id: "steyn-equestrian-editorial-piece",
+        slug: "showing-off-with-showjumping",
+        title: "Showing Off With Showjumping",
+        kind: "article",
+        region: "spread",
+        gutterBehaviour: "cross",
+        engagement,
+        style: {
+          position: "absolute",
+          inset: 0,
+          overflow: "hidden",
+          background: "#fbfaf7",
+        },
+        elements: [
+          text("equestrian-title", "SHOWING OFF WITH\nSHOWJUMPING", {
+            position: "absolute",
+            left: "4.7%",
+            top: "20.2%",
+            width: "40.5%",
+            color: "#312a26",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(1.2rem,2.12vw,2.35rem)",
+            fontWeight: 500,
+            lineHeight: .91,
+            letterSpacing: ".018em",
+            whiteSpace: "pre-line",
+            textAlign: "center",
+          }, "h2"),
+
+          {
+            id: "equestrian-copy-a",
+            type: "text",
+            props: {
+              as: "p",
+              text: "Back in 2015, former Springbok showjumper Gonda Beatrix officially opened a facility that would go on to become one of the most respected equestrian destinations in the region. Today, Steyn City’s Equestrian Centre offers riders a professionally managed setting for training, competition and the everyday rhythm of life with horses.",
+              dropCap: true,
+              dropCapLines: 4,
+              dropCapColor: "#51483f",
+            },
+            style: {
+              position: "absolute",
+              left: "4.8%",
+              top: "31.2%",
+              width: "18.8%",
+              color: "#443d38",
+              fontFamily: "var(--xp-font-editorial)",
+              fontSize: "clamp(.34rem,.46vw,.5rem)",
+              lineHeight: 1.45,
+            },
+          },
+          text("equestrian-copy-b", "A case in point is the 2025 Steyn City CSI showjumping programme, which attracted riders from across South Africa and beyond. The appeal lies not only in the competition, but in the quality of the arena, facilities and surroundings.", {
+            position: "absolute",
+            left: "4.8%",
+            top: "46.0%",
+            width: "18.8%",
+            color: "#443d38",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(.34rem,.46vw,.5rem)",
+            lineHeight: 1.45,
+          }),
+          text("equestrian-perfect-match-label", "A PERFECT MATCH", {
+            position: "absolute",
+            left: "4.8%",
+            top: "56.1%",
+            width: "18.8%",
+            color: "#51483f",
+            fontFamily: "var(--xp-font-grotesk)",
+            fontSize: "clamp(.29rem,.4vw,.44rem)",
+            fontWeight: 820,
+            letterSpacing: ".11em",
+          }, "span"),
+          text("equestrian-copy-c", "The venue has played host to riders, coaches and events that place South African showjumping alongside the best international standards. Its location within Steyn City also gives competitors and supporters access to the estate’s broader lifestyle offering.", {
+            position: "absolute",
+            left: "4.8%",
+            top: "59.4%",
+            width: "18.8%",
+            color: "#443d38",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(.34rem,.46vw,.5rem)",
+            lineHeight: 1.45,
+          }),
+
+          text("equestrian-copy-d", "Riders who have had the privilege of competing here agree that the Centre has made a meaningful contribution to the sport. The professional footing, carefully maintained arenas and world-class environment support both emerging talent and seasoned competitors.", {
+            position: "absolute",
+            left: "26.3%",
+            top: "31.2%",
+            width: "18.4%",
+            color: "#443d38",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(.34rem,.46vw,.5rem)",
+            lineHeight: 1.45,
+          }),
+          text("equestrian-copy-e", "As the sport continues to grow, Steyn City remains committed to providing a venue that feels both ambitious and welcoming — a place where performance, horsemanship and community come together.", {
+            position: "absolute",
+            left: "26.3%",
+            top: "48.0%",
+            width: "18.4%",
+            color: "#443d38",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(.34rem,.46vw,.5rem)",
+            lineHeight: 1.45,
+          }),
+
+          {
+            id: "equestrian-did-you-know",
+            type: "frame",
+            style: {
+              position: "absolute",
+              left: "37.0%",
+              top: "74.4%",
+              width: "13.0%",
+              height: "22.0%",
+              zIndex: 22,
+              background: "#dd4d33",
+              padding: "clamp(.55rem,.9vw,.9rem)",
+              color: "#fff",
+            },
+            children: [
+              text("equestrian-did-title", "DID YOU KNOW?", {
+                color: "#fff",
+                fontFamily: "var(--xp-font-grotesk)",
+                fontSize: "clamp(.3rem,.43vw,.47rem)",
+                fontWeight: 850,
+                textAlign: "center",
+                letterSpacing: ".08em",
+                marginBottom: ".45rem",
+              }, "h3"),
+              text("equestrian-did-copy", "Showjumping asks horse and rider to combine precision, trust, rhythm and athleticism. At elite level, a single rail can separate the podium from the rest of the field.", {
+                color: "#fff",
+                fontFamily: "var(--xp-font-editorial)",
+                fontSize: "clamp(.28rem,.39vw,.43rem)",
+                lineHeight: 1.42,
+                textAlign: "center",
+              }),
+            ],
+          },
+
+          text("spa-headline", "SAXON SPA STEYN CITY,\nA SANCTUARY FOR THE SENSES", {
+            position: "absolute",
+            left: "52.5%",
+            top: "61.5%",
+            width: "44.0%",
+            color: "#c96429",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(.82rem,1.34vw,1.48rem)",
+            fontWeight: 650,
+            fontStyle: "italic",
+            lineHeight: 1.06,
+            whiteSpace: "pre-line",
+            textAlign: "center",
+          }, "h2"),
+
+          text("spa-copy", "Indulge in the art of wellness at the Saxon Spa Steyn City, where world-class expertise meets serene surroundings. Designed to restore balance and rejuvenate body and mind, this sanctuary offers bespoke treatments, hydrotherapy and holistic rituals inspired by nature’s healing power.", {
+            position: "absolute",
+            left: "53.5%",
+            top: "84.5%",
+            width: "43.0%",
+            color: "#5d5047",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(.31rem,.43vw,.47rem)",
+            lineHeight: 1.45,
+            fontStyle: "italic",
+            textAlign: "center",
+          }),
+
+          {
+            id: "spa-footer-rail",
+            type: "frame",
+            style: {
+              position: "absolute",
+              left: "50%",
+              right: 0,
+              bottom: 0,
+              height: "6.4%",
+              background: "#d47b47",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: "0 1rem",
+            },
+            children: [
+              text("spa-footer-copy", "FOR BOOKINGS CONTACT: SAXON SPA STEYN CITY", {
+                color: "#fff",
+                fontFamily: "var(--xp-font-grotesk)",
+                fontSize: "clamp(.28rem,.4vw,.44rem)",
+                fontWeight: 760,
+                letterSpacing: ".06em",
+              }, "span"),
+            ],
+          },
+
+          text("equestrian-folio-left", "36", {
+            position: "absolute", left: "4.5%", bottom: "2.1%", color: "#342f2b",
+            fontFamily: "var(--xp-font-grotesk)", fontSize: ".45rem", fontWeight: 800,
+          }, "span"),
+          text("equestrian-brand-left", "STEYN CITY", {
+            position: "absolute", left: "7.4%", bottom: "2.1%", color: "#342f2b",
+            fontFamily: "var(--xp-font-grotesk)", fontSize: ".42rem", fontWeight: 720, letterSpacing: ".08em",
+          }, "span"),
+          text("equestrian-folio-right", "37", {
+            position: "absolute", right: "3.2%", bottom: "2.1%", color: "#fff",
+            fontFamily: "var(--xp-font-grotesk)", fontSize: ".45rem", fontWeight: 800, zIndex: 5,
+          }, "span"),
+        ],
+      },
+
+      mediaPiece(
+        "steyn-equestrian-team-piece",
+        "equestrian-team",
+        "International equestrian teams",
+        image("equestrian-team-image", team, "International equestrian teams at Steyn City", {
+          position: "absolute", inset: 0, width: "100%", height: "100%",
+          objectFit: "cover", objectPosition: "center 54%",
+        }),
+        { position: "absolute", left: 0, top: 0, width: "50%", height: "17.4%", zIndex: 7 },
+        true,
+      ),
+
+      {
+        id: "steyn-equestrian-video-piece",
+        slug: "equestrian-showjumping-video",
+        title: "Showjumping in motion",
+        kind: "feature",
+        region: "spread",
+        gutterBehaviour: "clip",
+        engagement,
+        style: {
+          position: "absolute",
+          left: 0,
+          top: "73.0%",
+          width: "37.2%",
+          height: "27.0%",
+          zIndex: 8,
+          overflow: "hidden",
+          background: "#111",
+        },
+        elements: [
+          autoplayVideo("equestrian-video", horseVideo, showjumping, "Horse and rider showjumping", {
+            position: "absolute",
+            inset: 0,
+            objectFit: "cover",
+            objectPosition: "center 47%",
+          }),
+        ],
+      },
+
+      mediaPiece(
+        "steyn-equestrian-barker-piece",
+        "equestrian-barker",
+        "Ashley Barker",
+        image("equestrian-barker-image", portraitBarker, "Equestrian portrait", {
+          position: "absolute", inset: 0, width: "100%", height: "100%",
+          objectFit: "cover", objectPosition: "center 20%",
+          borderRadius: "50%",
+          border: "4px solid #fff",
+        }),
+        { position: "absolute", left: "38.0%", top: "47.5%", width: "9.2%", aspectRatio: "1 / 1", zIndex: 26, borderRadius: "50%", background: "transparent" },
+        false,
+      ),
+
+      mediaPiece(
+        "steyn-equestrian-trigg-piece",
+        "equestrian-trigg",
+        "Barry Trigg",
+        image("equestrian-trigg-image", portraitTrigg, "Equestrian portrait", {
+          position: "absolute", inset: 0, width: "100%", height: "100%",
+          objectFit: "cover", objectPosition: "center 18%",
+          borderRadius: "50%",
+          border: "4px solid #fff",
+        }),
+        { position: "absolute", left: "38.0%", top: "62.2%", width: "9.2%", aspectRatio: "1 / 1", zIndex: 26, borderRadius: "50%", background: "transparent" },
+        false,
+      ),
+
+      mediaPiece(
+        "steyn-spa-logo-piece",
+        "saxon-spa-logo",
+        "Saxon Spa at Steyn City",
+        image("saxon-spa-logo-image", saxonLogo, "Saxon Spa at Steyn City", {
+          position: "absolute", inset: 0, width: "100%", height: "100%",
+          objectFit: "contain",
+        }),
+        { position: "absolute", left: "50%", top: 0, width: "50%", height: "18.6%", zIndex: 7, background: "#fff" },
+        false,
+      ),
+
+      {
+        id: "steyn-spa-video-piece",
+        slug: "saxon-spa-video",
+        title: "Saxon Spa sanctuary",
+        kind: "feature",
+        region: "spread",
+        gutterBehaviour: "clip",
+        engagement: noEngagement,
+        style: {
+          position: "absolute",
+          left: "50%",
+          top: "18.8%",
+          width: "50%",
+          height: "43.0%",
+          zIndex: 7,
+          overflow: "hidden",
+          background: "#111",
+        },
+        elements: [
+          autoplayVideo("saxon-spa-video", spaVideo, spaSunset, "Relaxing spa treatment", {
+            position: "absolute",
+            inset: 0,
+            objectFit: "cover",
+            objectPosition: "center 52%",
+          }),
+        ],
+      },
+
+      mediaPiece(
+        "steyn-spa-pool-piece",
+        "saxon-spa-pool",
+        "Saxon Spa hydrotherapy",
+        image("saxon-spa-pool-image", spaPool, "Saxon Spa hydrotherapy pool", {
+          position: "absolute", inset: 0, width: "100%", height: "100%",
+          objectFit: "cover",
+        }),
+        { position: "absolute", left: "53.5%", top: "71.2%", width: "13.6%", height: "11.6%", zIndex: 8 },
+        false,
+      ),
+
+      mediaPiece(
+        "steyn-spa-guests-piece",
+        "saxon-spa-guests",
+        "Saxon Spa guests",
+        image("saxon-spa-guests-image", spaGuests, "Guests enjoying a spa ritual", {
+          position: "absolute", inset: 0, width: "100%", height: "100%",
+          objectFit: "cover",
+        }),
+        { position: "absolute", left: "67.5%", top: "71.2%", width: "14.4%", height: "11.6%", zIndex: 8 },
+        true,
+      ),
+
+      mediaPiece(
+        "steyn-spa-massage-piece",
+        "saxon-spa-massage",
+        "Saxon Spa treatment",
+        image("saxon-spa-massage-image", spaMassage, "Spa massage treatment", {
+          position: "absolute", inset: 0, width: "100%", height: "100%",
+          objectFit: "cover",
+        }),
+        { position: "absolute", left: "82.2%", top: "71.2%", width: "14.3%", height: "11.6%", zIndex: 8 },
+        false,
+      ),
+
+      {
+        id: "steyn-equestrian-mobile-left-piece",
+        slug: "equestrian-mobile-left",
+        title: "Showing Off With Showjumping",
+        kind: "article",
+        region: "left",
+        gutterBehaviour: "clip",
+        engagement,
+        style: {
+          position: "absolute",
+          left: "2.8%",
+          top: "3.5%",
+          width: "44.4%",
+          height: "93%",
+          display: "none",
+          background: "#fbfaf7",
+          zIndex: 70,
+          padding: "clamp(.95rem,3.8vw,1.4rem)",
+          overflow: "auto",
+        },
+        elements: [
+          image("equestrian-mobile-team", team, "International equestrian teams", {
+            width: "100%", height: "8.6rem", objectFit: "cover", marginBottom: ".7rem",
+          }),
+          text("equestrian-mobile-title", "SHOWING OFF WITH\nSHOWJUMPING", {
+            color: "#342d28",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(1.5rem,6.5vw,2rem)",
+            lineHeight: .98,
+            whiteSpace: "pre-line",
+            marginBottom: ".65rem",
+          }, "h2"),
+          {
+            id: "equestrian-mobile-copy",
+            type: "text",
+            props: {
+              as: "p",
+              text: "Steyn City’s Equestrian Centre brings professional facilities, competition and community together in one setting. Showjumping here is as much about precision and trust as it is about spectacle.",
+              dropCap: true,
+              dropCapLines: 4,
+              dropCapColor: "#51483f",
+            },
+            style: {
+              color: "#463f3a",
+              fontFamily: "var(--xp-font-editorial)",
+              fontSize: "clamp(1rem,3.8vw,1.14rem)",
+              lineHeight: 1.55,
+              marginBottom: ".8rem",
+            },
+          },
+          autoplayVideo("equestrian-mobile-video", horseVideo, showjumping, "Showjumping in motion", {
+            width: "100%", height: "12rem", objectFit: "cover",
+          }),
+        ],
+      },
+
+      {
+        id: "steyn-spa-mobile-right-piece",
+        slug: "saxon-spa-mobile-right",
+        title: "Saxon Spa Steyn City",
+        kind: "article",
+        region: "right",
+        gutterBehaviour: "clip",
+        engagement: noEngagement,
+        style: {
+          position: "absolute",
+          left: "52.8%",
+          top: "3.5%",
+          width: "44.4%",
+          height: "93%",
+          display: "none",
+          background: "#fbfaf7",
+          zIndex: 70,
+          padding: "clamp(.9rem,3.6vw,1.35rem)",
+          overflow: "auto",
+        },
+        elements: [
+          image("spa-mobile-logo", saxonLogo, "Saxon Spa at Steyn City", {
+            width: "10rem", maxWidth: "70%", height: "6rem", objectFit: "contain", margin: "0 auto .75rem",
+          }),
+          autoplayVideo("spa-mobile-video", spaVideo, spaSunset, "Saxon Spa sanctuary", {
+            width: "100%", height: "11rem", objectFit: "cover", marginBottom: ".75rem",
+          }),
+          text("spa-mobile-heading", "A SANCTUARY\nFOR THE SENSES", {
+            color: "#c96429",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(1.45rem,6.2vw,1.95rem)",
+            fontStyle: "italic",
+            lineHeight: .98,
+            whiteSpace: "pre-line",
+            marginBottom: ".7rem",
+          }, "h2"),
+          text("spa-mobile-copy", "World-class expertise meets serene surroundings through bespoke treatments, hydrotherapy and holistic rituals created to restore balance and encourage deep relaxation.", {
+            color: "#5d5047",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(1rem,3.8vw,1.14rem)",
+            lineHeight: 1.55,
+            marginBottom: ".8rem",
+          }),
+          image("spa-mobile-guests", spaGuests, "Guests enjoying a spa ritual", {
+            width: "100%", height: "10rem", objectFit: "cover",
+          }),
+        ],
+      },
+    ],
+  };
+}
+
 function placeholderPage(
   issueId: string,
   pageNo: number,
@@ -8988,7 +9527,7 @@ export function getSteynCity2026Magazine(): MagazineGlobalDefinition {
         props: { label: "STEYN CITY" },
       },
     },
-    spreads: [cityLivingSpread(issueId), bentleyAdvertSpread(issueId), contentsGolfSpread(issueId), golfTraditionSpread(issueId), golfTraditionContinuationSpread(issueId), cyclingSpread(issueId), seniorVillageSpread(issueId), easyLifeSpread(issueId), birdsBeesSpread(issueId), liveYourDreamsSpread(issueId), rentalCheninSpread(issueId), allThingsDeliciousSpread(issueId), golfExcellenceSpread(issueId), holidayLifestyleSpread(issueId), schoolValuesSpread(issueId), workConnectThriveSpread(issueId), wellnessSpread(issueId)],
+    spreads: [cityLivingSpread(issueId), bentleyAdvertSpread(issueId), contentsGolfSpread(issueId), golfTraditionSpread(issueId), golfTraditionContinuationSpread(issueId), cyclingSpread(issueId), seniorVillageSpread(issueId), easyLifeSpread(issueId), birdsBeesSpread(issueId), liveYourDreamsSpread(issueId), rentalCheninSpread(issueId), allThingsDeliciousSpread(issueId), golfExcellenceSpread(issueId), holidayLifestyleSpread(issueId), schoolValuesSpread(issueId), workConnectThriveSpread(issueId), wellnessSpread(issueId), equestrianSpaSpread(issueId)],
     pages,
   };
 }
