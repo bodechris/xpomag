@@ -41,35 +41,22 @@ export function ActiveSpreadVideo({
     if (!frame) return;
 
     const spreadLayer = frame.closest(".xp-magazine__spread-layer");
-    if (!spreadLayer) return;
+    if (!spreadLayer) {
+      setIsCurrentAndVisible(true);
+      return;
+    }
 
     const evaluate = () => {
       const isCurrent = spreadLayer.classList.contains("xp-magazine__spread-layer--current");
       const isHidden = spreadLayer.getAttribute("aria-hidden") === "true";
-      const rect = frame.getBoundingClientRect();
-      const viewportW = window.innerWidth || document.documentElement.clientWidth;
-      const viewportH = window.innerHeight || document.documentElement.clientHeight;
-      const visibleW = Math.max(0, Math.min(rect.right, viewportW) - Math.max(rect.left, 0));
-      const visibleH = Math.max(0, Math.min(rect.bottom, viewportH) - Math.max(rect.top, 0));
-      const visibleArea = visibleW * visibleH;
-      const area = Math.max(1, rect.width * rect.height);
-      setIsCurrentAndVisible(isCurrent && !isHidden && visibleArea / area >= 0.55);
+      setIsCurrentAndVisible(isCurrent && !isHidden);
     };
-
-    const observer = new IntersectionObserver(evaluate, { threshold: [0, 0.25, 0.55, 0.8, 1] });
-    observer.observe(frame);
 
     const mutation = new MutationObserver(evaluate);
     mutation.observe(spreadLayer, { attributes: true, attributeFilter: ["class", "aria-hidden"] });
-
     evaluate();
-    window.addEventListener("resize", evaluate);
 
-    return () => {
-      observer.disconnect();
-      mutation.disconnect();
-      window.removeEventListener("resize", evaluate);
-    };
+    return () => mutation.disconnect();
   }, []);
 
   useEffect(() => {
