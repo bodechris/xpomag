@@ -26,8 +26,19 @@ const TURN_THRESHOLD = 0.22;
 const FLICK_DISTANCE = 44;
 const FLICK_VELOCITY = 0.34;
 
+const MAX_PAGE_CACHE_ENTRIES = 10;
 const MAGAZINE_PAGE_CACHE = new Map<string, MagazinePageDefinition>();
 const MAGAZINE_ASSET_CACHE = new Set<string>();
+
+function cacheMagazinePage(key: string, page: MagazinePageDefinition) {
+  MAGAZINE_PAGE_CACHE.delete(key);
+  MAGAZINE_PAGE_CACHE.set(key, page);
+  while (MAGAZINE_PAGE_CACHE.size > MAX_PAGE_CACHE_ENTRIES) {
+    const oldestKey = MAGAZINE_PAGE_CACHE.keys().next().value as string | undefined;
+    if (!oldestKey) break;
+    MAGAZINE_PAGE_CACHE.delete(oldestKey);
+  }
+}
 
 function collectNodeAssetUrls(nodes: DesignElementNode[]): string[] {
   const urls: string[] = [];
@@ -548,6 +559,9 @@ export function MagazineReader({
   const pointerGuideRef = useRef<HTMLDivElement | null>(null);
   const wheelDeltaRef = useRef(0);
   const wheelResetRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const navigationLockRef = useRef(false);
+  const wheelBlockedUntilRef = useRef(0);
+  const lastPointerRef = useRef<{ x: number; y: number } | null>(null);
 
   // Responsive mode changes rebuild the spread array (desktop spreads <-> mobile pages).
   // React renders once before the effect below can clamp spreadIndex, so always
@@ -594,7 +608,7 @@ export function MagazineReader({
         return await response.json() as MagazinePageDefinition;
       })
       .then((page) => {
-        MAGAZINE_PAGE_CACHE.set(`${issue.slug}:${page.slug}`, page);
+        cacheMagazinePage(`${issue.slug}:${page.slug}`, page);
         const next = { ...loadedPagesRef.current, [page.slug]: page };
         loadedPagesRef.current = next;
         setLoadedPages(next);
@@ -637,6 +651,9 @@ export function MagazineReader({
       if (commit) setSpreadIndex(targetIndex);
       setMotion(null);
       setProgress(0);
+      wheelDeltaRef.current = 0;
+      wheelBlockedUntilRef.current = performance.now() + 220;
+      navigationLockRef.current = false;
       motionTimer.current = null;
       const afterMotion = afterMotionRef.current;
       afterMotionRef.current = null;
@@ -665,7 +682,7 @@ export function MagazineReader({
   }, [singlePageMode, spreadIndex, spreads.length]);
 
   const animateToSpread = useCallback(async (targetIndex: number, afterMotion?: () => void) => {
-    if (motion) return false;
+    if (motion || navigationLockRef.current) return false;
     const currentIndex = Math.min(Math.max(0, spreadIndex), Math.max(0, spreads.length - 1));
     if (targetIndex < 0 || targetIndex >= spreads.length) return false;
     if (targetIndex === currentIndex) {
@@ -673,8 +690,12 @@ export function MagazineReader({
       return true;
     }
 
+    navigationLockRef.current = true;
     const ready = await ensureSpreadLoaded(spreads[targetIndex]);
-    if (!ready) return false;
+    if (!ready) {
+      navigationLockRef.current = false;
+      return false;
+    }
 
     const direction: Direction = targetIndex > currentIndex ? "next" : "previous";
     const nextMotion: Motion = {
@@ -716,12 +737,16 @@ export function MagazineReader({
   }, [animateToSpread, issue.pages, issue.slug, spreads]);
 
   const navigate = useCallback(async (direction: Direction) => {
-    if (motion) return;
+    if (motion || navigationLockRef.current) return;
     const nextMotion = createMotion(direction, "animating");
     if (!nextMotion) return;
 
+    navigationLockRef.current = true;
     const ready = await ensureSpreadLoaded(spreads[nextMotion.targetIndex]);
-    if (!ready) return;
+    if (!ready) {
+      navigationLockRef.current = false;
+      return;
+    }
 
     clearMotionTimer();
     setProgress(0);
@@ -750,61 +775,32 @@ export function MagazineReader({
   useEffect(() => {
     if (!spread || motion) return;
     let cancelled = false;
-    let warmTimer: ReturnType<typeof setTimeout> | null = null;
-
-    const collectSpreadAssets = (masterSpread: MagazineMasterSpread) => {
-      const urls: string[] = [];
-
-      masterSpread.pageIndexes.forEach((pageIndex) => {
-        const manifest = issue.pages[pageIndex];
-        if (!manifest) return;
-        const page = loadedPagesRef.current[manifest.slug];
-        if (!page) return;
-
-        page.resources?.images?.forEach((asset) => urls.push(asset.src));
-        page.sections.forEach((section) => {
-          section.resources?.images?.forEach((asset) => urls.push(asset.src));
-          urls.push(...collectNodeAssetUrls(section.elements));
-        });
-      });
-
-      const pageIds = masterSpread.pageIndexes
-        .map((pageIndex) => issue.pages[pageIndex]?.id)
-        .filter((id): id is string => Boolean(id));
-      const nativeSpread = issue.spreads?.find((candidate) =>
-        candidate.pageIds?.length === pageIds.length &&
-        candidate.pageIds.every((id, index) => id === pageIds[index]));
-      nativeSpread?.resources?.images?.forEach((asset) => urls.push(asset.src));
-      nativeSpread?.pieces.forEach((piece) => {
-        piece.resources?.images?.forEach((asset) => urls.push(asset.src));
-        urls.push(...collectNodeAssetUrls(piece.elements));
-      });
-
-      return Array.from(new Set(urls));
-    };
+    let timer: ReturnType<typeof setTimeout> | null = null;
+    let idleId: number | null = null;
 
     const next = spreads[safeSpreadIndex + 1];
+    if (!next) return;
 
-    void (async () => {
-      // The visible spread loads its own images naturally. Aggressively preloading
-      // the current + previous + next spread caused bursts of image decode work.
-      // Warm only the next spread, and only a handful of assets, after the UI is idle.
-      if (!next) return;
-      await ensureSpreadLoaded(next);
-      if (cancelled) return;
+    const warm = () => {
+      if (cancelled || navigationLockRef.current) return;
+      void ensureSpreadLoaded(next);
+    };
 
-      const nextAssets = collectSpreadAssets(next).slice(0, 6);
-      warmTimer = setTimeout(() => {
-        if (cancelled) return;
-        nextAssets.forEach(preloadImageOnce);
-      }, 350);
-    })();
+    // Page definitions are cheap and useful to cache; image decoding is not.
+    // Wait until the reader has been idle instead of competing with scrolling,
+    // pointer movement, video decoding, or the page-turn animation.
+    if ("requestIdleCallback" in window) {
+      idleId = window.requestIdleCallback(warm, { timeout: 1800 });
+    } else {
+      timer = setTimeout(warm, 1200);
+    }
 
     return () => {
       cancelled = true;
-      if (warmTimer) clearTimeout(warmTimer);
+      if (idleId != null && "cancelIdleCallback" in window) window.cancelIdleCallback(idleId);
+      if (timer) clearTimeout(timer);
     };
-  }, [ensureSpreadLoaded, issue.pages, issue.spreads, motion, safeSpreadIndex, spread, spreads]);
+  }, [ensureSpreadLoaded, motion, safeSpreadIndex, spread, spreads]);
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -828,7 +824,14 @@ export function MagazineReader({
     };
 
     const onWheel = (event: WheelEvent) => {
-      if (motion || isInteractiveTarget(event.target)) return;
+      if (isInteractiveTarget(event.target)) return;
+
+      const now = performance.now();
+      if (motion || navigationLockRef.current || now < wheelBlockedUntilRef.current) {
+        event.preventDefault();
+        wheelDeltaRef.current = 0;
+        return;
+      }
 
       const dominant = Math.abs(event.deltaY) >= Math.abs(event.deltaX) ? event.deltaY : event.deltaX;
       if (Math.abs(dominant) < 2) return;
@@ -1137,9 +1140,17 @@ export function MagazineReader({
   };
 
   const updatePointerGuide = useCallback((event: ReactPointerEvent<HTMLDivElement>) => {
+    lastPointerRef.current = { x: event.clientX, y: event.clientY };
     const guide = pointerGuideRef.current;
     const stage = stageRef.current;
     if (!guide || !stage) return;
+
+    if (motion) {
+      guide.dataset.visible = "true";
+      guide.dataset.mode = "interactive";
+      guide.dataset.label = "";
+      return;
+    }
 
     const book = stage.querySelector<HTMLElement>(".xp-magazine__book");
     const stageRect = stage.getBoundingClientRect();
@@ -1174,7 +1185,7 @@ export function MagazineReader({
     const available = direction === "next" ? canGoForward : canGoBack;
     guide.dataset.mode = available ? direction : "interactive";
     guide.dataset.label = available ? (direction === "next" ? "Next" : "Previous") : "";
-  }, [canGoBack, canGoForward]);
+  }, [canGoBack, canGoForward, motion]);
 
   const onPointerDown = (event: ReactPointerEvent<HTMLDivElement>) => {
     updatePointerGuide(event);
@@ -1220,7 +1231,10 @@ export function MagazineReader({
 
     if (!motion || motion.direction !== direction || motion.phase !== "dragging") {
       setMotion(nextMotion);
-      void ensureSpreadLoaded(spreads[nextMotion.targetIndex]);
+      if (!navigationLockRef.current) {
+        navigationLockRef.current = true;
+        void ensureSpreadLoaded(spreads[nextMotion.targetIndex]);
+      }
     }
 
     const stageWidth = Math.max(1, event.currentTarget.getBoundingClientRect().width);
@@ -1244,6 +1258,7 @@ export function MagazineReader({
     event.currentTarget.releasePointerCapture?.(event.pointerId);
 
     if (!motion || motion.phase !== "dragging") {
+      navigationLockRef.current = false;
       setMotion(null);
       setProgress(0);
       return;
