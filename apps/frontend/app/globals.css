@@ -6763,3 +6763,112 @@ p[data-drop-cap-lines="6"] .xp-editorial-drop-cap { font-size: 5.85em; }
     font-size: clamp(1.15rem, 5.8vw, 1.6rem) !important;
   }
 }
+
+
+/* ==========================================================================
+   UNIVERSAL LEGACY PAGE REFLOW · ALL MAGAZINES
+   Page-authored publications use the same compact reader contract as native
+   spread-authored issues. This prevents older/future magazines from falling
+   back to a scaled desktop page between tablet and mobile widths.
+   ========================================================================== */
+@media (max-width: 1100px) {
+  .xp-magazine__stage[data-mode="single"] .xp-magazine__paper {
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+  }
+
+  .xp-magazine__stage[data-mode="single"] .xp-magazine__paper > [data-magazine-page]:not([data-magazine-page="cover"]) {
+    display: block !important;
+    position: relative !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 100% !important;
+    max-height: none !important;
+    overflow: visible !important;
+    container-type: normal !important;
+    transform: none !important;
+  }
+
+  .xp-magazine__stage[data-mode="single"] .xp-magazine__paper [data-magazine-page]:not([data-magazine-page="cover"]) [data-magazine-section] {
+    display: block !important;
+    position: relative !important;
+    inset: auto !important;
+    left: auto !important;
+    right: auto !important;
+    top: auto !important;
+    bottom: auto !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+    padding: clamp(1rem, 3vw, 1.65rem) !important;
+    transform: none !important;
+  }
+
+  .xp-magazine__stage[data-mode="single"] .xp-magazine__paper [data-magazine-page]:not([data-magazine-page="cover"]) [data-design-element="frame"],
+  .xp-magazine__stage[data-mode="single"] .xp-magazine__paper [data-magazine-page]:not([data-magazine-page="cover"]) [data-design-element="stack"],
+  .xp-magazine__stage[data-mode="single"] .xp-magazine__paper [data-magazine-page]:not([data-magazine-page="cover"]) [data-design-element="grid"],
+  .xp-magazine__stage[data-mode="single"] .xp-magazine__paper [data-magazine-page]:not([data-magazine-page="cover"]) [data-design-element="composerCanvas"] {
+    display: block !important;
+    position: relative !important;
+    inset: auto !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    overflow: visible !important;
+    transform: none !important;
+  }
+
+  .xp-magazine__stage[data-mode="single"] .xp-magazine__paper [data-magazine-page]:not([data-magazine-page="cover"]) [data-design-element="grid"] {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  .xp-magazine__stage[data-mode="single"] .xp-magazine__paper [data-magazine-page]:not([data-magazine-page="cover"]) [data-design-element="image"],
+  .xp-magazine__stage[data-mode="single"] .xp-magazine__paper [data-magazine-page]:not([data-magazine-page="cover"]) [data-design-element="video"],
+  .xp-magazine__stage[data-mode="single"] .xp-magazine__paper [data-magazine-page]:not([data-magazine-page="cover"]) iframe {
+    display: block !important;
+    position: relative !important;
+    inset: auto !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: clamp(11rem, 32vw, 20rem) !important;
+    max-height: 64dvh !important;
+    margin: clamp(.5rem, 1.4vw, .85rem) 0 !important;
+    object-fit: cover !important;
+    object-position: center !important;
+    transform: none !important;
+  }
+
+  .xp-magazine__stage[data-mode="single"] .xp-magazine__paper [data-magazine-page]:not([data-magazine-page="cover"]) p {
+    width: 100% !important;
+    max-width: 46rem !important;
+    font-size: clamp(1rem, 2.1vw, 1.125rem) !important;
+    line-height: 1.58 !important;
+    letter-spacing: 0 !important;
+    overflow-wrap: normal !important;
+    word-break: normal !important;
+  }
+
+  .xp-magazine__stage[data-mode="single"] .xp-magazine__paper [data-magazine-page]:not([data-magazine-page="cover"]) h1,
+  .xp-magazine__stage[data-mode="single"] .xp-magazine__paper [data-magazine-page]:not([data-magazine-page="cover"]) h2 {
+    max-width: 100% !important;
+    font-size: clamp(2rem, 5.4vw, 3.6rem) !important;
+    line-height: .96 !important;
+    letter-spacing: -.035em !important;
+    text-wrap: balance !important;
+  }
+
+  .xp-magazine__stage[data-mode="single"] .xp-magazine__paper [data-magazine-page]:not([data-magazine-page="cover"]) h3 {
+    max-width: 100% !important;
+    font-size: clamp(1.25rem, 3.3vw, 2rem) !important;
+    line-height: 1.08 !important;
+    text-wrap: balance !important;
+  }
+}
