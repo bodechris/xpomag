@@ -6088,3 +6088,15 @@ p[data-drop-cap-lines="6"] .xp-editorial-drop-cap { font-size: 5.85em; }
     transform-origin: left bottom;
   }
 }
+
+
+[data-spread-piece-id="steyn-school-values-callout-piece"] {
+  overflow: visible !important;
+  z-index: 220 !important;
+}
+
+@media (max-width: 820px) {
+  [data-spread-piece-id="steyn-school-values-callout-piece"] {
+    display: none !important;
+  }
+}
