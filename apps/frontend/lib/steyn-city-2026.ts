@@ -5721,6 +5721,564 @@ function rentalCheninSpread(issueId: string): MagazineSpreadDefinition {
   };
 }
 
+
+function allThingsDeliciousSpread(issueId: string): MagazineSpreadDefinition {
+  const pasta = "/resources/studio/steyn/steyn-city-xpomag-spread-11-01.webp";
+  const luciana = "/resources/studio/steyn/steyn-city-xpomag-spread-11-02.webp";
+  const breakfast = "/resources/studio/steyn/steyn-city-xpomag-spread-11-03.webp";
+  const chefMatthew = "/resources/studio/steyn/steyn-city-xpomag-spread-11-04.webp";
+  const sushi = "/resources/studio/steyn/steyn-city-xpomag-spread-11-05.webp";
+  const greenDrink = "/resources/studio/steyn/steyn-city-xpomag-spread-11-06.webp";
+
+  const pastaVideo = "https://www.youtube.com/embed/QDeMEbMY2wU?autoplay=1&mute=1&controls=1&playsinline=1&rel=0";
+  const sushiVideo = "https://www.youtube.com/embed/NAFbu_UFh6c?autoplay=1&mute=1&controls=1&playsinline=1&rel=0";
+
+  const engagement = { reactions: true, comments: true, share: true, save: true };
+  const noEngagement = { reactions: false, comments: false, share: false, save: false };
+
+  const image = (
+    id: string,
+    src: string,
+    alt: string,
+    style: DesignElementNode["style"] = {},
+  ): DesignElementNode => ({
+    id,
+    type: "image",
+    props: { src, alt, loading: "eager", fetchPriority: "high" },
+    style: { display: "block", objectFit: "cover", ...style },
+  });
+
+  const video = (
+    id: string,
+    src: string,
+    title: string,
+    style: DesignElementNode["style"] = {},
+  ): DesignElementNode => ({
+    id,
+    type: "video",
+    props: {
+      src,
+      title,
+      cover: true,
+      interactive: true,
+      autoplay: false,
+      muted: true,
+      controls: true,
+    },
+    style: { display: "block", width: "100%", height: "100%", ...style },
+  });
+
+  const mediaPiece = (
+    id: string,
+    slug: string,
+    title: string,
+    node: DesignElementNode,
+    style: Record<string, unknown>,
+    withEngagement = false,
+  ): any => ({
+    id,
+    slug,
+    title,
+    kind: "feature",
+    region: "spread",
+    gutterBehaviour: "clip",
+    engagement: withEngagement ? engagement : noEngagement,
+    style: { ...style, overflow: "hidden", background: "#ece8e2" },
+    elements: [node],
+  });
+
+  return {
+    id: "steyn-all-things-delicious-spread",
+    issueId,
+    slug: "all-things-delicious",
+    title: "All Things Delicious",
+    kind: "feature",
+    pageIds: ["food-i", "food-ii"],
+    style: { background: "#fbfaf7" },
+    pieces: [
+      {
+        id: "steyn-food-editorial-piece",
+        slug: "food-editorial",
+        title: "All Things Delicious",
+        kind: "article",
+        region: "spread",
+        gutterBehaviour: "cross",
+        engagement,
+        style: {
+          position: "absolute",
+          inset: 0,
+          overflow: "hidden",
+          background: "#fbfaf7",
+        },
+        elements: [
+          text("food-kicker", "│ FOOD", {
+            position: "absolute",
+            left: "4.4%",
+            top: "6.6%",
+            color: "#625a54",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(.48rem,.66vw,.72rem)",
+            letterSpacing: ".06em",
+          }, "span"),
+
+          {
+            id: "food-intro-copy",
+            type: "text",
+            props: {
+              as: "p",
+              text: "From children’s parties to milestone birthdays, from date nights to lunches that last for hours… whatever the occasion, Steyn City has the destination.\n\nWHAT’S ON THE MENU?\n\nChoose from a range of restaurants and eateries:\n\n• Guild Restaurant — inspired cuisine in a refined setting\n\n• Nineteen — the Clubhouse precinct’s contemporary favourite\n\n• Café del Sol — flavour-led Italian dining\n\n• The Farmhouse — relaxed family dining\n\n• Seattle Coffee Co. — coffee, quick bites and easy catch-ups",
+              dropCap: true,
+              dropCapLines: 4,
+              dropCapColor: "#342d28",
+            },
+            style: {
+              position: "absolute",
+              left: "4.4%",
+              top: "11.2%",
+              width: "12.7%",
+              bottom: "6.6%",
+              color: "#463f3a",
+              fontFamily: "var(--xp-font-editorial)",
+              fontSize: "clamp(.32rem,.43vw,.47rem)",
+              lineHeight: 1.47,
+              whiteSpace: "pre-line",
+              overflowWrap: "break-word",
+            },
+          },
+
+          {
+            id: "food-green-bubble",
+            type: "frame",
+            style: {
+              position: "absolute",
+              left: "15.1%",
+              top: "4.6%",
+              width: "11.6%",
+              aspectRatio: "1 / 1",
+              borderRadius: "50%",
+              background: "#3e9d4f",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: ".8rem",
+              zIndex: 10,
+            },
+            children: [
+              text("food-green-bubble-copy", "FROM\nMEDITERRANEAN\nMOOD TO DECADENT\nTREATS, STEYN CITY’S\nDINING OPTIONS ARE\nHERE TO MEET\nEVERY CRAVING", {
+                color: "#fff",
+                fontFamily: "var(--xp-font-grotesk)",
+                fontSize: "clamp(.27rem,.39vw,.43rem)",
+                fontWeight: 760,
+                lineHeight: 1.2,
+                textAlign: "center",
+                whiteSpace: "pre-line",
+              }, "span"),
+            ],
+          },
+
+          text("food-title", "ALL THINGS\nDELICIOUS", {
+            position: "absolute",
+            left: "23.4%",
+            top: "47.5%",
+            width: "24.3%",
+            color: "#332d29",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(1.25rem,2.2vw,2.5rem)",
+            fontWeight: 500,
+            lineHeight: .95,
+            whiteSpace: "pre-line",
+            textAlign: "center",
+          }, "h2"),
+
+          text("food-left-copy-a", "SPOTLIGHT ON: CAFÉ DEL SOL\nSTEYN CITY\n\nWhat is it about Italian cuisine that makes it a perennial global favourite? One visit to Café del Sol Steyn City, located on City Centre’s main plaza, and you’ll find out for yourself.\n\nOf course, it’s not only Café del Sol’s flavours that make it memorable. The restaurant brings warmth, generosity and a strong sense of occasion to every table.", {
+            position: "absolute",
+            left: "20.9%",
+            top: "58.8%",
+            width: "12.5%",
+            bottom: "6.7%",
+            color: "#4b443f",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(.34rem,.46vw,.5rem)",
+            lineHeight: 1.44,
+            whiteSpace: "pre-line",
+          }),
+
+          text("food-left-copy-b", "From handmade pasta to beautifully plated classics, the menu balances familiarity with polish.\n\nThe market-to-bowl philosophy means ingredients stay fresh, seasonal and full of flavour. It’s the kind of place that works equally well for a casual lunch or a long dinner with friends.\n\nThe result is dining that feels relaxed, confident and distinctly Steyn City.", {
+            position: "absolute",
+            left: "34.2%",
+            top: "58.8%",
+            width: "12.7%",
+            bottom: "6.7%",
+            color: "#4b443f",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(.34rem,.46vw,.5rem)",
+            lineHeight: 1.44,
+            whiteSpace: "pre-line",
+          }),
+
+          text("food-right-copy-a", "SIPPING WITH THE SOUTHERN GUARDS\n\nToast the Southern Guards SC with Nineteen’s signature menu. The combination of a beautiful setting, well-considered dishes and easy hospitality makes the experience feel complete.\n\nWith its broad appeal, Nineteen works just as well for breakfast and coffee as it does for a lingering lunch.", {
+            position: "absolute",
+            left: "54.4%",
+            top: "52.9%",
+            width: "13.7%",
+            bottom: "8.4%",
+            color: "#4b443f",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(.34rem,.46vw,.5rem)",
+            lineHeight: 1.44,
+            whiteSpace: "pre-line",
+          }),
+
+          text("food-right-copy-b", "SPOTLIGHT ON: NINETEEN\n\nChef Matthew Foxon has shaped a menu that feels polished without losing its sense of fun. Seasonal produce, approachable flavours and an eye for detail make every plate feel considered.\n\nThe setting carries the same balance — refined, social and welcoming.", {
+            position: "absolute",
+            left: "69.4%",
+            top: "52.9%",
+            width: "13.2%",
+            bottom: "8.4%",
+            color: "#4b443f",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(.34rem,.46vw,.5rem)",
+            lineHeight: 1.44,
+            whiteSpace: "pre-line",
+          }),
+
+          {
+            id: "luciana-loves-box",
+            type: "frame",
+            style: {
+              position: "absolute",
+              left: "53.9%",
+              top: "24.7%",
+              width: "11.8%",
+              height: "23.5%",
+              background: "#3e9d4f",
+              padding: ".7rem",
+              zIndex: 8,
+            },
+            children: [
+              text("luciana-loves-title", "LUCIANA’S LOVES", {
+                color: "#fff",
+                fontFamily: "var(--xp-font-grotesk)",
+                fontSize: "clamp(.38rem,.5vw,.54rem)",
+                fontWeight: 800,
+                textAlign: "center",
+                marginBottom: ".35rem",
+              }, "h3"),
+              text("luciana-loves-copy", "Favourite food: Risotto\n\nFavourite cuisine: Italian\n\nFavourite ingredient: Parmesan\n\nFavourite destination: The Alps\n\nFavourite local destination: The Drakensberg", {
+                color: "#fff",
+                fontFamily: "var(--xp-font-editorial)",
+                fontSize: "clamp(.28rem,.38vw,.42rem)",
+                lineHeight: 1.35,
+                whiteSpace: "pre-line",
+              }),
+            ],
+          },
+
+          {
+            id: "chef-matthew-box",
+            type: "frame",
+            style: {
+              position: "absolute",
+              right: "4.3%",
+              bottom: "7.4%",
+              width: "12.1%",
+              height: "24%",
+              background: "#3e9d4f",
+              padding: ".72rem",
+              zIndex: 8,
+            },
+            children: [
+              text("chef-matthew-title", "MOMENTS WITH\nCHEF MATTHEW", {
+                color: "#fff",
+                fontFamily: "var(--xp-font-grotesk)",
+                fontSize: "clamp(.37rem,.49vw,.53rem)",
+                fontWeight: 800,
+                textAlign: "center",
+                lineHeight: 1.12,
+                whiteSpace: "pre-line",
+                marginBottom: ".35rem",
+              }, "h3"),
+              text("chef-matthew-copy", "Favourite Food: Pizza\n\nFavourite place to visit: The bush\n\nFavourite ingredient: Fresh herbs\n\nBest advice: Keep it simple and let great produce do the work.", {
+                color: "#fff",
+                fontFamily: "var(--xp-font-editorial)",
+                fontSize: "clamp(.28rem,.38vw,.42rem)",
+                lineHeight: 1.35,
+                whiteSpace: "pre-line",
+              }),
+            ],
+          },
+
+          text("food-brand-left", "STEYN CITY", {
+            position: "absolute", left: "7.8%", bottom: "2.1%", color: "#342f2b",
+            fontFamily: "var(--xp-font-grotesk)", fontSize: ".42rem", fontWeight: 720, letterSpacing: ".08em",
+          }, "span"),
+          text("food-folio-left", "24", {
+            position: "absolute", left: "4.6%", bottom: "2.1%", color: "#342f2b",
+            fontFamily: "var(--xp-font-grotesk)", fontSize: ".45rem", fontWeight: 800,
+          }, "span"),
+          text("food-brand-right", "STEYN CITY", {
+            position: "absolute", right: "6.5%", bottom: "2.1%", color: "#342f2b",
+            fontFamily: "var(--xp-font-grotesk)", fontSize: ".42rem", fontWeight: 720, letterSpacing: ".08em",
+          }, "span"),
+          text("food-folio-right", "25", {
+            position: "absolute", right: "3.2%", bottom: "2.1%", color: "#342f2b",
+            fontFamily: "var(--xp-font-grotesk)", fontSize: ".45rem", fontWeight: 800,
+          }, "span"),
+        ],
+      },
+
+      mediaPiece(
+        "steyn-food-pasta-piece",
+        "food-pasta",
+        "Café del Sol pasta",
+        image("food-pasta-image", pasta, "Fresh pasta at Café del Sol", {
+          position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center center",
+        }),
+        { position: "absolute", left: "18.7%", top: 0, width: "31.8%", height: "46.1%", zIndex: 6 },
+        true,
+      ),
+
+      {
+        id: "steyn-food-pasta-video-piece",
+        slug: "food-pasta-video",
+        title: "Pasta in motion",
+        kind: "feature",
+        region: "spread",
+        gutterBehaviour: "clip",
+        engagement: noEngagement,
+        style: {
+          position: "absolute",
+          left: "38.5%",
+          top: "4.8%",
+          width: "9.6%",
+          aspectRatio: "9 / 16",
+          zIndex: 9,
+          overflow: "hidden",
+          border: "2px solid rgba(255,255,255,.9)",
+          boxShadow: "0 8px 24px rgba(0,0,0,.18)",
+          background: "#111",
+        },
+        elements: [
+          video("food-pasta-video", pastaVideo, "Short pasta cooking video", {
+            position: "absolute", inset: 0,
+          }),
+        ],
+      },
+
+      mediaPiece(
+        "steyn-food-luciana-piece",
+        "food-luciana",
+        "Luciana",
+        image("food-luciana-image", luciana, "Luciana cooking", {
+          position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 34%",
+        }),
+        { position: "absolute", left: "53.9%", top: 0, width: "11.8%", height: "24.7%", zIndex: 7 },
+        false,
+      ),
+
+      mediaPiece(
+        "steyn-food-breakfast-piece",
+        "food-breakfast",
+        "Breakfast at Steyn City",
+        image("food-breakfast-image", breakfast, "Breakfast overlooking the golf course", {
+          position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 50%",
+        }),
+        { position: "absolute", left: "67.0%", top: 0, width: "33%", height: "46.0%", zIndex: 6 },
+        false,
+      ),
+
+      {
+        id: "steyn-food-sushi-video-piece",
+        slug: "food-sushi-video",
+        title: "Sushi craft",
+        kind: "feature",
+        region: "spread",
+        gutterBehaviour: "clip",
+        engagement,
+        style: {
+          position: "absolute",
+          left: "54.1%",
+          bottom: 0,
+          width: "17.6%",
+          height: "24.8%",
+          zIndex: 7,
+          overflow: "hidden",
+          background: "#111",
+        },
+        elements: [
+          image("food-sushi-poster", sushi, "Sushi platter", {
+            position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center center",
+          }),
+          {
+            id: "food-sushi-video-inner",
+            type: "frame",
+            style: {
+              position: "absolute",
+              right: "5%",
+              top: "6%",
+              width: "42%",
+              aspectRatio: "9 / 16",
+              overflow: "hidden",
+              border: "2px solid rgba(255,255,255,.92)",
+              boxShadow: "0 8px 22px rgba(0,0,0,.24)",
+              zIndex: 5,
+              background: "#000",
+            },
+            children: [
+              video("food-sushi-video", sushiVideo, "Short sushi preparation video", {
+                position: "absolute", inset: 0,
+              }),
+            ],
+          },
+        ],
+      },
+
+      mediaPiece(
+        "steyn-food-drink-piece",
+        "food-drink",
+        "Signature drink",
+        image("food-drink-image", greenDrink, "Signature green drink", {
+          position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center center",
+        }),
+        { position: "absolute", left: "62.2%", top: "65.6%", width: "9.4%", aspectRatio: "1 / 1", borderRadius: "50%", zIndex: 10, outline: "4px solid #fff" },
+        false,
+      ),
+
+      mediaPiece(
+        "steyn-food-chef-piece",
+        "food-chef-matthew",
+        "Chef Matthew Foxon",
+        image("food-chef-image", chefMatthew, "Chef Matthew Foxon", {
+          position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 30%",
+        }),
+        { position: "absolute", right: "4.3%", top: "45.1%", width: "12.1%", aspectRatio: "1 / 1", borderRadius: "50%", zIndex: 10, outline: "5px solid #fff" },
+        false,
+      ),
+
+      {
+        id: "steyn-food-mobile-left-piece",
+        slug: "food-mobile-left",
+        title: "All Things Delicious",
+        kind: "article",
+        region: "left",
+        gutterBehaviour: "clip",
+        engagement,
+        style: {
+          position: "absolute",
+          left: "2.8%",
+          top: "3.5%",
+          width: "44.4%",
+          height: "93%",
+          display: "none",
+          background: "#fbfaf7",
+          zIndex: 70,
+          padding: "clamp(.95rem,3.8vw,1.4rem)",
+          overflow: "auto",
+        },
+        elements: [
+          text("food-mobile-kicker", "FOOD", {
+            color: "#655d56",
+            fontFamily: "var(--xp-font-grotesk)",
+            fontSize: ".78rem",
+            fontWeight: 800,
+            letterSpacing: ".13em",
+            marginBottom: ".55rem",
+          }, "span"),
+          image("food-mobile-pasta", pasta, "Fresh pasta", {
+            width: "100%", height: "11.5rem", objectFit: "cover", marginBottom: ".75rem",
+          }),
+          text("food-mobile-title", "ALL THINGS\nDELICIOUS", {
+            color: "#342d28",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(1.5rem,6.5vw,2rem)",
+            lineHeight: .98,
+            whiteSpace: "pre-line",
+            marginBottom: ".65rem",
+          }, "h2"),
+          {
+            id: "food-mobile-copy",
+            type: "text",
+            props: {
+              as: "p",
+              text: "From long lunches and family favourites to polished dinners and coffee on the run, Steyn City’s dining culture is built around variety, convenience and generous hospitality.",
+              dropCap: true,
+              dropCapLines: 4,
+              dropCapColor: "#342d28",
+            },
+            style: {
+              color: "#463f3a",
+              fontFamily: "var(--xp-font-editorial)",
+              fontSize: "clamp(1rem,3.8vw,1.14rem)",
+              lineHeight: 1.55,
+              marginBottom: ".8rem",
+            },
+          },
+          video("food-mobile-pasta-video", pastaVideo, "Short pasta cooking video", {
+            width: "100%", height: "10rem", marginBottom: ".8rem",
+          }),
+          image("food-mobile-luciana", luciana, "Luciana cooking", {
+            width: "100%", height: "10rem", objectFit: "cover", objectPosition: "center 32%",
+          }),
+        ],
+      },
+
+      {
+        id: "steyn-food-mobile-right-piece",
+        slug: "food-mobile-right",
+        title: "Food at Steyn City",
+        kind: "article",
+        region: "right",
+        gutterBehaviour: "clip",
+        engagement: noEngagement,
+        style: {
+          position: "absolute",
+          left: "52.8%",
+          top: "3.5%",
+          width: "44.4%",
+          height: "93%",
+          display: "none",
+          background: "#fbfaf7",
+          zIndex: 70,
+          padding: "clamp(.9rem,3.6vw,1.35rem)",
+          overflow: "auto",
+        },
+        elements: [
+          image("food-mobile-breakfast", breakfast, "Breakfast overlooking the golf course", {
+            width: "100%", height: "11rem", objectFit: "cover", marginBottom: ".75rem",
+          }),
+          text("food-mobile-right-heading", "TABLES WORTH\nLINGERING AT", {
+            color: "#342d28",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(1.45rem,6.2vw,1.95rem)",
+            lineHeight: .98,
+            whiteSpace: "pre-line",
+            marginBottom: ".7rem",
+          }, "h2"),
+          text("food-mobile-right-copy", "From Nineteen’s clubhouse setting to beautifully presented sushi and signature drinks, the food offering feels as considered as the landscape around it.", {
+            color: "#463f3a",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(1rem,3.8vw,1.14rem)",
+            lineHeight: 1.55,
+            marginBottom: ".8rem",
+          }),
+          video("food-mobile-sushi-video", sushiVideo, "Short sushi preparation video", {
+            width: "100%", height: "10rem", marginBottom: ".8rem",
+          }),
+          {
+            id: "food-mobile-right-grid",
+            type: "grid",
+            style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: ".55rem" },
+            children: [
+              image("food-mobile-sushi", sushi, "Sushi platter", { width: "100%", height: "8rem", objectFit: "cover" }),
+              image("food-mobile-chef", chefMatthew, "Chef Matthew Foxon", { width: "100%", height: "8rem", objectFit: "cover", objectPosition: "center 30%" }),
+            ],
+          },
+        ],
+      },
+    ],
+  };
+}
+
 function placeholderPage(
   issueId: string,
   pageNo: number,
@@ -5885,7 +6443,7 @@ export function getSteynCity2026Magazine(): MagazineGlobalDefinition {
         props: { label: "STEYN CITY" },
       },
     },
-    spreads: [cityLivingSpread(issueId), bentleyAdvertSpread(issueId), contentsGolfSpread(issueId), golfTraditionSpread(issueId), golfTraditionContinuationSpread(issueId), cyclingSpread(issueId), seniorVillageSpread(issueId), easyLifeSpread(issueId), birdsBeesSpread(issueId), liveYourDreamsSpread(issueId), rentalCheninSpread(issueId)],
+    spreads: [cityLivingSpread(issueId), bentleyAdvertSpread(issueId), contentsGolfSpread(issueId), golfTraditionSpread(issueId), golfTraditionContinuationSpread(issueId), cyclingSpread(issueId), seniorVillageSpread(issueId), easyLifeSpread(issueId), birdsBeesSpread(issueId), liveYourDreamsSpread(issueId), rentalCheninSpread(issueId), allThingsDeliciousSpread(issueId)],
     pages,
   };
 }
