@@ -4833,18 +4833,33 @@ function liveYourDreamsSpread(issueId: string): MagazineSpreadDefinition {
     src: string,
     title: string,
     style: DesignElementNode["style"] = {},
+    nativeAutoplay = false,
+    poster?: string,
   ): DesignElementNode => ({
     id,
     type: "video",
-    props: {
-      src,
-      title,
-      cover: true,
-      interactive: true,
-      autoplay: false,
-      muted: true,
-      controls: true,
-    },
+    props: nativeAutoplay
+      ? {
+          src,
+          title,
+          poster,
+          autoplay: true,
+          autoplayDelayMs: 0,
+          muted: true,
+          loop: true,
+          maxLoops: 999,
+          controls: false,
+        }
+      : {
+          src,
+          title,
+          poster,
+          cover: true,
+          interactive: true,
+          autoplay: false,
+          muted: true,
+          controls: true,
+        },
     style: { display: "block", width: "100%", height: "100%", ...style },
   });
 
@@ -5730,8 +5745,8 @@ function allThingsDeliciousSpread(issueId: string): MagazineSpreadDefinition {
   const sushi = "/resources/studio/steyn/steyn-city-xpomag-spread-11-05.webp";
   const greenDrink = "/resources/studio/steyn/steyn-city-xpomag-spread-11-06.webp";
 
-  const pastaVideo = "https://www.youtube.com/embed/QDeMEbMY2wU?autoplay=1&mute=1&controls=1&playsinline=1&rel=0";
-  const sushiVideo = "https://www.youtube.com/embed/NAFbu_UFh6c?autoplay=1&mute=1&controls=1&playsinline=1&rel=0";
+  const pastaVideo = "https://videos.pexels.com/video-files/6216467/6216467-uhd_2160_3840_24fps.mp4";
+  const sushiVideo = "https://videos.pexels.com/video-files/32166369/13716610_2160_3840_60fps.mp4";
 
   const engagement = { reactions: true, comments: true, share: true, save: true };
   const noEngagement = { reactions: false, comments: false, share: false, save: false };
@@ -5844,36 +5859,6 @@ function allThingsDeliciousSpread(issueId: string): MagazineSpreadDefinition {
               whiteSpace: "pre-line",
               overflowWrap: "break-word",
             },
-          },
-
-          {
-            id: "food-green-bubble",
-            type: "frame",
-            style: {
-              position: "absolute",
-              left: "15.1%",
-              top: "4.6%",
-              width: "11.6%",
-              aspectRatio: "1 / 1",
-              borderRadius: "50%",
-              background: "#3e9d4f",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              padding: ".8rem",
-              zIndex: 10,
-            },
-            children: [
-              text("food-green-bubble-copy", "FROM\nMEDITERRANEAN\nMOOD TO DECADENT\nTREATS, STEYN CITY’S\nDINING OPTIONS ARE\nHERE TO MEET\nEVERY CRAVING", {
-                color: "#fff",
-                fontFamily: "var(--xp-font-grotesk)",
-                fontSize: "clamp(.27rem,.39vw,.43rem)",
-                fontWeight: 760,
-                lineHeight: 1.2,
-                textAlign: "center",
-                whiteSpace: "pre-line",
-              }, "span"),
-            ],
           },
 
           text("food-title", "ALL THINGS\nDELICIOUS", {
@@ -6039,6 +6024,54 @@ function allThingsDeliciousSpread(issueId: string): MagazineSpreadDefinition {
       ),
 
       {
+        id: "steyn-food-green-bubble-piece",
+        slug: "food-green-bubble",
+        title: "Dining options",
+        kind: "feature",
+        region: "spread",
+        gutterBehaviour: "clip",
+        engagement: noEngagement,
+        style: {
+          position: "absolute",
+          left: "15.1%",
+          top: "4.6%",
+          width: "11.6%",
+          aspectRatio: "1 / 1",
+          zIndex: 30,
+          overflow: "visible",
+          background: "transparent",
+        },
+        elements: [
+          {
+            id: "food-green-bubble",
+            type: "frame",
+            style: {
+              position: "absolute",
+              inset: 0,
+              borderRadius: "50%",
+              background: "#3e9d4f",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: ".8rem",
+              boxShadow: "0 8px 20px rgba(0,0,0,.08)",
+            },
+            children: [
+              text("food-green-bubble-copy", "FROM\nMEDITERRANEAN\nMOOD TO DECADENT\nTREATS, STEYN CITY’S\nDINING OPTIONS ARE\nHERE TO MEET\nEVERY CRAVING", {
+                color: "#fff",
+                fontFamily: "var(--xp-font-grotesk)",
+                fontSize: "clamp(.27rem,.39vw,.43rem)",
+                fontWeight: 760,
+                lineHeight: 1.2,
+                textAlign: "center",
+                whiteSpace: "pre-line",
+              }, "span"),
+            ],
+          },
+        ],
+      },
+
+      {
         id: "steyn-food-pasta-video-piece",
         slug: "food-pasta-video",
         title: "Pasta in motion",
@@ -6060,8 +6093,8 @@ function allThingsDeliciousSpread(issueId: string): MagazineSpreadDefinition {
         },
         elements: [
           video("food-pasta-video", pastaVideo, "Short pasta cooking video", {
-            position: "absolute", inset: 0,
-          }),
+            position: "absolute", inset: 0, objectFit: "cover", objectPosition: "center center",
+          }, true, pasta),
         ],
       },
 
@@ -6126,8 +6159,8 @@ function allThingsDeliciousSpread(issueId: string): MagazineSpreadDefinition {
             },
             children: [
               video("food-sushi-video", sushiVideo, "Short sushi preparation video", {
-                position: "absolute", inset: 0,
-              }),
+                position: "absolute", inset: 0, objectFit: "cover", objectPosition: "center center",
+              }, true, sushi),
             ],
           },
         ],
@@ -6214,8 +6247,8 @@ function allThingsDeliciousSpread(issueId: string): MagazineSpreadDefinition {
             },
           },
           video("food-mobile-pasta-video", pastaVideo, "Short pasta cooking video", {
-            width: "100%", height: "10rem", marginBottom: ".8rem",
-          }),
+            width: "100%", height: "10rem", objectFit: "cover", marginBottom: ".8rem",
+          }, true, pasta),
           image("food-mobile-luciana", luciana, "Luciana cooking", {
             width: "100%", height: "10rem", objectFit: "cover", objectPosition: "center 32%",
           }),
@@ -6262,8 +6295,8 @@ function allThingsDeliciousSpread(issueId: string): MagazineSpreadDefinition {
             marginBottom: ".8rem",
           }),
           video("food-mobile-sushi-video", sushiVideo, "Short sushi preparation video", {
-            width: "100%", height: "10rem", marginBottom: ".8rem",
-          }),
+            width: "100%", height: "10rem", objectFit: "cover", marginBottom: ".8rem",
+          }, true, sushi),
           {
             id: "food-mobile-right-grid",
             type: "grid",
