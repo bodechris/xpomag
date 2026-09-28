@@ -6647,10 +6647,10 @@ p[data-drop-cap-lines="6"] .xp-editorial-drop-cap { font-size: 5.85em; }
     box-sizing: border-box !important;
   }
 
-  [data-magazine-reflow] [data-design-element="frame"],
-  [data-magazine-reflow] [data-design-element="stack"],
-  [data-magazine-reflow] [data-design-element="grid"],
-  [data-magazine-reflow] [data-design-element="composerCanvas"] {
+  [data-reflow-source="derived"] [data-design-element="frame"],
+  [data-reflow-source="derived"] [data-design-element="stack"],
+  [data-reflow-source="derived"] [data-design-element="grid"],
+  [data-reflow-source="derived"] [data-design-element="composerCanvas"] {
     width: 100% !important;
     height: auto !important;
     min-height: 0 !important;
@@ -6659,7 +6659,7 @@ p[data-drop-cap-lines="6"] .xp-editorial-drop-cap { font-size: 5.85em; }
     overflow: visible !important;
   }
 
-  [data-magazine-reflow] [data-design-element="grid"] {
+  [data-reflow-source="derived"] [data-design-element="grid"] {
     grid-template-columns: minmax(0, 1fr) !important;
   }
 
@@ -6872,3 +6872,54 @@ p[data-drop-cap-lines="6"] .xp-editorial-drop-cap { font-size: 5.85em; }
     text-wrap: balance !important;
   }
 
+
+
+/* Authored compact pieces keep their intentional internal grid/flex structure. */
+[data-reflow-source="authored"] [data-design-element="stack"] {
+  display: flex !important;
+  height: auto !important;
+  max-height: none !important;
+}
+[data-reflow-source="authored"] [data-design-element="grid"] {
+  display: grid !important;
+  height: auto !important;
+  max-height: none !important;
+}
+[data-reflow-source="authored"] [data-design-element="frame"] {
+  height: auto !important;
+  max-height: none !important;
+}
+[data-reflow-source="authored"] [data-design-element="image"],
+[data-reflow-source="authored"] [data-design-element="video"],
+[data-reflow-source="authored"] iframe {
+  min-height: 12rem !important;
+  height: auto !important;
+  aspect-ratio: 16 / 10;
+}
+@media (min-width: 760px) {
+  [data-reflow-source="authored"] [data-design-element="grid"] {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Prevent circular desktop callouts from becoming giant mobile blocks in
+   generic page reflow. Decorative frames become ordinary rectangular cards. */
+.xp-magazine__stage[data-mode="single"] [data-magazine-page]:not([data-magazine-page="cover"])
+  [data-design-element="frame"] {
+  border-radius: 12px !important;
+  aspect-ratio: auto !important;
+  max-width: 100% !important;
+}
+
+/* Stabilise the two faces of the desktop turning sheet. The tiny Z separation
+   avoids Chrome showing a stale face/sliver around the centre hinge on reverse turns. */
+.xp-magazine__turn-face {
+  overflow: hidden;
+  transform-style: preserve-3d;
+}
+.xp-magazine__turn-face--front {
+  transform: translateZ(.5px);
+}
+.xp-magazine__turn-face--back {
+  transform: rotateY(180deg) translateZ(.5px);
+}
