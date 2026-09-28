@@ -6994,3 +6994,46 @@ p[data-drop-cap-lines="6"] .xp-editorial-drop-cap { font-size: 5.85em; }
   [data-magazine-section] {
   gap: .85rem;
 }
+
+
+/* Mobile engagement sizing: keep the compact social rail consistently usable
+   across every publication/layout instead of inheriting tiny desktop scale. */
+@media (max-width: 620px) {
+  .xp-magazine__stage[data-mode="single"] .xp-section-engagement--inline {
+    min-height: 38px !important;
+    padding: .42rem .62rem !important;
+    border-radius: 999px !important;
+    background: rgba(255,255,255,.96) !important;
+    color: #111 !important;
+    box-shadow: 0 6px 18px rgba(0,0,0,.12) !important;
+    opacity: 1 !important;
+    width: fit-content !important;
+    max-width: calc(100% - 1rem) !important;
+  }
+
+  .xp-magazine__stage[data-mode="single"] .xp-section-engagement--inline .xp-engagement__actions {
+    gap: .55rem !important;
+  }
+
+  .xp-magazine__stage[data-mode="single"] .xp-section-engagement--inline .xp-engagement__action {
+    min-height: 24px !important;
+    font-size: 12px !important;
+    gap: .22rem !important;
+    opacity: 1 !important;
+  }
+
+  .xp-magazine__stage[data-mode="single"] .xp-section-engagement--inline .xp-engagement__action svg {
+    width: 16px !important;
+    height: 16px !important;
+    stroke-width: 1.8 !important;
+  }
+
+  .xp-magazine__stage[data-mode="single"] .xp-section-engagement--inline .xp-engagement__action span {
+    display: inline !important;
+    font-size: 11px !important;
+  }
+
+  .xp-magazine__stage[data-mode="single"] .xp-section-engagement:not(.xp-section-engagement--inline) {
+    font-size: 12px !important;
+  }
+}
