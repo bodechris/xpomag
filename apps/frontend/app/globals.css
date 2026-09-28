@@ -6412,3 +6412,49 @@ p[data-drop-cap-lines="6"] .xp-editorial-drop-cap { font-size: 5.85em; }
     line-height: 1.48 !important;
   }
 }
+
+
+/* Single-article mode keeps the publication's full visual inventory available. */
+.xp-article-post__spread-media {
+  width: min(100vw - 2rem, 1120px);
+  margin-inline: auto;
+}
+.xp-article-post__media-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(1rem, 2.5vw, 1.75rem);
+}
+.xp-article-post__media-grid figure {
+  width: 100%;
+  margin: 0;
+  min-width: 0;
+}
+.xp-article-post__media-grid img,
+.xp-article-post__media-grid video,
+.xp-article-post__media-grid iframe {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  height: auto;
+  max-height: 72dvh;
+  border: 0;
+  object-fit: cover;
+  background: #111;
+}
+.xp-article-post__media-grid figcaption {
+  margin-top: .55rem;
+  font-size: .75rem;
+  line-height: 1.4;
+  opacity: .62;
+}
+@media (max-width: 700px) {
+  .xp-article-post__media-grid {
+    grid-template-columns: 1fr;
+  }
+  .xp-article-post__media-grid img,
+  .xp-article-post__media-grid video,
+  .xp-article-post__media-grid iframe {
+    aspect-ratio: 16 / 10;
+    max-height: 62dvh;
+  }
+}
