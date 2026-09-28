@@ -4,7 +4,7 @@ import { buildMasterSpreadsFromPages, MAGAZINE_COMPACT_MAX_WIDTH, MAGAZINE_MAX_P
 import { ArrowLeft, ArrowRight, BookOpen, LockKeyhole, Maximize2, Menu, Minimize2, Pause, Play, RotateCcw, X } from "lucide-react";
 import { MagazineEngagementDock } from "./magazine-engagement-dock";
 import type { CSSProperties, MouseEvent as ReactMouseEvent, PointerEvent as ReactPointerEvent } from "react";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { isStandaloneArticleKind, type MagazineReaderIssue } from "../lib/magazine-reader-data";
 import { MagazineResourcePreloader } from "./magazine-resource-preloader";
@@ -764,7 +764,7 @@ export function MagazineReader({
     completeMotion(true, nextMotion.targetIndex);
   }, [clearMotionTimer, completeMotion, createMotion, ensureSpreadLoaded, issue.pages, motion, setProgress, singlePageMode, spread, spreads]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const media = window.matchMedia(`(max-width: ${MAGAZINE_COMPACT_MAX_WIDTH}px)`);
     const sync = () => {
       navigationLockRef.current = false;
@@ -776,7 +776,7 @@ export function MagazineReader({
     sync();
     media.addEventListener?.("change", sync);
     return () => media.removeEventListener?.("change", sync);
-  }, []);
+  }, [setProgress]);
 
   useEffect(() => {
     const initialSpreadIndex = spreads.findIndex((item) => item.pageIndexes.includes(initialPageIndex));
