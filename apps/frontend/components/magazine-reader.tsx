@@ -703,8 +703,7 @@ export function MagazineReader({
       direction,
       targetIndex,
       phase: "animating",
-      // Direct jumps still look like a book turn rather than a hard teleport.
-      kind: "flip",
+      kind: transitionKind(singlePageMode, currentIndex, targetIndex),
     };
 
     clearMotionTimer();
@@ -716,7 +715,7 @@ export function MagazineReader({
     });
     completeMotion(true, targetIndex);
     return true;
-  }, [clearMotionTimer, completeMotion, ensureSpreadLoaded, motion, setProgress, spreadIndex, spreads]);
+  }, [clearMotionTimer, completeMotion, ensureSpreadLoaded, motion, setProgress, singlePageMode, spreadIndex, spreads]);
 
   const openStoryTarget = useCallback((node: ComposerNode) => {
     const story = node.story;
