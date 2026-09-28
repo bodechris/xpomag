@@ -7233,6 +7233,490 @@ function holidayLifestyleSpread(issueId: string): MagazineSpreadDefinition {
   };
 }
 
+
+function schoolValuesSpread(issueId: string): MagazineSpreadDefinition {
+  const leadership = "/resources/studio/steyn/steyn-city-xpomag-spread-14-01.webp";
+  const cricket = "/resources/studio/steyn/steyn-city-xpomag-spread-14-02.webp";
+  const assembly = "/resources/studio/steyn/steyn-city-xpomag-spread-14-03.webp";
+  const funRun = "/resources/studio/steyn/steyn-city-xpomag-spread-14-04.webp";
+  const interview = "/resources/studio/steyn/steyn-city-xpomag-spread-14-05.webp";
+  const schoolLogo = "/resources/studio/steyn/steyn-city-xpomag-spread-14-06.webp";
+
+  const leftVideo = "https://www.youtube.com/embed/zhYEbKULXE0?autoplay=1&mute=1&controls=0&playsinline=1&rel=0";
+  const rightVideo = "https://www.youtube.com/embed/5TSsUV_uNdk?autoplay=1&mute=1&controls=0&playsinline=1&rel=0";
+
+  const engagement = { reactions: true, comments: true, share: true, save: true };
+  const noEngagement = { reactions: false, comments: false, share: false, save: false };
+
+  const image = (
+    id: string,
+    src: string,
+    alt: string,
+    style: DesignElementNode["style"] = {},
+  ): DesignElementNode => ({
+    id,
+    type: "image",
+    props: { src, alt, loading: "eager", fetchPriority: "high" },
+    style: { display: "block", objectFit: "cover", ...style },
+  });
+
+  const autoplayVideo = (
+    id: string,
+    src: string,
+    poster: string,
+    title: string,
+    style: DesignElementNode["style"] = {},
+  ): DesignElementNode => ({
+    id,
+    type: "video",
+    props: {
+      src,
+      poster,
+      title,
+      cover: true,
+      interactive: true,
+      autoplay: true,
+      muted: true,
+      controls: false,
+    },
+    style: { display: "block", width: "100%", height: "100%", ...style },
+  });
+
+  const mediaPiece = (
+    id: string,
+    slug: string,
+    title: string,
+    node: DesignElementNode,
+    style: Record<string, unknown>,
+    withEngagement = false,
+  ): any => ({
+    id,
+    slug,
+    title,
+    kind: "feature",
+    region: "spread",
+    gutterBehaviour: "clip",
+    engagement: withEngagement ? engagement : noEngagement,
+    style: { ...style, overflow: "hidden", background: "#eef1ed" },
+    elements: [node],
+  });
+
+  return {
+    id: "steyn-school-values-spread",
+    issueId,
+    slug: "school-values",
+    title: "Where Values Shape Futures",
+    kind: "feature",
+    pageIds: ["school-i", "school-ii"],
+    style: { background: "#fbfaf7" },
+    pieces: [
+      {
+        id: "steyn-school-editorial-piece",
+        slug: "school-editorial",
+        title: "Where Values Shape Futures",
+        kind: "article",
+        region: "spread",
+        gutterBehaviour: "cross",
+        engagement,
+        style: {
+          position: "absolute",
+          inset: 0,
+          overflow: "hidden",
+          background: "#fbfaf7",
+        },
+        elements: [
+          text("school-title", "WHERE VALUES\nSHAPE FUTURES", {
+            position: "absolute",
+            left: "6.1%",
+            top: "43.6%",
+            width: "29.4%",
+            color: "#2f2925",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(1.25rem,2.2vw,2.5rem)",
+            fontWeight: 500,
+            lineHeight: .95,
+            whiteSpace: "pre-line",
+            textAlign: "center",
+          }, "h2"),
+
+          {
+            id: "school-left-copy-a",
+            type: "text",
+            props: {
+              as: "p",
+              text: "In just nine years, Steyn City School has grown from an ambitious vision into one of Gauteng’s most distinctive independent, co-educational schools. Academic excellence remains central, but the School’s identity is equally rooted in leadership, belonging, service and community.\n\nLEADERSHIP WITH EXPERIENCE AND PERSPECTIVE",
+              dropCap: true,
+              dropCapLines: 4,
+              dropCapColor: "#342d28",
+            },
+            style: {
+              position: "absolute",
+              left: "4.9%",
+              top: "55.7%",
+              width: "14.0%",
+              bottom: "6.8%",
+              color: "#463f3a",
+              fontFamily: "var(--xp-font-editorial)",
+              fontSize: "clamp(.34rem,.46vw,.5rem)",
+              lineHeight: 1.46,
+              whiteSpace: "pre-line",
+            },
+          },
+
+          text("school-left-copy-b", "Head Mr Stuart West, together with the leadership team, has helped shape a culture where students are expected to reach beyond the classroom. Academic results matter, but so too do integrity, empathy, ambition and character.\n\nThe School continues to grow with purpose, balancing strong academic outcomes with sport, culture and service.", {
+            position: "absolute",
+            left: "19.8%",
+            top: "55.7%",
+            width: "14.1%",
+            bottom: "6.8%",
+            color: "#463f3a",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(.34rem,.46vw,.5rem)",
+            lineHeight: 1.46,
+            whiteSpace: "pre-line",
+          }),
+
+          {
+            id: "school-values-callout",
+            type: "frame",
+            style: {
+              position: "absolute",
+              left: "26.2%",
+              top: "34.8%",
+              width: "9.0%",
+              aspectRatio: "1 / 1",
+              borderRadius: "50%",
+              background: "#69c5b8",
+              border: "4px solid #fff",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: ".75rem",
+              zIndex: 18,
+            },
+            children: [
+              text("school-values-callout-copy", "NINE\nYEARS OF\nGROWTH,\nGROUNDED IN\nVALUES", {
+                color: "#fff",
+                fontFamily: "var(--xp-font-grotesk)",
+                fontSize: "clamp(.28rem,.39vw,.43rem)",
+                fontWeight: 800,
+                lineHeight: 1.16,
+                textAlign: "center",
+                whiteSpace: "pre-line",
+              }, "span"),
+            ],
+          },
+
+          text("school-right-quote", "“Leadership grounded in values gives a school both confidence and direction.”", {
+            position: "absolute",
+            left: "54.4%",
+            top: "7.4%",
+            width: "13.8%",
+            color: "#29231f",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(.55rem,.76vw,.86rem)",
+            fontWeight: 650,
+            fontStyle: "italic",
+            lineHeight: 1.15,
+            textAlign: "center",
+          }),
+
+          text("school-right-copy-a", "This philosophy aligns naturally with Steyn City School’s values-led approach to education, ensuring that students are encouraged to grow not only academically, but also in confidence, purpose and resilience.\n\nACADEMIC RESULTS WITH EXCELLENCE\n\nThe School’s strong academic performance reflects both disciplined teaching and a culture that values curiosity and independent thought.", {
+            position: "absolute",
+            left: "54.5%",
+            top: "14.1%",
+            width: "13.9%",
+            bottom: "13.5%",
+            color: "#463f3a",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(.33rem,.45vw,.49rem)",
+            lineHeight: 1.45,
+            whiteSpace: "pre-line",
+          }),
+
+          text("school-right-copy-b", "ACHIEVEMENT BEYOND THE CLASSROOM\n\nTrue to its holistic philosophy, Steyn City School celebrates achievement well beyond the classroom. Sport, culture, leadership and service form an integral part of the student experience.\n\nGROWING WITH PURPOSE AND COMMUNITY\n\nAs the School continues to evolve, its focus remains the same: empower young people to lead with humility, integrity and courage.", {
+            position: "absolute",
+            left: "69.2%",
+            top: "14.1%",
+            width: "13.8%",
+            bottom: "13.5%",
+            color: "#463f3a",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(.33rem,.45vw,.49rem)",
+            lineHeight: 1.45,
+            whiteSpace: "pre-line",
+          }),
+
+          {
+            id: "school-contact-rail",
+            type: "frame",
+            style: {
+              position: "absolute",
+              left: "53.6%",
+              right: "3.8%",
+              bottom: "5.4%",
+              height: "3.4%",
+              background: "#e52c38",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: "0 .75rem",
+            },
+            children: [
+              text("school-contact-copy", "GRADES 000 TO 12 | INFO@STEYNCITYSCHOOL.CO.ZA | 010 597 1250 | WWW.STEYNCITYSCHOOL.CO.ZA", {
+                color: "#fff",
+                fontFamily: "var(--xp-font-grotesk)",
+                fontSize: "clamp(.28rem,.4vw,.44rem)",
+                fontWeight: 780,
+                letterSpacing: ".03em",
+                textAlign: "center",
+              }, "span"),
+            ],
+          },
+
+          text("school-brand-left", "STEYN CITY", {
+            position: "absolute", left: "7.8%", bottom: "2.1%", color: "#342f2b",
+            fontFamily: "var(--xp-font-grotesk)", fontSize: ".42rem", fontWeight: 720, letterSpacing: ".08em",
+          }, "span"),
+          text("school-folio-left", "30", {
+            position: "absolute", left: "4.6%", bottom: "2.1%", color: "#342f2b",
+            fontFamily: "var(--xp-font-grotesk)", fontSize: ".45rem", fontWeight: 800,
+          }, "span"),
+          text("school-brand-right", "STEYN CITY", {
+            position: "absolute", right: "6.4%", bottom: "2.1%", color: "#342f2b",
+            fontFamily: "var(--xp-font-grotesk)", fontSize: ".42rem", fontWeight: 720, letterSpacing: ".08em",
+          }, "span"),
+          text("school-folio-right", "31", {
+            position: "absolute", right: "3.2%", bottom: "2.1%", color: "#342f2b",
+            fontFamily: "var(--xp-font-grotesk)", fontSize: ".45rem", fontWeight: 800,
+          }, "span"),
+        ],
+      },
+
+      {
+        id: "steyn-school-left-video-piece",
+        slug: "school-left-video",
+        title: "Steyn City School leadership",
+        kind: "feature",
+        region: "spread",
+        gutterBehaviour: "clip",
+        engagement: noEngagement,
+        style: {
+          position: "absolute",
+          left: 0,
+          top: 0,
+          width: "50%",
+          height: "42.0%",
+          zIndex: 6,
+          overflow: "hidden",
+          background: "#111",
+        },
+        elements: [
+          autoplayVideo("school-left-video", leftVideo, leadership, "Steyn City School virtual tour", {
+            position: "absolute",
+            inset: 0,
+            objectFit: "cover",
+            objectPosition: "center 43%",
+          }),
+        ],
+      },
+
+      mediaPiece(
+        "steyn-school-cricket-piece",
+        "school-cricket",
+        "School cricket",
+        image("school-cricket-image", cricket, "Steyn City School cricket team celebrating", {
+          position: "absolute", inset: 0, width: "100%", height: "100%",
+          objectFit: "cover", objectPosition: "center 44%",
+        }),
+        { position: "absolute", left: "32.2%", top: "43.7%", width: "17.8%", height: "19.6%", zIndex: 7 },
+        true,
+      ),
+
+      mediaPiece(
+        "steyn-school-assembly-piece",
+        "school-assembly",
+        "School community",
+        image("school-assembly-image", assembly, "Steyn City School students gathered outdoors", {
+          position: "absolute", inset: 0, width: "100%", height: "100%",
+          objectFit: "cover", objectPosition: "center 45%",
+        }),
+        { position: "absolute", left: "32.2%", top: "65.0%", width: "17.8%", height: "27.0%", zIndex: 7 },
+        false,
+      ),
+
+      {
+        id: "steyn-school-right-video-piece",
+        slug: "school-right-video",
+        title: "School sport",
+        kind: "feature",
+        region: "spread",
+        gutterBehaviour: "clip",
+        engagement,
+        style: {
+          position: "absolute",
+          left: "69.0%",
+          top: 0,
+          width: "31.0%",
+          height: "40.1%",
+          zIndex: 6,
+          overflow: "hidden",
+          background: "#111",
+        },
+        elements: [
+          autoplayVideo("school-right-video", rightVideo, funRun, "Steyn City School sport highlights", {
+            position: "absolute",
+            inset: 0,
+            objectFit: "cover",
+            objectPosition: "center 48%",
+          }),
+          text("school-right-video-kicker", "SCHOOL │", {
+            position: "absolute",
+            right: "5%",
+            top: "7.5%",
+            color: "#352f2a",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(.48rem,.66vw,.72rem)",
+            letterSpacing: ".06em",
+            zIndex: 8,
+          }, "span"),
+        ],
+      },
+
+      mediaPiece(
+        "steyn-school-interview-piece",
+        "school-interview",
+        "Student conversation",
+        image("school-interview-image", interview, "Steyn City School staff and students in conversation", {
+          position: "absolute", inset: 0, width: "100%", height: "100%",
+          objectFit: "cover", objectPosition: "center 43%",
+        }),
+        { position: "absolute", left: "69.0%", top: "41.8%", width: "31.0%", height: "22.0%", zIndex: 7 },
+        false,
+      ),
+
+      mediaPiece(
+        "steyn-school-logo-piece",
+        "school-logo",
+        "Steyn City School",
+        image("school-logo-image", schoolLogo, "Steyn City School logo", {
+          position: "absolute", inset: 0, width: "100%", height: "100%",
+          objectFit: "contain", objectPosition: "center center",
+        }),
+        { position: "absolute", right: "5.8%", top: "66.7%", width: "12.8%", height: "18.0%", zIndex: 7, background: "transparent" },
+        false,
+      ),
+
+      {
+        id: "steyn-school-mobile-left-piece",
+        slug: "school-mobile-left",
+        title: "Where Values Shape Futures",
+        kind: "article",
+        region: "left",
+        gutterBehaviour: "clip",
+        engagement,
+        style: {
+          position: "absolute",
+          left: "2.8%",
+          top: "3.5%",
+          width: "44.4%",
+          height: "93%",
+          display: "none",
+          background: "#fbfaf7",
+          zIndex: 70,
+          padding: "clamp(.95rem,3.8vw,1.4rem)",
+          overflow: "auto",
+        },
+        elements: [
+          autoplayVideo("school-mobile-left-video", leftVideo, leadership, "Steyn City School virtual tour", {
+            width: "100%", height: "12rem", objectFit: "cover", marginBottom: ".8rem",
+          }),
+          text("school-mobile-title", "WHERE VALUES\nSHAPE FUTURES", {
+            color: "#342d28",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(1.5rem,6.5vw,2rem)",
+            lineHeight: .98,
+            whiteSpace: "pre-line",
+            marginBottom: ".65rem",
+          }, "h2"),
+          {
+            id: "school-mobile-copy",
+            type: "text",
+            props: {
+              as: "p",
+              text: "In just nine years, Steyn City School has grown into a distinctive independent school where academic excellence is matched by leadership, belonging, sport, culture and service.",
+              dropCap: true,
+              dropCapLines: 4,
+              dropCapColor: "#342d28",
+            },
+            style: {
+              color: "#463f3a",
+              fontFamily: "var(--xp-font-editorial)",
+              fontSize: "clamp(1rem,3.8vw,1.14rem)",
+              lineHeight: 1.55,
+              marginBottom: ".8rem",
+            },
+          },
+          image("school-mobile-cricket", cricket, "School cricket", {
+            width: "100%", height: "9.5rem", objectFit: "cover", marginBottom: ".65rem",
+          }),
+          image("school-mobile-assembly", assembly, "School community", {
+            width: "100%", height: "9.5rem", objectFit: "cover",
+          }),
+        ],
+      },
+
+      {
+        id: "steyn-school-mobile-right-piece",
+        slug: "school-mobile-right",
+        title: "We Reach Beyond",
+        kind: "article",
+        region: "right",
+        gutterBehaviour: "clip",
+        engagement: noEngagement,
+        style: {
+          position: "absolute",
+          left: "52.8%",
+          top: "3.5%",
+          width: "44.4%",
+          height: "93%",
+          display: "none",
+          background: "#fbfaf7",
+          zIndex: 70,
+          padding: "clamp(.9rem,3.6vw,1.35rem)",
+          overflow: "auto",
+        },
+        elements: [
+          autoplayVideo("school-mobile-right-video", rightVideo, funRun, "Steyn City School sport highlights", {
+            width: "100%", height: "11rem", objectFit: "cover", marginBottom: ".75rem",
+          }),
+          text("school-mobile-right-heading", "WE REACH\nBEYOND", {
+            color: "#342d28",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(1.45rem,6.2vw,1.95rem)",
+            lineHeight: .98,
+            whiteSpace: "pre-line",
+            marginBottom: ".7rem",
+          }, "h2"),
+          text("school-mobile-right-copy", "Academic achievement is only part of the story. Steyn City School’s students are encouraged to lead, compete, create, serve and grow with confidence and character.", {
+            color: "#463f3a",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(1rem,3.8vw,1.14rem)",
+            lineHeight: 1.55,
+            marginBottom: ".8rem",
+          }),
+          image("school-mobile-interview", interview, "Student conversation", {
+            width: "100%", height: "9.5rem", objectFit: "cover", marginBottom: ".7rem",
+          }),
+          image("school-mobile-logo", schoolLogo, "Steyn City School logo", {
+            width: "10rem", maxWidth: "70%", height: "7rem", objectFit: "contain", margin: "0 auto",
+          }),
+        ],
+      },
+    ],
+  };
+}
+
 function placeholderPage(
   issueId: string,
   pageNo: number,
@@ -7397,7 +7881,7 @@ export function getSteynCity2026Magazine(): MagazineGlobalDefinition {
         props: { label: "STEYN CITY" },
       },
     },
-    spreads: [cityLivingSpread(issueId), bentleyAdvertSpread(issueId), contentsGolfSpread(issueId), golfTraditionSpread(issueId), golfTraditionContinuationSpread(issueId), cyclingSpread(issueId), seniorVillageSpread(issueId), easyLifeSpread(issueId), birdsBeesSpread(issueId), liveYourDreamsSpread(issueId), rentalCheninSpread(issueId), allThingsDeliciousSpread(issueId), golfExcellenceSpread(issueId), holidayLifestyleSpread(issueId)],
+    spreads: [cityLivingSpread(issueId), bentleyAdvertSpread(issueId), contentsGolfSpread(issueId), golfTraditionSpread(issueId), golfTraditionContinuationSpread(issueId), cyclingSpread(issueId), seniorVillageSpread(issueId), easyLifeSpread(issueId), birdsBeesSpread(issueId), liveYourDreamsSpread(issueId), rentalCheninSpread(issueId), allThingsDeliciousSpread(issueId), golfExcellenceSpread(issueId), holidayLifestyleSpread(issueId), schoolValuesSpread(issueId)],
     pages,
   };
 }
