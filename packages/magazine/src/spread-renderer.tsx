@@ -64,7 +64,7 @@ function mobilePieceSide(piece: MagazineSpreadPiece): MagazineLeafSide | null {
 function reflowPiecesForSide(spread: MagazineSpreadDefinition, side: MagazineLeafSide) {
   const authored = spread.pieces.filter((piece) => mobilePieceSide(piece) === side);
   if (authored.length) {
-    return authored.map((piece) => ({ piece, elements: piece.elements }));
+    return authored.map((piece) => ({ piece, elements: piece.elements, source: "authored" as const }));
   }
 
   return spread.pieces
@@ -80,7 +80,7 @@ function reflowPiecesForSide(spread: MagazineSpreadDefinition, side: MagazineLea
             return nodeSide === "spread" || nodeSide === side;
           });
 
-      return elements.length ? [{ piece, elements }] : [];
+      return elements.length ? [{ piece, elements, source: "derived" as const }] : [];
     });
 }
 
@@ -213,8 +213,10 @@ export function MagazineSpreadLeaf({
         data-magazine-reflow={side}
         style={{ position: "relative", width: "100%", minHeight: "100%", overflow: "visible" }}
       >
-        {groups.map(({ piece, elements }) => {
-          const supplementalMedia = includeSupplementalMobileMedia ? supplementalMobileMedia(spread, piece) : [];
+        {groups.map(({ piece, elements, source }) => {
+          const supplementalMedia = source === "authored" && includeSupplementalMobileMedia
+            ? supplementalMobileMedia(spread, piece)
+            : [];
           return (
             <section
               id={piece.slug}
@@ -223,6 +225,7 @@ export function MagazineSpreadLeaf({
               data-spread-piece-id={piece.id}
               data-spread-region={piece.region ?? "spread"}
               data-reflow-piece
+              data-reflow-source={source}
             >
               {elements.map((element) => (
                 <DesignElement key={element.id} node={element} registry={globalElements} />
