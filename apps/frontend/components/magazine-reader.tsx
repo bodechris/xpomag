@@ -1725,23 +1725,6 @@ export function MagazineReader({
             : null}
           {renderSpread(spread, "current", motion?.kind === "flip" ? currentTurnPageIndex : undefined)}
 
-          {motion?.kind === "flip" &&
-          motion.direction === "next" &&
-          backTurnNativeSpread &&
-          !singlePageMode &&
-          spread.pageIndexes.length === 2 &&
-          targetSpread?.pageIndexes.length === 2 ? (
-            <div className="xp-magazine__next-target-underlay" aria-hidden="true">
-              <MagazineSpreadLeaf
-                spread={backTurnNativeSpread}
-                side="left"
-                globalElements={issue.designElements}
-                includeSupplementalMobileMedia={false}
-                reflow={false}
-              />
-            </div>
-          ) : null}
-
           {activeSpreadVideo && !activeSpreadVideo.autoplay && !activeSpreadVideo.managedAutoplay && !motion ? (
             <button
               type="button"
