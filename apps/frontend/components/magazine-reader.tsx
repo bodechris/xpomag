@@ -1,10 +1,10 @@
 "use client";
 
-import { buildMasterSpreadsFromPages, MAGAZINE_COMPACT_MAX_WIDTH, MAGAZINE_MAX_PAGE_CACHE_ENTRIES, magazineTransitionKindForMode, MagazinePageRenderer, MagazineSpreadCanvas, MagazineSpreadLeaf, type ComposerNode, type DesignElementNode, type MagazineMasterSpread, type MagazinePageDefinition, type MagazineSpreadDefinition } from "@xpomag/magazine";
+import { buildMasterSpreadsFromPages, MagazinePageRenderer, MagazineSpreadCanvas, MagazineSpreadLeaf, type ComposerNode, type DesignElementNode, type MagazineMasterSpread, type MagazinePageDefinition, type MagazineSpreadDefinition } from "@xpomag/magazine";
 import { ArrowLeft, ArrowRight, BookOpen, LockKeyhole, Maximize2, Menu, Minimize2, Pause, Play, RotateCcw, X } from "lucide-react";
 import { MagazineEngagementDock } from "./magazine-engagement-dock";
 import type { CSSProperties, MouseEvent as ReactMouseEvent, PointerEvent as ReactPointerEvent } from "react";
-import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { isStandaloneArticleKind, type MagazineReaderIssue } from "../lib/magazine-reader-data";
 import { MagazineResourcePreloader } from "./magazine-resource-preloader";
@@ -28,16 +28,6 @@ const FLICK_VELOCITY = 0.34;
 
 const MAGAZINE_PAGE_CACHE = new Map<string, MagazinePageDefinition>();
 const MAGAZINE_ASSET_CACHE = new Set<string>();
-
-function cacheMagazinePage(key: string, page: MagazinePageDefinition) {
-  MAGAZINE_PAGE_CACHE.delete(key);
-  MAGAZINE_PAGE_CACHE.set(key, page);
-  while (MAGAZINE_PAGE_CACHE.size > MAGAZINE_MAX_PAGE_CACHE_ENTRIES) {
-    const oldestKey = MAGAZINE_PAGE_CACHE.keys().next().value as string | undefined;
-    if (!oldestKey) break;
-    MAGAZINE_PAGE_CACHE.delete(oldestKey);
-  }
-}
 
 function collectNodeAssetUrls(nodes: DesignElementNode[]): string[] {
   const urls: string[] = [];
@@ -87,8 +77,10 @@ function isInteractiveTarget(target: EventTarget | null) {
   return target instanceof Element && Boolean(target.closest(INTERACTIVE_SELECTOR));
 }
 
-function transitionKind(singlePage: boolean, _from: number, _to: number): MotionKind {
-  return magazineTransitionKindForMode(singlePage ? "page" : "spread");
+function transitionKind(singlePage: boolean, from: number, to: number): MotionKind {
+  if (!singlePage) return "flip";
+  const boundary = Math.min(from, to);
+  return boundary % 2 === 0 ? "flip" : "slide";
 }
 
 function clamp01(value: number) {
@@ -556,11 +548,6 @@ export function MagazineReader({
   const pointerGuideRef = useRef<HTMLDivElement | null>(null);
   const wheelDeltaRef = useRef(0);
   const wheelResetRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const navigationLockRef = useRef(false);
-  const wheelBlockedUntilRef = useRef(0);
-  const lastPointerRef = useRef<{ x: number; y: number } | null>(null);
-  const pageScrollPositionsRef = useRef(new Map<string, number>());
-  const pendingScrollRestoreRef = useRef<string | null>(null);
 
   // Responsive mode changes rebuild the spread array (desktop spreads <-> mobile pages).
   // React renders once before the effect below can clamp spreadIndex, so always
@@ -607,7 +594,7 @@ export function MagazineReader({
         return await response.json() as MagazinePageDefinition;
       })
       .then((page) => {
-        cacheMagazinePage(`${issue.slug}:${page.slug}`, page);
+        MAGAZINE_PAGE_CACHE.set(`${issue.slug}:${page.slug}`, page);
         const next = { ...loadedPagesRef.current, [page.slug]: page };
         loadedPagesRef.current = next;
         setLoadedPages(next);
@@ -650,9 +637,6 @@ export function MagazineReader({
       if (commit) setSpreadIndex(targetIndex);
       setMotion(null);
       setProgress(0);
-      wheelDeltaRef.current = 0;
-      wheelBlockedUntilRef.current = performance.now() + 220;
-      navigationLockRef.current = false;
       motionTimer.current = null;
       const afterMotion = afterMotionRef.current;
       afterMotionRef.current = null;
@@ -681,7 +665,7 @@ export function MagazineReader({
   }, [singlePageMode, spreadIndex, spreads.length]);
 
   const animateToSpread = useCallback(async (targetIndex: number, afterMotion?: () => void) => {
-    if (motion || navigationLockRef.current) return false;
+    if (motion) return false;
     const currentIndex = Math.min(Math.max(0, spreadIndex), Math.max(0, spreads.length - 1));
     if (targetIndex < 0 || targetIndex >= spreads.length) return false;
     if (targetIndex === currentIndex) {
@@ -689,19 +673,16 @@ export function MagazineReader({
       return true;
     }
 
-    navigationLockRef.current = true;
     const ready = await ensureSpreadLoaded(spreads[targetIndex]);
-    if (!ready) {
-      navigationLockRef.current = false;
-      return false;
-    }
+    if (!ready) return false;
 
     const direction: Direction = targetIndex > currentIndex ? "next" : "previous";
     const nextMotion: Motion = {
       direction,
       targetIndex,
       phase: "animating",
-      kind: transitionKind(singlePageMode, currentIndex, targetIndex),
+      // Direct jumps still look like a book turn rather than a hard teleport.
+      kind: "flip",
     };
 
     clearMotionTimer();
@@ -713,7 +694,7 @@ export function MagazineReader({
     });
     completeMotion(true, targetIndex);
     return true;
-  }, [clearMotionTimer, completeMotion, ensureSpreadLoaded, motion, setProgress, singlePageMode, spreadIndex, spreads]);
+  }, [clearMotionTimer, completeMotion, ensureSpreadLoaded, motion, setProgress, spreadIndex, spreads]);
 
   const openStoryTarget = useCallback((node: ComposerNode) => {
     const story = node.story;
@@ -735,25 +716,12 @@ export function MagazineReader({
   }, [animateToSpread, issue.pages, issue.slug, spreads]);
 
   const navigate = useCallback(async (direction: Direction) => {
-    if (motion || navigationLockRef.current) return;
-
-    if (singlePageMode) {
-      const currentSlug = issue.pages[spread.pageIndexes[0] ?? -1]?.slug;
-      const currentPaper = stageRef.current?.querySelector<HTMLElement>(
-        ".xp-magazine__spread-layer--current .xp-magazine__paper",
-      );
-      if (currentSlug && currentPaper) pageScrollPositionsRef.current.set(currentSlug, currentPaper.scrollTop);
-    }
-
+    if (motion) return;
     const nextMotion = createMotion(direction, "animating");
     if (!nextMotion) return;
 
-    navigationLockRef.current = true;
     const ready = await ensureSpreadLoaded(spreads[nextMotion.targetIndex]);
-    if (!ready) {
-      navigationLockRef.current = false;
-      return;
-    }
+    if (!ready) return;
 
     clearMotionTimer();
     setProgress(0);
@@ -762,21 +730,15 @@ export function MagazineReader({
       requestAnimationFrame(() => setProgress(1));
     });
     completeMotion(true, nextMotion.targetIndex);
-  }, [clearMotionTimer, completeMotion, createMotion, ensureSpreadLoaded, issue.pages, motion, setProgress, singlePageMode, spread, spreads]);
+  }, [clearMotionTimer, completeMotion, createMotion, ensureSpreadLoaded, motion, setProgress, spreads]);
 
-  useLayoutEffect(() => {
-    const media = window.matchMedia(`(max-width: ${MAGAZINE_COMPACT_MAX_WIDTH}px)`);
-    const sync = () => {
-      navigationLockRef.current = false;
-      wheelDeltaRef.current = 0;
-      setMotion(null);
-      setProgress(0);
-      setSinglePageMode(media.matches);
-    };
+  useEffect(() => {
+    const media = window.matchMedia("(max-width: 820px)");
+    const sync = () => setSinglePageMode(media.matches);
     sync();
     media.addEventListener?.("change", sync);
     return () => media.removeEventListener?.("change", sync);
-  }, [setProgress]);
+  }, []);
 
   useEffect(() => {
     const initialSpreadIndex = spreads.findIndex((item) => item.pageIndexes.includes(initialPageIndex));
@@ -786,71 +748,63 @@ export function MagazineReader({
   }, [initialPageIndex, initialPageSlug, setProgress, spreads]);
 
   useEffect(() => {
-    if (!spread) return;
-    let cancelled = false;
-    void ensureSpreadLoaded(spread).then((ready) => {
-      if (!cancelled && !ready) {
-        navigationLockRef.current = false;
-      }
-    });
-    return () => {
-      cancelled = true;
-    };
-  }, [ensureSpreadLoaded, safeSpreadIndex, spread]);
-
-  useEffect(() => {
-    // Keep only a small working set of hydrated page definitions in React state.
-    // The bounded module cache still makes recently visited pages instant to restore,
-    // without forcing every page in the issue to remain live in memory.
-    const keepSlugs = new Set<string>();
-    if (initialPageSlug) keepSlugs.add(initialPageSlug);
-    for (let offset = -2; offset <= 2; offset += 1) {
-      const candidate = spreads[safeSpreadIndex + offset];
-      candidate?.pageIndexes.forEach((pageIndex) => {
-        const slug = issue.pages[pageIndex]?.slug;
-        if (slug) keepSlugs.add(slug);
-      });
-    }
-
-    setLoadedPages((current) => {
-      const entries = Object.entries(current);
-      if (entries.length <= 10 && entries.every(([slug]) => keepSlugs.has(slug))) return current;
-
-      const next = Object.fromEntries(entries.filter(([slug]) => keepSlugs.has(slug)));
-      loadedPagesRef.current = next;
-      return next;
-    });
-  }, [initialPageSlug, issue.pages, safeSpreadIndex, spreads]);
-
-  useEffect(() => {
     if (!spread || motion) return;
     let cancelled = false;
-    let timer: ReturnType<typeof setTimeout> | null = null;
-    let idleId: number | null = null;
+    let warmTimer: ReturnType<typeof setTimeout> | null = null;
 
-    const next = spreads[safeSpreadIndex + 1];
-    if (!next) return;
+    const collectSpreadAssets = (masterSpread: MagazineMasterSpread) => {
+      const urls: string[] = [];
 
-    const warm = () => {
-      if (cancelled || navigationLockRef.current) return;
-      void ensureSpreadLoaded(next);
+      masterSpread.pageIndexes.forEach((pageIndex) => {
+        const manifest = issue.pages[pageIndex];
+        if (!manifest) return;
+        const page = loadedPagesRef.current[manifest.slug];
+        if (!page) return;
+
+        page.resources?.images?.forEach((asset) => urls.push(asset.src));
+        page.sections.forEach((section) => {
+          section.resources?.images?.forEach((asset) => urls.push(asset.src));
+          urls.push(...collectNodeAssetUrls(section.elements));
+        });
+      });
+
+      const pageIds = masterSpread.pageIndexes
+        .map((pageIndex) => issue.pages[pageIndex]?.id)
+        .filter((id): id is string => Boolean(id));
+      const nativeSpread = issue.spreads?.find((candidate) =>
+        candidate.pageIds?.length === pageIds.length &&
+        candidate.pageIds.every((id, index) => id === pageIds[index]));
+      nativeSpread?.resources?.images?.forEach((asset) => urls.push(asset.src));
+      nativeSpread?.pieces.forEach((piece) => {
+        piece.resources?.images?.forEach((asset) => urls.push(asset.src));
+        urls.push(...collectNodeAssetUrls(piece.elements));
+      });
+
+      return Array.from(new Set(urls));
     };
 
-    // Page definitions are cheap and useful to cache; image decoding is not.
-    // Wait until the reader has been idle instead of competing with scrolling,
-    // pointer movement, video decoding, or the page-turn animation.
-    if ("requestIdleCallback" in window) {
-      idleId = window.requestIdleCallback(warm, { timeout: 1800 });
-    } else {
-      timer = setTimeout(warm, 1200);
-    }
+    const next = spreads[safeSpreadIndex + 1];
+
+    void (async () => {
+      // The visible spread loads its own images naturally. Aggressively preloading
+      // the current + previous + next spread caused bursts of image decode work.
+      // Warm only the next spread, and only a handful of assets, after the UI is idle.
+      if (!next) return;
+      await ensureSpreadLoaded(next);
+      if (cancelled) return;
+
+      const nextAssets = collectSpreadAssets(next).slice(0, 6);
+      warmTimer = setTimeout(() => {
+        if (cancelled) return;
+        nextAssets.forEach(preloadImageOnce);
+      }, 350);
+    })();
 
     return () => {
       cancelled = true;
-      if (idleId != null && "cancelIdleCallback" in window) window.cancelIdleCallback(idleId);
-      if (timer) clearTimeout(timer);
+      if (warmTimer) clearTimeout(warmTimer);
     };
-  }, [ensureSpreadLoaded, motion, safeSpreadIndex, spread, spreads]);
+  }, [ensureSpreadLoaded, issue.pages, issue.spreads, motion, safeSpreadIndex, spread, spreads]);
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -864,29 +818,6 @@ export function MagazineReader({
   }, [navigate]);
 
   useEffect(() => {
-    if (!singlePageMode || motion) return;
-    const paper = stageRef.current?.querySelector<HTMLElement>(
-      ".xp-magazine__spread-layer--current .xp-magazine__paper",
-    );
-    const slug = issue.pages[spread.pageIndexes[0] ?? -1]?.slug;
-    if (!paper || !slug) return;
-
-    let raf = 0;
-    const remember = () => {
-      cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(() => {
-        pageScrollPositionsRef.current.set(slug, paper.scrollTop);
-      });
-    };
-    paper.addEventListener("scroll", remember, { passive: true });
-    return () => {
-      cancelAnimationFrame(raf);
-      pageScrollPositionsRef.current.set(slug, paper.scrollTop);
-      paper.removeEventListener("scroll", remember);
-    };
-  }, [issue.pages, motion, safeSpreadIndex, singlePageMode, spread]);
-
-  useEffect(() => {
     const stage = stageRef.current;
     if (!stage) return;
 
@@ -897,14 +828,7 @@ export function MagazineReader({
     };
 
     const onWheel = (event: WheelEvent) => {
-      if (isInteractiveTarget(event.target)) return;
-
-      const now = performance.now();
-      if (motion || navigationLockRef.current || now < wheelBlockedUntilRef.current) {
-        event.preventDefault();
-        wheelDeltaRef.current = 0;
-        return;
-      }
+      if (motion || isInteractiveTarget(event.target)) return;
 
       const dominant = Math.abs(event.deltaY) >= Math.abs(event.deltaX) ? event.deltaY : event.deltaX;
       if (Math.abs(dominant) < 2) return;
@@ -945,27 +869,6 @@ export function MagazineReader({
     document.addEventListener("fullscreenchange", onFullscreenChange);
     return () => document.removeEventListener("fullscreenchange", onFullscreenChange);
   }, []);
-
-  useEffect(() => {
-    if (!singlePageMode || motion) return;
-    const slug = issue.pages[spread.pageIndexes[0] ?? -1]?.slug;
-    if (!slug) return;
-
-    pendingScrollRestoreRef.current = slug;
-    const frame = requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        if (pendingScrollRestoreRef.current !== slug) return;
-        const paper = stageRef.current?.querySelector<HTMLElement>(
-          ".xp-magazine__spread-layer--current .xp-magazine__paper",
-        );
-        if (!paper) return;
-        const remembered = pageScrollPositionsRef.current.get(slug) ?? 0;
-        paper.scrollTo({ top: remembered, behavior: remembered > 0 ? "smooth" : "auto" });
-        pendingScrollRestoreRef.current = null;
-      });
-    });
-    return () => cancelAnimationFrame(frame);
-  }, [issue.pages, motion, safeSpreadIndex, singlePageMode, spread]);
 
   useEffect(() => {
     if (!firstPage || motion) return;
@@ -1234,17 +1137,9 @@ export function MagazineReader({
   };
 
   const updatePointerGuide = useCallback((event: ReactPointerEvent<HTMLDivElement>) => {
-    lastPointerRef.current = { x: event.clientX, y: event.clientY };
     const guide = pointerGuideRef.current;
     const stage = stageRef.current;
     if (!guide || !stage) return;
-
-    if (motion) {
-      guide.dataset.visible = "true";
-      guide.dataset.mode = "interactive";
-      guide.dataset.label = "";
-      return;
-    }
 
     const book = stage.querySelector<HTMLElement>(".xp-magazine__book");
     const stageRect = stage.getBoundingClientRect();
@@ -1279,7 +1174,7 @@ export function MagazineReader({
     const available = direction === "next" ? canGoForward : canGoBack;
     guide.dataset.mode = available ? direction : "interactive";
     guide.dataset.label = available ? (direction === "next" ? "Next" : "Previous") : "";
-  }, [canGoBack, canGoForward, motion]);
+  }, [canGoBack, canGoForward]);
 
   const onPointerDown = (event: ReactPointerEvent<HTMLDivElement>) => {
     updatePointerGuide(event);
@@ -1325,10 +1220,7 @@ export function MagazineReader({
 
     if (!motion || motion.direction !== direction || motion.phase !== "dragging") {
       setMotion(nextMotion);
-      if (!navigationLockRef.current) {
-        navigationLockRef.current = true;
-        void ensureSpreadLoaded(spreads[nextMotion.targetIndex]);
-      }
+      void ensureSpreadLoaded(spreads[nextMotion.targetIndex]);
     }
 
     const stageWidth = Math.max(1, event.currentTarget.getBoundingClientRect().width);
@@ -1338,13 +1230,10 @@ export function MagazineReader({
 
   const finishPointer = async (event: ReactPointerEvent<HTMLDivElement>) => {
     updatePointerGuide(event);
-    if (pointerStartX.current == null || pointerStartY.current == null) return;
+    if (pointerStartX.current == null) return;
 
     const startX = pointerStartX.current;
-    const startY = pointerStartY.current;
-    const axis = gestureAxis.current;
     const deltaX = event.clientX - startX;
-    const deltaY = event.clientY - startY;
     const elapsed = Math.max(1, performance.now() - pointerStartTime.current);
     const velocity = Math.abs(deltaX) / elapsed;
 
@@ -1354,28 +1243,7 @@ export function MagazineReader({
     gestureAxis.current = null;
     event.currentTarget.releasePointerCapture?.(event.pointerId);
 
-    if (singlePageMode && axis === "vertical" && Math.abs(deltaY) >= 46) {
-      const paper = stageRef.current?.querySelector<HTMLElement>(
-        ".xp-magazine__spread-layer--current .xp-magazine__paper",
-      );
-      if (paper) {
-        const atTop = paper.scrollTop <= 2;
-        const atBottom = paper.scrollTop + paper.clientHeight >= paper.scrollHeight - 2;
-        if (deltaY < 0 && atBottom) {
-          navigationLockRef.current = false;
-          void navigate("next");
-          return;
-        }
-        if (deltaY > 0 && atTop) {
-          navigationLockRef.current = false;
-          void navigate("previous");
-          return;
-        }
-      }
-    }
-
     if (!motion || motion.phase !== "dragging") {
-      navigationLockRef.current = false;
       setMotion(null);
       setProgress(0);
       return;
@@ -1443,51 +1311,38 @@ export function MagazineReader({
       const manifest = issue.pages[pageIndex]!;
       const nativePagePosition = (nativeSpread.pageIds ?? []).indexOf(manifest.id);
       const leafSide = nativePagePosition === 1 ? "right" : "left";
-      const authoredCompact = nativeSpread.pieces.some((piece) =>
-        piece.id.includes("-mobile-") &&
-        (piece.region === leafSide || piece.id.includes(`mobile-${leafSide}`))
-      );
-
-      // Compact mode prefers deliberately authored mobile compositions. When a
-      // spread has no authored compact leaf, fall back to the publication's
-      // actual page definition and let the universal page reflow engine handle
-      // it. This avoids heuristically splitting one desktop spread into two
-      // duplicated/blank/overlapping mobile pages.
-      if (!singlePageMode || authoredCompact) {
-        return (
-          <div
-            className={`xp-magazine__spread-layer xp-magazine__spread-layer--${role} is-single is-native-leaf`}
-            aria-hidden={role === "target" ? true : undefined}
+      return (
+        <div
+          className={`xp-magazine__spread-layer xp-magazine__spread-layer--${role} is-single is-native-leaf`}
+          aria-hidden={role === "target" ? true : undefined}
+        >
+          <article
+            className="xp-magazine__sheet xp-magazine__sheet--solo"
+            aria-label={role === "current" ? `${manifest.title}, page ${pageIndex + 1}` : undefined}
           >
-            <article
-              className="xp-magazine__sheet xp-magazine__sheet--solo"
-              aria-label={role === "current" ? `${manifest.title}, page ${pageIndex + 1}` : undefined}
-            >
-              <div className="xp-magazine__paper">
-                <MagazineSpreadLeaf
-                  spread={nativeSpread}
-                  side={leafSide}
-                  globalElements={issue.designElements}
-                  includeSupplementalMobileMedia={singlePageMode}
-                  reflow={singlePageMode}
-                  renderEngagement={role === "current" ? (piece) => (
-                    <SectionEngagementBar
-                      issueSlug={issue.slug}
-                      pageSlug={manifest.slug}
-                      sectionId={piece.id}
-                      sectionSlug={piece.slug}
-                      authenticated={viewerAuthenticated}
-                      config={piece.engagement}
-                      appearance="light"
-                    />
-                  ) : undefined}
-                />
-                <span className="xp-magazine__folio" aria-hidden="true">{String(pageIndex + 1).padStart(2, "0")}</span>
-              </div>
-            </article>
-          </div>
-        );
-      }
+            <div className="xp-magazine__paper">
+              <MagazineSpreadLeaf
+                spread={nativeSpread}
+                side={leafSide}
+                globalElements={issue.designElements}
+                includeSupplementalMobileMedia={singlePageMode}
+                renderEngagement={role === "current" ? (piece) => (
+                  <SectionEngagementBar
+                    issueSlug={issue.slug}
+                    pageSlug={manifest.slug}
+                    sectionId={piece.id}
+                    sectionSlug={piece.slug}
+                    authenticated={viewerAuthenticated}
+                    config={piece.engagement}
+                    appearance="light"
+                  />
+                ) : undefined}
+              />
+              <span className="xp-magazine__folio" aria-hidden="true">{String(pageIndex + 1).padStart(2, "0")}</span>
+            </div>
+          </article>
+        </div>
+      );
     }
 
     if (nativeSpread && !isSingle) {
@@ -1751,7 +1606,6 @@ export function MagazineReader({
                     side={motion.direction === "next" ? "right" : "left"}
                     globalElements={issue.designElements}
                     includeSupplementalMobileMedia={false}
-                    reflow={singlePageMode}
                   />
                 ) : (
                   <MagazinePageRenderer page={currentTurnPage} globalElements={issue.designElements} />
@@ -1764,7 +1618,6 @@ export function MagazineReader({
                     side={motion.direction === "next" ? "left" : "right"}
                     globalElements={issue.designElements}
                     includeSupplementalMobileMedia={false}
-                    reflow={singlePageMode}
                   />
                 ) : (
                   <MagazinePageRenderer page={backTurnPage} globalElements={issue.designElements} />
