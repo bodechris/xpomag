@@ -88,7 +88,7 @@ export function DesignElement({ node, registry, renderComposerNodeOverlay, onCom
       const alt = typeof props.alt === "string" ? props.alt : "";
       const loading = props.loading === "eager" ? "eager" : "lazy";
       const fetchPriority = props.fetchPriority === "high" || props.fetchPriority === "low" ? props.fetchPriority : "auto";
-      return <img src={src} alt={alt} style={style} loading={loading} fetchPriority={fetchPriority} decoding="async" />;
+      return <img data-design-element="image" src={src} alt={alt} style={style} loading={loading} fetchPriority={fetchPriority} decoding="async" />;
     }
     case "video": {
       const src = typeof props.src === "string" ? props.src : "";
