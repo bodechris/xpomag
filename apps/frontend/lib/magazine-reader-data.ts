@@ -1,4 +1,4 @@
-import { legacyPagesToSpreadDefinitions, type MagazineGlobalDefinition, type MagazinePageDefinition } from "@xpomag/magazine";
+import { magazinePageManifest, normalizeMagazineForReader, type MagazineGlobalDefinition, type MagazinePageDefinition } from "@xpomag/magazine";
 
 export type MagazinePageManifestItem = Pick<
   MagazinePageDefinition,
@@ -13,25 +13,19 @@ export function createMagazineReaderPayload(
   issue: MagazineGlobalDefinition,
   initialPageSlug?: string,
 ): { issue: MagazineReaderIssue; initialPages: MagazinePageDefinition[] } {
+  const normalized = normalizeMagazineForReader(issue);
   const pageIndex = Math.max(
     0,
     initialPageSlug
-      ? issue.pages.findIndex((page) => page.slug === initialPageSlug)
+      ? normalized.pages.findIndex((page) => page.slug === initialPageSlug)
       : 0,
   );
-  const initialPage = issue.pages[pageIndex] ?? issue.pages[0];
+  const initialPage = normalized.pages[pageIndex] ?? normalized.pages[0];
 
   return {
     issue: {
-      ...issue,
-      spreads: issue.spreads?.length ? issue.spreads : legacyPagesToSpreadDefinitions(issue.id, issue.pages),
-      pages: issue.pages.map(({ id, slug, title, kind, access }) => ({
-        id,
-        slug,
-        title,
-        kind,
-        access,
-      })),
+      ...normalized,
+      pages: magazinePageManifest(normalized.pages),
     },
     initialPages: initialPage ? [initialPage] : [],
   };
