@@ -634,7 +634,9 @@ export function MagazineReader({
   const setProgress = useCallback((value: number) => {
     const next = clamp01(value);
     progressRef.current = next;
-    stageRef.current?.style.setProperty("--xp-turn-progress", String(next));
+    const stage = stageRef.current;
+    stage?.style.setProperty("--xp-turn-progress", String(next));
+    stage?.style.setProperty("--xp-turn-reveal", `${next * 100}%`);
   }, []);
 
   const clearMotionTimer = useCallback(() => {
@@ -1724,6 +1726,21 @@ export function MagazineReader({
               )
             : null}
           {renderSpread(spread, "current", motion?.kind === "flip" ? currentTurnPageIndex : undefined)}
+
+          {motion?.kind === "flip" && backTurnNativeSpread && !singlePageMode ? (
+            <div
+              className={`xp-magazine__turn-underlay xp-magazine__turn-underlay--${motion.direction}`}
+              aria-hidden="true"
+            >
+              <MagazineSpreadLeaf
+                spread={backTurnNativeSpread}
+                side={motion.direction === "next" ? "left" : "right"}
+                globalElements={issue.designElements}
+                includeSupplementalMobileMedia={false}
+                reflow={false}
+              />
+            </div>
+          ) : null}
 
           {activeSpreadVideo && !activeSpreadVideo.autoplay && !activeSpreadVideo.managedAutoplay && !motion ? (
             <button
