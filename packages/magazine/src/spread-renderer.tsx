@@ -22,6 +22,57 @@ function pieceStyle(piece: MagazineSpreadPiece): CSSProperties {
   return { ...base, ...(piece.style as CSSProperties) };
 }
 
+
+function mediaNodes(node: DesignElementNode): DesignElementNode[] {
+  const own = node.type === "image" || node.type === "video" ? [node] : [];
+  return [...own, ...(node.children ?? []).flatMap(mediaNodes)];
+}
+
+function mediaSource(node: DesignElementNode): string {
+  return typeof node.props?.src === "string" ? node.props.src : "";
+}
+
+function inferredPieceSide(piece: MagazineSpreadPiece): MagazineLeafSide | "spread" {
+  if (piece.region === "left" || piece.region === "right") return piece.region;
+  const left = piece.style?.left;
+  if (typeof left === "number") return left >= 50 ? "right" : "left";
+  if (typeof left === "string" && left.trim().endsWith("%")) {
+    const value = Number.parseFloat(left);
+    if (Number.isFinite(value)) return value >= 50 ? "right" : "left";
+  }
+  return "spread";
+}
+
+function supplementalMobileMedia(spread: MagazineSpreadDefinition, mobilePiece: MagazineSpreadPiece): DesignElementNode[] {
+  if (!mobilePiece.id.includes("-mobile-")) return [];
+  const mobileSide = mobilePiece.region === "right" || mobilePiece.id.includes("mobile-right")
+    ? "right"
+    : "left";
+
+  const alreadyPresent = new Set(
+    mobilePiece.elements
+      .flatMap(mediaNodes)
+      .map(mediaSource)
+      .filter(Boolean),
+  );
+  const seen = new Set(alreadyPresent);
+
+  return spread.pieces
+    .filter((piece) => !piece.id.includes("-mobile-"))
+    .filter((piece) => {
+      const side = inferredPieceSide(piece);
+      return side === "spread" || side === mobileSide;
+    })
+    .flatMap((piece) => piece.elements.flatMap(mediaNodes))
+    .filter((node) => {
+      if (/logo|mark|qr|corner|icon/i.test(node.id)) return false;
+      const src = mediaSource(node);
+      if (!src || seen.has(src)) return false;
+      seen.add(src);
+      return true;
+    });
+}
+
 export function MagazineSpreadCanvas({
   spread,
   globalElements,
@@ -45,22 +96,37 @@ export function MagazineSpreadCanvas({
       }}
     >
       {spread.background ? <DesignElement node={spread.background} registry={globalElements} /> : null}
-      {spread.pieces.map((piece) => (
-        <section
-          id={piece.slug}
-          key={piece.id}
-          data-magazine-spread-piece={piece.slug}
-          data-spread-piece-id={piece.id}
-          data-spread-region={piece.region ?? "spread"}
-          data-gutter-behaviour={piece.gutterBehaviour ?? "avoid"}
-          style={pieceStyle(piece)}
-        >
-          {piece.elements.map((element) => (
-            <DesignElement key={element.id} node={element} registry={globalElements} />
-          ))}
-          {renderEngagement?.(piece)}
-        </section>
-      ))}
+      {spread.pieces.map((piece) => {
+        const supplementalMedia = supplementalMobileMedia(spread, piece);
+        return (
+          <section
+            id={piece.slug}
+            key={piece.id}
+            data-magazine-spread-piece={piece.slug}
+            data-spread-piece-id={piece.id}
+            data-spread-region={piece.region ?? "spread"}
+            data-gutter-behaviour={piece.gutterBehaviour ?? "avoid"}
+            style={pieceStyle(piece)}
+          >
+            {piece.elements.map((element) => (
+              <DesignElement key={element.id} node={element} registry={globalElements} />
+            ))}
+            {supplementalMedia.length ? (
+              <div data-mobile-spread-media aria-label="More media from this page">
+                {supplementalMedia.map((element, index) => (
+                  <div data-mobile-spread-media-item key={`${piece.id}-supplemental-${element.id}-${index}`}>
+                    <DesignElement
+                      node={{ ...element, id: `${piece.id}-supplemental-${element.id}-${index}` }}
+                      registry={globalElements}
+                    />
+                  </div>
+                ))}
+              </div>
+            ) : null}
+            {renderEngagement?.(piece)}
+          </section>
+        );
+      })}
       <span
         aria-hidden="true"
         data-magazine-gutter
