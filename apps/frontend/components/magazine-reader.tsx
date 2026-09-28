@@ -1802,34 +1802,36 @@ export function MagazineReader({
 
           {motion?.kind === "flip" && currentTurnPage && backTurnPage ? (
             <div className={`xp-magazine__turn-sheet xp-magazine__turn-sheet--${motion.direction}`} aria-hidden="true">
-              <div className="xp-magazine__turn-face xp-magazine__turn-face--front">
-                {currentTurnNativeSpread ? (
-                  <MagazineSpreadLeaf
-                    spread={currentTurnNativeSpread}
-                    side={motion.direction === "next" ? "right" : "left"}
-                    globalElements={issue.designElements}
-                    includeSupplementalMobileMedia={false}
-                    reflow={singlePageMode}
-                  />
-                ) : (
-                  <MagazinePageRenderer page={currentTurnPage} globalElements={issue.designElements} />
-                )}
+              <div className="xp-magazine__turn-rotor">
+                <div className="xp-magazine__turn-face xp-magazine__turn-face--front">
+                  {currentTurnNativeSpread ? (
+                    <MagazineSpreadLeaf
+                      spread={currentTurnNativeSpread}
+                      side={motion.direction === "next" ? "right" : "left"}
+                      globalElements={issue.designElements}
+                      includeSupplementalMobileMedia={false}
+                      reflow={singlePageMode}
+                    />
+                  ) : (
+                    <MagazinePageRenderer page={currentTurnPage} globalElements={issue.designElements} />
+                  )}
+                </div>
+                <div className="xp-magazine__turn-face xp-magazine__turn-face--back">
+                  {backTurnNativeSpread ? (
+                    <MagazineSpreadLeaf
+                      spread={backTurnNativeSpread}
+                      side={motion.direction === "next" ? "left" : "right"}
+                      globalElements={issue.designElements}
+                      includeSupplementalMobileMedia={false}
+                      reflow={singlePageMode}
+                    />
+                  ) : (
+                    <MagazinePageRenderer page={backTurnPage} globalElements={issue.designElements} />
+                  )}
+                </div>
+                <div className="xp-magazine__fold-shadow" />
+                <div className="xp-magazine__fold-highlight" />
               </div>
-              <div className="xp-magazine__turn-face xp-magazine__turn-face--back">
-                {backTurnNativeSpread ? (
-                  <MagazineSpreadLeaf
-                    spread={backTurnNativeSpread}
-                    side={motion.direction === "next" ? "left" : "right"}
-                    globalElements={issue.designElements}
-                    includeSupplementalMobileMedia={false}
-                    reflow={singlePageMode}
-                  />
-                ) : (
-                  <MagazinePageRenderer page={backTurnPage} globalElements={issue.designElements} />
-                )}
-              </div>
-              <div className="xp-magazine__fold-shadow" />
-              <div className="xp-magazine__fold-highlight" />
             </div>
           ) : null}
         </div>
