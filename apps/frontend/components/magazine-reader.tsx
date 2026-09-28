@@ -1267,10 +1267,13 @@ export function MagazineReader({
 
   const finishPointer = async (event: ReactPointerEvent<HTMLDivElement>) => {
     updatePointerGuide(event);
-    if (pointerStartX.current == null) return;
+    if (pointerStartX.current == null || pointerStartY.current == null) return;
 
     const startX = pointerStartX.current;
+    const startY = pointerStartY.current;
+    const axis = gestureAxis.current;
     const deltaX = event.clientX - startX;
+    const deltaY = event.clientY - startY;
     const elapsed = Math.max(1, performance.now() - pointerStartTime.current);
     const velocity = Math.abs(deltaX) / elapsed;
 
@@ -1279,6 +1282,26 @@ export function MagazineReader({
     pointerCurrentX.current = null;
     gestureAxis.current = null;
     event.currentTarget.releasePointerCapture?.(event.pointerId);
+
+    if (singlePageMode && axis === "vertical" && Math.abs(deltaY) >= 46) {
+      const paper = stageRef.current?.querySelector<HTMLElement>(
+        ".xp-magazine__spread-layer--current .xp-magazine__paper",
+      );
+      if (paper) {
+        const atTop = paper.scrollTop <= 2;
+        const atBottom = paper.scrollTop + paper.clientHeight >= paper.scrollHeight - 2;
+        if (deltaY < 0 && atBottom) {
+          navigationLockRef.current = false;
+          void navigate("next");
+          return;
+        }
+        if (deltaY > 0 && atTop) {
+          navigationLockRef.current = false;
+          void navigate("previous");
+          return;
+        }
+      }
+    }
 
     if (!motion || motion.phase !== "dragging") {
       navigationLockRef.current = false;
