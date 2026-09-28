@@ -6862,7 +6862,9 @@ function holidayLifestyleSpread(issueId: string): MagazineSpreadDefinition {
             props: {
               as: "p",
               text: "With the estate’s 300m crystal-clear lagoon at the heart of the precinct, everyday life can feel a little like a permanent getaway.\n\nFOOD JUST TASTES BETTER OUTDOORS\n\nStock up on treats at the Family Pantry or settle in to enjoy a Mediterranean-inspired meal while the kids explore the surrounding play areas.",
-              dropCap: false,
+              dropCap: true,
+              dropCapLines: 4,
+              dropCapColor: "#342d28",
             },
             style: {
               position: "absolute",
