@@ -6550,3 +6550,216 @@ p[data-drop-cap-lines="6"] .xp-editorial-drop-cap { font-size: 5.85em; }
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
 }
+
+
+/* ==========================================================================
+   COMPACT READER PHILOSOPHY · TABLET + MOBILE
+   Below 1100px a two-page spread is no longer scaled down. Each physical page
+   is recomposed as its own vertically scrollable box-model document.
+   ========================================================================== */
+@media (max-width: 1100px) {
+  .xp-magazine__stage {
+    padding-inline: 0;
+    perspective: 1500px;
+  }
+
+  .xp-magazine__stage[data-mode="single"] .xp-magazine__book {
+    width: min(100%, 780px);
+    height: 100%;
+    max-width: 100%;
+    aspect-ratio: auto;
+  }
+
+  .xp-magazine__stage[data-mode="single"] .xp-magazine__spread-layer.is-single .xp-magazine__sheet,
+  .xp-magazine__stage[data-mode="single"] .xp-magazine__turn-sheet {
+    width: 100%;
+    flex: 0 0 100%;
+  }
+
+  .xp-magazine__stage[data-mode="single"] .xp-magazine__turn-sheet--next,
+  .xp-magazine__stage[data-mode="single"] .xp-magazine__turn-sheet--previous {
+    left: 0 !important;
+  }
+
+  .xp-magazine__stage[data-mode="single"] .xp-magazine__turn-sheet--next {
+    transform-origin: left center;
+    transform: translateX(calc(var(--xp-turn-progress) * -5%))
+      rotateY(calc(var(--xp-turn-progress) * -180deg));
+  }
+
+  .xp-magazine__stage[data-mode="single"] .xp-magazine__turn-sheet--previous {
+    transform-origin: right center;
+    transform: translateX(calc(var(--xp-turn-progress) * 5%))
+      rotateY(calc(var(--xp-turn-progress) * 180deg));
+  }
+
+  .xp-magazine__stage[data-mode="single"] .xp-magazine__paper {
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+  }
+
+  [data-magazine-reflow] {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: clamp(.85rem, 2vw, 1.4rem) !important;
+    width: 100% !important;
+    min-height: 100% !important;
+    height: auto !important;
+    padding: clamp(.85rem, 2.4vw, 1.35rem) !important;
+    background: #fff;
+    box-sizing: border-box;
+    overflow: visible !important;
+  }
+
+  [data-magazine-reflow] > [data-reflow-piece] {
+    display: block !important;
+    position: relative !important;
+    inset: auto !important;
+    left: auto !important;
+    right: auto !important;
+    top: auto !important;
+    bottom: auto !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    margin: 0 !important;
+    padding: clamp(.25rem, .8vw, .55rem) 0 !important;
+    overflow: visible !important;
+    transform: none !important;
+    z-index: auto !important;
+    background-clip: padding-box;
+  }
+
+  [data-magazine-reflow] [data-design-element] {
+    position: relative !important;
+    inset: auto !important;
+    left: auto !important;
+    right: auto !important;
+    top: auto !important;
+    bottom: auto !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    transform: none !important;
+    box-sizing: border-box !important;
+  }
+
+  [data-magazine-reflow] [data-design-element="frame"],
+  [data-magazine-reflow] [data-design-element="stack"],
+  [data-magazine-reflow] [data-design-element="grid"],
+  [data-magazine-reflow] [data-design-element="composerCanvas"] {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    display: block !important;
+    overflow: visible !important;
+  }
+
+  [data-magazine-reflow] [data-design-element="grid"] {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  [data-magazine-reflow] [data-design-element="background"] {
+    display: none !important;
+  }
+
+  [data-magazine-reflow] [data-design-element="image"],
+  [data-magazine-reflow] [data-design-element="video"],
+  [data-magazine-reflow] iframe {
+    display: block !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: clamp(11rem, 34vw, 20rem) !important;
+    max-height: 64dvh !important;
+    margin: clamp(.45rem, 1.5vw, .85rem) 0 !important;
+    object-fit: cover !important;
+    object-position: center !important;
+    border-radius: clamp(0px, .8vw, 10px);
+    overflow: hidden;
+  }
+
+  [data-magazine-reflow] [data-design-element="brandMark"] {
+    width: min(100%, 16rem) !important;
+    height: auto !important;
+    margin: .5rem auto !important;
+  }
+
+  [data-magazine-reflow] p {
+    width: 100% !important;
+    max-width: 46rem !important;
+    margin-inline: 0 !important;
+    font-size: clamp(1rem, 2.1vw, 1.125rem) !important;
+    line-height: 1.58 !important;
+    letter-spacing: 0 !important;
+    overflow-wrap: normal !important;
+    word-break: normal !important;
+  }
+
+  [data-magazine-reflow] h1,
+  [data-magazine-reflow] h2 {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-inline: 0 !important;
+    font-size: clamp(2rem, 5.4vw, 3.6rem) !important;
+    line-height: .96 !important;
+    letter-spacing: -.035em !important;
+    text-wrap: balance !important;
+    overflow-wrap: normal !important;
+  }
+
+  [data-magazine-reflow] h3 {
+    width: 100% !important;
+    max-width: 100% !important;
+    font-size: clamp(1.25rem, 3.3vw, 2rem) !important;
+    line-height: 1.08 !important;
+    text-wrap: balance !important;
+  }
+
+  [data-magazine-reflow] .xp-section-engagement--inline {
+    position: relative !important;
+    inset: auto !important;
+    left: auto !important;
+    right: auto !important;
+    top: auto !important;
+    bottom: auto !important;
+    width: fit-content !important;
+    max-width: 100% !important;
+    margin: .75rem 0 .25rem !important;
+    transform: none !important;
+  }
+
+  [data-magazine-reflow] [data-mobile-spread-media] {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (min-width: 760px) and (max-width: 1100px) {
+  [data-magazine-reflow] [data-mobile-spread-media] {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 620px) {
+  [data-magazine-reflow] {
+    gap: .8rem !important;
+    padding: .8rem !important;
+  }
+
+  [data-magazine-reflow] p {
+    font-size: 1rem !important;
+    line-height: 1.62 !important;
+  }
+
+  [data-magazine-reflow] h1,
+  [data-magazine-reflow] h2 {
+    font-size: clamp(1.75rem, 9vw, 2.65rem) !important;
+  }
+
+  [data-magazine-reflow] h3 {
+    font-size: clamp(1.15rem, 5.8vw, 1.6rem) !important;
+  }
+}
