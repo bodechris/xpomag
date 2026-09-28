@@ -1462,7 +1462,7 @@ export function MagazineReader({
             aria-hidden={role === "target" ? true : undefined}
           >
             <article
-              className="xp-magazine__sheet xp-magazine__sheet--solo"
+              className={`xp-magazine__sheet xp-magazine__sheet--solo${hiddenPageIndex === pageIndex ? " is-turning-page" : ""}`}
               aria-label={role === "current" ? `${manifest.title}, page ${pageIndex + 1}` : undefined}
             >
               <div className="xp-magazine__paper">
