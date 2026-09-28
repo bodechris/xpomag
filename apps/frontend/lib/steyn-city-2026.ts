@@ -7737,6 +7737,566 @@ function schoolValuesSpread(issueId: string): MagazineSpreadDefinition {
   };
 }
 
+
+function workConnectThriveSpread(issueId: string): MagazineSpreadDefinition {
+  const guild = "/resources/studio/steyn/steyn-city-xpomag-spread-15-01.webp";
+  const coffee = "/resources/studio/steyn/steyn-city-xpomag-spread-15-02.webp";
+  const spacesTop = "/resources/studio/steyn/steyn-city-xpomag-spread-15-03.webp";
+  const guildDetail = "/resources/studio/steyn/steyn-city-xpomag-spread-15-04.webp";
+  const spacesWide = "/resources/studio/steyn/steyn-city-xpomag-spread-15-05.webp";
+  const spacesLogo = "/resources/studio/steyn/steyn-city-xpomag-spread-15-06.webp";
+
+  const guildVideo = "https://videos.pexels.com/video-files/6773475/6773475-hd_1920_1080_25fps.mp4";
+  const coffeeVideo = "https://videos.pexels.com/video-files/9047512/9047512-hd_1920_1080_25fps.mp4";
+
+  const engagement = { reactions: true, comments: true, share: true, save: true };
+  const noEngagement = { reactions: false, comments: false, share: false, save: false };
+
+  const image = (
+    id: string,
+    src: string,
+    alt: string,
+    style: DesignElementNode["style"] = {},
+  ): DesignElementNode => ({
+    id,
+    type: "image",
+    props: { src, alt, loading: "eager", fetchPriority: "high" },
+    style: { display: "block", objectFit: "cover", ...style },
+  });
+
+  const autoplayVideo = (
+    id: string,
+    src: string,
+    poster: string,
+    title: string,
+    style: DesignElementNode["style"] = {},
+  ): DesignElementNode => ({
+    id,
+    type: "video",
+    props: {
+      src,
+      poster,
+      title,
+      cover: true,
+      interactive: true,
+      autoplay: true,
+      muted: true,
+      controls: false,
+    },
+    style: { display: "block", width: "100%", height: "100%", ...style },
+  });
+
+  const mediaPiece = (
+    id: string,
+    slug: string,
+    title: string,
+    node: DesignElementNode,
+    style: Record<string, unknown>,
+    withEngagement = false,
+  ): any => ({
+    id,
+    slug,
+    title,
+    kind: "feature",
+    region: "spread",
+    gutterBehaviour: "clip",
+    engagement: withEngagement ? engagement : noEngagement,
+    style: { ...style, overflow: "hidden", background: "#eef1ed" },
+    elements: [node],
+  });
+
+  return {
+    id: "steyn-work-connect-thrive-spread",
+    issueId,
+    slug: "work-connect-thrive",
+    title: "Work, Connect, Thrive",
+    kind: "feature",
+    pageIds: ["work-i", "work-ii"],
+    style: { background: "#fbfaf7" },
+    pieces: [
+      {
+        id: "steyn-work-editorial-piece",
+        slug: "work-connect-thrive-editorial",
+        title: "Work, Connect, Thrive",
+        kind: "article",
+        region: "spread",
+        gutterBehaviour: "cross",
+        engagement,
+        style: {
+          position: "absolute",
+          inset: 0,
+          overflow: "hidden",
+          background: "#fbfaf7",
+        },
+        elements: [
+          text("work-title", "WORK, CONNECT, THRIVE", {
+            position: "absolute",
+            left: "5.4%",
+            top: "35.0%",
+            width: "40.1%",
+            color: "#2f2925",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(1.2rem,2.18vw,2.45rem)",
+            fontWeight: 500,
+            lineHeight: .92,
+            letterSpacing: ".012em",
+            textAlign: "center",
+          }, "h2"),
+
+          {
+            id: "work-left-copy-a",
+            type: "text",
+            props: {
+              as: "p",
+              text: "Working within a challenging work scenario or seeking a professional environment close to home so that you can manage the work/life juggle more efficiently? A change of scene might be just what you need. Introducing Steyn City's beautifully appointed co-working spaces.",
+              dropCap: true,
+              dropCapLines: 4,
+              dropCapColor: "#3c4943",
+            },
+            style: {
+              position: "absolute",
+              left: "4.8%",
+              top: "43.0%",
+              width: "12.3%",
+              color: "#443d38",
+              fontFamily: "var(--xp-font-editorial)",
+              fontSize: "clamp(.34rem,.46vw,.5rem)",
+              lineHeight: 1.46,
+            },
+          },
+          text("work-left-copy-b", "Steyn City offers two well equipped shared spaces. Guild is situated in City Centre, while Spaces is available at the International Workplace Group hub. Both are designed for focused work, collaboration and informal meetings, without adding a long commute to the day.", {
+            position: "absolute",
+            left: "18.2%",
+            top: "43.0%",
+            width: "12.5%",
+            color: "#443d38",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(.34rem,.46vw,.5rem)",
+            lineHeight: 1.46,
+          }),
+          text("work-left-copy-c", "The demand for co-working spaces continues to increase as companies and individuals look for flexibility and environments that make it easier to move between professional focus and everyday life. Here, the office sits inside a broader lifestyle ecosystem.", {
+            position: "absolute",
+            left: "31.8%",
+            top: "43.0%",
+            width: "13.0%",
+            color: "#443d38",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(.34rem,.46vw,.5rem)",
+            lineHeight: 1.46,
+          }),
+
+          text("work-guild-label", "INTRODUCING GUILD\nSHARED WORKSPACE", {
+            position: "absolute",
+            left: "18.0%",
+            top: "66.9%",
+            width: "12.6%",
+            color: "#57514b",
+            fontFamily: "var(--xp-font-grotesk)",
+            fontSize: "clamp(.28rem,.4vw,.44rem)",
+            fontWeight: 800,
+            letterSpacing: ".12em",
+            lineHeight: 1.2,
+            whiteSpace: "pre-line",
+            textAlign: "center",
+          }, "span"),
+          text("work-guild-copy", "Take Guild Shared Workspace, for example. Casual lounge and clever work zones make room for quiet thinking, creativity and collaboration. It is designed to feel professional without losing the ease and warmth of the estate.", {
+            position: "absolute",
+            left: "18.0%",
+            top: "71.3%",
+            width: "12.6%",
+            color: "#443d38",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(.31rem,.42vw,.46rem)",
+            lineHeight: 1.43,
+            textAlign: "center",
+          }),
+
+          text("work-right-copy-a", "SPACE TO WORK THE WAY YOU WANT\n\nSteyn City’s Capital Park is home to an extensive second co-working facility, Spaces. The Commercial Park fields offices, meeting rooms and shared areas in a contemporary setting with the flexibility modern teams increasingly expect.", {
+            position: "absolute",
+            left: "53.5%",
+            top: "33.2%",
+            width: "13.6%",
+            color: "#443d38",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(.32rem,.44vw,.48rem)",
+            lineHeight: 1.44,
+            whiteSpace: "pre-line",
+          }),
+          text("work-right-copy-b", "There’s more than one way to make the workday work. A coffee stop, breakfast meeting, informal lounge or focused desk can all form part of the same rhythm. The result is an environment designed around how people actually work today.", {
+            position: "absolute",
+            left: "68.0%",
+            top: "33.2%",
+            width: "12.8%",
+            color: "#443d38",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(.32rem,.44vw,.48rem)",
+            lineHeight: 1.44,
+          }),
+
+          {
+            id: "work-remote-panel",
+            type: "frame",
+            style: {
+              position: "absolute",
+              right: "3.6%",
+              top: "32.0%",
+              width: "15.3%",
+              height: "35.5%",
+              background: "#c8dcda",
+              border: "3px solid #fff",
+              zIndex: 14,
+              padding: "clamp(.5rem,.8vw,.85rem)",
+              boxShadow: "0 5px 18px rgba(0,0,0,.08)",
+            },
+            children: [
+              text("work-remote-heading", "SPACES AND THE REMOTE\nWORKING REVOLUTION", {
+                color: "#3d5e5c",
+                fontFamily: "var(--xp-font-grotesk)",
+                fontSize: "clamp(.3rem,.42vw,.46rem)",
+                fontWeight: 850,
+                letterSpacing: ".08em",
+                lineHeight: 1.2,
+                whiteSpace: "pre-line",
+                marginBottom: ".55rem",
+              }, "h3"),
+              text("work-remote-copy", "Hybrid working models have become a defining feature of modern business. Flexible workspaces can reduce unnecessary commuting, create room for collaboration and give employees choice in how and where they focus. At Steyn City, that flexibility forms part of a broader live-work lifestyle.", {
+                color: "#31413f",
+                fontFamily: "var(--xp-font-editorial)",
+                fontSize: "clamp(.3rem,.39vw,.43rem)",
+                lineHeight: 1.42,
+              }),
+            ],
+          },
+
+          text("work-brand-left", "STEYN CITY", {
+            position: "absolute", left: "7.4%", bottom: "2.1%", color: "#342f2b",
+            fontFamily: "var(--xp-font-grotesk)", fontSize: ".42rem", fontWeight: 720, letterSpacing: ".08em",
+          }, "span"),
+          text("work-folio-left", "32", {
+            position: "absolute", left: "4.5%", bottom: "2.1%", color: "#342f2b",
+            fontFamily: "var(--xp-font-grotesk)", fontSize: ".45rem", fontWeight: 800,
+          }, "span"),
+          text("work-brand-right", "STEYN CITY", {
+            position: "absolute", right: "6.4%", bottom: "2.1%", color: "#342f2b",
+            fontFamily: "var(--xp-font-grotesk)", fontSize: ".42rem", fontWeight: 720, letterSpacing: ".08em",
+          }, "span"),
+          text("work-folio-right", "33", {
+            position: "absolute", right: "3.2%", bottom: "2.1%", color: "#342f2b",
+            fontFamily: "var(--xp-font-grotesk)", fontSize: ".45rem", fontWeight: 800,
+          }, "span"),
+        ],
+      },
+
+      {
+        id: "steyn-work-left-video-piece",
+        slug: "work-guild-video",
+        title: "Guild shared workspace",
+        kind: "feature",
+        region: "spread",
+        gutterBehaviour: "clip",
+        engagement,
+        style: {
+          position: "absolute",
+          left: 0,
+          top: 0,
+          width: "50%",
+          height: "31.3%",
+          zIndex: 7,
+          overflow: "hidden",
+          background: "#111",
+        },
+        elements: [
+          autoplayVideo("work-left-video", guildVideo, guild, "Guild-style co-working environment", {
+            position: "absolute",
+            inset: 0,
+            objectFit: "cover",
+            objectPosition: "center 52%",
+          }),
+          text("work-left-media-label", "WORKSPACES", {
+            position: "absolute",
+            left: "6%",
+            top: "8%",
+            color: "#3b3733",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(.46rem,.65vw,.7rem)",
+            letterSpacing: ".08em",
+            zIndex: 8,
+          }, "span"),
+        ],
+      },
+
+      mediaPiece(
+        "steyn-work-left-detail-piece",
+        "work-guild-detail",
+        "Guild shared workspace detail",
+        image("work-left-detail-image", guildDetail, "Guild shared workspace interior", {
+          position: "absolute", inset: 0, width: "100%", height: "100%",
+          objectFit: "cover", objectPosition: "center 52%",
+        }),
+        { position: "absolute", left: "0", top: "67.3%", width: "17.2%", height: "28.4%", zIndex: 6 },
+        true,
+      ),
+
+      {
+        id: "steyn-work-best-worlds-piece",
+        slug: "work-best-of-both-worlds",
+        title: "The best of both worlds",
+        kind: "feature",
+        region: "spread",
+        gutterBehaviour: "clip",
+        engagement: noEngagement,
+        style: {
+          position: "absolute",
+          left: "3.2%",
+          top: "66.1%",
+          width: "8.1%",
+          aspectRatio: "1 / 1",
+          zIndex: 35,
+          overflow: "visible",
+          background: "transparent",
+        },
+        elements: [{
+          id: "work-best-worlds-callout",
+          type: "frame",
+          style: {
+            position: "absolute", inset: 0, borderRadius: "50%",
+            background: "#8aa38c", border: "4px solid #fff",
+            display: "grid", placeItems: "center", padding: ".7rem",
+            boxShadow: "0 8px 20px rgba(0,0,0,.08)",
+          },
+          children: [text("work-best-worlds-copy", "THE\nBEST\nOF BOTH\nWORLDS!", {
+            color: "#fff",
+            fontFamily: "var(--xp-font-grotesk)",
+            fontSize: "clamp(.28rem,.4vw,.44rem)",
+            fontWeight: 850,
+            lineHeight: 1.12,
+            textAlign: "center",
+            whiteSpace: "pre-line",
+          }, "span")],
+        }],
+      },
+
+      {
+        id: "steyn-work-offer-piece",
+        slug: "work-whats-on-offer",
+        title: "What's on offer",
+        kind: "feature",
+        region: "spread",
+        gutterBehaviour: "clip",
+        engagement: noEngagement,
+        style: {
+          position: "absolute",
+          left: "8.0%",
+          top: "66.0%",
+          width: "12.2%",
+          aspectRatio: "1 / 1",
+          zIndex: 28,
+          overflow: "visible",
+          background: "transparent",
+        },
+        elements: [{
+          id: "work-offer-callout",
+          type: "frame",
+          style: {
+            position: "absolute", inset: 0, borderRadius: "50%",
+            background: "#c8dcda", border: "4px solid #fff",
+            padding: ".85rem", display: "flex", flexDirection: "column",
+            alignItems: "center", justifyContent: "center",
+            boxShadow: "0 8px 20px rgba(0,0,0,.08)",
+          },
+          children: [
+            text("work-offer-heading", "WHAT'S ON OFFER", {
+              color: "#506f6b",
+              fontFamily: "var(--xp-font-grotesk)",
+              fontSize: "clamp(.27rem,.39vw,.43rem)",
+              fontWeight: 850,
+              letterSpacing: ".12em",
+              textAlign: "center",
+              marginBottom: ".35rem",
+            }, "span"),
+            text("work-offer-copy", "• High-speed connectivity\n• Purpose-built acoustic treatment\n• Private meeting rooms\n• Informal catch-up areas\n• Convenient catering nearby", {
+              color: "#43524f",
+              fontFamily: "var(--xp-font-editorial)",
+              fontSize: "clamp(.26rem,.36vw,.4rem)",
+              lineHeight: 1.32,
+              textAlign: "center",
+              whiteSpace: "pre-line",
+            }),
+          ],
+        }],
+      },
+
+      {
+        id: "steyn-work-right-video-piece",
+        slug: "work-coffee-video",
+        title: "Coffee and flexible work",
+        kind: "feature",
+        region: "spread",
+        gutterBehaviour: "clip",
+        engagement: noEngagement,
+        style: {
+          position: "absolute",
+          left: "50%",
+          top: 0,
+          width: "25.0%",
+          height: "30.8%",
+          zIndex: 7,
+          overflow: "hidden",
+          background: "#111",
+        },
+        elements: [
+          autoplayVideo("work-right-video", coffeeVideo, coffee, "Coffee shop workspace and remote working", {
+            position: "absolute",
+            inset: 0,
+            objectFit: "cover",
+            objectPosition: "center 48%",
+          }),
+        ],
+      },
+
+      mediaPiece(
+        "steyn-work-spaces-top-piece",
+        "work-spaces-top",
+        "Spaces co-working facility",
+        image("work-spaces-top-image", spacesTop, "Spaces co-working facility at Steyn City", {
+          position: "absolute", inset: 0, width: "100%", height: "100%",
+          objectFit: "cover", objectPosition: "center 48%",
+        }),
+        { position: "absolute", left: "75.5%", top: 0, width: "24.5%", height: "30.8%", zIndex: 7 },
+        false,
+      ),
+
+      mediaPiece(
+        "steyn-work-spaces-wide-piece",
+        "work-spaces-wide",
+        "Spaces shared workspace",
+        image("work-spaces-wide-image", spacesWide, "Shared workspace with communal seating", {
+          position: "absolute", inset: 0, width: "100%", height: "100%",
+          objectFit: "cover", objectPosition: "center 50%",
+        }),
+        { position: "absolute", left: "50%", top: "68.2%", width: "50%", height: "24.6%", zIndex: 6 },
+        false,
+      ),
+
+      mediaPiece(
+        "steyn-work-spaces-logo-piece",
+        "work-spaces-logo",
+        "Spaces",
+        image("work-spaces-logo-image", spacesLogo, "Spaces", {
+          position: "absolute", inset: 0, width: "100%", height: "100%",
+          objectFit: "contain", objectPosition: "left center",
+        }),
+        { position: "absolute", left: "54.2%", top: "93.0%", width: "11.8%", height: "4.2%", zIndex: 8, background: "transparent" },
+        false,
+      ),
+
+      {
+        id: "steyn-work-mobile-left-piece",
+        slug: "work-mobile-left",
+        title: "Work, Connect, Thrive",
+        kind: "article",
+        region: "left",
+        gutterBehaviour: "clip",
+        engagement,
+        style: {
+          position: "absolute",
+          left: "2.8%",
+          top: "3.5%",
+          width: "44.4%",
+          height: "93%",
+          display: "none",
+          background: "#fbfaf7",
+          zIndex: 70,
+          padding: "clamp(.95rem,3.8vw,1.4rem)",
+          overflow: "auto",
+        },
+        elements: [
+          autoplayVideo("work-mobile-left-video", guildVideo, guild, "Guild shared workspace", {
+            width: "100%", height: "12rem", objectFit: "cover", marginBottom: ".8rem",
+          }),
+          text("work-mobile-title", "WORK, CONNECT,\nTHRIVE", {
+            color: "#342d28",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(1.5rem,6.5vw,2rem)",
+            lineHeight: .98,
+            whiteSpace: "pre-line",
+            marginBottom: ".65rem",
+          }, "h2"),
+          {
+            id: "work-mobile-left-copy",
+            type: "text",
+            props: {
+              as: "p",
+              text: "Working close to home can change the rhythm of the day. Steyn City’s shared workspaces combine professional focus, collaboration, connectivity and the convenience of a broader live-work lifestyle.",
+              dropCap: true,
+              dropCapLines: 4,
+              dropCapColor: "#3c4943",
+            },
+            style: {
+              color: "#463f3a",
+              fontFamily: "var(--xp-font-editorial)",
+              fontSize: "clamp(1rem,3.8vw,1.14rem)",
+              lineHeight: 1.55,
+              marginBottom: ".8rem",
+            },
+          },
+          image("work-mobile-left-detail", guildDetail, "Guild shared workspace", {
+            width: "100%", height: "10rem", objectFit: "cover",
+          }),
+        ],
+      },
+
+      {
+        id: "steyn-work-mobile-right-piece",
+        slug: "work-mobile-right",
+        title: "Space to Work the Way You Want",
+        kind: "article",
+        region: "right",
+        gutterBehaviour: "clip",
+        engagement: noEngagement,
+        style: {
+          position: "absolute",
+          left: "52.8%",
+          top: "3.5%",
+          width: "44.4%",
+          height: "93%",
+          display: "none",
+          background: "#fbfaf7",
+          zIndex: 70,
+          padding: "clamp(.9rem,3.6vw,1.35rem)",
+          overflow: "auto",
+        },
+        elements: [
+          autoplayVideo("work-mobile-right-video", coffeeVideo, coffee, "Coffee and flexible work", {
+            width: "100%", height: "11rem", objectFit: "cover", marginBottom: ".75rem",
+          }),
+          text("work-mobile-right-heading", "SPACE TO WORK\nTHE WAY YOU WANT", {
+            color: "#342d28",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(1.45rem,6.2vw,1.95rem)",
+            lineHeight: .98,
+            whiteSpace: "pre-line",
+            marginBottom: ".7rem",
+          }, "h2"),
+          text("work-mobile-right-copy", "Capital Park and the wider City Centre place flexible workspace, coffee, meeting areas and daily amenities close together. It is a practical expression of the remote-working shift: less friction, more choice and more time back in the day.", {
+            color: "#463f3a",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(1rem,3.8vw,1.14rem)",
+            lineHeight: 1.55,
+            marginBottom: ".8rem",
+          }),
+          image("work-mobile-spaces", spacesWide, "Spaces shared workspace", {
+            width: "100%", height: "10rem", objectFit: "cover", marginBottom: ".7rem",
+          }),
+          image("work-mobile-spaces-logo", spacesLogo, "Spaces", {
+            width: "9rem", maxWidth: "60%", height: "4rem", objectFit: "contain",
+          }),
+        ],
+      },
+    ],
+  };
+}
+
 function placeholderPage(
   issueId: string,
   pageNo: number,
@@ -7901,7 +8461,7 @@ export function getSteynCity2026Magazine(): MagazineGlobalDefinition {
         props: { label: "STEYN CITY" },
       },
     },
-    spreads: [cityLivingSpread(issueId), bentleyAdvertSpread(issueId), contentsGolfSpread(issueId), golfTraditionSpread(issueId), golfTraditionContinuationSpread(issueId), cyclingSpread(issueId), seniorVillageSpread(issueId), easyLifeSpread(issueId), birdsBeesSpread(issueId), liveYourDreamsSpread(issueId), rentalCheninSpread(issueId), allThingsDeliciousSpread(issueId), golfExcellenceSpread(issueId), holidayLifestyleSpread(issueId), schoolValuesSpread(issueId)],
+    spreads: [cityLivingSpread(issueId), bentleyAdvertSpread(issueId), contentsGolfSpread(issueId), golfTraditionSpread(issueId), golfTraditionContinuationSpread(issueId), cyclingSpread(issueId), seniorVillageSpread(issueId), easyLifeSpread(issueId), birdsBeesSpread(issueId), liveYourDreamsSpread(issueId), rentalCheninSpread(issueId), allThingsDeliciousSpread(issueId), golfExcellenceSpread(issueId), holidayLifestyleSpread(issueId), schoolValuesSpread(issueId), workConnectThriveSpread(issueId)],
     pages,
   };
 }
