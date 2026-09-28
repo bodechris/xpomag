@@ -8298,6 +8298,532 @@ function workConnectThriveSpread(issueId: string): MagazineSpreadDefinition {
   };
 }
 
+
+function wellnessSpread(issueId: string): MagazineSpreadDefinition {
+  const spa = "/resources/studio/steyn/steyn-city-xpomag-spread-16-01.webp";
+  const pool = "/resources/studio/steyn/steyn-city-xpomag-spread-16-02.webp";
+  const recovery = "/resources/studio/steyn/steyn-city-xpomag-spread-16-03.webp";
+  const pilates = "/resources/studio/steyn/steyn-city-xpomag-spread-16-04.webp";
+  const coach = "/resources/studio/steyn/steyn-city-xpomag-spread-16-05.webp";
+
+  const spaVideo = "https://videos.pexels.com/video-files/37674127/15971334_1080_1920_60fps.mp4";
+  const movementVideo = "https://videos.pexels.com/video-files/8616856/8616856-hd_1920_1080_25fps.mp4";
+
+  const engagement = { reactions: true, comments: true, share: true, save: true };
+  const noEngagement = { reactions: false, comments: false, share: false, save: false };
+
+  const image = (
+    id: string,
+    src: string,
+    alt: string,
+    style: DesignElementNode["style"] = {},
+  ): DesignElementNode => ({
+    id,
+    type: "image",
+    props: { src, alt, loading: "eager", fetchPriority: "high" },
+    style: { display: "block", objectFit: "cover", ...style },
+  });
+
+  const autoplayVideo = (
+    id: string,
+    src: string,
+    poster: string,
+    title: string,
+    style: DesignElementNode["style"] = {},
+  ): DesignElementNode => ({
+    id,
+    type: "video",
+    props: {
+      src,
+      poster,
+      title,
+      autoplay: true,
+      muted: true,
+      loop: true,
+      controls: false,
+      interactive: true,
+    },
+    style: { display: "block", width: "100%", height: "100%", ...style },
+  });
+
+  const mediaPiece = (
+    id: string,
+    slug: string,
+    title: string,
+    node: DesignElementNode,
+    style: Record<string, unknown>,
+    withEngagement = false,
+  ): any => ({
+    id,
+    slug,
+    title,
+    kind: "feature",
+    region: "spread",
+    gutterBehaviour: "clip",
+    engagement: withEngagement ? engagement : noEngagement,
+    style: { ...style, overflow: "hidden", background: "#eef1ed" },
+    elements: [node],
+  });
+
+  return {
+    id: "steyn-wellness-spread",
+    issueId,
+    slug: "health-is-the-new-wealth",
+    title: "Health Is the New Wealth",
+    kind: "feature",
+    pageIds: ["wellness-i", "wellness-ii"],
+    style: { background: "#fbfaf7" },
+    pieces: [
+      {
+        id: "steyn-wellness-editorial-piece",
+        slug: "wellness-editorial",
+        title: "Health Is the New Wealth",
+        kind: "article",
+        region: "spread",
+        gutterBehaviour: "cross",
+        engagement,
+        style: {
+          position: "absolute",
+          inset: 0,
+          overflow: "hidden",
+          background: "#fbfaf7",
+        },
+        elements: [
+          text("wellness-title", "HEALTH IS THE\nNEW WEALTH", {
+            position: "absolute",
+            left: "5.2%",
+            top: "48.5%",
+            width: "40.5%",
+            color: "#312a26",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(1.15rem,2.15vw,2.45rem)",
+            fontWeight: 500,
+            lineHeight: .9,
+            letterSpacing: ".02em",
+            whiteSpace: "pre-line",
+            textAlign: "center",
+          }, "h2"),
+          text("wellness-byline", "SPA REVIEW BY LISA WITEPSKI", {
+            position: "absolute",
+            left: "15.8%",
+            top: "57.0%",
+            width: "19%",
+            color: "#4b4540",
+            fontFamily: "var(--xp-font-grotesk)",
+            fontSize: "clamp(.28rem,.39vw,.43rem)",
+            fontWeight: 740,
+            letterSpacing: ".08em",
+            textAlign: "center",
+          }, "span"),
+          text("wellness-left-kicker", "THE SPA THAT'S REALLY A\nSANCTUARY", {
+            position: "absolute",
+            left: "4.8%",
+            top: "61.6%",
+            width: "12.0%",
+            color: "#5d554f",
+            fontFamily: "var(--xp-font-grotesk)",
+            fontSize: "clamp(.27rem,.38vw,.42rem)",
+            fontWeight: 760,
+            letterSpacing: ".08em",
+            lineHeight: 1.2,
+            whiteSpace: "pre-line",
+          }, "span"),
+          {
+            id: "wellness-left-copy-a",
+            type: "text",
+            props: {
+              as: "p",
+              text: "It is only fitting that visitors to the Saxon Spa Steyn City enjoy a unique pampering in a beautiful outdoor creek overlooking a serene water feature. The treatment journey has been created as a deeply calming ritual, drawing on the tranquillity of the estate and the connection between wellness, nature and daily life.",
+              dropCap: true,
+              dropCapLines: 4,
+              dropCapColor: "#168d9d",
+            },
+            style: {
+              position: "absolute",
+              left: "4.8%",
+              top: "66.8%",
+              width: "12.2%",
+              color: "#443d38",
+              fontFamily: "var(--xp-font-editorial)",
+              fontSize: "clamp(.32rem,.43vw,.47rem)",
+              lineHeight: 1.43,
+            },
+          },
+          text("wellness-left-copy-b", "Each signature treatment and spa journey supports skin radiance, restoration and recovery. The spaces are designed to make slowing down feel natural, whether the ritual is a facial, massage, body treatment or simply a quiet pause between a busy day and the next commitment.", {
+            position: "absolute",
+            left: "18.1%",
+            top: "61.6%",
+            width: "12.3%",
+            color: "#443d38",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(.32rem,.43vw,.47rem)",
+            lineHeight: 1.43,
+          }),
+          text("wellness-left-copy-c", "Family-owned companies, local expertise and carefully planned facilities give Steyn City a wellness rhythm that feels part of everyday life rather than a special occasion. From heated water and tranquil recovery spaces to movement studios, health sits naturally within the wider lifestyle offer.", {
+            position: "absolute",
+            left: "31.7%",
+            top: "61.6%",
+            width: "13.0%",
+            color: "#443d38",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(.32rem,.43vw,.47rem)",
+            lineHeight: 1.43,
+          }),
+
+          text("wellness-right-kicker", "KEEP MOVING", {
+            position: "absolute",
+            left: "83.0%",
+            top: "47.5%",
+            width: "12.3%",
+            color: "#6a645d",
+            fontFamily: "var(--xp-font-grotesk)",
+            fontSize: "clamp(.27rem,.39vw,.43rem)",
+            fontWeight: 800,
+            letterSpacing: ".14em",
+          }, "span"),
+          text("wellness-right-copy-a", "Keen to stretch, strengthen or simply move better? The Wellness Hub brings together a range of training options, from reformer Pilates and functional movement to guided strength and recovery sessions. The emphasis is on sustainable movement, mobility and consistency.", {
+            position: "absolute",
+            left: "83.0%",
+            top: "51.5%",
+            width: "12.7%",
+            color: "#443d38",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(.31rem,.42vw,.46rem)",
+            lineHeight: 1.43,
+          }),
+          text("wellness-right-copy-b", "Reformer Pilates is a low-impact, highly effective form of training that develops core strength, stability and range of motion. Sessions can be adapted to different needs, helping residents and visitors build confidence, recover well and keep moving through every stage of life.", {
+            position: "absolute",
+            left: "83.0%",
+            top: "70.4%",
+            width: "12.7%",
+            color: "#443d38",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(.31rem,.42vw,.46rem)",
+            lineHeight: 1.43,
+          }),
+
+          {
+            id: "wellness-trending-panel",
+            type: "frame",
+            style: {
+              position: "absolute",
+              left: "50.0%",
+              top: "55.9%",
+              width: "31.7%",
+              height: "36.7%",
+              background: "#0795a5",
+              zIndex: 12,
+              padding: "clamp(.72rem,1.15vw,1.15rem)",
+              color: "#fff",
+              overflow: "hidden",
+            },
+            children: [
+              text("wellness-trending-title", "NOW TRENDING", {
+                color: "#fff",
+                fontFamily: "var(--xp-font-grotesk)",
+                fontSize: "clamp(.34rem,.48vw,.52rem)",
+                fontWeight: 850,
+                letterSpacing: ".08em",
+                marginBottom: ".45rem",
+              }, "h3"),
+              text("wellness-trending-copy", "Steyn City presents several fitness centres, including Peak Life Studio. Here, you can try a range of heart-rate training options, from Hyrox to personal training, as well as low-impact practices such as yoga, Pilates and barre.\n\nLook out for these fitness trends, as explained by Peak Life’s team: functional mobility, strength, recovery and sustainable movement are increasingly becoming part of an everyday wellbeing routine.", {
+                color: "#fff",
+                fontFamily: "var(--xp-font-editorial)",
+                fontSize: "clamp(.29rem,.39vw,.43rem)",
+                lineHeight: 1.39,
+                whiteSpace: "pre-line",
+                width: "57%",
+              }),
+              text("wellness-trending-list", "• Mobility-first training\n• Functional strength\n• Recovery and mindfulness\n• Low-impact conditioning\n• Sustainable everyday movement", {
+                position: "absolute",
+                right: "6%",
+                top: "14%",
+                width: "30%",
+                color: "#fff",
+                fontFamily: "var(--xp-font-editorial)",
+                fontSize: "clamp(.27rem,.37vw,.41rem)",
+                lineHeight: 1.42,
+                whiteSpace: "pre-line",
+              }),
+            ],
+          },
+
+          text("wellness-brand-left", "STEYN CITY", {
+            position: "absolute", left: "7.4%", bottom: "2.1%", color: "#342f2b",
+            fontFamily: "var(--xp-font-grotesk)", fontSize: ".42rem", fontWeight: 720, letterSpacing: ".08em",
+          }, "span"),
+          text("wellness-folio-left", "34", {
+            position: "absolute", left: "4.5%", bottom: "2.1%", color: "#342f2b",
+            fontFamily: "var(--xp-font-grotesk)", fontSize: ".45rem", fontWeight: 800,
+          }, "span"),
+          text("wellness-brand-right", "STEYN CITY", {
+            position: "absolute", right: "6.4%", bottom: "2.1%", color: "#342f2b",
+            fontFamily: "var(--xp-font-grotesk)", fontSize: ".42rem", fontWeight: 720, letterSpacing: ".08em",
+          }, "span"),
+          text("wellness-folio-right", "35", {
+            position: "absolute", right: "3.2%", bottom: "2.1%", color: "#342f2b",
+            fontFamily: "var(--xp-font-grotesk)", fontSize: ".45rem", fontWeight: 800,
+          }, "span"),
+        ],
+      },
+
+      {
+        id: "steyn-wellness-left-video-piece",
+        slug: "wellness-spa-video",
+        title: "Spa sanctuary",
+        kind: "feature",
+        region: "spread",
+        gutterBehaviour: "clip",
+        engagement,
+        style: {
+          position: "absolute",
+          left: 0,
+          top: 0,
+          width: "50%",
+          height: "45.6%",
+          zIndex: 7,
+          overflow: "hidden",
+          background: "#111",
+        },
+        elements: [
+          autoplayVideo("wellness-left-video", spaVideo, spa, "Spa and wellness sanctuary", {
+            position: "absolute",
+            inset: 0,
+            objectFit: "cover",
+            objectPosition: "center 48%",
+          }),
+        ],
+      },
+
+      {
+        id: "steyn-wellness-callout-piece",
+        slug: "wellness-thoughtful-curation",
+        title: "Thoughtful curation",
+        kind: "feature",
+        region: "spread",
+        gutterBehaviour: "clip",
+        engagement: noEngagement,
+        style: {
+          position: "absolute",
+          left: "5.0%",
+          top: "24.4%",
+          width: "13.0%",
+          aspectRatio: "1 / 1",
+          zIndex: 38,
+          overflow: "visible",
+          background: "transparent",
+        },
+        elements: [{
+          id: "wellness-callout",
+          type: "frame",
+          style: {
+            position: "absolute",
+            inset: 0,
+            borderRadius: "50%",
+            background: "#0795a5",
+            border: "4px solid #fff",
+            display: "grid",
+            placeItems: "center",
+            padding: ".9rem",
+            boxShadow: "0 8px 20px rgba(0,0,0,.12)",
+          },
+          children: [text("wellness-callout-copy", "THANKS TO\nTHE THOUGHTFUL\nCURATION OF\nFACILITIES AND EQUALLY\nCAREFULLY PLANNED\nDESIGN, WELLNESS HAS\nBECOME INTEGRAL\nTO THE STEYN CITY\nLIFESTYLE", {
+            color: "#fff",
+            fontFamily: "var(--xp-font-grotesk)",
+            fontSize: "clamp(.24rem,.34vw,.38rem)",
+            fontWeight: 820,
+            lineHeight: 1.12,
+            textAlign: "center",
+            whiteSpace: "pre-line",
+          }, "span")],
+        }],
+      },
+
+      mediaPiece(
+        "steyn-wellness-pool-piece",
+        "wellness-heated-pool",
+        "Heated spa pool",
+        image("wellness-pool-image", pool, "Heated spa pool", {
+          position: "absolute", inset: 0, width: "100%", height: "100%",
+          objectFit: "cover", objectPosition: "center 55%",
+        }),
+        { position: "absolute", left: "50%", top: 0, width: "31.7%", height: "26.8%", zIndex: 7 },
+        true,
+      ),
+
+      mediaPiece(
+        "steyn-wellness-recovery-piece",
+        "wellness-recovery",
+        "Recovery lounge",
+        image("wellness-recovery-image", recovery, "Recovery lounge and wellness equipment", {
+          position: "absolute", inset: 0, width: "100%", height: "100%",
+          objectFit: "cover", objectPosition: "center 48%",
+        }),
+        { position: "absolute", left: "50%", top: "28.2%", width: "31.7%", height: "25.9%", zIndex: 7 },
+        false,
+      ),
+
+      {
+        id: "steyn-wellness-right-video-piece",
+        slug: "wellness-movement-video",
+        title: "Pilates and movement",
+        kind: "feature",
+        region: "spread",
+        gutterBehaviour: "clip",
+        engagement: noEngagement,
+        style: {
+          position: "absolute",
+          left: "82.7%",
+          top: 0,
+          width: "17.3%",
+          height: "44.8%",
+          zIndex: 7,
+          overflow: "hidden",
+          background: "#111",
+        },
+        elements: [
+          autoplayVideo("wellness-right-video", movementVideo, pilates, "Pilates and movement studio", {
+            position: "absolute",
+            inset: 0,
+            objectFit: "cover",
+            objectPosition: "center 42%",
+          }),
+          text("wellness-right-media-kicker", "WELLNESS │", {
+            position: "absolute",
+            left: "28%",
+            top: "12%",
+            color: "#fff",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(.5rem,.72vw,.78rem)",
+            fontWeight: 600,
+            letterSpacing: ".08em",
+            zIndex: 9,
+            textShadow: "0 2px 10px rgba(0,0,0,.45)",
+          }, "span"),
+        ],
+      },
+
+      mediaPiece(
+        "steyn-wellness-coach-piece",
+        "wellness-coach",
+        "Fitness coach",
+        image("wellness-coach-image", coach, "Fitness coach", {
+          position: "absolute",
+          inset: 0,
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+          objectPosition: "center 22%",
+          borderRadius: "50%",
+          border: "4px solid #fff",
+        }),
+        { position: "absolute", left: "63.3%", top: "70.1%", width: "8.8%", aspectRatio: "1 / 1", zIndex: 24, background: "transparent", borderRadius: "50%" },
+        false,
+      ),
+
+      {
+        id: "steyn-wellness-mobile-left-piece",
+        slug: "wellness-mobile-left",
+        title: "Health Is the New Wealth",
+        kind: "article",
+        region: "left",
+        gutterBehaviour: "clip",
+        engagement,
+        style: {
+          position: "absolute",
+          left: "2.8%",
+          top: "3.5%",
+          width: "44.4%",
+          height: "93%",
+          display: "none",
+          background: "#fbfaf7",
+          zIndex: 70,
+          padding: "clamp(.95rem,3.8vw,1.4rem)",
+          overflow: "auto",
+        },
+        elements: [
+          autoplayVideo("wellness-mobile-left-video", spaVideo, spa, "Spa sanctuary", {
+            width: "100%", height: "12rem", objectFit: "cover", marginBottom: ".8rem",
+          }),
+          text("wellness-mobile-title", "HEALTH IS THE\nNEW WEALTH", {
+            color: "#342d28",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(1.5rem,6.5vw,2rem)",
+            lineHeight: .98,
+            whiteSpace: "pre-line",
+            marginBottom: ".65rem",
+          }, "h2"),
+          {
+            id: "wellness-mobile-left-copy",
+            type: "text",
+            props: {
+              as: "p",
+              text: "Wellness at Steyn City is designed into daily life, from restorative spa rituals and heated water to spaces for recovery, movement and quiet. The result is a lifestyle where taking care of yourself does not need to feel separate from everything else.",
+              dropCap: true,
+              dropCapLines: 4,
+              dropCapColor: "#0795a5",
+            },
+            style: {
+              color: "#463f3a",
+              fontFamily: "var(--xp-font-editorial)",
+              fontSize: "clamp(1rem,3.8vw,1.14rem)",
+              lineHeight: 1.55,
+              marginBottom: ".8rem",
+            },
+          },
+          image("wellness-mobile-pool", pool, "Heated spa pool", {
+            width: "100%", height: "10rem", objectFit: "cover",
+          }),
+        ],
+      },
+
+      {
+        id: "steyn-wellness-mobile-right-piece",
+        slug: "wellness-mobile-right",
+        title: "Keep Moving",
+        kind: "article",
+        region: "right",
+        gutterBehaviour: "clip",
+        engagement: noEngagement,
+        style: {
+          position: "absolute",
+          left: "52.8%",
+          top: "3.5%",
+          width: "44.4%",
+          height: "93%",
+          display: "none",
+          background: "#fbfaf7",
+          zIndex: 70,
+          padding: "clamp(.9rem,3.6vw,1.35rem)",
+          overflow: "auto",
+        },
+        elements: [
+          autoplayVideo("wellness-mobile-right-video", movementVideo, pilates, "Pilates and movement", {
+            width: "100%", height: "11rem", objectFit: "cover", marginBottom: ".75rem",
+          }),
+          text("wellness-mobile-right-heading", "KEEP MOVING", {
+            color: "#342d28",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(1.45rem,6.2vw,1.95rem)",
+            lineHeight: .98,
+            marginBottom: ".7rem",
+          }, "h2"),
+          text("wellness-mobile-right-copy", "The Wellness Hub brings together Pilates, functional movement, strength and recovery in a way that supports sustainable routines. Movement, mobility and recovery become part of the everyday rhythm rather than something saved for special occasions.", {
+            color: "#463f3a",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(1rem,3.8vw,1.14rem)",
+            lineHeight: 1.55,
+            marginBottom: ".8rem",
+          }),
+          image("wellness-mobile-recovery", recovery, "Recovery lounge", {
+            width: "100%", height: "10rem", objectFit: "cover", marginBottom: ".7rem",
+          }),
+        ],
+      },
+    ],
+  };
+}
+
 function placeholderPage(
   issueId: string,
   pageNo: number,
@@ -8462,7 +8988,7 @@ export function getSteynCity2026Magazine(): MagazineGlobalDefinition {
         props: { label: "STEYN CITY" },
       },
     },
-    spreads: [cityLivingSpread(issueId), bentleyAdvertSpread(issueId), contentsGolfSpread(issueId), golfTraditionSpread(issueId), golfTraditionContinuationSpread(issueId), cyclingSpread(issueId), seniorVillageSpread(issueId), easyLifeSpread(issueId), birdsBeesSpread(issueId), liveYourDreamsSpread(issueId), rentalCheninSpread(issueId), allThingsDeliciousSpread(issueId), golfExcellenceSpread(issueId), holidayLifestyleSpread(issueId), schoolValuesSpread(issueId), workConnectThriveSpread(issueId)],
+    spreads: [cityLivingSpread(issueId), bentleyAdvertSpread(issueId), contentsGolfSpread(issueId), golfTraditionSpread(issueId), golfTraditionContinuationSpread(issueId), cyclingSpread(issueId), seniorVillageSpread(issueId), easyLifeSpread(issueId), birdsBeesSpread(issueId), liveYourDreamsSpread(issueId), rentalCheninSpread(issueId), allThingsDeliciousSpread(issueId), golfExcellenceSpread(issueId), holidayLifestyleSpread(issueId), schoolValuesSpread(issueId), workConnectThriveSpread(issueId), wellnessSpread(issueId)],
     pages,
   };
 }
