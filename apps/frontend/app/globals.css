@@ -545,6 +545,24 @@ img, picture, video, canvas, svg { display: block; max-width: 100%; }
   transform: rotateY(180deg);
 }
 
+/* A physical sheet has exactly one visible side at a time. Explicitly switch
+   faces at 90deg instead of relying on Chromium to resolve two textured planes
+   while they are nearly edge-on. This also guarantees that a forward turn shows
+   the next spread's LEFT page on the reverse side, never a mirrored copy of the
+   outgoing RIGHT page. */
+.xp-magazine__stage[data-motion="flip"][data-turn-face="front"] .xp-magazine__turn-face--back {
+  visibility: hidden;
+}
+
+.xp-magazine__stage[data-motion="flip"][data-turn-face="back"] .xp-magazine__turn-face--front {
+  visibility: hidden;
+}
+
+.xp-magazine__stage[data-motion="flip"][data-turn-face="front"] .xp-magazine__turn-face--front,
+.xp-magazine__stage[data-motion="flip"][data-turn-face="back"] .xp-magazine__turn-face--back {
+  visibility: visible;
+}
+
 .xp-magazine__fold-shadow,
 .xp-magazine__fold-highlight {
   position: absolute;
@@ -670,7 +688,6 @@ img, picture, video, canvas, svg { display: block; max-width: 100%; }
 
 /* Programmatic completion / threshold completion gets a smooth finish.
    Dragging is fully direct and has no transition lag. */
-.xp-magazine__stage[data-phase="animating"] .xp-magazine__turn-sheet,
 .xp-magazine__stage[data-phase="animating"] .xp-magazine__spread-layer,
 .xp-magazine__stage[data-phase="animating"] .xp-magazine__sheet,
 .xp-magazine__stage[data-phase="animating"] .xp-magazine__native-spread,
@@ -679,6 +696,13 @@ img, picture, video, canvas, svg { display: block; max-width: 100%; }
     transform 560ms var(--xp-ease-page),
     opacity 560ms var(--xp-ease-page),
     left 560ms var(--xp-ease-page);
+}
+
+/* The turning sheet is driven frame-by-frame in JS so its physical face can
+   switch exactly at 90deg. Never interpolate its transform a second time in
+   CSS, otherwise the front face can lag behind the logical page position. */
+.xp-magazine__stage[data-phase="animating"] .xp-magazine__turn-sheet {
+  transition: none !important;
 }
 
 /* Mobile reading sequence:
