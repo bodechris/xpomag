@@ -1,3 +1,4 @@
+import { normalizeMagazineForReader } from "@xpomag/magazine";
 import type { Metadata } from "next";
 import { headers } from "next/headers";
 import { notFound } from "next/navigation";
@@ -16,7 +17,7 @@ type RouteProps = {
 
 export async function generateMetadata({ params }: RouteProps): Promise<Metadata> {
   const { issue: issueSlug, page: pageSlug } = await params;
-  const issue = getDemoMagazineBySlug(issueSlug);
+  const issue = normalizeMagazineForReader(getDemoMagazineBySlug(issueSlug));
   const page = issue.pages.find((item) => item.slug === pageSlug);
   if (!page) return {};
   return buildPageMetadata(issue, page);
@@ -24,7 +25,7 @@ export async function generateMetadata({ params }: RouteProps): Promise<Metadata
 
 export default async function ArticlePage({ params }: RouteProps) {
   const { issue: issueSlug, page: pageSlug } = await params;
-  const issue = getDemoMagazineBySlug(issueSlug);
+  const issue = normalizeMagazineForReader(getDemoMagazineBySlug(issueSlug));
   const page = issue.pages.find((item) => item.slug === pageSlug);
   if (!page || !isStandaloneArticleKind(page.kind)) notFound();
 
