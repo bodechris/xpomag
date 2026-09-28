@@ -1491,18 +1491,25 @@ export function MagazineReader({
     }
 
     if (nativeSpread && !isSingle) {
-      const hiddenSide = hiddenPageIndex == null
-        ? undefined
-        : hiddenPageIndex === spreadToRender.pageIndexes[0]
-          ? "left"
-          : hiddenPageIndex === spreadToRender.pageIndexes[1]
-            ? "right"
-            : undefined;
-      const useStationaryLeafDuringFlip = Boolean(
-        hiddenSide &&
+      const normalDesktopFlip = Boolean(
         motion?.kind === "flip" &&
+        !singlePageMode &&
         spread.pageIndexes.length === 2 &&
         targetSpread?.pageIndexes.length === 2
+      );
+      const hiddenSide = role === "target" && normalDesktopFlip
+        ? undefined
+        : hiddenPageIndex == null
+          ? undefined
+          : hiddenPageIndex === spreadToRender.pageIndexes[0]
+            ? "left"
+            : hiddenPageIndex === spreadToRender.pageIndexes[1]
+              ? "right"
+              : undefined;
+      const useStationaryLeafDuringFlip = Boolean(
+        role === "current" &&
+        hiddenSide &&
+        normalDesktopFlip
       );
 
       if (useStationaryLeafDuringFlip) {
