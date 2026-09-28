@@ -6312,6 +6312,472 @@ function allThingsDeliciousSpread(issueId: string): MagazineSpreadDefinition {
   };
 }
 
+
+function golfExcellenceSpread(issueId: string): MagazineSpreadDefinition {
+  const toro = "/resources/studio/steyn/steyn-city-xpomag-spread-12-01.webp";
+  const ladies = "/resources/studio/steyn/steyn-city-xpomag-spread-12-02.webp";
+  const ambassador = "/resources/studio/steyn/steyn-city-xpomag-spread-12-03.webp";
+  const dylan = "/resources/studio/steyn/steyn-city-xpomag-spread-12-04.webp";
+  const pablo = "/resources/studio/steyn/steyn-city-xpomag-spread-12-05.webp";
+  const rnaLogo = "/resources/studio/steyn/steyn-city-xpomag-spread-12-rna-logo.webp";
+
+  const leftVideo = "https://www.youtube.com/embed/2UOUalEGd5k?autoplay=1&mute=1&controls=0&playsinline=1&rel=0";
+  const rightVideo = "https://www.youtube.com/embed/G5W2HDCqRo0?autoplay=1&mute=1&controls=0&playsinline=1&rel=0";
+
+  const engagement = { reactions: true, comments: true, share: true, save: true };
+  const noEngagement = { reactions: false, comments: false, share: false, save: false };
+
+  const image = (
+    id: string,
+    src: string,
+    alt: string,
+    style: DesignElementNode["style"] = {},
+  ): DesignElementNode => ({
+    id,
+    type: "image",
+    props: { src, alt, loading: "eager", fetchPriority: "high" },
+    style: { display: "block", objectFit: "cover", ...style },
+  });
+
+  const video = (
+    id: string,
+    src: string,
+    title: string,
+    style: DesignElementNode["style"] = {},
+  ): DesignElementNode => ({
+    id,
+    type: "video",
+    props: {
+      src,
+      title,
+      cover: true,
+      interactive: true,
+      autoplay: false,
+      muted: true,
+      controls: false,
+    },
+    style: { display: "block", width: "100%", height: "100%", ...style },
+  });
+
+  const mediaPiece = (
+    id: string,
+    slug: string,
+    title: string,
+    node: DesignElementNode,
+    style: Record<string, unknown>,
+    withEngagement = false,
+  ): any => ({
+    id,
+    slug,
+    title,
+    kind: "feature",
+    region: "spread",
+    gutterBehaviour: "clip",
+    engagement: withEngagement ? engagement : noEngagement,
+    style: { ...style, overflow: "hidden", background: "#e9ece6" },
+    elements: [node],
+  });
+
+  return {
+    id: "steyn-golf-excellence-spread",
+    issueId,
+    slug: "golf-excellence",
+    title: "Where Golf Meets Excellence",
+    kind: "feature",
+    pageIds: ["golf-excellence", "golf-excellence-visual"],
+    style: { background: "#fbfaf7" },
+    pieces: [
+      {
+        id: "steyn-golf-excellence-editorial-piece",
+        slug: "golf-excellence-editorial",
+        title: "Where Golf Meets Excellence",
+        kind: "article",
+        region: "spread",
+        gutterBehaviour: "cross",
+        engagement,
+        style: {
+          position: "absolute",
+          inset: 0,
+          overflow: "hidden",
+          background: "#fbfaf7",
+        },
+        elements: [
+          text("golf-excellence-kicker", "│ GOLF", {
+            position: "absolute",
+            left: "4.6%",
+            top: "7.0%",
+            color: "#f7f5ef",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(.5rem,.68vw,.75rem)",
+            letterSpacing: ".06em",
+            zIndex: 12,
+          }, "span"),
+
+          text("golf-excellence-title", "WHERE GOLF MEETS\nEXCELLENCE", {
+            position: "absolute",
+            left: "8.0%",
+            top: "32.2%",
+            width: "35.5%",
+            color: "#f8f6ef",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(1.4rem,2.35vw,2.7rem)",
+            fontWeight: 500,
+            lineHeight: .95,
+            whiteSpace: "pre-line",
+            textAlign: "center",
+            textShadow: "0 2px 14px rgba(0,0,0,.24)",
+            zIndex: 12,
+          }, "h2"),
+
+          {
+            id: "golf-excellence-copy-left",
+            type: "text",
+            props: {
+              as: "p",
+              text: "Golf has always been associated with proud tradition. Indeed, it is one of the activities that set the game apart. Steyn City proudly upholds that tradition, while bringing an unmistakable sense of place and modernity to the experience.\n\nPROUD AMBASSADORS\n\nSteyn City’s ambassadors are a remarkable group of professionals, role models and champions who share the estate’s belief in giving back and raising the game.",
+              dropCap: true,
+              dropCapLines: 4,
+              dropCapColor: "#342d28",
+            },
+            style: {
+              position: "absolute",
+              left: "19.1%",
+              top: "52.5%",
+              width: "14.0%",
+              bottom: "6.8%",
+              color: "#453f3a",
+              fontFamily: "var(--xp-font-editorial)",
+              fontSize: "clamp(.34rem,.46vw,.5rem)",
+              lineHeight: 1.46,
+              whiteSpace: "pre-line",
+            },
+          },
+
+          text("golf-excellence-copy-mid", "Becoming a member of Steyn City’s golf fraternity is about far more than a round. The course is shaped by precision, thoughtful maintenance and a culture of excellence that extends from the fairways to the clubhouse.\n\nCUTTING EDGE\n\nThe team continues to invest in equipment, course presentation and innovation, ensuring that every round feels polished and consistent.", {
+            position: "absolute",
+            left: "34.0%",
+            top: "52.5%",
+            width: "14.2%",
+            bottom: "6.8%",
+            color: "#453f3a",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(.34rem,.46vw,.5rem)",
+            lineHeight: 1.46,
+            whiteSpace: "pre-line",
+          }),
+
+          text("golf-excellence-copy-right-a", "The maintenance team keeps the greens immaculate, the bunkers crisp and the fairways tournament-ready. New Toro machinery adds precision and efficiency while helping the team deliver the course at its best throughout the year.\n\nTERRIFIC TECHNOLOGY\n\nSmart course management and careful agronomy support consistency, sustainability and better playing conditions.", {
+            position: "absolute",
+            left: "53.9%",
+            top: "46.8%",
+            width: "13.4%",
+            bottom: "7.4%",
+            color: "#453f3a",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(.33rem,.45vw,.49rem)",
+            lineHeight: 1.45,
+            whiteSpace: "pre-line",
+          }),
+
+          text("golf-excellence-copy-right-b", "A VIEW FROM THE TOP\n\nSteyn City’s course has been visited by Royal and Ancient leadership, tournament professionals and golf experts from around the world. The assessment is consistently positive: strong design, exceptional conditioning and a distinctive sense of place.\n\nThe result is a venue able to host global golf while remaining deeply connected to its local community.", {
+            position: "absolute",
+            right: "4.2%",
+            top: "42.4%",
+            width: "13.1%",
+            bottom: "16%",
+            color: "#453f3a",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(.33rem,.45vw,.49rem)",
+            lineHeight: 1.45,
+            whiteSpace: "pre-line",
+          }),
+
+          text("golf-excellence-quote", "“This isn’t just a tournament. It’s one of the biggest golfing events South Africa has seen, putting the country on the global stage.”", {
+            position: "absolute",
+            right: "4.6%",
+            bottom: "7.2%",
+            width: "12.4%",
+            color: "#28231f",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(.48rem,.68vw,.76rem)",
+            fontWeight: 600,
+            fontStyle: "italic",
+            lineHeight: 1.17,
+            textAlign: "center",
+          }),
+
+          text("golf-excellence-brand-left", "STEYN CITY", {
+            position: "absolute", left: "7.7%", bottom: "2.1%", color: "#342f2b",
+            fontFamily: "var(--xp-font-grotesk)", fontSize: ".42rem", fontWeight: 720, letterSpacing: ".08em",
+          }, "span"),
+          text("golf-excellence-folio-left", "26", {
+            position: "absolute", left: "4.6%", bottom: "2.1%", color: "#342f2b",
+            fontFamily: "var(--xp-font-grotesk)", fontSize: ".45rem", fontWeight: 800,
+          }, "span"),
+          text("golf-excellence-brand-right", "STEYN CITY", {
+            position: "absolute", right: "6.4%", bottom: "2.1%", color: "#342f2b",
+            fontFamily: "var(--xp-font-grotesk)", fontSize: ".42rem", fontWeight: 720, letterSpacing: ".08em",
+          }, "span"),
+          text("golf-excellence-folio-right", "27", {
+            position: "absolute", right: "3.2%", bottom: "2.1%", color: "#342f2b",
+            fontFamily: "var(--xp-font-grotesk)", fontSize: ".45rem", fontWeight: 800,
+          }, "span"),
+        ],
+      },
+
+      mediaPiece(
+        "steyn-golf-toro-piece",
+        "golf-toro",
+        "Toro course maintenance team",
+        image("golf-toro-image", toro, "Toro machinery and Steyn City course maintenance team", {
+          position: "absolute", inset: 0, width: "100%", height: "100%",
+          objectFit: "cover", objectPosition: "center 46%",
+        }),
+        { position: "absolute", left: 0, top: 0, width: "50%", height: "45.6%", zIndex: 6 },
+        true,
+      ),
+
+      {
+        id: "steyn-golf-left-video-piece",
+        slug: "golf-left-video",
+        title: "Playing Steyn City",
+        kind: "feature",
+        region: "spread",
+        gutterBehaviour: "clip",
+        engagement: noEngagement,
+        style: {
+          position: "absolute",
+          left: "4.2%",
+          top: "53.3%",
+          width: "14.7%",
+          height: "31.2%",
+          zIndex: 8,
+          overflow: "hidden",
+          background: "#111",
+          border: "2px solid rgba(255,255,255,.9)",
+        },
+        elements: [
+          image("golf-ambassador-poster", ambassador, "Steyn City golf ambassador", {
+            position: "absolute", inset: 0, width: "100%", height: "100%",
+            objectFit: "cover", objectPosition: "center 35%",
+          }),
+          {
+            id: "golf-left-video-inset",
+            type: "frame",
+            style: {
+              position: "absolute",
+              left: "7%",
+              bottom: "6%",
+              width: "52%",
+              aspectRatio: "16 / 9",
+              overflow: "hidden",
+              border: "2px solid rgba(255,255,255,.94)",
+              boxShadow: "0 8px 22px rgba(0,0,0,.24)",
+              background: "#000",
+              zIndex: 5,
+            },
+            children: [
+              video("golf-left-video", leftVideo, "A round of golf at Steyn City", {
+                position: "absolute", inset: 0,
+              }),
+            ],
+          },
+        ],
+      },
+
+      mediaPiece(
+        "steyn-golf-dylan-piece",
+        "golf-dylan",
+        "Dylan Naidoo",
+        image("golf-dylan-image", dylan, "Dylan Naidoo portrait", {
+          position: "absolute", inset: 0, width: "100%", height: "100%",
+          objectFit: "cover", objectPosition: "center 26%",
+        }),
+        { position: "absolute", left: "13.0%", top: "72.3%", width: "8.9%", aspectRatio: "1 / 1", borderRadius: "50%", zIndex: 11, outline: "4px solid #fff" },
+        false,
+      ),
+
+      mediaPiece(
+        "steyn-golf-ladies-piece",
+        "golf-ladies",
+        "Ladies Golf Day",
+        image("golf-ladies-image", ladies, "Ladies Golf Day at Steyn City", {
+          position: "absolute", inset: 0, width: "100%", height: "100%",
+          objectFit: "cover", objectPosition: "center 37%",
+        }),
+        { position: "absolute", left: "50%", top: 0, width: "31.8%", height: "45.6%", zIndex: 6 },
+        false,
+      ),
+
+      {
+        id: "steyn-golf-right-video-piece",
+        slug: "golf-right-video",
+        title: "Steyn City Clubhouse",
+        kind: "feature",
+        region: "spread",
+        gutterBehaviour: "clip",
+        engagement,
+        style: {
+          position: "absolute",
+          right: "4.3%",
+          top: "5.7%",
+          width: "13.4%",
+          height: "30.5%",
+          zIndex: 9,
+          overflow: "hidden",
+          background: "#fff",
+        },
+        elements: [
+          image("golf-pablo-image", pablo, "Pablo Muñoz Vega", {
+            position: "absolute", left: 0, right: 0, top: "20%", height: "80%",
+            width: "100%", objectFit: "cover", objectPosition: "center 26%",
+          }),
+          image("golf-rna-logo", rnaLogo, "R&A", {
+            position: "absolute", left: "10%", top: 0, width: "80%", height: "18%",
+            objectFit: "contain",
+          }),
+          {
+            id: "golf-right-video-inset",
+            type: "frame",
+            style: {
+              position: "absolute",
+              right: "6%",
+              bottom: "6%",
+              width: "54%",
+              aspectRatio: "16 / 9",
+              overflow: "hidden",
+              border: "2px solid rgba(255,255,255,.94)",
+              boxShadow: "0 8px 22px rgba(0,0,0,.24)",
+              background: "#000",
+              zIndex: 5,
+            },
+            children: [
+              video("golf-right-video", rightVideo, "Steyn City clubhouse tour", {
+                position: "absolute", inset: 0,
+              }),
+            ],
+          },
+        ],
+      },
+
+      {
+        id: "steyn-golf-excellence-mobile-left-piece",
+        slug: "golf-excellence-mobile-left",
+        title: "Where Golf Meets Excellence",
+        kind: "article",
+        region: "left",
+        gutterBehaviour: "clip",
+        engagement,
+        style: {
+          position: "absolute",
+          left: "2.8%",
+          top: "3.5%",
+          width: "44.4%",
+          height: "93%",
+          display: "none",
+          background: "#fbfaf7",
+          zIndex: 70,
+          padding: "clamp(.95rem,3.8vw,1.4rem)",
+          overflow: "auto",
+        },
+        elements: [
+          text("golf-excellence-mobile-kicker", "GOLF", {
+            color: "#655d56",
+            fontFamily: "var(--xp-font-grotesk)",
+            fontSize: ".78rem",
+            fontWeight: 800,
+            letterSpacing: ".13em",
+            marginBottom: ".55rem",
+          }, "span"),
+          image("golf-excellence-mobile-hero", toro, "Toro course maintenance team", {
+            width: "100%", height: "11.5rem", objectFit: "cover", marginBottom: ".75rem",
+          }),
+          text("golf-excellence-mobile-title", "WHERE GOLF MEETS\nEXCELLENCE", {
+            color: "#342d28",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(1.5rem,6.5vw,2rem)",
+            lineHeight: .98,
+            whiteSpace: "pre-line",
+            marginBottom: ".65rem",
+          }, "h2"),
+          {
+            id: "golf-excellence-mobile-copy",
+            type: "text",
+            props: {
+              as: "p",
+              text: "Steyn City’s golf experience combines strong tradition with meticulous course presentation, modern technology and a culture of excellence that runs from the maintenance team to its ambassadors.",
+              dropCap: true,
+              dropCapLines: 4,
+              dropCapColor: "#342d28",
+            },
+            style: {
+              color: "#463f3a",
+              fontFamily: "var(--xp-font-editorial)",
+              fontSize: "clamp(1rem,3.8vw,1.14rem)",
+              lineHeight: 1.55,
+              marginBottom: ".8rem",
+            },
+          },
+          video("golf-excellence-mobile-left-video", leftVideo, "A round of golf at Steyn City", {
+            width: "100%", height: "10rem", marginBottom: ".8rem",
+          }),
+          image("golf-excellence-mobile-ambassador", ambassador, "Steyn City golf ambassador", {
+            width: "100%", height: "10rem", objectFit: "cover", objectPosition: "center 34%",
+          }),
+        ],
+      },
+
+      {
+        id: "steyn-golf-excellence-mobile-right-piece",
+        slug: "golf-excellence-mobile-right",
+        title: "Golf at Steyn City",
+        kind: "article",
+        region: "right",
+        gutterBehaviour: "clip",
+        engagement: noEngagement,
+        style: {
+          position: "absolute",
+          left: "52.8%",
+          top: "3.5%",
+          width: "44.4%",
+          height: "93%",
+          display: "none",
+          background: "#fbfaf7",
+          zIndex: 70,
+          padding: "clamp(.9rem,3.6vw,1.35rem)",
+          overflow: "auto",
+        },
+        elements: [
+          image("golf-excellence-mobile-ladies", ladies, "Ladies Golf Day", {
+            width: "100%", height: "11rem", objectFit: "cover", objectPosition: "center 36%", marginBottom: ".75rem",
+          }),
+          text("golf-excellence-mobile-heading", "A VIEW FROM\nTHE TOP", {
+            color: "#342d28",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(1.45rem,6.2vw,1.95rem)",
+            lineHeight: .98,
+            whiteSpace: "pre-line",
+            marginBottom: ".7rem",
+          }, "h2"),
+          text("golf-excellence-mobile-right-copy", "Steyn City continues to attract leading golf figures and major events, with course quality, infrastructure and the overall experience earning strong international attention.", {
+            color: "#463f3a",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(1rem,3.8vw,1.14rem)",
+            lineHeight: 1.55,
+            marginBottom: ".8rem",
+          }),
+          video("golf-excellence-mobile-right-video", rightVideo, "Steyn City clubhouse tour", {
+            width: "100%", height: "10rem", marginBottom: ".8rem",
+          }),
+          image("golf-excellence-mobile-pablo", pablo, "Pablo Muñoz Vega", {
+            width: "100%", height: "10rem", objectFit: "cover", objectPosition: "center 28%",
+          }),
+        ],
+      },
+    ],
+  };
+}
+
 function placeholderPage(
   issueId: string,
   pageNo: number,
@@ -6476,7 +6942,7 @@ export function getSteynCity2026Magazine(): MagazineGlobalDefinition {
         props: { label: "STEYN CITY" },
       },
     },
-    spreads: [cityLivingSpread(issueId), bentleyAdvertSpread(issueId), contentsGolfSpread(issueId), golfTraditionSpread(issueId), golfTraditionContinuationSpread(issueId), cyclingSpread(issueId), seniorVillageSpread(issueId), easyLifeSpread(issueId), birdsBeesSpread(issueId), liveYourDreamsSpread(issueId), rentalCheninSpread(issueId), allThingsDeliciousSpread(issueId)],
+    spreads: [cityLivingSpread(issueId), bentleyAdvertSpread(issueId), contentsGolfSpread(issueId), golfTraditionSpread(issueId), golfTraditionContinuationSpread(issueId), cyclingSpread(issueId), seniorVillageSpread(issueId), easyLifeSpread(issueId), birdsBeesSpread(issueId), liveYourDreamsSpread(issueId), rentalCheninSpread(issueId), allThingsDeliciousSpread(issueId), golfExcellenceSpread(issueId)],
     pages,
   };
 }
