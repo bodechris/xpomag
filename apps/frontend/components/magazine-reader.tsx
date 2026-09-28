@@ -1674,6 +1674,46 @@ export function MagazineReader({
         : "same-size"
     : "idle";
 
+  const nativeDesktopFlip = Boolean(
+    motion?.kind === "flip" &&
+    !singlePageMode &&
+    spread.pageIndexes.length === 2 &&
+    targetSpread?.pageIndexes.length === 2 &&
+    currentTurnNativeSpread &&
+    backTurnNativeSpread
+  );
+
+  const renderNativeStationaryLeaf = (
+    nativeSpread: MagazineSpreadDefinition,
+    side: "left" | "right",
+    role: "current" | "target",
+    pageSlug: string,
+  ) => (
+    <div
+      className={`xp-magazine__flip-stationary xp-magazine__flip-stationary--${role} xp-magazine__flip-stationary--${side}`}
+      aria-hidden={role === "target" ? true : undefined}
+    >
+      <MagazineSpreadLeaf
+        spread={nativeSpread}
+        side={side}
+        globalElements={issue.designElements}
+        includeSupplementalMobileMedia={false}
+        reflow={false}
+        renderEngagement={role === "current" ? (piece) => (
+          <SectionEngagementBar
+            issueSlug={issue.slug}
+            pageSlug={pageSlug}
+            sectionId={piece.id}
+            sectionSlug={piece.slug}
+            authenticated={viewerAuthenticated}
+            config={piece.engagement}
+            appearance={["feature", "advert", "closing"].includes(nativeSpread.kind ?? "") ? "light" : "dark"}
+          />
+        ) : undefined}
+      />
+    </div>
+  );
+
   const stageStyle = { "--xp-turn-progress": 0 } as CSSProperties;
 
   return (
@@ -1762,14 +1802,33 @@ export function MagazineReader({
         </div>
         <div className="xp-magazine__book-shadow" aria-hidden="true" />
         <div className="xp-magazine__book">
-          {motion && targetSpread
-            ? renderSpread(
-                targetSpread,
+          {nativeDesktopFlip && motion && targetSpread && currentTurnNativeSpread && backTurnNativeSpread ? (
+            <>
+              {renderNativeStationaryLeaf(
+                currentTurnNativeSpread,
+                motion.direction === "next" ? "left" : "right",
+                "current",
+                issue.pages[spread.pageIndexes[0]]?.slug ?? firstPage.slug,
+              )}
+              {renderNativeStationaryLeaf(
+                backTurnNativeSpread,
+                motion.direction === "next" ? "right" : "left",
                 "target",
-                motion.kind === "flip" ? backTurnPageIndex : undefined,
-              )
-            : null}
-          {renderSpread(spread, "current", motion?.kind === "flip" ? currentTurnPageIndex : undefined)}
+                issue.pages[targetSpread.pageIndexes[0]]?.slug ?? firstPage.slug,
+              )}
+            </>
+          ) : (
+            <>
+              {motion && targetSpread
+                ? renderSpread(
+                    targetSpread,
+                    "target",
+                    motion.kind === "flip" ? backTurnPageIndex : undefined,
+                  )
+                : null}
+              {renderSpread(spread, "current", motion?.kind === "flip" ? currentTurnPageIndex : undefined)}
+            </>
+          )}
 
           {activeSpreadVideo && !activeSpreadVideo.autoplay && !activeSpreadVideo.managedAutoplay && !motion ? (
             <button
