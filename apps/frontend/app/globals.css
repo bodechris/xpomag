@@ -6513,14 +6513,26 @@ p[data-drop-cap-lines="6"] .xp-editorial-drop-cap { font-size: 5.85em; }
 }
 
 .xp-magazine__stage[data-phase="dragging"] .xp-magazine__spread-layer,
-.xp-magazine__stage[data-phase="dragging"] .xp-magazine__turn-sheet,
-.xp-magazine__stage[data-phase="animating"] .xp-magazine__spread-layer,
-.xp-magazine__stage[data-phase="animating"] .xp-magazine__turn-sheet {
+.xp-magazine__stage[data-phase="animating"] .xp-magazine__spread-layer {
   will-change: transform;
-  backface-visibility: hidden;
 }
 
-.xp-magazine__stage:not([data-phase]) .xp-magazine__spread-layer,
-.xp-magazine__stage:not([data-phase]) .xp-magazine__turn-sheet {
+/* The turning sheet itself must remain double-sided. Its two child faces
+   already handle backface culling independently. Hiding the parent backface
+   makes the physical page disappear after it crosses 90deg. */
+.xp-magazine__stage[data-phase="dragging"] .xp-magazine__turn-sheet,
+.xp-magazine__stage[data-phase="animating"] .xp-magazine__turn-sheet {
+  will-change: transform;
+  backface-visibility: visible;
+}
+
+.xp-magazine__stage:not([data-phase]) .xp-magazine__spread-layer {
   will-change: auto;
+}
+
+/* Preserve the base turn-sheet optimization outside motion too; do not
+   override its authored 3D behavior. */
+.xp-magazine__stage:not([data-phase]) .xp-magazine__turn-sheet {
+  will-change: transform;
+  backface-visibility: visible;
 }
