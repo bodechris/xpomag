@@ -5780,6 +5780,7 @@ function allThingsDeliciousSpread(issueId: string): MagazineSpreadDefinition {
       loop: true,
       maxLoops: 999,
       controls: false,
+      loop: true,
     },
     style: { display: "block", width: "100%", height: "100%", ...style },
   });
@@ -7746,8 +7747,8 @@ function workConnectThriveSpread(issueId: string): MagazineSpreadDefinition {
   const spacesWide = "/resources/studio/steyn/steyn-city-xpomag-spread-15-05.webp";
   const spacesLogo = "/resources/studio/steyn/steyn-city-xpomag-spread-15-06.webp";
 
-  const guildVideo = "https://videos.pexels.com/video-files/6773475/6773475-hd_1920_1080_25fps.mp4";
-  const coffeeVideo = "https://videos.pexels.com/video-files/9047512/9047512-hd_1920_1080_25fps.mp4";
+  const guildVideo = "https://videos.pexels.com/video-files/37674127/15971334_1080_1920_60fps.mp4";
+  const coffeeVideo = "https://videos.pexels.com/video-files/4727781/4727781-hd_1920_1080_30fps.mp4";
 
   const engagement = { reactions: true, comments: true, share: true, save: true };
   const noEngagement = { reactions: false, comments: false, share: false, save: false };
@@ -7832,11 +7833,11 @@ function workConnectThriveSpread(issueId: string): MagazineSpreadDefinition {
           text("work-title", "WORK, CONNECT, THRIVE", {
             position: "absolute",
             left: "5.4%",
-            top: "35.0%",
+            top: "34.0%",
             width: "40.1%",
             color: "#2f2925",
             fontFamily: "var(--xp-font-editorial)",
-            fontSize: "clamp(1.2rem,2.18vw,2.45rem)",
+            fontSize: "clamp(1.12rem,2.02vw,2.28rem)",
             fontWeight: 500,
             lineHeight: .92,
             letterSpacing: ".012em",
@@ -7856,7 +7857,7 @@ function workConnectThriveSpread(issueId: string): MagazineSpreadDefinition {
             style: {
               position: "absolute",
               left: "4.8%",
-              top: "43.0%",
+              top: "47.3%",
               width: "12.3%",
               color: "#443d38",
               fontFamily: "var(--xp-font-editorial)",
@@ -7867,7 +7868,7 @@ function workConnectThriveSpread(issueId: string): MagazineSpreadDefinition {
           text("work-left-copy-b", "Steyn City offers two well equipped shared spaces. Guild is situated in City Centre, while Spaces is available at the International Workplace Group hub. Both are designed for focused work, collaboration and informal meetings, without adding a long commute to the day.", {
             position: "absolute",
             left: "18.2%",
-            top: "43.0%",
+            top: "47.3%",
             width: "12.5%",
             color: "#443d38",
             fontFamily: "var(--xp-font-editorial)",
@@ -7877,7 +7878,7 @@ function workConnectThriveSpread(issueId: string): MagazineSpreadDefinition {
           text("work-left-copy-c", "The demand for co-working spaces continues to increase as companies and individuals look for flexibility and environments that make it easier to move between professional focus and everyday life. Here, the office sits inside a broader lifestyle ecosystem.", {
             position: "absolute",
             left: "31.8%",
-            top: "43.0%",
+            top: "47.3%",
             width: "13.0%",
             color: "#443d38",
             fontFamily: "var(--xp-font-editorial)",
