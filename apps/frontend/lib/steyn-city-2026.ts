@@ -9415,9 +9415,6 @@ function communityCalendarSpread(issueId: string): MagazineSpreadDefinition {
               ]}
             ]
           },
-          {id:"community-callout",type:"frame",style:{position:"absolute",left:"20.4%",top:"63.3%",width:"10.2%",aspectRatio:"1 / 1",borderRadius:"50%",background:"#ef2f78",border:"4px solid #fff",zIndex:30,display:"grid",placeItems:"center",padding:".7rem"},children:[
-            text("community-callout-copy","FROM AUTHORS\nTO ATHLETES,\nCOMMUNITY\nSUPERHEROES AND\nLOCAL ICONS, STEYN\nCITY HAS HOSTED\nTHEM ALL",{color:"#fff",fontFamily:"var(--xp-font-grotesk)",fontSize:"clamp(.26rem,.36vw,.4rem)",fontWeight:800,lineHeight:1.16,textAlign:"center",whiteSpace:"pre-line"},"span")
-          ]},
           text("community-folio-left","38",{position:"absolute",left:"4.5%",bottom:"2.1%",fontFamily:"var(--xp-font-grotesk)",fontSize:".45rem",fontWeight:800,color:"#fff",zIndex:20},"span"),
           text("community-brand-left","STEYN CITY",{position:"absolute",left:"7.4%",bottom:"2.1%",fontFamily:"var(--xp-font-grotesk)",fontSize:".42rem",fontWeight:720,letterSpacing:".08em",color:"#fff",zIndex:20},"span"),
           text("community-brand-right","STEYN CITY",{position:"absolute",right:"7.4%",bottom:"2.1%",fontFamily:"var(--xp-font-grotesk)",fontSize:".42rem",fontWeight:720,letterSpacing:".08em",color:"#fff",zIndex:20},"span"),
@@ -9426,6 +9423,53 @@ function communityCalendarSpread(issueId: string): MagazineSpreadDefinition {
       },
 
       piece("steyn-community-hero-piece","community-hero","Community gathering",img("community-hero-img",hero,"Steyn City community gathering",{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover"}),{position:"absolute",left:0,top:0,width:"50%",height:"44.2%",zIndex:7},true),
+
+      {
+        id:"steyn-community-callout-piece",
+        slug:"community-callout",
+        title:"Community callout",
+        kind:"feature",
+        region:"spread",
+        gutterBehaviour:"clip",
+        engagement:noEngagement,
+        style:{
+          position:"absolute",
+          left:"20.1%",
+          top:"61.0%",
+          width:"10.8%",
+          aspectRatio:"1 / 1",
+          zIndex:60,
+          overflow:"visible",
+          background:"transparent"
+        },
+        elements:[{
+          id:"community-callout",
+          type:"frame",
+          style:{
+            position:"absolute",
+            inset:0,
+            borderRadius:"50%",
+            background:"#ef2f78",
+            border:"7px solid #fff",
+            boxSizing:"border-box",
+            display:"grid",
+            placeItems:"center",
+            padding:".68rem",
+            boxShadow:"0 5px 16px rgba(0,0,0,.08)"
+          },
+          children:[
+            text("community-callout-copy","FROM AUTHORS\nTO ATHLETES,\nCOMMUNITY\nSUPERHEROES AND\nLOCAL ICONS, STEYN\nCITY HAS HOSTED\nTHEM ALL",{
+              color:"#fff",
+              fontFamily:"var(--xp-font-grotesk)",
+              fontSize:"clamp(.26rem,.36vw,.4rem)",
+              fontWeight:800,
+              lineHeight:1.16,
+              textAlign:"center",
+              whiteSpace:"pre-line"
+            },"span")
+          ]
+        }]
+      },
 
       {
         id:"steyn-community-left-video-piece",slug:"community-left-video",title:"Community event in motion",kind:"feature",region:"spread",gutterBehaviour:"clip",engagement,
