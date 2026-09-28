@@ -1702,9 +1702,9 @@ img, picture, video, canvas, svg { display: block; max-width: 100%; }
   border-radius: 999px;
   color: #fff;
   background: rgba(17,17,17,.22);
-  box-shadow: 0 10px 32px rgba(0,0,0,.14);
-  backdrop-filter: blur(14px) saturate(1.15);
-  -webkit-backdrop-filter: blur(14px) saturate(1.15);
+  box-shadow: 0 6px 18px rgba(0,0,0,.12);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
   transform: translate3d(calc(var(--xp-pointer-x) - 34px), calc(var(--xp-pointer-y) - 34px), 0) scale(.86);
   transform-origin: center;
   opacity: 0;
@@ -1758,8 +1758,12 @@ img, picture, video, canvas, svg { display: block; max-width: 100%; }
 
 
 @media (pointer: fine) {
-  .xp-magazine__stage { cursor: none; }
-  .xp-magazine__stage:active { cursor: none; }
+  /* Keep the native cursor as a safety fallback. Hide it only while the custom
+     guide is definitely visible, so a main-thread stall can never leave the
+     reader with no visible pointer at all. */
+  .xp-magazine__stage { cursor: default; }
+  .xp-magazine__stage:has(.xp-magazine__pointer-guide[data-visible="true"]) { cursor: none; }
+  .xp-magazine__stage:has(.xp-magazine__pointer-guide[data-mode="interactive"]) { cursor: pointer; }
 }
 
 @media (pointer: coarse), (max-width: 820px) {
@@ -6535,4 +6539,14 @@ p[data-drop-cap-lines="6"] .xp-editorial-drop-cap { font-size: 5.85em; }
 .xp-magazine__stage:not([data-phase]) .xp-magazine__turn-sheet {
   will-change: transform;
   backface-visibility: visible;
+}
+
+
+/* Fast-browse performance: the pointer helper should never compete with the
+   page-turn compositor. Keep it simple while motion is active. */
+.xp-magazine__stage[data-phase] .xp-magazine__pointer-guide {
+  transition: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
 }
