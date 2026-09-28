@@ -9403,7 +9403,7 @@ function communityCalendarSpread(issueId: string): MagazineSpreadDefinition {
         elements:[
           {
             id:"community-pink-panel",type:"frame",
-            style:{position:"absolute",left:"25%",top:"45.2%",width:"50%",height:"25.0%",background:"#ef2f78",zIndex:5,padding:"clamp(.8rem,1.15vw,1.2rem)",display:"grid",gridTemplateColumns:"1fr 1fr",gap:"2rem"},
+            style:{position:"absolute",left:"25%",top:"45.2%",width:"50%",height:"25.0%",background:"#ef2f78",zIndex:5,padding:"clamp(.8rem,1.15vw,1.2rem)",display:"grid",gridTemplateColumns:"1fr 1fr",gap:"2rem",borderBottom:"8px solid #fff",boxSizing:"border-box"},
             children:[
               {id:"community-copy-left",type:"frame",style:{minWidth:0},children:[
                 text("community-title-left","YOU SAW IT",{color:"#fff",fontFamily:"var(--xp-font-editorial)",fontSize:"clamp(1rem,1.72vw,1.9rem)",fontWeight:400,lineHeight:1,marginBottom:".55rem"},"h2"),
