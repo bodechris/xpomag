@@ -1364,8 +1364,7 @@ function bentleyAdvertSpread(issueId: string): MagazineSpreadDefinition {
           props: {
             src: logo,
             alt: "Bentley",
-            loading: "eager",
-            fetchPriority: "high",
+            loading: "lazy", fetchPriority: "auto",
           },
           style: {
             position: "absolute",
@@ -1503,7 +1502,7 @@ function contentsGolfSpread(issueId: string): MagazineSpreadDefinition {
   ): DesignElementNode => ({
     id,
     type: "image",
-    props: { src, alt, loading: "eager", fetchPriority: "high" },
+    props: { src, alt, loading: "lazy", fetchPriority: "auto" },
     style,
   });
 
@@ -1857,7 +1856,7 @@ function golfTraditionSpread(issueId: string): MagazineSpreadDefinition {
   ): DesignElementNode => ({
     id,
     type: "image",
-    props: { src, alt, loading: "eager", fetchPriority: "high" },
+    props: { src, alt, loading: "lazy", fetchPriority: "auto" },
     style,
   });
 
@@ -2322,7 +2321,7 @@ function golfTraditionContinuationSpread(issueId: string): MagazineSpreadDefinit
     elements: [{
       id: `${id}-image`,
       type: "image",
-      props: { src, alt, loading: "eager", fetchPriority: "high" },
+      props: { src, alt, loading: "lazy", fetchPriority: "auto" },
       style: {
         position: "absolute",
         inset: 0,
@@ -2681,7 +2680,7 @@ function cyclingSpread(issueId: string): MagazineSpreadDefinition {
   ): DesignElementNode => ({
     id,
     type: "image",
-    props: { src, alt, loading: "eager", fetchPriority: "high" },
+    props: { src, alt, loading: "lazy", fetchPriority: "auto" },
     style: { display: "block", objectFit: "cover", ...style },
   });
 
@@ -3089,7 +3088,7 @@ function seniorVillageSpread(issueId: string): MagazineSpreadDefinition {
   ): DesignElementNode => ({
     id,
     type: "image",
-    props: { src, alt, loading: "eager", fetchPriority: "high" },
+    props: { src, alt, loading: "lazy", fetchPriority: "auto" },
     style: { display: "block", objectFit: "cover", ...style },
   });
 
@@ -3708,7 +3707,7 @@ function easyLifeSpread(issueId: string): MagazineSpreadDefinition {
   ): DesignElementNode => ({
     id,
     type: "image",
-    props: { src, alt, loading: "eager", fetchPriority: "high" },
+    props: { src, alt, loading: "lazy", fetchPriority: "auto" },
     style: { display: "block", objectFit: "cover", ...style },
   });
 
@@ -4236,7 +4235,7 @@ function birdsBeesSpread(issueId: string): MagazineSpreadDefinition {
   ): DesignElementNode => ({
     id,
     type: "image",
-    props: { src, alt, loading: "eager", fetchPriority: "high" },
+    props: { src, alt, loading: "lazy", fetchPriority: "auto" },
     style: { display: "block", objectFit: "cover", ...style },
   });
 
@@ -4824,7 +4823,7 @@ function liveYourDreamsSpread(issueId: string): MagazineSpreadDefinition {
   ): DesignElementNode => ({
     id,
     type: "image",
-    props: { src, alt, loading: "eager", fetchPriority: "high" },
+    props: { src, alt, loading: "lazy", fetchPriority: "auto" },
     style: { display: "block", objectFit: "cover", ...style },
   });
 
@@ -5159,7 +5158,7 @@ function rentalCheninSpread(issueId: string): MagazineSpreadDefinition {
   ): DesignElementNode => ({
     id,
     type: "image",
-    props: { src, alt, loading: "eager", fetchPriority: "high" },
+    props: { src, alt, loading: "lazy", fetchPriority: "auto" },
     style: { display: "block", objectFit: "cover", ...style },
   });
 
@@ -5759,7 +5758,7 @@ function allThingsDeliciousSpread(issueId: string): MagazineSpreadDefinition {
   ): DesignElementNode => ({
     id,
     type: "image",
-    props: { src, alt, loading: "eager", fetchPriority: "high" },
+    props: { src, alt, loading: "lazy", fetchPriority: "auto" },
     style: { display: "block", objectFit: "cover", ...style },
   });
 
@@ -6337,7 +6336,7 @@ function golfExcellenceSpread(issueId: string): MagazineSpreadDefinition {
   ): DesignElementNode => ({
     id,
     type: "image",
-    props: { src, alt, loading: "eager", fetchPriority: "high" },
+    props: { src, alt, loading: "lazy", fetchPriority: "auto" },
     style: { display: "block", objectFit: "cover", ...style },
   });
 
@@ -6800,7 +6799,7 @@ function holidayLifestyleSpread(issueId: string): MagazineSpreadDefinition {
   ): DesignElementNode => ({
     id,
     type: "image",
-    props: { src, alt, loading: "eager", fetchPriority: "high" },
+    props: { src, alt, loading: "lazy", fetchPriority: "auto" },
     style: { display: "block", objectFit: "cover", ...style },
   });
 
@@ -7258,7 +7257,7 @@ function schoolValuesSpread(issueId: string): MagazineSpreadDefinition {
   ): DesignElementNode => ({
     id,
     type: "image",
-    props: { src, alt, loading: "eager", fetchPriority: "high" },
+    props: { src, alt, loading: "lazy", fetchPriority: "auto" },
     style: { display: "block", objectFit: "cover", ...style },
   });
 
@@ -7761,7 +7760,7 @@ function workConnectThriveSpread(issueId: string): MagazineSpreadDefinition {
   ): DesignElementNode => ({
     id,
     type: "image",
-    props: { src, alt, loading: "eager", fetchPriority: "high" },
+    props: { src, alt, loading: "lazy", fetchPriority: "auto" },
     style: { display: "block", objectFit: "cover", ...style },
   });
 
@@ -8320,7 +8319,7 @@ function wellnessSpread(issueId: string): MagazineSpreadDefinition {
   ): DesignElementNode => ({
     id,
     type: "image",
-    props: { src, alt, loading: "eager", fetchPriority: "high" },
+    props: { src, alt, loading: "lazy", fetchPriority: "auto" },
     style: { display: "block", objectFit: "cover", ...style },
   });
 
@@ -8850,7 +8849,7 @@ function equestrianSpaSpread(issueId: string): MagazineSpreadDefinition {
   ): DesignElementNode => ({
     id,
     type: "image",
-    props: { src, alt, loading: "eager", fetchPriority: "high" },
+    props: { src, alt, loading: "lazy", fetchPriority: "auto" },
     style: { display: "block", objectFit: "cover", ...style },
   });
 
@@ -9384,7 +9383,7 @@ function communityCalendarSpread(issueId: string): MagazineSpreadDefinition {
   const rightVideo="https://videos.pexels.com/video-files/8616856/8616856-hd_1920_1080_25fps.mp4";
   const engagement={reactions:true,comments:true,share:true,save:true};
   const noEngagement={reactions:false,comments:false,share:false,save:false};
-  const img=(id:string,src:string,alt:string,style:DesignElementNode["style"]={}):DesignElementNode=>({id,type:"image",props:{src,alt,loading:"eager",fetchPriority:"high"},style:{display:"block",objectFit:"cover",...style}});
+  const img=(id:string,src:string,alt:string,style:DesignElementNode["style"]={}):DesignElementNode=>({id,type:"image",props:{src,alt,loading: "lazy", fetchPriority: "auto"},style:{display:"block",objectFit:"cover",...style}});
   const vid=(id:string,src:string,poster:string,title:string,style:DesignElementNode["style"]={}):DesignElementNode=>({id,type:"video",props:{src,poster,title,autoplay:true,muted:true,loop:true,controls:false,interactive:true},style:{display:"block",width:"100%",height:"100%",...style}});
   const piece=(id:string,slug:string,title:string,node:DesignElementNode,style:Record<string,unknown>,eng=false):any=>({id,slug,title,kind:"feature",region:"spread",gutterBehaviour:"clip",engagement:eng?engagement:noEngagement,style:{overflow:"hidden",background:"#fff",...style},elements:[node]});
 
@@ -9542,7 +9541,7 @@ function seniorVillageBackCoverPage(issueId: string): MagazinePageDefinition {
   ): DesignElementNode => ({
     id,
     type: "image",
-    props: { src, alt, loading: "eager", fetchPriority: "high" },
+    props: { src, alt, loading: "lazy", fetchPriority: "auto" },
     style: { display: "block", objectFit: "cover", ...style },
   });
 
