@@ -487,24 +487,6 @@ img, picture, video, canvas, svg { display: block; max-width: 100%; }
   will-change: transform;
 }
 
-/* Forward native-spread gap filler.
-   Once the turning sheet crosses 90deg, its projected width becomes narrower
-   than a full leaf and exposes a vertical strip of the outgoing left page.
-   Mount the destination left leaf flat underneath the rotating sheet only for
-   the second half of NEXT turns. The turning back face stays above it, so this
-   fills only the uncovered gap instead of duplicating the visible page. */
-.xp-magazine__next-target-underlay {
-  position: absolute;
-  z-index: 5;
-  inset: 0 50% 0 0;
-  overflow: hidden;
-  background: #fff;
-  pointer-events: none;
-  opacity: clamp(0, calc((var(--xp-turn-progress) - .495) * 200), 1);
-  backface-visibility: hidden;
-  transform: translateZ(0);
-}
-
 .xp-magazine__turn-sheet--next {
   left: 50%;
   transform-origin: left center;
