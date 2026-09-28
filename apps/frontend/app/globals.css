@@ -6498,3 +6498,29 @@ p[data-drop-cap-lines="6"] .xp-editorial-drop-cap { font-size: 5.85em; }
     border: 0 !important;
   }
 }
+
+
+/* Performance guardrails during page-turn motion.
+   Expensive live blur/shadow effects are temporarily simplified so the GPU can
+   spend the frame budget on the 3D turn itself. */
+.xp-magazine__stage[data-phase="dragging"] .xp-section-engagement,
+.xp-magazine__stage[data-phase="animating"] .xp-section-engagement,
+.xp-magazine__stage[data-phase="dragging"] .xp-youtube-video,
+.xp-magazine__stage[data-phase="animating"] .xp-youtube-video {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  box-shadow: none !important;
+}
+
+.xp-magazine__stage[data-phase="dragging"] .xp-magazine__spread-layer,
+.xp-magazine__stage[data-phase="dragging"] .xp-magazine__turn-sheet,
+.xp-magazine__stage[data-phase="animating"] .xp-magazine__spread-layer,
+.xp-magazine__stage[data-phase="animating"] .xp-magazine__turn-sheet {
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+.xp-magazine__stage:not([data-phase]) .xp-magazine__spread-layer,
+.xp-magazine__stage:not([data-phase]) .xp-magazine__turn-sheet {
+  will-change: auto;
+}
