@@ -1368,39 +1368,51 @@ export function MagazineReader({
       const manifest = issue.pages[pageIndex]!;
       const nativePagePosition = (nativeSpread.pageIds ?? []).indexOf(manifest.id);
       const leafSide = nativePagePosition === 1 ? "right" : "left";
-      return (
-        <div
-          className={`xp-magazine__spread-layer xp-magazine__spread-layer--${role} is-single is-native-leaf`}
-          aria-hidden={role === "target" ? true : undefined}
-        >
-          <article
-            className="xp-magazine__sheet xp-magazine__sheet--solo"
-            aria-label={role === "current" ? `${manifest.title}, page ${pageIndex + 1}` : undefined}
-          >
-            <div className="xp-magazine__paper">
-              <MagazineSpreadLeaf
-                spread={nativeSpread}
-                side={leafSide}
-                globalElements={issue.designElements}
-                includeSupplementalMobileMedia={singlePageMode}
-                reflow={singlePageMode}
-                renderEngagement={role === "current" ? (piece) => (
-                  <SectionEngagementBar
-                    issueSlug={issue.slug}
-                    pageSlug={manifest.slug}
-                    sectionId={piece.id}
-                    sectionSlug={piece.slug}
-                    authenticated={viewerAuthenticated}
-                    config={piece.engagement}
-                    appearance="light"
-                  />
-                ) : undefined}
-              />
-              <span className="xp-magazine__folio" aria-hidden="true">{String(pageIndex + 1).padStart(2, "0")}</span>
-            </div>
-          </article>
-        </div>
+      const authoredCompact = nativeSpread.pieces.some((piece) =>
+        piece.id.includes("-mobile-") &&
+        (piece.region === leafSide || piece.id.includes(`mobile-${leafSide}`))
       );
+
+      // Compact mode prefers deliberately authored mobile compositions. When a
+      // spread has no authored compact leaf, fall back to the publication's
+      // actual page definition and let the universal page reflow engine handle
+      // it. This avoids heuristically splitting one desktop spread into two
+      // duplicated/blank/overlapping mobile pages.
+      if (!singlePageMode || authoredCompact) {
+        return (
+          <div
+            className={`xp-magazine__spread-layer xp-magazine__spread-layer--${role} is-single is-native-leaf`}
+            aria-hidden={role === "target" ? true : undefined}
+          >
+            <article
+              className="xp-magazine__sheet xp-magazine__sheet--solo"
+              aria-label={role === "current" ? `${manifest.title}, page ${pageIndex + 1}` : undefined}
+            >
+              <div className="xp-magazine__paper">
+                <MagazineSpreadLeaf
+                  spread={nativeSpread}
+                  side={leafSide}
+                  globalElements={issue.designElements}
+                  includeSupplementalMobileMedia={singlePageMode}
+                  reflow={singlePageMode}
+                  renderEngagement={role === "current" ? (piece) => (
+                    <SectionEngagementBar
+                      issueSlug={issue.slug}
+                      pageSlug={manifest.slug}
+                      sectionId={piece.id}
+                      sectionSlug={piece.slug}
+                      authenticated={viewerAuthenticated}
+                      config={piece.engagement}
+                      appearance="light"
+                    />
+                  ) : undefined}
+                />
+                <span className="xp-magazine__folio" aria-hidden="true">{String(pageIndex + 1).padStart(2, "0")}</span>
+              </div>
+            </article>
+          </div>
+        );
+      }
     }
 
     if (nativeSpread && !isSingle) {
