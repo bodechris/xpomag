@@ -859,7 +859,6 @@ export function MagazineReader({
       });
     };
     paper.addEventListener("scroll", remember, { passive: true });
-    remember();
     return () => {
       cancelAnimationFrame(raf);
       pageScrollPositionsRef.current.set(slug, paper.scrollTop);
