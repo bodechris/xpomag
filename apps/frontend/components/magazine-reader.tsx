@@ -49,6 +49,8 @@ function preloadImageOnce(src: string) {
   MAGAZINE_ASSET_CACHE.add(src);
   const image = new Image();
   image.decoding = "async";
+  image.loading = "lazy";
+  image.fetchPriority = "low";
   image.src = src;
 }
 
@@ -748,19 +750,22 @@ export function MagazineReader({
   useEffect(() => {
     if (!spread || motion) return;
     let cancelled = false;
+    let warmTimer: ReturnType<typeof setTimeout> | null = null;
 
-    const prepareSpreadAssets = (masterSpread: MagazineMasterSpread) => {
+    const collectSpreadAssets = (masterSpread: MagazineMasterSpread) => {
+      const urls: string[] = [];
+
       masterSpread.pageIndexes.forEach((pageIndex) => {
         const manifest = issue.pages[pageIndex];
         if (!manifest) return;
         const page = loadedPagesRef.current[manifest.slug];
-        if (page) {
-          page.resources?.images?.forEach((asset) => preloadImageOnce(asset.src));
-          page.sections.forEach((section) => {
-            section.resources?.images?.forEach((asset) => preloadImageOnce(asset.src));
-            collectNodeAssetUrls(section.elements).forEach(preloadImageOnce);
-          });
-        }
+        if (!page) return;
+
+        page.resources?.images?.forEach((asset) => urls.push(asset.src));
+        page.sections.forEach((section) => {
+          section.resources?.images?.forEach((asset) => urls.push(asset.src));
+          urls.push(...collectNodeAssetUrls(section.elements));
+        });
       });
 
       const pageIds = masterSpread.pageIndexes
@@ -769,37 +774,35 @@ export function MagazineReader({
       const nativeSpread = issue.spreads?.find((candidate) =>
         candidate.pageIds?.length === pageIds.length &&
         candidate.pageIds.every((id, index) => id === pageIds[index]));
-      nativeSpread?.resources?.images?.forEach((asset) => preloadImageOnce(asset.src));
+      nativeSpread?.resources?.images?.forEach((asset) => urls.push(asset.src));
       nativeSpread?.pieces.forEach((piece) => {
-        piece.resources?.images?.forEach((asset) => preloadImageOnce(asset.src));
-        collectNodeAssetUrls(piece.elements).forEach(preloadImageOnce);
+        piece.resources?.images?.forEach((asset) => urls.push(asset.src));
+        urls.push(...collectNodeAssetUrls(piece.elements));
       });
+
+      return Array.from(new Set(urls));
     };
 
-    const current = spreads[safeSpreadIndex];
-    const previous = spreads[safeSpreadIndex - 1];
     const next = spreads[safeSpreadIndex + 1];
 
     void (async () => {
-      if (current) {
-        await ensureSpreadLoaded(current);
-        if (cancelled) return;
-        prepareSpreadAssets(current);
-      }
+      // The visible spread loads its own images naturally. Aggressively preloading
+      // the current + previous + next spread caused bursts of image decode work.
+      // Warm only the next spread, and only a handful of assets, after the UI is idle.
+      if (!next) return;
+      await ensureSpreadLoaded(next);
+      if (cancelled) return;
 
-      // Only warm the immediate neighbours. Nothing else in the issue is
-      // fetched or decoded until the reader gets close to it.
-      await Promise.all(
-        [previous, next].filter((item): item is MagazineMasterSpread => Boolean(item))
-          .map(async (item) => {
-            await ensureSpreadLoaded(item);
-            if (!cancelled) prepareSpreadAssets(item);
-          }),
-      );
+      const nextAssets = collectSpreadAssets(next).slice(0, 6);
+      warmTimer = setTimeout(() => {
+        if (cancelled) return;
+        nextAssets.forEach(preloadImageOnce);
+      }, 350);
     })();
 
     return () => {
       cancelled = true;
+      if (warmTimer) clearTimeout(warmTimer);
     };
   }, [ensureSpreadLoaded, issue.pages, issue.spreads, motion, safeSpreadIndex, spread, spreads]);
 
@@ -1031,7 +1034,7 @@ export function MagazineReader({
         video.src = activeSpreadVideo.src;
         video.muted = activeSpreadVideo.muted;
         video.playsInline = true;
-        video.preload = "auto";
+        video.preload = "metadata";
         video.controls = false;
         video.loop = false;
         video.setAttribute("aria-label", activeSpreadVideo.title);
@@ -1439,7 +1442,7 @@ export function MagazineReader({
                     )}
                   />
                 )}
-                {VIDEO_STORIES[page.slug] ? <YouTubeStoryPanel story={VIDEO_STORIES[page.slug]!} /> : null}
+                {role === "current" && VIDEO_STORIES[page.slug] ? <YouTubeStoryPanel story={VIDEO_STORIES[page.slug]!} /> : null}
                   </>
                 )}
                 <span className="xp-magazine__folio" aria-hidden="true">{String(pageIndex + 1).padStart(2, "0")}</span>
