@@ -8891,7 +8891,7 @@ function equestrianSpaSpread(issueId: string): MagazineSpreadDefinition {
     region: "spread",
     gutterBehaviour: "clip",
     engagement: withEngagement ? engagement : noEngagement,
-    style: { ...style, overflow: "hidden", background: "#f3f0ea" },
+    style: { overflow: "hidden", background: "#f3f0ea", ...style },
     elements: [node],
   });
 
