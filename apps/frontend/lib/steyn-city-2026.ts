@@ -7328,14 +7328,15 @@ function schoolValuesSpread(issueId: string): MagazineSpreadDefinition {
         elements: [
           text("school-title", "WHERE VALUES\nSHAPE FUTURES", {
             position: "absolute",
-            left: "5.7%",
-            top: "48.2%",
-            width: "25.4%",
+            left: "5.5%",
+            top: "46.0%",
+            width: "25.0%",
             color: "#2f2925",
             fontFamily: "var(--xp-font-editorial)",
-            fontSize: "clamp(1.25rem,2.2vw,2.5rem)",
+            fontSize: "clamp(1.08rem,1.82vw,2.05rem)",
             fontWeight: 500,
-            lineHeight: .95,
+            lineHeight: .9,
+            letterSpacing: ".01em",
             whiteSpace: "pre-line",
             textAlign: "center",
           }, "h2"),
@@ -7353,7 +7354,7 @@ function schoolValuesSpread(issueId: string): MagazineSpreadDefinition {
             style: {
               position: "absolute",
               left: "4.9%",
-              top: "58.8%",
+              top: "62.8%",
               width: "14.0%",
               bottom: "6.8%",
               color: "#463f3a",
@@ -7367,7 +7368,7 @@ function schoolValuesSpread(issueId: string): MagazineSpreadDefinition {
           text("school-left-copy-b", "Head Mr Stuart West, together with the leadership team, has helped shape a culture where students are expected to reach beyond the classroom. Academic results matter, but so too do integrity, empathy, ambition and character.\n\nThe School continues to grow with purpose, balancing strong academic outcomes with sport, culture and service.", {
             position: "absolute",
             left: "19.8%",
-            top: "58.8%",
+            top: "62.8%",
             width: "11.4%",
             bottom: "6.8%",
             color: "#463f3a",
