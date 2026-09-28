@@ -758,7 +758,7 @@ export function MagazineReader({
   }, [clearMotionTimer, completeMotion, createMotion, ensureSpreadLoaded, motion, setProgress, spreads]);
 
   useEffect(() => {
-    const media = window.matchMedia("(max-width: 820px)");
+    const media = window.matchMedia("(max-width: 1100px)");
     const sync = () => setSinglePageMode(media.matches);
     sync();
     media.addEventListener?.("change", sync);
@@ -1364,6 +1364,7 @@ export function MagazineReader({
                 side={leafSide}
                 globalElements={issue.designElements}
                 includeSupplementalMobileMedia={singlePageMode}
+                reflow={singlePageMode}
                 renderEngagement={role === "current" ? (piece) => (
                   <SectionEngagementBar
                     issueSlug={issue.slug}
@@ -1644,6 +1645,7 @@ export function MagazineReader({
                     side={motion.direction === "next" ? "right" : "left"}
                     globalElements={issue.designElements}
                     includeSupplementalMobileMedia={false}
+                    reflow={singlePageMode}
                   />
                 ) : (
                   <MagazinePageRenderer page={currentTurnPage} globalElements={issue.designElements} />
@@ -1656,6 +1658,7 @@ export function MagazineReader({
                     side={motion.direction === "next" ? "left" : "right"}
                     globalElements={issue.designElements}
                     includeSupplementalMobileMedia={false}
+                    reflow={singlePageMode}
                   />
                 ) : (
                   <MagazinePageRenderer page={backTurnPage} globalElements={issue.designElements} />
