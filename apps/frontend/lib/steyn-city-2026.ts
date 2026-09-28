@@ -5774,11 +5774,11 @@ function allThingsDeliciousSpread(issueId: string): MagazineSpreadDefinition {
     props: {
       src,
       title,
-      cover: true,
-      interactive: true,
       autoplay: true,
+      autoplayDelayMs: 0,
       muted: true,
       loop: true,
+      maxLoops: 999,
       controls: false,
     },
     style: { display: "block", width: "100%", height: "100%", ...style },
@@ -7243,8 +7243,8 @@ function schoolValuesSpread(issueId: string): MagazineSpreadDefinition {
   const interview = "/resources/studio/steyn/steyn-city-xpomag-spread-14-05.webp";
   const schoolLogo = "/resources/studio/steyn/steyn-city-xpomag-spread-14-06.webp";
 
-  const leftVideo = "https://www.youtube.com/embed/zhYEbKULXE0?autoplay=1&mute=1&controls=0&playsinline=1&rel=0";
-  const rightVideo = "https://www.youtube.com/embed/5TSsUV_uNdk?autoplay=1&mute=1&controls=0&playsinline=1&rel=0";
+  const leftVideo = "https://videos.pexels.com/video-files/4727781/4727781-hd_1920_1080_30fps.mp4";
+  const rightVideo = "https://videos.pexels.com/video-files/8616856/8616856-hd_1920_1080_25fps.mp4";
 
   const engagement = { reactions: true, comments: true, share: true, save: true };
   const noEngagement = { reactions: false, comments: false, share: false, save: false };
@@ -7328,9 +7328,9 @@ function schoolValuesSpread(issueId: string): MagazineSpreadDefinition {
         elements: [
           text("school-title", "WHERE VALUES\nSHAPE FUTURES", {
             position: "absolute",
-            left: "6.1%",
+            left: "5.7%",
             top: "48.2%",
-            width: "29.4%",
+            width: "25.4%",
             color: "#2f2925",
             fontFamily: "var(--xp-font-editorial)",
             fontSize: "clamp(1.25rem,2.2vw,2.5rem)",
@@ -7368,7 +7368,7 @@ function schoolValuesSpread(issueId: string): MagazineSpreadDefinition {
             position: "absolute",
             left: "19.8%",
             top: "58.8%",
-            width: "14.1%",
+            width: "11.4%",
             bottom: "6.8%",
             color: "#463f3a",
             fontFamily: "var(--xp-font-editorial)",
