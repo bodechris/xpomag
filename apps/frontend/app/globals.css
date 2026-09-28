@@ -6923,3 +6923,74 @@ p[data-drop-cap-lines="6"] .xp-editorial-drop-cap { font-size: 5.85em; }
 .xp-magazine__turn-face--back {
   transform: rotateY(180deg) translateZ(.5px);
 }
+
+
+/* Universal compact-page normal flow. Legacy/page-authored publications may
+   contain absolutely positioned desktop nodes. In compact mode every ordinary
+   content node participates in document flow so refresh/deep-link renders
+   cannot produce a visually blank page with content stranded off-canvas. */
+.xp-magazine__stage[data-mode="single"]
+  .xp-magazine__paper
+  [data-magazine-page]:not([data-magazine-page="cover"])
+  [data-design-element]:not([data-design-element="background"]) {
+  position: relative !important;
+  inset: auto !important;
+  left: auto !important;
+  right: auto !important;
+  top: auto !important;
+  bottom: auto !important;
+  transform: none !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  box-sizing: border-box !important;
+}
+
+.xp-magazine__stage[data-mode="single"]
+  .xp-magazine__paper
+  [data-magazine-page]:not([data-magazine-page="cover"])
+  [data-design-element="background"] {
+  display: none !important;
+}
+
+.xp-magazine__stage[data-mode="single"]
+  .xp-magazine__paper
+  [data-magazine-page]:not([data-magazine-page="cover"])
+  [data-design-element="text"] {
+  width: 100% !important;
+  height: auto !important;
+  min-height: 0 !important;
+  margin: 0 0 .9rem !important;
+}
+
+.xp-magazine__stage[data-mode="single"]
+  .xp-magazine__paper
+  [data-magazine-page]:not([data-magazine-page="cover"])
+  [data-design-element="image"],
+.xp-magazine__stage[data-mode="single"]
+  .xp-magazine__paper
+  [data-magazine-page]:not([data-magazine-page="cover"])
+  [data-design-element="video"] {
+  width: 100% !important;
+  min-height: clamp(12rem, 52vw, 22rem) !important;
+  height: auto !important;
+  aspect-ratio: 16 / 10;
+  margin: .65rem 0 1rem !important;
+  object-fit: cover !important;
+  border-radius: 0 !important;
+}
+
+.xp-magazine__stage[data-mode="single"]
+  .xp-magazine__paper
+  [data-magazine-page]:not([data-magazine-page="cover"])
+  [data-design-element="brandMark"] {
+  width: min(72%, 15rem) !important;
+  height: auto !important;
+  margin: .65rem auto 1rem !important;
+}
+
+.xp-magazine__stage[data-mode="single"]
+  .xp-magazine__paper
+  [data-magazine-page]:not([data-magazine-page="cover"])
+  [data-magazine-section] {
+  gap: .85rem;
+}
