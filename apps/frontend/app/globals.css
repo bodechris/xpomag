@@ -1154,6 +1154,16 @@ img, picture, video, canvas, svg { display: block; max-width: 100%; }
   opacity: 1;
 }
 
+/* Steyn City editorial readability: body copy should remain comfortably legible
+   at the fitted desktop spread size. Mobile keeps the larger reflow-specific values. */
+@media (min-width: 621px) {
+  .xp-magazine[aria-label^="Steyn City magazine"] [data-magazine-spread] p,
+  .xp-magazine[aria-label^="Steyn City magazine"] [data-magazine-page] p {
+    font-size: clamp(.46rem, .52vw, .60rem) !important;
+    line-height: 1.5 !important;
+  }
+}
+
 /* Cover engagement is positioned against the rendered text itself, not the composer
    node's design-box height. This is why it now sits immediately below each coverline. */
 [data-composer-node][data-story-id] { transition: opacity 160ms var(--xp-ease-out); }
