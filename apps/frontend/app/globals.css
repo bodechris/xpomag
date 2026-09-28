@@ -5751,3 +5751,87 @@ p[data-drop-cap-lines="6"] .xp-editorial-drop-cap { font-size: 5.85em; }
     display: none !important;
   }
 }
+
+
+/* Steyn City all things delicious spread */
+[data-spread-piece-id^="steyn-food-"] {
+  box-sizing: border-box;
+}
+
+[data-spread-piece-id="steyn-food-pasta-piece"],
+[data-spread-piece-id="steyn-food-sushi-video-piece"],
+[data-spread-piece-id="steyn-food-mobile-left-piece"],
+[data-spread-piece-id="steyn-food-mobile-right-piece"] {
+  overflow: visible !important;
+}
+
+[data-spread-piece-id="steyn-food-editorial-piece"] > .xp-section-engagement--inline,
+[data-spread-piece-id="steyn-food-pasta-piece"] > .xp-section-engagement--inline,
+[data-spread-piece-id="steyn-food-sushi-video-piece"] > .xp-section-engagement--inline {
+  position: absolute !important;
+  left: 8px !important;
+  right: auto !important;
+  top: auto !important;
+  bottom: 8px !important;
+  z-index: 165 !important;
+  width: max-content !important;
+  max-width: calc(100% - 16px) !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  padding: 4px 9px !important;
+  border-radius: 999px !important;
+  color: #111 !important;
+  background: rgba(255,255,255,.92) !important;
+  box-shadow: 0 8px 22px rgba(0,0,0,.15) !important;
+  backdrop-filter: blur(12px) saturate(1.06) !important;
+  -webkit-backdrop-filter: blur(12px) saturate(1.06) !important;
+}
+
+[data-spread-piece-id="steyn-food-editorial-piece"] > .xp-section-engagement--inline {
+  left: 42.4% !important;
+  bottom: 2% !important;
+  max-width: 9.5% !important;
+}
+
+[data-spread-piece-id^="steyn-food-"] > .xp-section-engagement--inline .xp-engagement__action {
+  color: #111 !important;
+}
+
+@media (max-width: 820px) {
+  [data-spread-piece-id="steyn-food-editorial-piece"],
+  [data-spread-piece-id="steyn-food-pasta-piece"],
+  [data-spread-piece-id="steyn-food-pasta-video-piece"],
+  [data-spread-piece-id="steyn-food-luciana-piece"],
+  [data-spread-piece-id="steyn-food-breakfast-piece"],
+  [data-spread-piece-id="steyn-food-sushi-video-piece"],
+  [data-spread-piece-id="steyn-food-drink-piece"],
+  [data-spread-piece-id="steyn-food-chef-piece"] {
+    display: none !important;
+  }
+
+  [data-spread-piece-id="steyn-food-mobile-left-piece"],
+  [data-spread-piece-id="steyn-food-mobile-right-piece"] {
+    display: block !important;
+    overflow: auto !important;
+  }
+
+  [data-spread-piece-id="steyn-food-mobile-left-piece"] *,
+  [data-spread-piece-id="steyn-food-mobile-right-piece"] * {
+    max-width: 100%;
+  }
+
+  [data-spread-piece-id="steyn-food-mobile-left-piece"] p,
+  [data-spread-piece-id="steyn-food-mobile-right-piece"] p {
+    font-size: clamp(1rem,3.8vw,1.14rem) !important;
+    line-height: 1.54 !important;
+  }
+
+  [data-spread-piece-id="steyn-food-mobile-left-piece"] > .xp-section-engagement--inline {
+    left: 10px !important;
+    bottom: 10px !important;
+    max-width: calc(100% - 20px) !important;
+    transform: scale(.88);
+    transform-origin: left bottom;
+  }
+}
