@@ -634,8 +634,18 @@ export function MagazineReader({
   const setProgress = useCallback((value: number) => {
     const next = clamp01(value);
     progressRef.current = next;
-    stageRef.current?.style.setProperty("--xp-turn-progress", String(next));
-  }, []);
+    const stage = stageRef.current;
+    stage?.style.setProperty("--xp-turn-progress", String(next));
+
+    // Chromium can keep descendants from the front face composited after the
+    // page has crossed 90deg, which shows up as a narrow strip of the outgoing
+    // page during forward turns. During a direct drag we can explicitly retire
+    // that face at the physical halfway point. Programmatic completion remains
+    // transition-driven so we do not switch faces at animation start.
+    if (stage && motion?.phase === "dragging" && motion.direction === "next") {
+      stage.dataset.turnHalf = next < 0.5 ? "front" : "back";
+    }
+  }, [motion]);
 
   const clearMotionTimer = useCallback(() => {
     if (motionTimer.current) {
@@ -650,6 +660,7 @@ export function MagazineReader({
       if (commit) setSpreadIndex(targetIndex);
       setMotion(null);
       setProgress(0);
+      if (stageRef.current) delete stageRef.current.dataset.turnHalf;
       wheelDeltaRef.current = 0;
       wheelBlockedUntilRef.current = performance.now() + 220;
       navigationLockRef.current = false;
@@ -661,6 +672,13 @@ export function MagazineReader({
   }, [clearMotionTimer, setProgress]);
 
   const animateMotion = useCallback((current: Motion, commit: boolean) => {
+    const stage = stageRef.current;
+    if (stage && current.direction === "next") {
+      // Keep the face selected from the drag while the remaining rotation
+      // settles. If the gesture commits past halfway, the stale front face
+      // stays retired; if it cancels, restore it before rotating home.
+      stage.dataset.turnHalf = commit ? "back" : "front";
+    }
     setMotion({ ...current, phase: "animating" });
     requestAnimationFrame(() => {
       requestAnimationFrame(() => setProgress(commit ? 1 : 0));
