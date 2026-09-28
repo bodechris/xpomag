@@ -6227,3 +6227,188 @@ p[data-drop-cap-lines="6"] .xp-editorial-drop-cap { font-size: 5.85em; }
   width: 100% !important;
   max-width: none !important;
 }
+
+
+/* ==========================================================================
+   STEYN CITY · FINAL RESPONSIVE EDITORIAL PASS
+   Mobile uses authored page-specific compositions where available instead of
+   shrinking the desktop spread.  These rules deliberately come last so they
+   can normalise every Steyn native spread consistently.
+   ========================================================================== */
+@media (max-width: 820px) {
+  /* Any native spread with an authored mobile composition switches to it. */
+  [data-magazine-spread]:has(> [data-spread-piece-id*="-mobile-"])
+    > [data-spread-piece-id]:not([data-spread-piece-id*="-mobile-"]) {
+    display: none !important;
+  }
+
+  [data-magazine-spread]:has(> [data-spread-piece-id*="-mobile-"])
+    > [data-spread-piece-id*="-mobile-"] {
+    display: block !important;
+    top: 0 !important;
+    bottom: auto !important;
+    height: 100% !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    box-sizing: border-box !important;
+    background-clip: padding-box !important;
+    scrollbar-width: thin;
+  }
+
+  [data-magazine-spread]:has(> [data-spread-piece-id*="-mobile-"])
+    > [data-spread-piece-id*="-mobile-"][data-spread-region="left"] {
+    left: 0 !important;
+    right: auto !important;
+    width: 50% !important;
+  }
+
+  [data-magazine-spread]:has(> [data-spread-piece-id*="-mobile-"])
+    > [data-spread-piece-id*="-mobile-"][data-spread-region="right"] {
+    left: 50% !important;
+    right: auto !important;
+    width: 50% !important;
+  }
+
+  /* Readable editorial type. Footer/utility labels remain free to stay small. */
+  [data-spread-piece-id*="-mobile-"] p {
+    max-width: 42rem !important;
+    font-size: clamp(1rem, 4.1vw, 1.15rem) !important;
+    line-height: 1.58 !important;
+    letter-spacing: 0 !important;
+    overflow-wrap: normal !important;
+  }
+
+  [data-spread-piece-id*="-mobile-"] h1,
+  [data-spread-piece-id*="-mobile-"] h2 {
+    max-width: 100% !important;
+    font-size: clamp(1.85rem, 8.8vw, 3.2rem) !important;
+    line-height: .94 !important;
+    letter-spacing: -.035em !important;
+    overflow-wrap: normal !important;
+    text-wrap: balance !important;
+  }
+
+  [data-spread-piece-id*="-mobile-"] h3 {
+    max-width: 100% !important;
+    font-size: clamp(1.2rem, 5.4vw, 1.8rem) !important;
+    line-height: 1.05 !important;
+    overflow-wrap: normal !important;
+    text-wrap: balance !important;
+  }
+
+  /* Media stays editorially useful rather than becoming tiny desktop tiles. */
+  [data-spread-piece-id*="-mobile-"] img,
+  [data-spread-piece-id*="-mobile-"] video,
+  [data-spread-piece-id*="-mobile-"] iframe {
+    max-width: 100% !important;
+    object-position: center !important;
+  }
+
+  [data-spread-piece-id*="-mobile-"] > img,
+  [data-spread-piece-id*="-mobile-"] > video,
+  [data-spread-piece-id*="-mobile-"] > iframe {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 10rem;
+    max-height: 52dvh !important;
+    object-fit: cover !important;
+  }
+
+  /* Mobile engagement belongs in the reading flow, never over copy/media. */
+  [data-spread-piece-id*="-mobile-"] > .xp-section-engagement--inline {
+    position: relative !important;
+    inset: auto !important;
+    left: auto !important;
+    right: auto !important;
+    top: auto !important;
+    bottom: auto !important;
+    width: fit-content !important;
+    max-width: calc(100% - 1rem) !important;
+    margin: 1rem .5rem .75rem !important;
+    transform: none !important;
+    transform-origin: center !important;
+    padding: .45rem .6rem !important;
+    border-radius: 999px !important;
+    background: rgba(255,255,255,.94) !important;
+    color: #111 !important;
+    box-shadow: 0 8px 24px rgba(0,0,0,.10) !important;
+  }
+
+  /* Back cover: preserve all media, but turn the poster-like desktop layout
+     into a calm vertical mobile story. */
+  [data-magazine-page="back-cover"] [data-magazine-section="back-cover-main"] {
+    display: block !important;
+    padding: 0 !important;
+    background: #fff !important;
+  }
+
+  [data-magazine-page="back-cover"] [data-magazine-section="back-cover-main"] > :nth-child(1) {
+    min-height: 18rem !important;
+    padding: 4.75rem 1.25rem 1.75rem !important;
+  }
+
+  [data-magazine-page="back-cover"] [data-magazine-section="back-cover-main"] > :nth-child(2) {
+    width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 16 / 10 !important;
+    margin: 0 !important;
+    object-fit: cover !important;
+  }
+
+  [data-magazine-page="back-cover"] [data-magazine-section="back-cover-main"] > :nth-child(3),
+  [data-magazine-page="back-cover"] [data-magazine-section="back-cover-main"] > :nth-child(4),
+  [data-magazine-page="back-cover"] [data-magazine-section="back-cover-main"] > :nth-child(5) {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 13rem !important;
+    margin: 0 !important;
+  }
+
+  [data-magazine-page="back-cover"] [data-magazine-section="back-cover-main"] > :nth-child(6) {
+    width: 100% !important;
+    padding: 1.75rem 1.15rem !important;
+    gap: .85rem !important;
+    overflow: visible !important;
+  }
+
+  [data-magazine-page="back-cover"] [data-magazine-section="back-cover-main"] > :nth-child(6) p {
+    max-width: 100% !important;
+    font-size: clamp(1rem, 4vw, 1.1rem) !important;
+    line-height: 1.58 !important;
+  }
+
+  [data-magazine-page="back-cover"] [data-magazine-section="back-cover-main"] > :nth-child(7) {
+    min-height: 7rem !important;
+    padding: 1rem !important;
+  }
+}
+
+/* Small phones get less ornament and more reading room. */
+@media (max-width: 430px) {
+  [data-spread-piece-id*="-mobile-"] {
+    padding: 1rem !important;
+  }
+
+  [data-spread-piece-id*="-mobile-"] p {
+    font-size: 1rem !important;
+    line-height: 1.6 !important;
+  }
+
+  [data-spread-piece-id*="-mobile-"] h1,
+  [data-spread-piece-id*="-mobile-"] h2 {
+    font-size: clamp(1.7rem, 8.5vw, 2.55rem) !important;
+  }
+
+  [data-spread-piece-id*="-mobile-"] h3 {
+    font-size: clamp(1.15rem, 5vw, 1.55rem) !important;
+  }
+}
+
+/* Tablet typography: preserve the authored composition but avoid tiny copy
+   while the spread is already being fitted to a narrower viewport. */
+@media (min-width: 821px) and (max-width: 1180px) {
+  [data-magazine-spread] p {
+    font-size: max(.43rem, .52vw) !important;
+    line-height: 1.48 !important;
+  }
+}
