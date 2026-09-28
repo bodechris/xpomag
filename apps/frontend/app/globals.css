@@ -6191,3 +6191,10 @@ p[data-drop-cap-lines="6"] .xp-editorial-drop-cap { font-size: 5.85em; }
   color: inherit !important;
   opacity: 1 !important;
 }
+
+
+/* Keep the right-page community engagement clear of the overlapping circular bag. */
+[data-spread-piece-id="steyn-community-friends-piece"] > .xp-section-engagement--inline {
+  left: auto !important;
+  right: 12px !important;
+}
