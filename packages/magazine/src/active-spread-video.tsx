@@ -35,6 +35,8 @@ export function ActiveSpreadVideo({
   const [isCurrentAndVisible, setIsCurrentAndVisible] = useState(false);
   const [videoReady, setVideoReady] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
+  const heavySource = /3840_2160|2160_3840|\buhd\b/i.test(src);
+  const effectiveAutoplayDelayMs = Math.max(autoplayDelayMs, heavySource ? 420 : 120);
 
   useEffect(() => {
     const frame = frameRef.current;
@@ -111,15 +113,10 @@ export function ActiveSpreadVideo({
     setHasStarted(false);
     loopCountRef.current = 0;
 
-    if (autoplayDelayMs <= 0) {
-      setVideoReady(true);
-      return;
-    }
-
     delayTimerRef.current = setTimeout(() => {
       setVideoReady(true);
       delayTimerRef.current = null;
-    }, autoplayDelayMs);
+    }, effectiveAutoplayDelayMs);
 
     return () => {
       if (delayTimerRef.current) {
@@ -127,7 +124,7 @@ export function ActiveSpreadVideo({
         delayTimerRef.current = null;
       }
     };
-  }, [autoplay, autoplayDelayMs, isCurrentAndVisible]);
+  }, [autoplay, effectiveAutoplayDelayMs, isCurrentAndVisible]);
 
   useEffect(() => {
     const video = videoRef.current;
