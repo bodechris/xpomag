@@ -6778,6 +6778,459 @@ function golfExcellenceSpread(issueId: string): MagazineSpreadDefinition {
   };
 }
 
+
+function holidayLifestyleSpread(issueId: string): MagazineSpreadDefinition {
+  const padel = "/resources/studio/steyn/steyn-city-xpomag-spread-13-01.webp";
+  const chef = "/resources/studio/steyn/steyn-city-xpomag-spread-13-02.webp";
+  const lagoon = "/resources/studio/steyn/steyn-city-xpomag-spread-13-03.webp";
+  const splash = "/resources/studio/steyn/steyn-city-xpomag-spread-13-04.webp";
+  const slide = "/resources/studio/steyn/steyn-city-xpomag-spread-13-05.webp";
+  const lagoonVideo = "https://videos.pexels.com/video-files/32934736/14036688_3840_2160_60fps.mp4";
+
+  const engagement = { reactions: true, comments: true, share: true, save: true };
+  const noEngagement = { reactions: false, comments: false, share: false, save: false };
+
+  const image = (
+    id: string,
+    src: string,
+    alt: string,
+    style: DesignElementNode["style"] = {},
+  ): DesignElementNode => ({
+    id,
+    type: "image",
+    props: { src, alt, loading: "eager", fetchPriority: "high" },
+    style: { display: "block", objectFit: "cover", ...style },
+  });
+
+  const mediaPiece = (
+    id: string,
+    slug: string,
+    title: string,
+    node: DesignElementNode,
+    style: Record<string, unknown>,
+    withEngagement = false,
+  ): any => ({
+    id,
+    slug,
+    title,
+    kind: "feature",
+    region: "spread",
+    gutterBehaviour: "clip",
+    engagement: withEngagement ? engagement : noEngagement,
+    style: { ...style, overflow: "hidden", background: "#eef2ed" },
+    elements: [node],
+  });
+
+  return {
+    id: "steyn-holiday-lifestyle-spread",
+    issueId,
+    slug: "holiday-lifestyle",
+    title: "Where Every Day’s a Holiday!",
+    kind: "feature",
+    pageIds: ["holiday-i", "holiday-ii"],
+    style: { background: "#fbfaf7" },
+    pieces: [
+      {
+        id: "steyn-holiday-editorial-piece",
+        slug: "holiday-editorial",
+        title: "Where Every Day’s a Holiday!",
+        kind: "article",
+        region: "spread",
+        gutterBehaviour: "cross",
+        engagement,
+        style: {
+          position: "absolute",
+          inset: 0,
+          overflow: "hidden",
+          background: "#fbfaf7",
+        },
+        elements: [
+          text("holiday-copy-left-heading", "JUST KEEP SWIMMING", {
+            position: "absolute",
+            left: "31.9%",
+            top: "61.4%",
+            width: "14.0%",
+            color: "#5a514b",
+            fontFamily: "var(--xp-font-grotesk)",
+            fontSize: "clamp(.33rem,.44vw,.48rem)",
+            fontWeight: 800,
+            letterSpacing: ".12em",
+          }, "h3"),
+          {
+            id: "holiday-copy-left",
+            type: "text",
+            props: {
+              as: "p",
+              text: "With the estate’s 300m crystal-clear lagoon at the heart of the precinct, everyday life can feel a little like a permanent getaway.\n\nFOOD JUST TASTES BETTER OUTDOORS\n\nStock up on treats at the Family Pantry or settle in to enjoy a Mediterranean-inspired meal while the kids explore the surrounding play areas.",
+              dropCap: false,
+            },
+            style: {
+              position: "absolute",
+              left: "31.9%",
+              top: "64.6%",
+              width: "14.0%",
+              bottom: "6.5%",
+              color: "#463f3a",
+              fontFamily: "var(--xp-font-editorial)",
+              fontSize: "clamp(.34rem,.46vw,.5rem)",
+              lineHeight: 1.46,
+              whiteSpace: "pre-line",
+            },
+          },
+
+          text("holiday-copy-mid-heading", "PLAYING BY THE POOLSIDE", {
+            position: "absolute",
+            left: "54.6%",
+            top: "61.4%",
+            width: "14.2%",
+            color: "#5a514b",
+            fontFamily: "var(--xp-font-grotesk)",
+            fontSize: "clamp(.33rem,.44vw,.48rem)",
+            fontWeight: 800,
+            letterSpacing: ".12em",
+          }, "h3"),
+          text("holiday-copy-mid", "For those looking to work up a little energy, the lagoon precinct offers movement in every direction — padel courts, play zones, splash areas and places to simply stretch out in the sun.\n\nLITTLE LAGOON LOVERS\n\nParents can relax while children explore safely, splash freely and turn an ordinary afternoon into something memorable.", {
+            position: "absolute",
+            left: "54.6%",
+            top: "64.6%",
+            width: "14.2%",
+            bottom: "6.5%",
+            color: "#463f3a",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(.34rem,.46vw,.5rem)",
+            lineHeight: 1.46,
+            whiteSpace: "pre-line",
+          }),
+
+          text("holiday-brand-left", "STEYN CITY", {
+            position: "absolute", left: "7.8%", bottom: "2.1%", color: "#342f2b",
+            fontFamily: "var(--xp-font-grotesk)", fontSize: ".42rem", fontWeight: 720, letterSpacing: ".08em",
+          }, "span"),
+          text("holiday-folio-left", "28", {
+            position: "absolute", left: "4.6%", bottom: "2.1%", color: "#342f2b",
+            fontFamily: "var(--xp-font-grotesk)", fontSize: ".45rem", fontWeight: 800,
+          }, "span"),
+          text("holiday-brand-right", "STEYN CITY", {
+            position: "absolute", right: "6.4%", bottom: "2.1%", color: "#342f2b",
+            fontFamily: "var(--xp-font-grotesk)", fontSize: ".42rem", fontWeight: 720, letterSpacing: ".08em",
+          }, "span"),
+          text("holiday-folio-right", "29", {
+            position: "absolute", right: "3.2%", bottom: "2.1%", color: "#342f2b",
+            fontFamily: "var(--xp-font-grotesk)", fontSize: ".45rem", fontWeight: 800,
+          }, "span"),
+        ],
+      },
+
+      {
+        id: "steyn-holiday-hero-video-piece",
+        slug: "holiday-hero-video",
+        title: "Where Every Day’s a Holiday!",
+        kind: "feature",
+        region: "spread",
+        gutterBehaviour: "cross",
+        engagement,
+        style: {
+          position: "absolute",
+          left: 0,
+          top: 0,
+          width: "100%",
+          height: "55.8%",
+          zIndex: 6,
+          overflow: "hidden",
+          background: "#d6eaf3",
+        },
+        elements: [
+          {
+            id: "holiday-hero-video",
+            type: "video",
+            props: {
+              src: lagoonVideo,
+              poster: lagoon,
+              title: "Family lagoon lifestyle film",
+              autoplay: true,
+              managedAutoplay: false,
+              autoplayDelayMs: 4000,
+              muted: true,
+              loop: true,
+              maxLoops: 10,
+              controls: false,
+            },
+            style: {
+              position: "absolute",
+              inset: 0,
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              objectPosition: "center 50%",
+              background: "#d6eaf3",
+            },
+          },
+          text("holiday-hero-title-left", "WHERE EVERY", {
+            position: "absolute",
+            left: "24.2%",
+            top: "10.8%",
+            color: "#27221f",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(1.15rem,1.95vw,2.2rem)",
+            fontWeight: 500,
+            letterSpacing: ".025em",
+            zIndex: 8,
+          }, "span"),
+          text("holiday-hero-title-right", "DAY’S A HOLIDAY!", {
+            position: "absolute",
+            left: "54.8%",
+            top: "10.8%",
+            color: "#27221f",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(1.15rem,1.95vw,2.2rem)",
+            fontWeight: 500,
+            letterSpacing: ".025em",
+            zIndex: 8,
+          }, "span"),
+          text("holiday-hero-kicker", "LIFESTYLE │", {
+            position: "absolute",
+            right: "4.5%",
+            top: "8.5%",
+            color: "#403831",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(.48rem,.66vw,.72rem)",
+            letterSpacing: ".06em",
+            zIndex: 8,
+          }, "span"),
+        ],
+      },
+
+      {
+        id: "steyn-holiday-yellow-callout-piece",
+        slug: "holiday-callout",
+        title: "Lagoon callout",
+        kind: "feature",
+        region: "spread",
+        gutterBehaviour: "clip",
+        engagement: noEngagement,
+        style: {
+          position: "absolute",
+          left: "6.2%",
+          top: "25.2%",
+          width: "11.8%",
+          aspectRatio: "1 / 1",
+          zIndex: 20,
+          overflow: "visible",
+          background: "transparent",
+        },
+        elements: [
+          {
+            id: "holiday-yellow-callout",
+            type: "frame",
+            style: {
+              position: "absolute",
+              inset: 0,
+              borderRadius: "50%",
+              background: "#f2d62e",
+              border: "3px solid #fff",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: ".85rem",
+              boxShadow: "0 9px 24px rgba(0,0,0,.10)",
+            },
+            children: [
+              text("holiday-yellow-callout-copy", "SPARKLING\nWATER,\nTHE SMELL OF\nSUNSCREEN, ICE CREAM\nMELTING IN YOUR CONE,\nAND SUNSHINE ON YOUR\nSHOULDERS. WHO NEEDS\nTHE BEACH WHEN YOU\nCAN ENJOY IT ALL\nAT THE LAGOON\nPRECINCT?", {
+                color: "#373126",
+                fontFamily: "var(--xp-font-grotesk)",
+                fontSize: "clamp(.25rem,.37vw,.41rem)",
+                fontWeight: 760,
+                lineHeight: 1.18,
+                textAlign: "center",
+                whiteSpace: "pre-line",
+              }, "span"),
+            ],
+          },
+        ],
+      },
+
+      mediaPiece(
+        "steyn-holiday-chef-piece",
+        "holiday-chef",
+        "Outdoor dining",
+        image("holiday-chef-image", chef, "Chef cooking outdoors at Steyn City", {
+          position: "absolute", inset: 0, width: "100%", height: "100%",
+          objectFit: "cover", objectPosition: "center 42%",
+        }),
+        { position: "absolute", left: 0, top: "57.9%", width: "29.9%", height: "15.6%", zIndex: 7 },
+        false,
+      ),
+
+      mediaPiece(
+        "steyn-holiday-padel-piece",
+        "holiday-padel",
+        "Padel at Steyn City",
+        image("holiday-padel-image", padel, "Padel court at Steyn City", {
+          position: "absolute", inset: 0, width: "100%", height: "100%",
+          objectFit: "cover", objectPosition: "center 50%",
+        }),
+        { position: "absolute", left: 0, top: "75.1%", width: "29.9%", height: "18.1%", zIndex: 7 },
+        true,
+      ),
+
+      mediaPiece(
+        "steyn-holiday-splash-piece",
+        "holiday-splash",
+        "Kids splash park",
+        image("holiday-splash-image", splash, "Children enjoying the splash park", {
+          position: "absolute", inset: 0, width: "100%", height: "100%",
+          objectFit: "cover", objectPosition: "center 50%",
+        }),
+        { position: "absolute", right: 0, top: "57.9%", width: "30.1%", height: "15.6%", zIndex: 7 },
+        true,
+      ),
+
+      mediaPiece(
+        "steyn-holiday-slide-piece",
+        "holiday-slide",
+        "Water slide fun",
+        image("holiday-slide-image", slide, "Children on a water slide", {
+          position: "absolute", inset: 0, width: "100%", height: "100%",
+          objectFit: "cover", objectPosition: "center 48%",
+        }),
+        { position: "absolute", right: 0, top: "75.1%", width: "30.1%", height: "18.1%", zIndex: 7 },
+        false,
+      ),
+
+      {
+        id: "steyn-holiday-mobile-left-piece",
+        slug: "holiday-mobile-left",
+        title: "Where Every Day’s a Holiday!",
+        kind: "article",
+        region: "left",
+        gutterBehaviour: "clip",
+        engagement,
+        style: {
+          position: "absolute",
+          left: "2.8%",
+          top: "3.5%",
+          width: "44.4%",
+          height: "93%",
+          display: "none",
+          background: "#fbfaf7",
+          zIndex: 70,
+          padding: "clamp(.95rem,3.8vw,1.4rem)",
+          overflow: "auto",
+        },
+        elements: [
+          text("holiday-mobile-kicker", "LIFESTYLE", {
+            color: "#655d56",
+            fontFamily: "var(--xp-font-grotesk)",
+            fontSize: ".78rem",
+            fontWeight: 800,
+            letterSpacing: ".13em",
+            marginBottom: ".55rem",
+          }, "span"),
+          {
+            id: "holiday-mobile-video",
+            type: "video",
+            props: {
+              src: lagoonVideo,
+              poster: lagoon,
+              title: "Family lagoon lifestyle film",
+              autoplay: true,
+              managedAutoplay: false,
+              autoplayDelayMs: 4000,
+              muted: true,
+              loop: true,
+              maxLoops: 10,
+              controls: false,
+            },
+            style: {
+              width: "100%",
+              height: "12rem",
+              objectFit: "cover",
+              marginBottom: ".8rem",
+            },
+          },
+          text("holiday-mobile-title", "WHERE EVERY DAY’S\nA HOLIDAY!", {
+            color: "#342d28",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(1.5rem,6.5vw,2rem)",
+            lineHeight: .98,
+            whiteSpace: "pre-line",
+            marginBottom: ".65rem",
+          }, "h2"),
+          {
+            id: "holiday-mobile-copy",
+            type: "text",
+            props: {
+              as: "p",
+              text: "The lagoon precinct turns an ordinary day into something that feels like a getaway: swimming, outdoor food, movement, play and enough room for every member of the family to find their own rhythm.",
+              dropCap: true,
+              dropCapLines: 4,
+              dropCapColor: "#342d28",
+            },
+            style: {
+              color: "#463f3a",
+              fontFamily: "var(--xp-font-editorial)",
+              fontSize: "clamp(1rem,3.8vw,1.14rem)",
+              lineHeight: 1.55,
+              marginBottom: ".8rem",
+            },
+          },
+          image("holiday-mobile-chef", chef, "Outdoor dining", {
+            width: "100%", height: "9.5rem", objectFit: "cover", marginBottom: ".65rem",
+          }),
+          image("holiday-mobile-padel", padel, "Padel court", {
+            width: "100%", height: "9.5rem", objectFit: "cover",
+          }),
+        ],
+      },
+
+      {
+        id: "steyn-holiday-mobile-right-piece",
+        slug: "holiday-mobile-right",
+        title: "Lagoon Life",
+        kind: "article",
+        region: "right",
+        gutterBehaviour: "clip",
+        engagement: noEngagement,
+        style: {
+          position: "absolute",
+          left: "52.8%",
+          top: "3.5%",
+          width: "44.4%",
+          height: "93%",
+          display: "none",
+          background: "#fbfaf7",
+          zIndex: 70,
+          padding: "clamp(.9rem,3.6vw,1.35rem)",
+          overflow: "auto",
+        },
+        elements: [
+          image("holiday-mobile-splash", splash, "Splash park", {
+            width: "100%", height: "10.5rem", objectFit: "cover", marginBottom: ".75rem",
+          }),
+          text("holiday-mobile-right-heading", "PLAYING BY\nTHE POOLSIDE", {
+            color: "#342d28",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(1.45rem,6.2vw,1.95rem)",
+            lineHeight: .98,
+            whiteSpace: "pre-line",
+            marginBottom: ".7rem",
+          }, "h2"),
+          text("holiday-mobile-right-copy", "For little lagoon lovers and grown-ups alike, the precinct is designed for easy movement between water, food, sport, play and relaxation.", {
+            color: "#463f3a",
+            fontFamily: "var(--xp-font-editorial)",
+            fontSize: "clamp(1rem,3.8vw,1.14rem)",
+            lineHeight: 1.55,
+            marginBottom: ".8rem",
+          }),
+          image("holiday-mobile-slide", slide, "Water slide fun", {
+            width: "100%", height: "10rem", objectFit: "cover",
+          }),
+        ],
+      },
+    ],
+  };
+}
+
 function placeholderPage(
   issueId: string,
   pageNo: number,
@@ -6942,7 +7395,7 @@ export function getSteynCity2026Magazine(): MagazineGlobalDefinition {
         props: { label: "STEYN CITY" },
       },
     },
-    spreads: [cityLivingSpread(issueId), bentleyAdvertSpread(issueId), contentsGolfSpread(issueId), golfTraditionSpread(issueId), golfTraditionContinuationSpread(issueId), cyclingSpread(issueId), seniorVillageSpread(issueId), easyLifeSpread(issueId), birdsBeesSpread(issueId), liveYourDreamsSpread(issueId), rentalCheninSpread(issueId), allThingsDeliciousSpread(issueId), golfExcellenceSpread(issueId)],
+    spreads: [cityLivingSpread(issueId), bentleyAdvertSpread(issueId), contentsGolfSpread(issueId), golfTraditionSpread(issueId), golfTraditionContinuationSpread(issueId), cyclingSpread(issueId), seniorVillageSpread(issueId), easyLifeSpread(issueId), birdsBeesSpread(issueId), liveYourDreamsSpread(issueId), rentalCheninSpread(issueId), allThingsDeliciousSpread(issueId), golfExcellenceSpread(issueId), holidayLifestyleSpread(issueId)],
     pages,
   };
 }
