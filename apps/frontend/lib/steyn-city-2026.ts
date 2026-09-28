@@ -9368,6 +9368,116 @@ function equestrianSpaSpread(issueId: string): MagazineSpreadDefinition {
   };
 }
 
+
+function communityCalendarSpread(issueId: string): MagazineSpreadDefinition {
+  const hero="/resources/studio/steyn/steyn-city-xpomag-spread-18-01.webp";
+  const signing="/resources/studio/steyn/steyn-city-xpomag-spread-18-02.webp";
+  const santa="/resources/studio/steyn/steyn-city-xpomag-spread-18-03.webp";
+  const triathlon="/resources/studio/steyn/steyn-city-xpomag-spread-18-04.webp";
+  const guests="/resources/studio/steyn/steyn-city-xpomag-spread-18-05.webp";
+  const athletes="/resources/studio/steyn/steyn-city-xpomag-spread-18-06.webp";
+  const bag="/resources/studio/steyn/steyn-city-xpomag-spread-18-07.webp";
+  const friends="/resources/studio/steyn/steyn-city-xpomag-spread-18-08.webp";
+  const champagne="/resources/studio/steyn/steyn-city-xpomag-spread-18-09.webp";
+  const market="/resources/studio/steyn/steyn-city-xpomag-spread-18-10.webp";
+  const leftVideo="https://videos.pexels.com/video-files/4727781/4727781-hd_1920_1080_30fps.mp4";
+  const rightVideo="https://videos.pexels.com/video-files/8616856/8616856-hd_1920_1080_25fps.mp4";
+  const engagement={reactions:true,comments:true,share:true,save:true};
+  const noEngagement={reactions:false,comments:false,share:false,save:false};
+  const img=(id:string,src:string,alt:string,style:DesignElementNode["style"]={}):DesignElementNode=>({id,type:"image",props:{src,alt,loading:"eager",fetchPriority:"high"},style:{display:"block",objectFit:"cover",...style}});
+  const vid=(id:string,src:string,poster:string,title:string,style:DesignElementNode["style"]={}):DesignElementNode=>({id,type:"video",props:{src,poster,title,autoplay:true,muted:true,loop:true,controls:false,interactive:true},style:{display:"block",width:"100%",height:"100%",...style}});
+  const piece=(id:string,slug:string,title:string,node:DesignElementNode,style:Record<string,unknown>,eng=false):any=>({id,slug,title,kind:"feature",region:"spread",gutterBehaviour:"clip",engagement:eng?engagement:noEngagement,style:{overflow:"hidden",background:"#fff",...style},elements:[node]});
+
+  return {
+    id:"steyn-community-calendar-spread",
+    issueId,
+    slug:"community-you-saw-it-here-first",
+    title:"You Saw It Here First",
+    kind:"feature",
+    pageIds:["community-i","community-ii"],
+    style:{background:"#fff"},
+    pieces:[
+      {
+        id:"steyn-community-editorial-piece",slug:"community-calendar",title:"You Saw It Here First",kind:"article",region:"spread",gutterBehaviour:"cross",engagement,
+        style:{position:"absolute",inset:0,overflow:"hidden",background:"#fff"},
+        elements:[
+          {
+            id:"community-pink-panel",type:"frame",
+            style:{position:"absolute",left:"25%",top:"45.2%",width:"50%",height:"25.0%",background:"#ef2f78",zIndex:5,padding:"clamp(.8rem,1.15vw,1.2rem)",display:"grid",gridTemplateColumns:"1fr 1fr",gap:"2rem"},
+            children:[
+              {id:"community-copy-left",type:"frame",style:{minWidth:0},children:[
+                text("community-title-left","YOU SAW IT",{color:"#fff",fontFamily:"var(--xp-font-editorial)",fontSize:"clamp(1rem,1.72vw,1.9rem)",fontWeight:400,lineHeight:1,marginBottom:".55rem"},"h2"),
+                text("community-body-left","The estate’s events calendar fills up quickly each year with a diverse programme designed to appeal to all interests. Highlights include book launches, charitable events, sporting fixtures and community gatherings that bring residents, guests and visitors together.",{color:"#fff",fontFamily:"var(--xp-font-editorial)",fontSize:"clamp(.32rem,.44vw,.48rem)",lineHeight:1.42})
+              ]},
+              {id:"community-copy-right",type:"frame",style:{minWidth:0},children:[
+                text("community-title-right","HERE FIRST!",{color:"#fff",fontFamily:"var(--xp-font-editorial)",fontSize:"clamp(1rem,1.72vw,1.9rem)",fontWeight:400,lineHeight:1,marginBottom:".55rem"},"h2"),
+                text("community-body-right","Brand, and CEO’s a stylish pop-up Art of Living shopping experience. The estate always relishes the opportunity to welcome residents at events where they can reconnect, discover something new and build community spirit.",{color:"#fff",fontFamily:"var(--xp-font-editorial)",fontSize:"clamp(.32rem,.44vw,.48rem)",lineHeight:1.42})
+              ]}
+            ]
+          },
+          {id:"community-callout",type:"frame",style:{position:"absolute",left:"20.4%",top:"63.3%",width:"10.2%",aspectRatio:"1 / 1",borderRadius:"50%",background:"#ef2f78",border:"4px solid #fff",zIndex:30,display:"grid",placeItems:"center",padding:".7rem"},children:[
+            text("community-callout-copy","FROM AUTHORS\nTO ATHLETES,\nCOMMUNITY\nSUPERHEROES AND\nLOCAL ICONS, STEYN\nCITY HAS HOSTED\nTHEM ALL",{color:"#fff",fontFamily:"var(--xp-font-grotesk)",fontSize:"clamp(.26rem,.36vw,.4rem)",fontWeight:800,lineHeight:1.16,textAlign:"center",whiteSpace:"pre-line"},"span")
+          ]},
+          text("community-folio-left","38",{position:"absolute",left:"4.5%",bottom:"2.1%",fontFamily:"var(--xp-font-grotesk)",fontSize:".45rem",fontWeight:800,color:"#fff",zIndex:20},"span"),
+          text("community-brand-left","STEYN CITY",{position:"absolute",left:"7.4%",bottom:"2.1%",fontFamily:"var(--xp-font-grotesk)",fontSize:".42rem",fontWeight:720,letterSpacing:".08em",color:"#fff",zIndex:20},"span"),
+          text("community-brand-right","STEYN CITY",{position:"absolute",right:"7.4%",bottom:"2.1%",fontFamily:"var(--xp-font-grotesk)",fontSize:".42rem",fontWeight:720,letterSpacing:".08em",color:"#fff",zIndex:20},"span"),
+          text("community-folio-right","39",{position:"absolute",right:"3.2%",bottom:"2.1%",fontFamily:"var(--xp-font-grotesk)",fontSize:".45rem",fontWeight:800,color:"#fff",zIndex:20},"span")
+        ]
+      },
+
+      piece("steyn-community-hero-piece","community-hero","Community gathering",img("community-hero-img",hero,"Steyn City community gathering",{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover"}),{position:"absolute",left:0,top:0,width:"50%",height:"44.2%",zIndex:7},true),
+
+      {
+        id:"steyn-community-left-video-piece",slug:"community-left-video",title:"Community event in motion",kind:"feature",region:"spread",gutterBehaviour:"clip",engagement,
+        style:{position:"absolute",left:0,top:"45.3%",width:"25%",height:"24.0%",zIndex:8,overflow:"hidden",background:"#111"},
+        elements:[vid("community-left-video",leftVideo,signing,"Steyn City community event",{position:"absolute",inset:0,objectFit:"cover",objectPosition:"center"})]
+      },
+
+      piece("steyn-community-santa-piece","community-santa","Community festive event",img("community-santa-img",santa,"Community festive event",{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover"}),{position:"absolute",left:0,top:"70.2%",width:"25%",height:"29.8%",zIndex:7},false),
+      piece("steyn-community-guests-piece","community-guests","Community guests",img("community-guests-img",guests,"Community guests",{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover"}),{position:"absolute",left:"25%",top:"70.2%",width:"25%",height:"29.8%",zIndex:7},true),
+
+      {
+        id:"steyn-community-right-video-piece",slug:"community-right-video",title:"Sporting community in motion",kind:"feature",region:"spread",gutterBehaviour:"clip",engagement,
+        style:{position:"absolute",left:"50%",top:0,width:"25%",height:"44.2%",zIndex:8,overflow:"hidden",background:"#111"},
+        elements:[vid("community-right-video",rightVideo,triathlon,"Steyn City sporting community",{position:"absolute",inset:0,objectFit:"cover",objectPosition:"center"})]
+      },
+
+      piece("steyn-community-athletes-piece","community-athletes","Community athletes",img("community-athletes-img",athletes,"Athletes at a Steyn City event",{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover"}),{position:"absolute",left:"75.4%",top:0,width:"24.6%",height:"33.6%",zIndex:7},false),
+      piece("steyn-community-friends-piece","community-friends","Community friends",img("community-friends-img",friends,"Friends at a Steyn City event",{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover"}),{position:"absolute",left:"75.4%",top:"34.5%",width:"24.6%",height:"31.0%",zIndex:7},true),
+      piece("steyn-community-market-piece","community-market","Art of Living market",img("community-market-img",market,"Guests shopping at a Steyn City event",{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover"}),{position:"absolute",left:"50%",top:"70.2%",width:"25%",height:"29.8%",zIndex:7},false),
+      piece("steyn-community-champagne-piece","community-champagne","Celebration",img("community-champagne-img",champagne,"Celebration at Steyn City",{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover"}),{position:"absolute",left:"75.4%",top:"66.4%",width:"24.6%",height:"33.6%",zIndex:7},false),
+
+      {
+        id:"steyn-community-bag-piece",slug:"community-bag",title:"The Art of Living",kind:"feature",region:"spread",gutterBehaviour:"clip",engagement:noEngagement,
+        style:{position:"absolute",left:"69.1%",top:"57.2%",width:"12.0%",aspectRatio:"1 / 1",zIndex:35,borderRadius:"50%",overflow:"hidden",border:"5px solid #fff",background:"#fff"},
+        elements:[img("community-bag-img",bag,"Steyn City The Art of Living bag",{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",objectPosition:"center"})]
+      },
+
+      {
+        id:"steyn-community-mobile-left-piece",slug:"community-mobile-left",title:"You Saw It",kind:"article",region:"left",gutterBehaviour:"clip",engagement,
+        style:{position:"absolute",left:"2.8%",top:"3.5%",width:"44.4%",height:"93%",display:"none",background:"#fff",zIndex:70,padding:"clamp(.95rem,3.8vw,1.4rem)",overflow:"auto"},
+        elements:[
+          img("community-mobile-hero",hero,"Community gathering",{width:"100%",height:"11rem",objectFit:"cover",marginBottom:".7rem"}),
+          text("community-mobile-left-title","YOU SAW IT",{color:"#ef2f78",fontFamily:"var(--xp-font-editorial)",fontSize:"clamp(1.5rem,6.5vw,2rem)",lineHeight:1,marginBottom:".65rem"},"h2"),
+          text("community-mobile-left-copy","Steyn City’s annual events calendar brings authors, athletes, community leaders and residents together through launches, sport, festive gatherings and shared experiences.",{color:"#463f3a",fontFamily:"var(--xp-font-editorial)",fontSize:"clamp(1rem,3.8vw,1.14rem)",lineHeight:1.55,marginBottom:".8rem"}),
+          vid("community-mobile-left-video",leftVideo,signing,"Community event",{width:"100%",height:"11rem",objectFit:"cover"})
+        ]
+      },
+
+      {
+        id:"steyn-community-mobile-right-piece",slug:"community-mobile-right",title:"Here First",kind:"article",region:"right",gutterBehaviour:"clip",engagement:noEngagement,
+        style:{position:"absolute",left:"52.8%",top:"3.5%",width:"44.4%",height:"93%",display:"none",background:"#fff",zIndex:70,padding:"clamp(.95rem,3.8vw,1.4rem)",overflow:"auto"},
+        elements:[
+          vid("community-mobile-right-video",rightVideo,triathlon,"Sporting community",{width:"100%",height:"11rem",objectFit:"cover",marginBottom:".75rem"}),
+          text("community-mobile-right-title","HERE FIRST!",{color:"#ef2f78",fontFamily:"var(--xp-font-editorial)",fontSize:"clamp(1.5rem,6.5vw,2rem)",lineHeight:1,marginBottom:".65rem"},"h2"),
+          text("community-mobile-right-copy","The calendar blends sport, lifestyle, shopping and community moments into experiences that residents can return to throughout the year.",{color:"#463f3a",fontFamily:"var(--xp-font-editorial)",fontSize:"clamp(1rem,3.8vw,1.14rem)",lineHeight:1.55,marginBottom:".8rem"}),
+          img("community-mobile-friends",friends,"Community friends",{width:"100%",height:"10rem",objectFit:"cover"})
+        ]
+      }
+    ]
+  };
+}
+
 function placeholderPage(
   issueId: string,
   pageNo: number,
@@ -9532,7 +9642,7 @@ export function getSteynCity2026Magazine(): MagazineGlobalDefinition {
         props: { label: "STEYN CITY" },
       },
     },
-    spreads: [cityLivingSpread(issueId), bentleyAdvertSpread(issueId), contentsGolfSpread(issueId), golfTraditionSpread(issueId), golfTraditionContinuationSpread(issueId), cyclingSpread(issueId), seniorVillageSpread(issueId), easyLifeSpread(issueId), birdsBeesSpread(issueId), liveYourDreamsSpread(issueId), rentalCheninSpread(issueId), allThingsDeliciousSpread(issueId), golfExcellenceSpread(issueId), holidayLifestyleSpread(issueId), schoolValuesSpread(issueId), workConnectThriveSpread(issueId), wellnessSpread(issueId), equestrianSpaSpread(issueId)],
+    spreads: [cityLivingSpread(issueId), bentleyAdvertSpread(issueId), contentsGolfSpread(issueId), golfTraditionSpread(issueId), golfTraditionContinuationSpread(issueId), cyclingSpread(issueId), seniorVillageSpread(issueId), easyLifeSpread(issueId), birdsBeesSpread(issueId), liveYourDreamsSpread(issueId), rentalCheninSpread(issueId), allThingsDeliciousSpread(issueId), golfExcellenceSpread(issueId), holidayLifestyleSpread(issueId), schoolValuesSpread(issueId), workConnectThriveSpread(issueId), wellnessSpread(issueId), equestrianSpaSpread(issueId), communityCalendarSpread(issueId)],
     pages,
   };
 }
