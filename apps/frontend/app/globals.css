@@ -6458,3 +6458,43 @@ p[data-drop-cap-lines="6"] .xp-editorial-drop-cap { font-size: 5.85em; }
     max-height: 62dvh;
   }
 }
+
+
+/* Supplemental mobile gallery: every photo/video from a native spread remains
+   available after the curated mobile composition, without shrinking desktop tiles. */
+[data-mobile-spread-media] {
+  display: none;
+}
+@media (max-width: 820px) {
+  [data-mobile-spread-media] {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: .8rem;
+    margin: 1rem 0 .4rem;
+    padding-bottom: .5rem;
+  }
+
+  [data-mobile-spread-media-item] {
+    position: relative;
+    width: 100%;
+    min-width: 0;
+    overflow: hidden;
+    border-radius: 12px;
+    background: #eee;
+  }
+
+  [data-mobile-spread-media-item] > img,
+  [data-mobile-spread-media-item] > video,
+  [data-mobile-spread-media-item] > iframe,
+  [data-mobile-spread-media-item] > div {
+    display: block !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 10rem !important;
+    max-height: 56dvh !important;
+    aspect-ratio: 16 / 10;
+    object-fit: cover !important;
+    object-position: center !important;
+    border: 0 !important;
+  }
+}
