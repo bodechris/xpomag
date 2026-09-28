@@ -766,7 +766,13 @@ export function MagazineReader({
 
   useEffect(() => {
     const media = window.matchMedia(`(max-width: ${MAGAZINE_COMPACT_MAX_WIDTH}px)`);
-    const sync = () => setSinglePageMode(media.matches);
+    const sync = () => {
+      navigationLockRef.current = false;
+      wheelDeltaRef.current = 0;
+      setMotion(null);
+      setProgress(0);
+      setSinglePageMode(media.matches);
+    };
     sync();
     media.addEventListener?.("change", sync);
     return () => media.removeEventListener?.("change", sync);
@@ -780,10 +786,24 @@ export function MagazineReader({
   }, [initialPageIndex, initialPageSlug, setProgress, spreads]);
 
   useEffect(() => {
+    if (!spread) return;
+    let cancelled = false;
+    void ensureSpreadLoaded(spread).then((ready) => {
+      if (!cancelled && !ready) {
+        navigationLockRef.current = false;
+      }
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [ensureSpreadLoaded, safeSpreadIndex, spread]);
+
+  useEffect(() => {
     // Keep only a small working set of hydrated page definitions in React state.
     // The bounded module cache still makes recently visited pages instant to restore,
     // without forcing every page in the issue to remain live in memory.
     const keepSlugs = new Set<string>();
+    if (initialPageSlug) keepSlugs.add(initialPageSlug);
     for (let offset = -2; offset <= 2; offset += 1) {
       const candidate = spreads[safeSpreadIndex + offset];
       candidate?.pageIndexes.forEach((pageIndex) => {
@@ -800,7 +820,7 @@ export function MagazineReader({
       loadedPagesRef.current = next;
       return next;
     });
-  }, [issue.pages, safeSpreadIndex, spreads]);
+  }, [initialPageSlug, issue.pages, safeSpreadIndex, spreads]);
 
   useEffect(() => {
     if (!spread || motion) return;
