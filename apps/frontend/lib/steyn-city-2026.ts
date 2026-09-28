@@ -3772,7 +3772,7 @@ function easyLifeSpread(issueId: string): MagazineSpreadDefinition {
     title: "Living the Easy Life",
     kind: "feature",
     pageIds: ["easy-life", "easy-life-visual"],
-    style: { background: "#fbfaf7" },
+    style: { background: "#fff" },
     pieces: [
       {
         id: "steyn-easy-life-editorial-piece",
@@ -8916,7 +8916,7 @@ function equestrianSpaSpread(issueId: string): MagazineSpreadDefinition {
           position: "absolute",
           inset: 0,
           overflow: "hidden",
-          background: "#fbfaf7",
+          background: "#fff",
         },
         elements: [
           text("equestrian-title", "SHOWING OFF WITH\nSHOWJUMPING", {
@@ -9045,7 +9045,7 @@ function equestrianSpaSpread(issueId: string): MagazineSpreadDefinition {
           text("spa-headline", "SAXON SPA STEYN CITY,\nA SANCTUARY FOR THE SENSES", {
             position: "absolute",
             left: "52.5%",
-            top: "61.5%",
+            top: "62.7%",
             width: "44.0%",
             color: "#c96429",
             fontFamily: "var(--xp-font-editorial)",
@@ -9060,7 +9060,7 @@ function equestrianSpaSpread(issueId: string): MagazineSpreadDefinition {
           text("spa-copy", "Indulge in the art of wellness at the Saxon Spa Steyn City, where world-class expertise meets serene surroundings. Designed to restore balance and rejuvenate body and mind, this sanctuary offers bespoke treatments, hydrotherapy and holistic rituals inspired by nature’s healing power.", {
             position: "absolute",
             left: "53.5%",
-            top: "84.5%",
+            top: "85.4%",
             width: "43.0%",
             color: "#5d5047",
             fontFamily: "var(--xp-font-editorial)",
@@ -9187,7 +9187,7 @@ function equestrianSpaSpread(issueId: string): MagazineSpreadDefinition {
           position: "absolute", inset: 0, width: "100%", height: "100%",
           objectFit: "contain",
         }),
-        { position: "absolute", left: "50%", top: 0, width: "50%", height: "18.6%", zIndex: 7, background: "#fff" },
+        { position: "absolute", left: "50%", top: 0, width: "50%", height: "16.0%", zIndex: 7, background: "#fff" },
         false,
       ),
 
@@ -9198,13 +9198,13 @@ function equestrianSpaSpread(issueId: string): MagazineSpreadDefinition {
         kind: "feature",
         region: "spread",
         gutterBehaviour: "clip",
-        engagement: noEngagement,
+        engagement,
         style: {
           position: "absolute",
           left: "50%",
           top: "18.8%",
           width: "50%",
-          height: "43.0%",
+          height: "39.0%",
           zIndex: 7,
           overflow: "hidden",
           background: "#111",
