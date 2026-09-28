@@ -514,20 +514,34 @@ img, picture, video, canvas, svg { display: block; max-width: 100%; }
   width: 50%;
   height: 100%;
   transform-style: preserve-3d;
+  transform: translateZ(2px);
   pointer-events: none;
+  will-change: left, transform;
+}
+
+.xp-magazine__turn-rotor {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
   will-change: transform;
 }
 
 .xp-magazine__turn-sheet--next {
   left: 50%;
-  transform-origin: left center;
-  transform: translateZ(2px) rotateY(calc(var(--xp-turn-progress) * -180deg));
 }
 
 .xp-magazine__turn-sheet--previous {
   left: 0;
+}
+
+.xp-magazine__turn-sheet--next .xp-magazine__turn-rotor {
+  transform-origin: left center;
+  transform: rotateY(calc(var(--xp-turn-progress) * -180deg));
+}
+
+.xp-magazine__turn-sheet--previous .xp-magazine__turn-rotor {
   transform-origin: right center;
-  transform: translateZ(2px) rotateY(calc(var(--xp-turn-progress) * 180deg));
+  transform: rotateY(calc(var(--xp-turn-progress) * 180deg));
 }
 
 /* Keep the static book leaves on a separate depth plane while a page turns.
@@ -546,12 +560,8 @@ img, picture, video, canvas, svg { display: block; max-width: 100%; }
   z-index: 12;
 }
 
-.xp-magazine__stage[data-motion="flip"] .xp-magazine__turn-sheet--next {
-  transform: translateZ(8px) rotateY(calc(var(--xp-turn-progress) * -180deg));
-}
-
-.xp-magazine__stage[data-motion="flip"] .xp-magazine__turn-sheet--previous {
-  transform: translateZ(8px) rotateY(calc(var(--xp-turn-progress) * 180deg));
+.xp-magazine__stage[data-motion="flip"] .xp-magazine__turn-sheet {
+  transform: translateZ(8px);
 }
 
 .xp-magazine__turn-face {
@@ -725,14 +735,14 @@ img, picture, video, canvas, svg { display: block; max-width: 100%; }
     left: 0 !important;
   }
 
-  .xp-magazine__turn-sheet--next {
+  .xp-magazine__turn-sheet--next .xp-magazine__turn-rotor {
     transform-origin: left center;
     transform:
       translateX(calc(var(--xp-turn-progress) * -7%))
       rotateY(calc(var(--xp-turn-progress) * -180deg));
   }
 
-  .xp-magazine__turn-sheet--previous {
+  .xp-magazine__turn-sheet--previous .xp-magazine__turn-rotor {
     transform-origin: right center;
     transform:
       translateX(calc(var(--xp-turn-progress) * 7%))
@@ -6635,13 +6645,13 @@ p[data-drop-cap-lines="6"] .xp-editorial-drop-cap { font-size: 5.85em; }
     left: 0 !important;
   }
 
-  .xp-magazine__stage[data-mode="single"] .xp-magazine__turn-sheet--next {
+  .xp-magazine__stage[data-mode="single"] .xp-magazine__turn-sheet--next .xp-magazine__turn-rotor {
     transform-origin: left center;
     transform: translateX(calc(var(--xp-turn-progress) * -5%))
       rotateY(calc(var(--xp-turn-progress) * -180deg));
   }
 
-  .xp-magazine__stage[data-mode="single"] .xp-magazine__turn-sheet--previous {
+  .xp-magazine__stage[data-mode="single"] .xp-magazine__turn-sheet--previous .xp-magazine__turn-rotor {
     transform-origin: right center;
     transform: translateX(calc(var(--xp-turn-progress) * 5%))
       rotateY(calc(var(--xp-turn-progress) * 180deg));
