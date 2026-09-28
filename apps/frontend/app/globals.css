@@ -580,22 +580,6 @@ img, picture, video, canvas, svg { display: block; max-width: 100%; }
   transform: rotateY(180deg) translateZ(.2px);
 }
 
-/* Forward-turn compositor guard.
-   Chrome can keep transformed descendants of the outgoing front face alive
-   after the physical sheet has crossed 90deg. At that point the page is edge-on,
-   so switching visibility is visually lossless but prevents the stale vertical
-   strip from surviving into the second half of a NEXT gesture. Previous turns
-   are intentionally untouched because they do not exhibit the artifact. */
-.xp-magazine__stage[data-motion="flip"][data-direction="next"][data-turn-half="front"]
-  .xp-magazine__turn-face--back {
-  visibility: hidden;
-}
-
-.xp-magazine__stage[data-motion="flip"][data-direction="next"][data-turn-half="back"]
-  .xp-magazine__turn-face--front {
-  visibility: hidden;
-}
-
 
 .xp-magazine__fold-shadow,
 .xp-magazine__fold-highlight {
