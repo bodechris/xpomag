@@ -335,12 +335,12 @@ img, picture, video, canvas, svg { display: block; max-width: 100%; }
 
 .xp-magazine__flip-leaf--target {
   z-index: 1;
-  transform: translateZ(-2px);
+  transform: translateZ(-3px);
 }
 
 .xp-magazine__flip-leaf--current {
   z-index: 2;
-  transform: translateZ(0);
+  transform: translateZ(-1px);
 }
 
 /* Native spread-authored issues render one authoritative canvas across both
@@ -521,13 +521,13 @@ img, picture, video, canvas, svg { display: block; max-width: 100%; }
 .xp-magazine__turn-sheet--next {
   left: 50%;
   transform-origin: left center;
-  transform: rotateY(calc(var(--xp-turn-progress) * -180deg));
+  transform: translateZ(2px) rotateY(calc(var(--xp-turn-progress) * -180deg));
 }
 
 .xp-magazine__turn-sheet--previous {
   left: 0;
   transform-origin: right center;
-  transform: rotateY(calc(var(--xp-turn-progress) * 180deg));
+  transform: translateZ(2px) rotateY(calc(var(--xp-turn-progress) * 180deg));
 }
 
 .xp-magazine__turn-face {
@@ -674,13 +674,6 @@ img, picture, video, canvas, svg { display: block; max-width: 100%; }
     transform 560ms var(--xp-ease-page),
     opacity 560ms var(--xp-ease-page),
     left 560ms var(--xp-ease-page);
-}
-
-/* The turning sheet is driven frame-by-frame in JS so its physical face can
-   switch exactly at 90deg. Never interpolate its transform a second time in
-   CSS, otherwise the front face can lag behind the logical page position. */
-.xp-magazine__stage[data-phase="animating"] .xp-magazine__turn-sheet {
-  transition: none !important;
 }
 
 /* Mobile reading sequence:
