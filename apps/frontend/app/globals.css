@@ -204,6 +204,12 @@ img, picture, video, canvas, svg { display: block; max-width: 100%; }
   initial-value: 0;
 }
 
+@property --xp-turn-reveal {
+  syntax: "<percentage>";
+  inherits: true;
+  initial-value: 0%;
+}
+
 .xp-magazine {
   --xp-page-ratio: 0.72;
   width: 100%;
@@ -261,6 +267,7 @@ img, picture, video, canvas, svg { display: block; max-width: 100%; }
 
 .xp-magazine__stage {
   --xp-turn-progress: 0;
+  --xp-turn-reveal: 0%;
   position: relative;
   width: 100%;
   min-height: 0;
@@ -487,6 +494,37 @@ img, picture, video, canvas, svg { display: block; max-width: 100%; }
   will-change: transform;
 }
 
+/* Destination-leaf seam guard.
+   Native spreads are clipped into stationary halves while the physical page
+   rotates above them. Chromium can expose a sliver of the outgoing spread
+   between the projected 3D face and the clipped target half. Keep an exact
+   flat copy of the destination leaf underneath the turn sheet and reveal it
+   from the binding outward with the same progress value. The rotating sheet
+   remains above this layer, so this only fills compositor gaps rather than
+   replacing the visible page-turn geometry. */
+.xp-magazine__turn-underlay {
+  position: absolute;
+  z-index: 5;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  background: #fff;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+.xp-magazine__turn-underlay--next {
+  left: 0;
+  clip-path: inset(0 0 0 calc(100% - var(--xp-turn-reveal)));
+}
+
+.xp-magazine__turn-underlay--previous {
+  right: 0;
+  clip-path: inset(0 calc(100% - var(--xp-turn-reveal)) 0 0);
+}
+
 .xp-magazine__turn-sheet--next {
   left: 50%;
   transform-origin: left center;
@@ -636,6 +674,7 @@ img, picture, video, canvas, svg { display: block; max-width: 100%; }
 /* Programmatic completion / threshold completion gets a smooth finish.
    Dragging is fully direct and has no transition lag. */
 .xp-magazine__stage[data-phase="animating"] .xp-magazine__turn-sheet,
+.xp-magazine__stage[data-phase="animating"] .xp-magazine__turn-underlay,
 .xp-magazine__stage[data-phase="animating"] .xp-magazine__spread-layer,
 .xp-magazine__stage[data-phase="animating"] .xp-magazine__sheet,
 .xp-magazine__stage[data-phase="animating"] .xp-magazine__native-spread,
@@ -643,7 +682,9 @@ img, picture, video, canvas, svg { display: block; max-width: 100%; }
   transition:
     transform 560ms var(--xp-ease-page),
     opacity 560ms var(--xp-ease-page),
-    left 560ms var(--xp-ease-page);
+    left 560ms var(--xp-ease-page),
+    clip-path 560ms var(--xp-ease-page),
+    --xp-turn-reveal 560ms var(--xp-ease-page);
 }
 
 /* Mobile reading sequence:
