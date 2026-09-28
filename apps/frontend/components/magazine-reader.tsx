@@ -559,6 +559,8 @@ export function MagazineReader({
   const navigationLockRef = useRef(false);
   const wheelBlockedUntilRef = useRef(0);
   const lastPointerRef = useRef<{ x: number; y: number } | null>(null);
+  const pageScrollPositionsRef = useRef(new Map<string, number>());
+  const pendingScrollRestoreRef = useRef<string | null>(null);
 
   // Responsive mode changes rebuild the spread array (desktop spreads <-> mobile pages).
   // React renders once before the effect below can clamp spreadIndex, so always
@@ -734,6 +736,15 @@ export function MagazineReader({
 
   const navigate = useCallback(async (direction: Direction) => {
     if (motion || navigationLockRef.current) return;
+
+    if (singlePageMode) {
+      const currentSlug = issue.pages[spread.pageIndexes[0] ?? -1]?.slug;
+      const currentPaper = stageRef.current?.querySelector<HTMLElement>(
+        ".xp-magazine__spread-layer--current .xp-magazine__paper",
+      );
+      if (currentSlug && currentPaper) pageScrollPositionsRef.current.set(currentSlug, currentPaper.scrollTop);
+    }
+
     const nextMotion = createMotion(direction, "animating");
     if (!nextMotion) return;
 
@@ -751,7 +762,7 @@ export function MagazineReader({
       requestAnimationFrame(() => setProgress(1));
     });
     completeMotion(true, nextMotion.targetIndex);
-  }, [clearMotionTimer, completeMotion, createMotion, ensureSpreadLoaded, motion, setProgress, spreads]);
+  }, [clearMotionTimer, completeMotion, createMotion, ensureSpreadLoaded, issue.pages, motion, setProgress, singlePageMode, spread, spreads]);
 
   useEffect(() => {
     const media = window.matchMedia(`(max-width: ${MAGAZINE_COMPACT_MAX_WIDTH}px)`);
@@ -833,6 +844,30 @@ export function MagazineReader({
   }, [navigate]);
 
   useEffect(() => {
+    if (!singlePageMode || motion) return;
+    const paper = stageRef.current?.querySelector<HTMLElement>(
+      ".xp-magazine__spread-layer--current .xp-magazine__paper",
+    );
+    const slug = issue.pages[spread.pageIndexes[0] ?? -1]?.slug;
+    if (!paper || !slug) return;
+
+    let raf = 0;
+    const remember = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        pageScrollPositionsRef.current.set(slug, paper.scrollTop);
+      });
+    };
+    paper.addEventListener("scroll", remember, { passive: true });
+    remember();
+    return () => {
+      cancelAnimationFrame(raf);
+      pageScrollPositionsRef.current.set(slug, paper.scrollTop);
+      paper.removeEventListener("scroll", remember);
+    };
+  }, [issue.pages, motion, safeSpreadIndex, singlePageMode, spread]);
+
+  useEffect(() => {
     const stage = stageRef.current;
     if (!stage) return;
 
@@ -891,6 +926,27 @@ export function MagazineReader({
     document.addEventListener("fullscreenchange", onFullscreenChange);
     return () => document.removeEventListener("fullscreenchange", onFullscreenChange);
   }, []);
+
+  useEffect(() => {
+    if (!singlePageMode || motion) return;
+    const slug = issue.pages[spread.pageIndexes[0] ?? -1]?.slug;
+    if (!slug) return;
+
+    pendingScrollRestoreRef.current = slug;
+    const frame = requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        if (pendingScrollRestoreRef.current !== slug) return;
+        const paper = stageRef.current?.querySelector<HTMLElement>(
+          ".xp-magazine__spread-layer--current .xp-magazine__paper",
+        );
+        if (!paper) return;
+        const remembered = pageScrollPositionsRef.current.get(slug) ?? 0;
+        paper.scrollTo({ top: remembered, behavior: remembered > 0 ? "smooth" : "auto" });
+        pendingScrollRestoreRef.current = null;
+      });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [issue.pages, motion, safeSpreadIndex, singlePageMode, spread]);
 
   useEffect(() => {
     if (!firstPage || motion) return;
