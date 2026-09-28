@@ -1132,6 +1132,28 @@ img, picture, video, canvas, svg { display: block; max-width: 100%; }
   .xp-section-engagement--inline .xp-engagement__action span { display: inline; }
 }
 
+/* Steyn City native-spread engagement: keep media/article actions consistently legible
+   over photography, matching the treatment used on the school spread. */
+[data-magazine-spread="work-connect-thrive"] .xp-section-engagement--inline,
+[data-magazine-spread="health-is-the-new-wealth"] .xp-section-engagement--inline {
+  opacity: 1;
+  padding: .28rem .5rem;
+  border-radius: 999px;
+  background: rgba(255,255,255,.88);
+  color: rgba(20,20,20,.82);
+  box-shadow: 0 4px 14px rgba(0,0,0,.12);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+[data-magazine-spread="work-connect-thrive"] .xp-section-engagement--inline[data-appearance="light"],
+[data-magazine-spread="health-is-the-new-wealth"] .xp-section-engagement--inline[data-appearance="light"] {
+  color: rgba(20,20,20,.82);
+}
+[data-magazine-spread="work-connect-thrive"] .xp-section-engagement--inline .xp-engagement__action,
+[data-magazine-spread="health-is-the-new-wealth"] .xp-section-engagement--inline .xp-engagement__action {
+  opacity: 1;
+}
+
 /* Cover engagement is positioned against the rendered text itself, not the composer
    node's design-box height. This is why it now sits immediately below each coverline. */
 [data-composer-node][data-story-id] { transition: opacity 160ms var(--xp-ease-out); }
