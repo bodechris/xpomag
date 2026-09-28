@@ -1325,6 +1325,7 @@ export function MagazineReader({
                 spread={nativeSpread}
                 side={leafSide}
                 globalElements={issue.designElements}
+                includeSupplementalMobileMedia={singlePageMode}
                 renderEngagement={role === "current" ? (piece) => (
                   <SectionEngagementBar
                     issueSlug={issue.slug}
@@ -1365,6 +1366,7 @@ export function MagazineReader({
             <MagazineSpreadCanvas
               spread={nativeSpread as MagazineSpreadDefinition}
               globalElements={issue.designElements}
+              includeSupplementalMobileMedia={false}
               renderEngagement={role === "current" ? (piece) => (
                 <SectionEngagementBar
                   issueSlug={issue.slug}
@@ -1603,6 +1605,7 @@ export function MagazineReader({
                     spread={currentTurnNativeSpread}
                     side={motion.direction === "next" ? "right" : "left"}
                     globalElements={issue.designElements}
+                    includeSupplementalMobileMedia={false}
                   />
                 ) : (
                   <MagazinePageRenderer page={currentTurnPage} globalElements={issue.designElements} />
@@ -1614,6 +1617,7 @@ export function MagazineReader({
                     spread={backTurnNativeSpread}
                     side={motion.direction === "next" ? "left" : "right"}
                     globalElements={issue.designElements}
+                    includeSupplementalMobileMedia={false}
                   />
                 ) : (
                   <MagazinePageRenderer page={backTurnPage} globalElements={issue.designElements} />
