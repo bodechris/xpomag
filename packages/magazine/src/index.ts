@@ -9,3 +9,5 @@ export * from "./spread-renderer.js";
 export * from "./editor.js";
 export * from "./cover-template.js";
 export * from "./composer-renderer.js";
+
+export * from "./reader-runtime.js";
