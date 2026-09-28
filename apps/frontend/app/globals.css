@@ -530,6 +530,30 @@ img, picture, video, canvas, svg { display: block; max-width: 100%; }
   transform: translateZ(2px) rotateY(calc(var(--xp-turn-progress) * 180deg));
 }
 
+/* Keep the static book leaves on a separate depth plane while a page turns.
+   Cover/open-close transitions render normal spread layers (not .flip-leaf),
+   so they need their own z separation or the rotating cover can geometrically
+   cross the resting spread near the hinge. */
+.xp-magazine__stage[data-motion="flip"] .xp-magazine__spread-layer--target {
+  transform: translateZ(-10px);
+}
+
+.xp-magazine__stage[data-motion="flip"] .xp-magazine__spread-layer--current {
+  transform: translateZ(-4px);
+}
+
+.xp-magazine__stage[data-motion="flip"] .xp-magazine__turn-sheet {
+  z-index: 12;
+}
+
+.xp-magazine__stage[data-motion="flip"] .xp-magazine__turn-sheet--next {
+  transform: translateZ(8px) rotateY(calc(var(--xp-turn-progress) * -180deg));
+}
+
+.xp-magazine__stage[data-motion="flip"] .xp-magazine__turn-sheet--previous {
+  transform: translateZ(8px) rotateY(calc(var(--xp-turn-progress) * 180deg));
+}
+
 .xp-magazine__turn-face {
   position: absolute;
   inset: 0;
