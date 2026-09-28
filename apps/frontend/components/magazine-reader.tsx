@@ -88,10 +88,11 @@ function isInteractiveTarget(target: EventTarget | null) {
   return target instanceof Element && Boolean(target.closest(INTERACTIVE_SELECTOR));
 }
 
-function transitionKind(singlePage: boolean, from: number, to: number): MotionKind {
-  if (!singlePage) return "flip";
-  const boundary = Math.min(from, to);
-  return boundary % 2 === 0 ? "flip" : "slide";
+function transitionKind(singlePage: boolean, _from: number, _to: number): MotionKind {
+  // Compact mode is a page reader, not a miniature two-page magazine.
+  // Use a lightweight horizontal page transition after vertical reading ends.
+  if (singlePage) return "slide";
+  return "flip";
 }
 
 function clamp01(value: number) {
