@@ -6203,6 +6203,10 @@ p[data-drop-cap-lines="6"] .xp-editorial-drop-cap { font-size: 5.85em; }
 /* Back cover engagement stays legible over the photographic/blue composition. */
 [data-magazine-section="back-cover-main"] > .xp-section-engagement--inline {
   opacity: 1 !important;
+  left: auto !important;
+  right: 12px !important;
+  top: 56.2% !important;
+  bottom: auto !important;
   padding: .24rem .42rem !important;
   border: 1px solid rgba(0,0,0,.09) !important;
   border-radius: 10px !important;
