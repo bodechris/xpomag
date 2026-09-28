@@ -1,6 +1,6 @@
 "use client";
 
-import { buildMasterSpreadsFromPages, MagazinePageRenderer, MagazineSpreadCanvas, MagazineSpreadLeaf, type ComposerNode, type DesignElementNode, type MagazineMasterSpread, type MagazinePageDefinition, type MagazineSpreadDefinition } from "@xpomag/magazine";
+import { buildMasterSpreadsFromPages, MAGAZINE_COMPACT_MAX_WIDTH, MAGAZINE_MAX_PAGE_CACHE_ENTRIES, magazineTransitionKindForMode, MagazinePageRenderer, MagazineSpreadCanvas, MagazineSpreadLeaf, type ComposerNode, type DesignElementNode, type MagazineMasterSpread, type MagazinePageDefinition, type MagazineSpreadDefinition } from "@xpomag/magazine";
 import { ArrowLeft, ArrowRight, BookOpen, LockKeyhole, Maximize2, Menu, Minimize2, Pause, Play, RotateCcw, X } from "lucide-react";
 import { MagazineEngagementDock } from "./magazine-engagement-dock";
 import type { CSSProperties, MouseEvent as ReactMouseEvent, PointerEvent as ReactPointerEvent } from "react";
@@ -26,14 +26,13 @@ const TURN_THRESHOLD = 0.22;
 const FLICK_DISTANCE = 44;
 const FLICK_VELOCITY = 0.34;
 
-const MAX_PAGE_CACHE_ENTRIES = 10;
 const MAGAZINE_PAGE_CACHE = new Map<string, MagazinePageDefinition>();
 const MAGAZINE_ASSET_CACHE = new Set<string>();
 
 function cacheMagazinePage(key: string, page: MagazinePageDefinition) {
   MAGAZINE_PAGE_CACHE.delete(key);
   MAGAZINE_PAGE_CACHE.set(key, page);
-  while (MAGAZINE_PAGE_CACHE.size > MAX_PAGE_CACHE_ENTRIES) {
+  while (MAGAZINE_PAGE_CACHE.size > MAGAZINE_MAX_PAGE_CACHE_ENTRIES) {
     const oldestKey = MAGAZINE_PAGE_CACHE.keys().next().value as string | undefined;
     if (!oldestKey) break;
     MAGAZINE_PAGE_CACHE.delete(oldestKey);
@@ -89,10 +88,7 @@ function isInteractiveTarget(target: EventTarget | null) {
 }
 
 function transitionKind(singlePage: boolean, _from: number, _to: number): MotionKind {
-  // Compact mode is a page reader, not a miniature two-page magazine.
-  // Use a lightweight horizontal page transition after vertical reading ends.
-  if (singlePage) return "slide";
-  return "flip";
+  return magazineTransitionKindForMode(singlePage ? "page" : "spread");
 }
 
 function clamp01(value: number) {
@@ -758,7 +754,7 @@ export function MagazineReader({
   }, [clearMotionTimer, completeMotion, createMotion, ensureSpreadLoaded, motion, setProgress, spreads]);
 
   useEffect(() => {
-    const media = window.matchMedia("(max-width: 1100px)");
+    const media = window.matchMedia(`(max-width: ${MAGAZINE_COMPACT_MAX_WIDTH}px)`);
     const sync = () => setSinglePageMode(media.matches);
     sync();
     media.addEventListener?.("change", sync);
