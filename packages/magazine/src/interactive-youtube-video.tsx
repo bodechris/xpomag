@@ -83,23 +83,40 @@ export function InteractiveYouTubeVideo({
     if (!frame) return;
 
     const spreadLayer = frame.closest(".xp-magazine__spread-layer");
-    if (!spreadLayer) {
-      setIsCurrentAndVisible(true);
-      return;
-    }
+    const turnSheet = frame.closest(".xp-magazine__turn-sheet");
+    let intersectsViewport = false;
 
     const evaluate = () => {
-      const isCurrent = spreadLayer.classList.contains("xp-magazine__spread-layer--current");
-      const isHidden = spreadLayer.getAttribute("aria-hidden") === "true";
-      setIsCurrentAndVisible(isCurrent && !isHidden);
+      if (turnSheet) {
+        setIsCurrentAndVisible(false);
+        return;
+      }
+
+      const layerIsCurrent = !spreadLayer || (
+        spreadLayer.classList.contains("xp-magazine__spread-layer--current") &&
+        spreadLayer.getAttribute("aria-hidden") !== "true"
+      );
+      const tabIsVisible = document.visibilityState === "visible";
+      setIsCurrentAndVisible(layerIsCurrent && intersectsViewport && tabIsVisible);
     };
 
-    const mutation = new MutationObserver(evaluate);
-    mutation.observe(spreadLayer, { attributes: true, attributeFilter: ["class", "aria-hidden"] });
-    evaluate();
+    const intersection = new IntersectionObserver(
+      ([entry]) => {
+        intersectsViewport = Boolean(entry?.isIntersecting && entry.intersectionRatio >= 0.06);
+        evaluate();
+      },
+      { threshold: [0, 0.06, 0.2] },
+    );
+    intersection.observe(frame);
+
+    const mutation = spreadLayer ? new MutationObserver(evaluate) : null;
+    mutation?.observe(spreadLayer!, { attributes: true, attributeFilter: ["class", "aria-hidden"] });
+    document.addEventListener("visibilitychange", evaluate);
 
     return () => {
-      mutation.disconnect();
+      intersection.disconnect();
+      mutation?.disconnect();
+      document.removeEventListener("visibilitychange", evaluate);
     };
   }, []);
 
@@ -166,6 +183,8 @@ export function InteractiveYouTubeVideo({
             alt=""
             aria-hidden="true"
             draggable={false}
+            loading="lazy"
+            decoding="async"
             style={{
               position: "absolute",
               inset: 0,
