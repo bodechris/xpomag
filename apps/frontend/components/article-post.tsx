@@ -4,7 +4,8 @@ import { SectionEngagementBar } from "./section-engagement";
 
 type ArticleBlock =
   | { type: "text"; id: string; text: string; as: string }
-  | { type: "image"; id: string; src: string; alt: string };
+  | { type: "image"; id: string; src: string; alt: string }
+  | { type: "video"; id: string; src: string; title: string; poster?: string };
 
 function collectBlocks(node: DesignElementNode): ArticleBlock[] {
   const own: ArticleBlock[] = [];
@@ -23,6 +24,15 @@ function collectBlocks(node: DesignElementNode): ArticleBlock[] {
       id: node.id,
       src: node.props.src,
       alt: typeof node.props?.alt === "string" ? node.props.alt : "",
+    });
+  }
+  if (node.type === "video" && typeof node.props?.src === "string") {
+    own.push({
+      type: "video",
+      id: node.id,
+      src: node.props.src,
+      title: typeof node.props?.title === "string" ? node.props.title : "Magazine video",
+      poster: typeof node.props?.poster === "string" ? node.props.poster : undefined,
     });
   }
   return [...own, ...(node.children ?? []).flatMap(collectBlocks)];
@@ -50,6 +60,22 @@ export function ArticlePost({
   page: MagazinePageDefinition;
   viewerAuthenticated?: boolean;
 }) {
+  const nativeSpread = issue.spreads?.find((spread) => spread.pageIds?.includes(page.id));
+  const nativeSpreadMedia = (() => {
+    if (!nativeSpread) return [] as ArticleBlock[];
+    const seen = new Set<string>();
+    return nativeSpread.pieces
+      .filter((piece) => !piece.id.includes("-mobile-"))
+      .flatMap((piece) => piece.elements.flatMap(collectBlocks))
+      .filter((block) => {
+        if (block.type === "text") return false;
+        const key = block.src;
+        if (!key || seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      });
+  })();
+
   return (
     <article className="xp-article-post">
       <header className="xp-article-post__hero">
@@ -109,6 +135,54 @@ export function ArticlePost({
           );
         })}
       </div>
+
+      {nativeSpreadMedia.length ? (
+        <section className="xp-article-post__section xp-article-post__spread-media">
+          <h2>Media from this spread</h2>
+          <div className="xp-article-post__media-grid">
+            {nativeSpreadMedia.map((block) => {
+              if (block.type === "image") {
+                return (
+                  <figure key={block.id}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={block.src} alt={block.alt} loading="lazy" />
+                    {block.alt ? <figcaption>{block.alt}</figcaption> : null}
+                  </figure>
+                );
+              }
+              if (block.type === "video") {
+                const isYouTube = /youtube\.com|youtu\.be/.test(block.src);
+                return (
+                  <figure key={block.id}>
+                    {isYouTube ? (
+                      <iframe
+                        src={block.src}
+                        title={block.title}
+                        loading="lazy"
+                        allow="autoplay; encrypted-media; picture-in-picture"
+                        allowFullScreen
+                      />
+                    ) : (
+                      <video
+                        src={block.src}
+                        poster={block.poster}
+                        title={block.title}
+                        muted
+                        loop
+                        playsInline
+                        controls
+                        preload="metadata"
+                      />
+                    )}
+                    <figcaption>{block.title}</figcaption>
+                  </figure>
+                );
+              }
+              return null;
+            })}
+          </div>
+        </section>
+      ) : null}
 
       <footer className="xp-article-post__footer">
         <a href={`/magazine/${encodeURIComponent(issue.slug)}/${encodeURIComponent(page.slug)}`}>
