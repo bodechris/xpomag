@@ -1720,7 +1720,7 @@ export function MagazineReader({
             ? renderSpread(
                 targetSpread,
                 "target",
-                motion.kind === "flip" ? backTurnPageIndex : undefined,
+                motion.kind === "flip" && edgeTransition !== "same-size" ? backTurnPageIndex : undefined,
               )
             : null}
           {renderSpread(spread, "current", motion?.kind === "flip" ? currentTurnPageIndex : undefined)}
