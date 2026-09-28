@@ -41,22 +41,43 @@ export function ActiveSpreadVideo({
     if (!frame) return;
 
     const spreadLayer = frame.closest(".xp-magazine__spread-layer");
-    if (!spreadLayer) {
-      setIsCurrentAndVisible(true);
-      return;
-    }
+    const turnSheet = frame.closest(".xp-magazine__turn-sheet");
+    let intersectsViewport = false;
 
     const evaluate = () => {
-      const isCurrent = spreadLayer.classList.contains("xp-magazine__spread-layer--current");
-      const isHidden = spreadLayer.getAttribute("aria-hidden") === "true";
-      setIsCurrentAndVisible(isCurrent && !isHidden);
+      // Turn-sheet faces are duplicate renderings used only for the page-flip
+      // illusion. They must never allocate a decoder or start network media.
+      if (turnSheet) {
+        setIsCurrentAndVisible(false);
+        return;
+      }
+
+      const layerIsCurrent = !spreadLayer || (
+        spreadLayer.classList.contains("xp-magazine__spread-layer--current") &&
+        spreadLayer.getAttribute("aria-hidden") !== "true"
+      );
+      const tabIsVisible = document.visibilityState === "visible";
+      setIsCurrentAndVisible(layerIsCurrent && intersectsViewport && tabIsVisible);
     };
 
-    const mutation = new MutationObserver(evaluate);
-    mutation.observe(spreadLayer, { attributes: true, attributeFilter: ["class", "aria-hidden"] });
-    evaluate();
+    const intersection = new IntersectionObserver(
+      ([entry]) => {
+        intersectsViewport = Boolean(entry?.isIntersecting && entry.intersectionRatio >= 0.06);
+        evaluate();
+      },
+      { threshold: [0, 0.06, 0.2] },
+    );
+    intersection.observe(frame);
 
-    return () => mutation.disconnect();
+    const mutation = spreadLayer ? new MutationObserver(evaluate) : null;
+    mutation?.observe(spreadLayer!, { attributes: true, attributeFilter: ["class", "aria-hidden"] });
+    document.addEventListener("visibilitychange", evaluate);
+
+    return () => {
+      intersection.disconnect();
+      mutation?.disconnect();
+      document.removeEventListener("visibilitychange", evaluate);
+    };
   }, []);
 
   useEffect(() => {
@@ -73,8 +94,9 @@ export function ActiveSpreadVideo({
       loopCountRef.current = 0;
       if (video) {
         video.pause();
+        video.removeAttribute("src");
         try {
-          video.currentTime = 0;
+          video.load();
         } catch {}
       }
       return;
@@ -156,7 +178,7 @@ export function ActiveSpreadVideo({
           muted={muted}
           playsInline
           controls={controls}
-          preload="metadata"
+          preload="none"
           onPlaying={() => setHasStarted(true)}
           onEnded={handleEnded}
           style={{
@@ -178,7 +200,8 @@ export function ActiveSpreadVideo({
           src={poster}
           alt=""
           aria-hidden="true"
-          loading="eager"
+          loading={isCurrentAndVisible ? "eager" : "lazy"}
+          fetchPriority={isCurrentAndVisible ? "auto" : "low"}
           decoding="async"
           style={{
             position: "absolute",
