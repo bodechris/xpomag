@@ -42,6 +42,7 @@ export function ActiveSpreadVideo({
 
     const spreadLayer = frame.closest(".xp-magazine__spread-layer");
     const turnSheet = frame.closest(".xp-magazine__turn-sheet");
+    const stage = frame.closest(".xp-magazine__stage");
     let intersectsViewport = false;
 
     const evaluate = () => {
@@ -57,7 +58,8 @@ export function ActiveSpreadVideo({
         spreadLayer.getAttribute("aria-hidden") !== "true"
       );
       const tabIsVisible = document.visibilityState === "visible";
-      setIsCurrentAndVisible(layerIsCurrent && intersectsViewport && tabIsVisible);
+      const readerIsTurning = Boolean(stage?.getAttribute("data-phase"));
+      setIsCurrentAndVisible(layerIsCurrent && intersectsViewport && tabIsVisible && !readerIsTurning);
     };
 
     const intersection = new IntersectionObserver(
@@ -71,11 +73,14 @@ export function ActiveSpreadVideo({
 
     const mutation = spreadLayer ? new MutationObserver(evaluate) : null;
     mutation?.observe(spreadLayer!, { attributes: true, attributeFilter: ["class", "aria-hidden"] });
+    const stageMutation = stage ? new MutationObserver(evaluate) : null;
+    stageMutation?.observe(stage!, { attributes: true, attributeFilter: ["data-phase"] });
     document.addEventListener("visibilitychange", evaluate);
 
     return () => {
       intersection.disconnect();
       mutation?.disconnect();
+      stageMutation?.disconnect();
       document.removeEventListener("visibilitychange", evaluate);
     };
   }, []);
