@@ -352,6 +352,15 @@ img, picture, video, canvas, svg { display: block; max-width: 100%; }
   box-shadow: 22px 24px 55px rgba(0,0,0,.09), inset 20px 0 30px -28px rgba(0,0,0,.65);
 }
 
+/* Do not leave the old companion page visually pinned behind the rotating
+   sheet. The destination spread already sits below the turn, so retire the
+   outgoing stationary leaf early in the gesture. This is symmetric for next
+   and previous navigation and prevents the narrow "old page" strip from
+   hanging around until the final animation frame. */
+.xp-magazine__stage[data-motion="flip"] .xp-magazine__spread-layer--current.is-native-stationary-leaf {
+  opacity: clamp(0, calc(1 - (var(--xp-turn-progress) * 5)), 1);
+}
+
 .xp-magazine__native-spread {
   position: absolute;
   inset: 0;
