@@ -472,6 +472,9 @@ export function SectionEngagementBar({ issueSlug, pageSlug, sectionId, sectionSl
 
   useEffect(() => { onSummaryChange?.(summary); }, [summary, onSummaryChange]);
 
+  const hasAnyEnabledAction = enabled.reactions || enabled.comments || enabled.share || enabled.save;
+  if (!hasAnyEnabledAction) return null;
+
   const selectedReaction = summary.viewerReaction ? reactionMeta[summary.viewerReaction] : reactionMeta.like;
   const SelectedReactionIcon = selectedReaction.icon;
 
