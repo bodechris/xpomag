@@ -8418,7 +8418,7 @@ function wellnessSpread(issueId: string): MagazineSpreadDefinition {
           text("wellness-left-kicker", "THE SPA THAT'S REALLY A\nSANCTUARY", {
             position: "absolute",
             left: "4.8%",
-            top: "61.6%",
+            top: "64.2%",
             width: "12.0%",
             color: "#5d554f",
             fontFamily: "var(--xp-font-grotesk)",
@@ -8441,7 +8441,7 @@ function wellnessSpread(issueId: string): MagazineSpreadDefinition {
             style: {
               position: "absolute",
               left: "4.8%",
-              top: "66.8%",
+              top: "69.2%",
               width: "12.2%",
               color: "#443d38",
               fontFamily: "var(--xp-font-editorial)",
@@ -8452,7 +8452,7 @@ function wellnessSpread(issueId: string): MagazineSpreadDefinition {
           text("wellness-left-copy-b", "Each signature treatment and spa journey supports skin radiance, restoration and recovery. The spaces are designed to make slowing down feel natural, whether the ritual is a facial, massage, body treatment or simply a quiet pause between a busy day and the next commitment.", {
             position: "absolute",
             left: "18.1%",
-            top: "61.6%",
+            top: "64.2%",
             width: "12.3%",
             color: "#443d38",
             fontFamily: "var(--xp-font-editorial)",
@@ -8462,7 +8462,7 @@ function wellnessSpread(issueId: string): MagazineSpreadDefinition {
           text("wellness-left-copy-c", "Family-owned companies, local expertise and carefully planned facilities give Steyn City a wellness rhythm that feels part of everyday life rather than a special occasion. From heated water and tranquil recovery spaces to movement studios, health sits naturally within the wider lifestyle offer.", {
             position: "absolute",
             left: "31.7%",
-            top: "61.6%",
+            top: "64.2%",
             width: "13.0%",
             color: "#443d38",
             fontFamily: "var(--xp-font-editorial)",
