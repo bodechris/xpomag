@@ -635,8 +635,6 @@ function steynPhoto(
 }
 
 function insideFrontGalleryPage(issueId: string): MagazinePageDefinition {
-  const root = "/resources/studio/steyn/city-living";
-
   return page(
     issueId,
     "inside-front-gallery",
@@ -655,7 +653,7 @@ function insideFrontGalleryPage(issueId: string): MagazinePageDefinition {
             [
               steynPhoto(
                 "inside-front-aerial",
-                `${root}/aerial.svg`,
+                "/resources/studio/steyn/steyn-city-img-03.webp",
                 "Aerial view across Steyn City and its lagoon",
                 {
                   gridColumn: "1 / -1",
@@ -665,7 +663,7 @@ function insideFrontGalleryPage(issueId: string): MagazinePageDefinition {
               ),
               steynPhoto(
                 "inside-front-terrace",
-                `${root}/terrace-blue.svg`,
+                "/resources/studio/steyn/steyn-city-img-05.webp",
                 "Terrace lounge overlooking Steyn City",
                 {
                   gridColumn: "1 / span 7",
@@ -675,7 +673,7 @@ function insideFrontGalleryPage(issueId: string): MagazinePageDefinition {
               ),
               steynPhoto(
                 "inside-front-sunset",
-                `${root}/sunset-balcony.svg`,
+                "/resources/studio/steyn/city-living-sunset.webp",
                 "Steyn City apartment balcony at sunset",
                 {
                   gridColumn: "8 / -1",
@@ -685,7 +683,7 @@ function insideFrontGalleryPage(issueId: string): MagazinePageDefinition {
               ),
               steynPhoto(
                 "inside-front-kitchen",
-                `${root}/kitchen.svg`,
+                "/resources/studio/steyn/city-living-kitchen.webp",
                 "Contemporary Steyn City kitchen and dining interior",
                 {
                   gridColumn: "8 / -1",
