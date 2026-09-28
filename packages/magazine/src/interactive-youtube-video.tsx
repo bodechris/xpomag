@@ -37,10 +37,14 @@ function youtubeId(src: string) {
 export function InteractiveYouTubeVideo({
   src,
   title,
+  autoplay = false,
+  muted = true,
   style,
 }: InteractiveYouTubeVideoProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
+  const frameRef = useRef<HTMLDivElement>(null);
   const [modalOpen, setModalOpen] = useState(false);
+  const [isCurrentAndVisible, setIsCurrentAndVisible] = useState(false);
 
   const videoId = useMemo(() => youtubeId(src), [src]);
   const thumbnailSrc = useMemo(
@@ -60,6 +64,54 @@ export function InteractiveYouTubeVideo({
     [src],
   );
 
+  const inlineSrc = useMemo(
+    () => withParams(src, {
+      autoplay: "1",
+      mute: muted ? "1" : "0",
+      controls: "0",
+      playsinline: "1",
+      rel: "0",
+      modestbranding: "1",
+      loop: "1",
+      playlist: videoId,
+    }),
+    [muted, src, videoId],
+  );
+
+  useEffect(() => {
+    const frame = frameRef.current;
+    if (!frame) return;
+
+    const spreadLayer = frame.closest(".xp-magazine__spread-layer");
+    if (!spreadLayer) return;
+
+    const evaluate = () => {
+      const isCurrent = spreadLayer.classList.contains("xp-magazine__spread-layer--current");
+      const isHidden = spreadLayer.getAttribute("aria-hidden") === "true";
+      const rect = frame.getBoundingClientRect();
+      const viewportW = window.innerWidth || document.documentElement.clientWidth;
+      const viewportH = window.innerHeight || document.documentElement.clientHeight;
+      const visibleW = Math.max(0, Math.min(rect.right, viewportW) - Math.max(rect.left, 0));
+      const visibleH = Math.max(0, Math.min(rect.bottom, viewportH) - Math.max(rect.top, 0));
+      const visibleArea = visibleW * visibleH;
+      const area = Math.max(1, rect.width * rect.height);
+      setIsCurrentAndVisible(isCurrent && !isHidden && visibleArea / area >= 0.45);
+    };
+
+    const observer = new IntersectionObserver(evaluate, { threshold: [0, .25, .45, .7, 1] });
+    observer.observe(frame);
+    const mutation = new MutationObserver(evaluate);
+    mutation.observe(spreadLayer, { attributes: true, attributeFilter: ["class", "aria-hidden"] });
+    evaluate();
+    window.addEventListener("resize", evaluate);
+
+    return () => {
+      observer.disconnect();
+      mutation.disconnect();
+      window.removeEventListener("resize", evaluate);
+    };
+  }, []);
+
   useEffect(() => {
     const dialog = dialogRef.current;
     if (!dialog) return;
@@ -74,6 +126,7 @@ export function InteractiveYouTubeVideo({
   return (
     <>
       <div
+        ref={frameRef}
         data-design-element="video"
         data-video-fit="cover"
         data-magazine-interactive
@@ -97,7 +150,25 @@ export function InteractiveYouTubeVideo({
           ...frameStyle,
         }}
       >
-        {thumbnailSrc ? (
+        {autoplay && isCurrentAndVisible && !modalOpen ? (
+          <iframe
+            src={inlineSrc}
+            title={title + " autoplay preview"}
+            tabIndex={-1}
+            style={{
+              position: "absolute",
+              left: "50%",
+              top: "50%",
+              width: "max(100cqw, 177.7778cqh)",
+              height: "max(100cqh, 56.25cqw)",
+              maxWidth: "none",
+              border: 0,
+              transform: "translate(-50%, -50%)",
+              pointerEvents: "none",
+            }}
+            allow="autoplay; encrypted-media; picture-in-picture"
+          />
+        ) : thumbnailSrc ? (
           <img
             src={thumbnailSrc}
             alt=""
