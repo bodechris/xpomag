@@ -6965,11 +6965,16 @@ p[data-drop-cap-lines="6"] .xp-editorial-drop-cap { font-size: 5.85em; }
   max-width: 100% !important;
 }
 
-/* Stabilise the two faces of the desktop turning sheet. The tiny Z separation
-   avoids Chrome showing a stale face/sliver around the centre hinge on reverse turns. */
+/* Each side of the physical page is a flattened paint surface.
+   Do not let descendants participate in the book's 3D scene: transformed
+   images/frames from the opposite face can otherwise protrude through the
+   rotating sheet near the hinge in Chromium. */
 .xp-magazine__turn-face {
   overflow: hidden;
-  transform-style: preserve-3d;
+  isolation: isolate;
+  transform-style: flat;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 .xp-magazine__turn-face--front {
   transform: translateZ(.5px);
