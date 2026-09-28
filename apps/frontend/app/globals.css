@@ -6554,11 +6554,11 @@ p[data-drop-cap-lines="6"] .xp-editorial-drop-cap { font-size: 5.85em; }
 
 /* ==========================================================================
    COMPACT READER PHILOSOPHY · TABLET + MOBILE
-   Below 1100px a two-page spread is no longer scaled down. Each physical page
-   is recomposed as its own vertically scrollable box-model document.
+   When the shared reader runtime selects compact/page mode, a two-page spread
+   is recomposed as independent vertically scrollable box-model pages.
    ========================================================================== */
 
-  .xp-magazine__stage {
+  .xp-magazine__stage[data-mode="single"] {
     padding-inline: 0;
     perspective: 1500px;
   }
