@@ -77,10 +77,12 @@ export function MagazineSpreadCanvas({
   spread,
   globalElements,
   renderEngagement,
+  includeSupplementalMobileMedia = true,
 }: {
   spread: MagazineSpreadDefinition;
   globalElements?: Record<string, DesignElementNode>;
   renderEngagement?: SpreadPieceEngagementRenderer;
+  includeSupplementalMobileMedia?: boolean;
 }) {
   return (
     <div
@@ -97,7 +99,7 @@ export function MagazineSpreadCanvas({
     >
       {spread.background ? <DesignElement node={spread.background} registry={globalElements} /> : null}
       {spread.pieces.map((piece) => {
-        const supplementalMedia = supplementalMobileMedia(spread, piece);
+        const supplementalMedia = includeSupplementalMobileMedia ? supplementalMobileMedia(spread, piece) : [];
         return (
           <section
             id={piece.slug}
@@ -152,11 +154,13 @@ export function MagazineSpreadLeaf({
   side,
   globalElements,
   renderEngagement,
+  includeSupplementalMobileMedia = true,
 }: {
   spread: MagazineSpreadDefinition;
   side: MagazineLeafSide;
   globalElements?: Record<string, DesignElementNode>;
   renderEngagement?: SpreadPieceEngagementRenderer;
+  includeSupplementalMobileMedia?: boolean;
 }) {
   return (
     <div
@@ -176,6 +180,7 @@ export function MagazineSpreadLeaf({
           spread={spread}
           globalElements={globalElements}
           renderEngagement={renderEngagement}
+          includeSupplementalMobileMedia={includeSupplementalMobileMedia}
         />
       </div>
     </div>
