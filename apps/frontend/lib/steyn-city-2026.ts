@@ -6442,7 +6442,7 @@ function golfExcellenceSpread(issueId: string): MagazineSpreadDefinition {
             style: {
               position: "absolute",
               left: "19.1%",
-              top: "52.5%",
+              top: "55.4%",
               width: "14.0%",
               bottom: "6.8%",
               color: "#453f3a",
@@ -6456,7 +6456,7 @@ function golfExcellenceSpread(issueId: string): MagazineSpreadDefinition {
           text("golf-excellence-copy-mid", "Becoming a member of Steyn City’s golf fraternity is about far more than a round. The course is shaped by precision, thoughtful maintenance and a culture of excellence that extends from the fairways to the clubhouse.\n\nCUTTING EDGE\n\nThe team continues to invest in equipment, course presentation and innovation, ensuring that every round feels polished and consistent.", {
             position: "absolute",
             left: "34.0%",
-            top: "52.5%",
+            top: "55.4%",
             width: "14.2%",
             bottom: "6.8%",
             color: "#453f3a",
