@@ -9050,7 +9050,7 @@ function equestrianSpaSpread(issueId: string): MagazineSpreadDefinition {
             color: "#c96429",
             fontFamily: "var(--xp-font-editorial)",
             fontSize: "clamp(.82rem,1.34vw,1.48rem)",
-            fontWeight: 650,
+            fontWeight: 200,
             fontStyle: "italic",
             lineHeight: 1.06,
             whiteSpace: "pre-line",
