@@ -773,6 +773,29 @@ export function MagazineReader({
   }, [initialPageIndex, initialPageSlug, setProgress, spreads]);
 
   useEffect(() => {
+    // Keep only a small working set of hydrated page definitions in React state.
+    // The bounded module cache still makes recently visited pages instant to restore,
+    // without forcing every page in the issue to remain live in memory.
+    const keepSlugs = new Set<string>();
+    for (let offset = -2; offset <= 2; offset += 1) {
+      const candidate = spreads[safeSpreadIndex + offset];
+      candidate?.pageIndexes.forEach((pageIndex) => {
+        const slug = issue.pages[pageIndex]?.slug;
+        if (slug) keepSlugs.add(slug);
+      });
+    }
+
+    setLoadedPages((current) => {
+      const entries = Object.entries(current);
+      if (entries.length <= 10 && entries.every(([slug]) => keepSlugs.has(slug))) return current;
+
+      const next = Object.fromEntries(entries.filter(([slug]) => keepSlugs.has(slug)));
+      loadedPagesRef.current = next;
+      return next;
+    });
+  }, [issue.pages, safeSpreadIndex, spreads]);
+
+  useEffect(() => {
     if (!spread || motion) return;
     let cancelled = false;
     let timer: ReturnType<typeof setTimeout> | null = null;
