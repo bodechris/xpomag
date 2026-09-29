@@ -1704,3 +1704,170 @@ select:focus {
     animation-duration: 1ms !important;
   }
 }
+
+
+/* ==========================================================================
+   HERO FLIP ENGINE V2 · CLEAN CENTER CROSSING + EXACT LANDING
+   ========================================================================== */
+
+.xp-home-hero {
+  --xp-hero-flip-duration: 620ms;
+}
+
+/* Strong but not exaggerated perspective. The previous 1320px camera was too
+   close to a half-screen leaf and visually magnified the page as it crossed
+   the center. */
+.xp-home-hero__slides {
+  perspective: 2050px !important;
+  perspective-origin: 50% 50% !important;
+  overflow: hidden;
+}
+
+/* The physical leaf itself must never be flattened by an inherited translateZ
+   override. Only the rotor owns the animated 3D transform. */
+.xp-home-hero__turn-sheet,
+.xp-home-hero__turn-rotor {
+  transform-style: preserve-3d !important;
+  -webkit-transform-style: preserve-3d !important;
+}
+
+.xp-home-hero__turn-sheet {
+  transform: none !important;
+  -webkit-transform: none !important;
+  overflow: visible;
+}
+
+.xp-home-hero__turn-sheet--next .xp-home-hero__turn-rotor {
+  transform-origin: left center !important;
+  animation: xp-home-flip-v2-next var(--xp-hero-flip-duration) cubic-bezier(.33,.01,.22,1) both !important;
+}
+
+.xp-home-hero__turn-sheet--previous .xp-home-hero__turn-rotor {
+  transform-origin: right center !important;
+  animation: xp-home-flip-v2-previous var(--xp-hero-flip-duration) cubic-bezier(.33,.01,.22,1) both !important;
+}
+
+@keyframes xp-home-flip-v2-next {
+  from { transform: rotateY(0deg); }
+  to { transform: rotateY(-180deg); }
+}
+
+@keyframes xp-home-flip-v2-previous {
+  from { transform: rotateY(0deg); }
+  to { transform: rotateY(180deg); }
+}
+
+/* Exact half-screen clipping and texture registration. */
+.xp-home-hero__stationary,
+.xp-home-hero__turn-face {
+  width: 100%;
+  height: 100%;
+  overflow: hidden !important;
+  contain: strict;
+}
+
+.xp-home-hero__full-canvas,
+.xp-home-hero__face-canvas {
+  width: 100vw !important;
+  height: 100% !important;
+  top: 0 !important;
+  margin: 0 !important;
+}
+
+.xp-home-hero__face-canvas--front-next { left: -50vw !important; }
+.xp-home-hero__face-canvas--back-next { left: 0 !important; }
+.xp-home-hero__face-canvas--front-previous { left: 0 !important; }
+.xp-home-hero__face-canvas--back-previous { left: -50vw !important; }
+
+/* Keep the two sides microscopically separated in local 3D space. This avoids
+   z-fighting at the center without leaving a visible landing offset. */
+.xp-home-hero__turn-face {
+  backface-visibility: hidden !important;
+  -webkit-backface-visibility: hidden !important;
+  transform-style: flat !important;
+  transition: none !important;
+  outline: 1px solid transparent;
+}
+
+.xp-home-hero__turn-face--front {
+  transform: translateZ(.35px) !important;
+}
+
+.xp-home-hero__turn-face--back {
+  transform: rotateY(180deg) translateZ(.35px) !important;
+}
+
+/* Remove the global compositor hack from the actual full-screen texture.
+   Applying translateZ(0) to every nested layer creates extra compositing
+   surfaces and was contributing to the center seam/flicker. */
+.xp-home-hero__full-canvas,
+.xp-home-hero__face-canvas,
+.xp-home-hero__image,
+.xp-home-hero__wash,
+.xp-home-hero__content {
+  transform: none !important;
+  -webkit-transform: none !important;
+}
+
+/* The target slide is already underneath and never moves. The temporary leaf
+   is removed only after its own animation-end event, not on a timer. */
+.xp-home-hero__slide.is-active {
+  transform: none !important;
+  -webkit-transform: none !important;
+  opacity: 1 !important;
+  transition: none !important;
+}
+
+.xp-home-hero.is-flipping .xp-home-hero__turn-sheet,
+.xp-home-hero.is-flipping .xp-home-hero__stationary {
+  opacity: 1 !important;
+  animation: none !important;
+}
+
+/* Perspective cues: shadow peaks at the center, but uses only opacity so it
+   cannot alter geometry or cause the leaf to snap. */
+.xp-home-hero__turn-shade,
+.xp-home-hero__turn-highlight {
+  animation: xp-home-flip-v2-light var(--xp-hero-flip-duration) linear both !important;
+  mix-blend-mode: normal !important;
+}
+
+@keyframes xp-home-flip-v2-light {
+  0%, 100% { opacity: 0; }
+  50% { opacity: .68; }
+}
+
+.xp-home-hero__hinge-shadow {
+  animation: xp-home-flip-v2-hinge var(--xp-hero-flip-duration) linear both !important;
+  filter: blur(7px);
+}
+
+@keyframes xp-home-flip-v2-hinge {
+  0%, 100% { opacity: 0; transform: scaleX(.25); }
+  50% { opacity: .62; transform: scaleX(1); }
+}
+
+/* At 90deg a one-pixel center seam can appear on some Chrome/GPU combinations.
+   A tiny non-interactive spine mask hides only that raster seam, not the page. */
+.xp-home-hero.is-flipping::after {
+  content: "";
+  position: absolute;
+  z-index: 6;
+  top: 0;
+  bottom: 0;
+  left: calc(50% - .5px);
+  width: 1px;
+  pointer-events: none;
+  background: rgba(255,255,255,.08);
+  opacity: .7;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .xp-home-hero__turn-sheet--next .xp-home-hero__turn-rotor,
+  .xp-home-hero__turn-sheet--previous .xp-home-hero__turn-rotor,
+  .xp-home-hero__turn-shade,
+  .xp-home-hero__turn-highlight,
+  .xp-home-hero__hinge-shadow {
+    animation-duration: 1ms !important;
+  }
+}
