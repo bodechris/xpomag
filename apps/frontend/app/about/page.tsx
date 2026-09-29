@@ -1,30 +1,34 @@
+import type { Metadata } from "next"
 import Link from "next/link"
 import "./about.css"
+
+export const metadata: Metadata = {
+  title: "How XpoMag works",
+  description: "How to discover cities, read interactive XpoMag issues, follow what matters and submit stories.",
+}
 
 export default function AboutPage() {
   return (
     <main className="aboutPage">
       <section className="aboutHero">
-        <div className="aboutKicker">A CITY MAGAZINE FOR THE INTERNET</div>
-        <h1>The city,<br />edited with taste.</h1>
+        <div className="aboutKicker">HOW XPOMAG WORKS</div>
+        <h1>Open a city.<br />Flip through the issue.</h1>
         <p className="aboutLead">
-          XPOMAG is a digital magazine built around real cities, local people,
-          businesses, places and ideas — designed to feel more like a beautifully
-          edited publication than a feed.
+          XpoMag turns a city into a curated, interactive magazine. You discover
+          an issue, read it like a publication, and interact with the stories,
+          people, places and brands inside it.
         </p>
       </section>
 
       <section className="aboutStatement">
-        <div className="aboutStatementLabel">WHY XPOMAG</div>
+        <div className="aboutStatementLabel">THE IDEA</div>
         <div className="aboutStatementBody">
           <p>
-            Cities are full of useful stories, businesses worth discovering,
-            people doing interesting work and places changing quietly.
+            Not an endless feed. Not a static PDF.
           </p>
           <p>
-            Most of that information is scattered across social feeds, search,
-            directories, newsletters and word of mouth. XPOMAG brings the best of
-            it together into one curated city issue.
+            Each XpoMag issue is a finite editorial experience with page turns,
+            stories, video, discovery and social interaction built into the magazine itself.
           </p>
         </div>
       </section>
@@ -32,54 +36,55 @@ export default function AboutPage() {
       <section className="aboutGrid">
         <article>
           <span>01</span>
-          <h2>City first</h2>
-          <p>Every city gets its own editorial identity, stories, guides, businesses, advertising and recurring issues.</p>
+          <h2>Explore a city</h2>
+          <p>Choose a city you care about and see its current XpoMag issue, stories and discoveries.</p>
         </article>
         <article>
           <span>02</span>
-          <h2>Editorial, not endless</h2>
-          <p>XPOMAG is intentionally finite and curated. Each issue should feel worth finishing, saving and returning to.</p>
+          <h2>Open the issue</h2>
+          <p>Flip through a curated edition designed as a magazine rather than scrolling through an endless stream.</p>
         </article>
         <article>
           <span>03</span>
-          <h2>Useful discovery</h2>
-          <p>Readers discover businesses, people, places and ideas with context — not as isolated listings.</p>
+          <h2>Interact as you read</h2>
+          <p>React, comment, save and share. Stories can also include video, polls, quizzes, games and other interactive experiences.</p>
         </article>
         <article>
           <span>04</span>
-          <h2>Built to become personal</h2>
-          <p>Cities and category interests will eventually shape custom editions around what each reader actually cares about.</p>
+          <h2>Follow what matters</h2>
+          <p>Follow cities and save stories or places so XpoMag becomes a useful library you can return to.</p>
         </article>
       </section>
 
       <section className="aboutIssue">
         <div className="aboutIssueMeta">
-          <div>LAUNCH ISSUE</div>
-          <div>ROSEBANK + SANDTON</div>
-          <div>JOHANNESBURG</div>
+          <div>FOR THE COMMUNITY</div>
+          <div>STORIES · PEOPLE · PLACES</div>
+          <div>BUSINESSES · BRANDS</div>
         </div>
         <div className="aboutIssueCopy">
-          <h2>Starting local.<br />Built to travel.</h2>
+          <h2>Anyone can contribute.<br />XpoMag curates.</h2>
           <p>
-            XPOMAG begins with Rosebank and Sandton, then expands city by city.
-            The long-term idea is simple: a premium digital magazine for every
-            place with enough culture, business and momentum to deserve one.
+            Readers, creators, businesses and organisations can submit stories,
+            launches, places, events or people worth knowing. XpoMag selects what
+            belongs in each issue. Brands can also work with XpoMag on clearly
+            presented sponsored stories and interactive placements.
           </p>
         </div>
       </section>
 
       <section className="aboutCta">
-        <p className="aboutKicker">ENTER THE FIRST ISSUE</p>
-        <h2>See the city differently.</h2>
+        <p className="aboutKicker">START HERE</p>
+        <h2>Find a city.<br />Open the magazine.</h2>
         <div className="aboutActions">
-          <Link href="/" className="aboutPrimary">Read XPOMAG</Link>
-          <Link href="/auth?mode=signup" className="aboutSecondary">Create account</Link>
+          <Link href="/explore" className="aboutPrimary">Explore XpoMag</Link>
+          <Link href="/contribute" className="aboutSecondary">Submit a story</Link>
         </div>
       </section>
 
       <footer className="aboutFooter">
         <div>XPOMAG</div>
-        <div>ROSEBANK + SANDTON</div>
+        <div>THE SOCIAL MAGAZINE FOR EVERY CITY</div>
         <div>© 2026</div>
       </footer>
     </main>

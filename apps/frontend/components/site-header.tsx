@@ -1,6 +1,6 @@
 "use client";
 
-import { Bookmark, ChevronDown, Home, LogOut, Menu, Search, UserRound, X } from "lucide-react";
+import { Bookmark, Home, LogOut, Menu, Search, UserRound, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { authClient } from "../lib/auth-client";
 
@@ -48,7 +48,6 @@ export function SiteHeader({ city, variant = "default" }: { city?: string; varia
 
           <nav aria-label="Primary" className="xp-site-header__links">
             <a href="/explore">Explore</a>
-            <a href="/explore" className="xp-site-header__cities">Cities <ChevronDown size={14} /></a>
             <a href="/studio">For Brands</a>
             <a href="/about">How it works</a>
           </nav>
@@ -89,7 +88,6 @@ export function SiteHeader({ city, variant = "default" }: { city?: string; varia
           {user ? <div className="xp-member-drawer__identity"><span className="xp-profile__avatar xp-profile__avatar--large">{initials}</span><div><strong>{user.name || "XpoMag member"}</strong><span>{user.email}</span></div></div> : null}
           <nav className="xp-member-drawer__nav">
             <a href="/explore"><Search size={18} /><span>Explore</span></a>
-            <a href="/explore"><Home size={18} /><span>Cities</span></a>
             <a href="/studio"><UserRound size={18} /><span>For Brands</span></a>
             <a href="/about"><UserRound size={18} /><span>How it works</span></a>
             <a href="/contribute"><UserRound size={18} /><span>Submit a story</span></a>

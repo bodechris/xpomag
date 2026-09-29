@@ -2455,3 +2455,30 @@ select:focus {
     min-height: calc(100svh - 64px);
   }
 }
+
+
+/* ==========================================================================
+   HOMEPAGE WIDTH ALIGNMENT
+   The immersive homepage now uses the same edge rhythm as standard pages.
+   ========================================================================== */
+.xp-site-header--hero .xp-site-header__inner {
+  width: 100% !important;
+  max-width: none !important;
+  padding-inline: clamp(1.25rem, 4vw, 4.25rem) !important;
+}
+
+.xp-home-hero__content {
+  width: 100% !important;
+  max-width: none !important;
+  padding-left: clamp(1.25rem, 4vw, 4.25rem);
+  padding-right: clamp(1.25rem, 4vw, 4.25rem);
+  box-sizing: border-box;
+}
+
+@media (max-width: 720px) {
+  .xp-site-header--hero .xp-site-header__inner,
+  .xp-home-hero__content {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+}
