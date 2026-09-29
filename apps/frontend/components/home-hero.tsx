@@ -76,6 +76,14 @@ export function HomeHero() {
   const lockRef = useRef(false);
   const heroRef = useRef<HTMLElement | null>(null);
 
+  useEffect(() => {
+    slides.forEach((slide) => {
+      const img = new Image();
+      img.decoding = "async";
+      img.src = slide.images[0];
+    });
+  }, []);
+
   const goTo = useCallback((next: number) => {
     if (lockRef.current || next === active || next < 0 || next >= slides.length) return false;
     lockRef.current = true;
@@ -85,7 +93,7 @@ export function HomeHero() {
     window.setTimeout(() => {
       setOutgoing(null);
       lockRef.current = false;
-    }, 1080);
+    }, 900);
     return true;
   }, [active]);
 
@@ -155,8 +163,16 @@ export function HomeHero() {
 
       <div className="xp-home-hero__rail-wrap">
         <div className="xp-home-hero__rail" aria-label="Hero slide navigation">
-          <button type="button" onClick={() => goTo(active - 1)} disabled={active === 0} aria-label="Previous hero slide"><span aria-hidden="true">↑</span></button>
-          <button type="button" onClick={() => goTo(active + 1)} disabled={active === slides.length - 1} aria-label="Next hero slide"><span aria-hidden="true">↓</span></button>
+          {slides.map((slide, index) => (
+            <button
+              key={slide.eyebrow}
+              type="button"
+              className={index === active ? "is-active" : ""}
+              onClick={() => goTo(index)}
+              aria-label={`Go to hero slide ${index + 1}`}
+              aria-current={index === active ? "true" : undefined}
+            />
+          ))}
         </div>
       </div>
 

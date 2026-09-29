@@ -1253,3 +1253,199 @@ select:focus {
     animation-duration: 1ms !important;
   }
 }
+
+
+/* ==========================================================================
+   HERO FLIP POLISH · ONE CONTINUOUS TURN / NO MIDPOINT HESITATION
+   ========================================================================== */
+
+/* Keep the whole 3D scene on stable compositor layers. */
+.xp-home-hero,
+.xp-home-hero__slides,
+.xp-home-hero__slide,
+.xp-home-hero__stationary,
+.xp-home-hero__turn-sheet,
+.xp-home-hero__turn-rotor,
+.xp-home-hero__turn-face,
+.xp-home-hero__full-canvas,
+.xp-home-hero__face-canvas,
+.xp-home-hero__image {
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+}
+
+.xp-home-hero__slides,
+.xp-home-hero__turn-sheet,
+.xp-home-hero__turn-rotor {
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+}
+
+.xp-home-hero__stationary,
+.xp-home-hero__turn-face {
+  isolation: isolate;
+  contain: paint;
+}
+
+/* One uninterrupted 0→180 degree motion. No 48/52% midpoint keyframes, so
+   the page does not appear to pause or hesitate as it crosses the spine. */
+.xp-home-hero__turn-sheet--next .xp-home-hero__turn-rotor {
+  animation: xp-home-center-flip-next-smooth 880ms cubic-bezier(.37,0,.63,1) both;
+}
+
+.xp-home-hero__turn-sheet--previous .xp-home-hero__turn-rotor {
+  animation: xp-home-center-flip-previous-smooth 880ms cubic-bezier(.37,0,.63,1) both;
+}
+
+@keyframes xp-home-center-flip-next-smooth {
+  from { transform: rotateY(0deg); }
+  to { transform: rotateY(-180deg); }
+}
+
+@keyframes xp-home-center-flip-previous-smooth {
+  from { transform: rotateY(0deg); }
+  to { transform: rotateY(180deg); }
+}
+
+/* Give Chromium an unambiguous front/back plane and prevent the reverse
+   texture from bleeding through at ~90deg. */
+.xp-home-hero__turn-face {
+  backface-visibility: hidden !important;
+  -webkit-backface-visibility: hidden !important;
+  perspective: none;
+  will-change: transform, opacity;
+}
+
+.xp-home-hero__turn-face--front {
+  transform: translateZ(.75px);
+}
+
+.xp-home-hero__turn-face--back {
+  transform: rotateY(180deg) translateZ(.75px);
+}
+
+.xp-home-hero__face-canvas,
+.xp-home-hero__full-canvas {
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Avoid expensive blend-mode recomposition during the turn. These gradients
+   provide the same dimensional cue without forcing full-screen repainting. */
+.xp-home-hero__turn-shade,
+.xp-home-hero__turn-highlight {
+  mix-blend-mode: normal;
+  animation: xp-home-page-light-smooth 880ms linear both;
+  will-change: opacity;
+}
+
+.xp-home-hero__turn-shade {
+  background: linear-gradient(90deg,
+    rgba(2,2,2,.02) 0%,
+    rgba(2,2,2,.05) 42%,
+    rgba(2,2,2,.26) 100%);
+}
+
+.xp-home-hero__turn-sheet--previous .xp-home-hero__turn-shade {
+  background: linear-gradient(270deg,
+    rgba(2,2,2,.02) 0%,
+    rgba(2,2,2,.05) 42%,
+    rgba(2,2,2,.26) 100%);
+}
+
+.xp-home-hero__turn-highlight {
+  background: linear-gradient(90deg,
+    transparent 18%,
+    rgba(255,255,255,.03) 44%,
+    rgba(255,255,255,.26) 62%,
+    transparent 82%);
+}
+
+@keyframes xp-home-page-light-smooth {
+  0%, 100% { opacity: 0; }
+  50% { opacity: .82; }
+}
+
+.xp-home-hero__hinge-shadow {
+  animation: xp-home-hinge-shadow-smooth 880ms linear both;
+  filter: blur(10px);
+  will-change: opacity, transform;
+}
+
+@keyframes xp-home-hinge-shadow-smooth {
+  0%, 100% { opacity: 0; transform: scaleX(.35); }
+  50% { opacity: .72; transform: scaleX(1.15); }
+}
+
+/* Three fixed-size slide buttons. White surface, hairline border and soft
+   shadow keep them visible over both light and dark hero imagery. */
+.xp-home-hero__rail-wrap {
+  width: 58px;
+  height: 116px;
+  background: radial-gradient(ellipse at center,
+    rgba(255,255,255,.82) 0%,
+    rgba(255,255,255,.52) 38%,
+    rgba(255,255,255,.18) 62%,
+    rgba(255,255,255,0) 80%);
+}
+
+.xp-home-hero__rail {
+  gap: .58rem;
+}
+
+.xp-home-hero__rail button,
+.xp-home-hero__rail button:hover:not(:disabled) {
+  width: 38px;
+  height: 7px;
+  padding: 0;
+  border: .5px solid rgba(2,2,2,.16);
+  border-radius: 999px;
+  background: rgba(255,255,255,.96);
+  box-shadow:
+    0 2px 8px rgba(2,2,2,.13),
+    inset 0 1px 0 rgba(255,255,255,.92);
+  opacity: 1;
+  transform: none;
+}
+
+.xp-home-hero__rail button:hover {
+  border-color: rgba(2,2,2,.28);
+  background: #fff;
+}
+
+.xp-home-hero__rail button.is-active,
+.xp-home-hero__rail button.is-active:hover {
+  width: 38px;
+  height: 7px;
+  border-color: rgba(249,22,22,.38);
+  background: var(--xp-red);
+  box-shadow:
+    0 2px 9px rgba(249,22,22,.24),
+    inset 0 1px 0 rgba(255,255,255,.24);
+}
+
+@media (max-width: 720px) {
+  .xp-home-hero__rail-wrap {
+    width: 46px;
+    height: 96px;
+  }
+
+  .xp-home-hero__rail button,
+  .xp-home-hero__rail button:hover,
+  .xp-home-hero__rail button.is-active,
+  .xp-home-hero__rail button.is-active:hover {
+    width: 30px;
+    height: 6px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .xp-home-hero__turn-sheet--next .xp-home-hero__turn-rotor,
+  .xp-home-hero__turn-sheet--previous .xp-home-hero__turn-rotor,
+  .xp-home-hero__turn-shade,
+  .xp-home-hero__turn-highlight,
+  .xp-home-hero__hinge-shadow {
+    animation-duration: 1ms !important;
+  }
+}
