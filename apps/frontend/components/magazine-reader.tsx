@@ -559,6 +559,7 @@ export function MagazineReader({
   const wheelDeltaRef = useRef(0);
   const wheelResetRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const navigationLockRef = useRef(false);
+  const dragLoadRef = useRef<Promise<boolean> | null>(null);
   const wheelBlockedUntilRef = useRef(0);
   const lastPointerRef = useRef<{ x: number; y: number } | null>(null);
   const pageScrollPositionsRef = useRef(new Map<string, number>());
@@ -1343,17 +1344,72 @@ export function MagazineReader({
       return;
     }
 
-    if (!motion || motion.direction !== direction || motion.phase !== "dragging") {
-      setMotion(nextMotion);
-      if (!navigationLockRef.current) {
-        navigationLockRef.current = true;
-        void ensureSpreadLoaded(spreads[nextMotion.targetIndex]);
-      }
-    }
-
     const stageWidth = Math.max(1, event.currentTarget.getBoundingClientRect().width);
     const distance = singlePageMode ? stageWidth * 0.48 : stageWidth * 0.3;
-    setProgress(absX / distance);
+    const nextProgress = absX / distance;
+
+    if (!motion || motion.direction !== direction || motion.phase !== "dragging") {
+      const candidateTarget = spreads[nextMotion.targetIndex];
+      const candidateCurrentNative = resolveNativeSpread(spread);
+      const candidateTargetNative = resolveNativeSpread(candidateTarget);
+      const currentPageIndex = direction === "next"
+        ? spread.pageIndexes[spread.pageIndexes.length - 1]
+        : spread.pageIndexes[0];
+      const targetPageIndex = candidateTarget
+        ? direction === "next"
+          ? candidateTarget.pageIndexes[0]
+          : candidateTarget.pageIndexes[candidateTarget.pageIndexes.length - 1]
+        : undefined;
+      const currentPageReady = currentPageIndex == null
+        ? false
+        : Boolean(loadedPagesRef.current[issue.pages[currentPageIndex]?.slug ?? ""]);
+      const targetPageReady = targetPageIndex == null
+        ? false
+        : Boolean(loadedPagesRef.current[issue.pages[targetPageIndex]?.slug ?? ""]);
+      const canStartImmediately = Boolean(
+        (candidateCurrentNative && candidateTargetNative) ||
+        (currentPageReady && targetPageReady)
+      );
+
+      if (!canStartImmediately) {
+        // Do not tear the resting spread apart while an edge page (most notably
+        // the back cover) is still hydrating. Previously we entered flip mode
+        // immediately, hid the outgoing right leaf, and had no back face to
+        // replace it, so the page appeared to disappear until pointer-up.
+        if (!dragLoadRef.current) {
+          navigationLockRef.current = true;
+          dragLoadRef.current = ensureSpreadLoaded(candidateTarget)
+            .then((ready) => {
+              if (
+                ready &&
+                pointerStartX.current != null &&
+                pointerCurrentX.current != null &&
+                gestureAxis.current === "horizontal"
+              ) {
+                const liveDelta = pointerCurrentX.current - pointerStartX.current;
+                const liveDirection: Direction = liveDelta < 0 ? "next" : "previous";
+                if (liveDirection === direction) {
+                  const liveStageWidth = Math.max(1, stageRef.current?.getBoundingClientRect().width ?? stageWidth);
+                  const liveDistance = singlePageMode ? liveStageWidth * 0.48 : liveStageWidth * 0.3;
+                  setProgress(Math.abs(liveDelta) / liveDistance);
+                  setMotion(nextMotion);
+                }
+              }
+              return ready;
+            })
+            .finally(() => {
+              dragLoadRef.current = null;
+              if (!motion) navigationLockRef.current = false;
+            });
+        }
+        return;
+      }
+
+      setMotion(nextMotion);
+      navigationLockRef.current = true;
+    }
+
+    setProgress(nextProgress);
   };
 
   const finishPointer = async (event: ReactPointerEvent<HTMLDivElement>) => {
