@@ -1713,12 +1713,14 @@ export function MagazineReader({
     backTurnNativeSpread
   );
 
-  // Native spread faces are synchronously available from issue.spreads. Legacy
-  // hydrated page definitions are only required when either side is not native.
-  // This keeps the rotating sheet present on the very first forward-drag frame.
+  // Each physical side can come from a different source. Normal native-to-native
+  // turns use two spread leaves, while edge turns (especially the final spread ->
+  // back cover) intentionally mix a native spread front with a page-authored
+  // reverse face. Requiring both faces to be native OR both to be hydrated pages
+  // makes that mixed transition lose its turning sheet completely.
   const canRenderTurnSheet = Boolean(
-    (currentTurnNativeSpread && backTurnNativeSpread) ||
-    (currentTurnPage && backTurnPage)
+    (currentTurnNativeSpread || currentTurnPage) &&
+    (backTurnNativeSpread || backTurnPage)
   );
 
   const renderNativeStaticLeaf = (
