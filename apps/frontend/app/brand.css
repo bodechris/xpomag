@@ -1929,3 +1929,192 @@ select:focus {
 .xp-home-hero__turn-face--back {
   transform: rotateY(180deg) translateZ(.15px) !important;
 }
+
+
+/* ==========================================================================
+   HERO FLIP ENGINE V4 · DUAL CENTER LEAVES
+   Both halves of the current slide are already in place before animation.
+   They rotate away from the center together and reveal the complete target
+   slide underneath. There is no stationary old half and therefore no final
+   half-screen swap to snap into place.
+   ========================================================================== */
+
+.xp-home-hero {
+  --xp-hero-flip-duration: 560ms;
+}
+
+.xp-home-hero__slides {
+  perspective: 1450px !important;
+  perspective-origin: 50% 50% !important;
+  overflow: hidden !important;
+}
+
+.xp-home-hero__flip-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+}
+
+.xp-home-hero__leaf {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+  overflow: hidden;
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  will-change: transform;
+  contain: paint;
+}
+
+.xp-home-hero__leaf--left {
+  left: 0;
+  transform-origin: right center;
+  animation: xp-home-leaf-left var(--xp-hero-flip-duration) cubic-bezier(.30,.02,.18,1) both;
+}
+
+.xp-home-hero__leaf--right {
+  right: 0;
+  transform-origin: left center;
+  animation: xp-home-leaf-right var(--xp-hero-flip-duration) cubic-bezier(.30,.02,.18,1) both;
+}
+
+@keyframes xp-home-leaf-left {
+  from { transform: rotateY(0deg); }
+  to { transform: rotateY(92deg); }
+}
+
+@keyframes xp-home-leaf-right {
+  from { transform: rotateY(0deg); }
+  to { transform: rotateY(-92deg); }
+}
+
+/* Each half carries the same full-size outgoing hero texture. 200% of a half
+   is exactly the hero width, so both halves are pixel-identical to the original
+   flat slide and never depend on 100vw / scrollbar math. */
+.xp-home-hero__leaf-canvas {
+  position: absolute;
+  top: 0;
+  width: 200%;
+  height: 100%;
+  margin: 0;
+  transform: none !important;
+  -webkit-transform: none !important;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.xp-home-hero__leaf-canvas--left {
+  left: 0;
+}
+
+.xp-home-hero__leaf-canvas--right {
+  left: -100%;
+}
+
+.xp-home-hero__leaf-canvas .xp-home-hero__image,
+.xp-home-hero__leaf-canvas .xp-home-hero__wash,
+.xp-home-hero__leaf-canvas .xp-home-hero__content {
+  transform: none !important;
+  -webkit-transform: none !important;
+}
+
+/* Depth cue only; no opacity animation on the leaf itself. */
+.xp-home-hero__leaf-shade {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  pointer-events: none;
+  opacity: 0;
+  animation: xp-home-leaf-light var(--xp-hero-flip-duration) linear both;
+}
+
+.xp-home-hero__leaf-shade--left {
+  background: linear-gradient(270deg,
+    rgba(2,2,2,.28) 0%,
+    rgba(2,2,2,.09) 24%,
+    rgba(2,2,2,0) 68%);
+}
+
+.xp-home-hero__leaf-shade--right {
+  background: linear-gradient(90deg,
+    rgba(2,2,2,.28) 0%,
+    rgba(2,2,2,.09) 24%,
+    rgba(2,2,2,0) 68%);
+}
+
+@keyframes xp-home-leaf-light {
+  0%, 100% { opacity: 0; }
+  48%, 58% { opacity: .82; }
+}
+
+/* A single center shadow reinforces the hinge while both halves leave it. */
+.xp-home-hero__center-shadow {
+  position: absolute;
+  z-index: 30;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 28px;
+  transform: translateX(-50%) scaleX(.25);
+  opacity: 0;
+  pointer-events: none;
+  background: linear-gradient(90deg,
+    transparent,
+    rgba(2,2,2,.24),
+    transparent);
+  filter: blur(7px);
+  animation: xp-home-center-shadow var(--xp-hero-flip-duration) linear both;
+}
+
+@keyframes xp-home-center-shadow {
+  0%, 100% { opacity: 0; transform: translateX(-50%) scaleX(.25); }
+  50% { opacity: .72; transform: translateX(-50%) scaleX(1); }
+}
+
+/* The complete target slide is rendered underneath from frame zero and remains
+   the same DOM surface after the overlay is removed. */
+.xp-home-hero__slide.is-active {
+  visibility: visible !important;
+  opacity: 1 !important;
+  transform: none !important;
+  -webkit-transform: none !important;
+  transition: none !important;
+}
+
+.xp-home-hero.is-flipping .xp-home-hero__slide.is-active {
+  z-index: 2;
+}
+
+/* Disable all previous flip geometry if any legacy selector remains in CSS. */
+.xp-home-hero__stationary,
+.xp-home-hero__turn-sheet,
+.xp-home-hero__turn-rotor,
+.xp-home-hero__turn-face,
+.xp-home-hero__hinge-shadow {
+  display: none !important;
+}
+
+@media (max-width: 720px) {
+  .xp-home-hero__slides {
+    perspective: 1100px !important;
+  }
+
+  .xp-home-hero__center-shadow {
+    width: 18px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .xp-home-hero__leaf--left,
+  .xp-home-hero__leaf--right,
+  .xp-home-hero__leaf-shade,
+  .xp-home-hero__center-shadow {
+    animation-duration: 1ms !important;
+  }
+}

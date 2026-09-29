@@ -101,7 +101,7 @@ export function HomeHero() {
         lockRef.current = false;
         fallbackRef.current = null;
       });
-    }, 900);
+    }, 760);
     return true;
   }, [active]);
 
@@ -162,36 +162,28 @@ export function HomeHero() {
         </article>
 
         {outgoingSlide ? (
-          <>
-            <div className={`xp-home-hero__stationary xp-home-hero__stationary--${direction}`} aria-hidden="true">
-              <div className="xp-home-hero__full-canvas">
+          <div className="xp-home-hero__flip-overlay" aria-hidden="true">
+            <div className="xp-home-hero__leaf xp-home-hero__leaf--left">
+              <div className="xp-home-hero__leaf-canvas xp-home-hero__leaf-canvas--left">
                 <HeroVisual slide={outgoingSlide} inert />
               </div>
+              <div className="xp-home-hero__leaf-shade xp-home-hero__leaf-shade--left" />
             </div>
 
-            <div className={`xp-home-hero__turn-sheet xp-home-hero__turn-sheet--${direction}`} aria-hidden="true">
-              <div
-                className="xp-home-hero__turn-rotor"
-                onAnimationEnd={(event) => {
-                  if (event.currentTarget === event.target) finishFlip();
-                }}
-              >
-                <div className="xp-home-hero__turn-face xp-home-hero__turn-face--front">
-                  <div className={`xp-home-hero__face-canvas xp-home-hero__face-canvas--front-${direction}`}>
-                    <HeroVisual slide={outgoingSlide} inert />
-                  </div>
-                  <div className="xp-home-hero__turn-shade" />
-                </div>
-                <div className="xp-home-hero__turn-face xp-home-hero__turn-face--back">
-                  <div className={`xp-home-hero__face-canvas xp-home-hero__face-canvas--back-${direction}`}>
-                    <HeroVisual slide={activeSlide} inert />
-                  </div>
-                  <div className="xp-home-hero__turn-highlight" />
-                </div>
+            <div
+              className="xp-home-hero__leaf xp-home-hero__leaf--right"
+              onAnimationEnd={(event) => {
+                if (event.currentTarget === event.target) finishFlip();
+              }}
+            >
+              <div className="xp-home-hero__leaf-canvas xp-home-hero__leaf-canvas--right">
+                <HeroVisual slide={outgoingSlide} inert />
               </div>
-              <div className="xp-home-hero__hinge-shadow" />
+              <div className="xp-home-hero__leaf-shade xp-home-hero__leaf-shade--right" />
             </div>
-          </>
+
+            <div className="xp-home-hero__center-shadow" />
+          </div>
         ) : null}
       </div>
 
