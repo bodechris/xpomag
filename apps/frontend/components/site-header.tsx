@@ -1,10 +1,10 @@
 "use client";
 
-import { Bookmark, ChevronDown, Home, LogOut, Menu, UserRound, X } from "lucide-react";
+import { Bookmark, ChevronDown, Home, LogOut, Menu, Search, UserRound, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { authClient } from "../lib/auth-client";
 
-export function SiteHeader({ city }: { city: string }) {
+export function SiteHeader({ city, variant = "default" }: { city?: string; variant?: "default" | "hero" }) {
   const { data: session, isPending } = authClient.useSession();
   const [profileOpen, setProfileOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -36,24 +36,26 @@ export function SiteHeader({ city }: { city: string }) {
 
   return (
     <>
-      <header className="xp-site-header">
-        <div className="xp-container xp-site-header__inner">
+      <header className={`xp-site-header xp-site-header--${variant}`}>
+        <div className="xp-site-header__inner">
           <div className="xp-site-header__brand">
-            {user ? <button className="xp-member-menu-trigger" type="button" onClick={() => setMenuOpen(true)} aria-label="Open member menu"><Menu size={18} /></button> : null}
+            {user ? <button className="xp-member-menu-trigger" type="button" onClick={() => setMenuOpen(true)} aria-label="Open member menu"><Menu size={19} /></button> : null}
             <a href="/" className="xp-site-header__logo" aria-label="XpoMag home">
-              <img className="xp-site-header__logo-img" src="/resources/brand/horizontal-logo-black@2x.png" alt="XpoMag" />
+              <img className="xp-site-header__logo-img" src="/horizontal-logo-black.svg" alt="XpoMag" />
             </a>
-            <span className="xp-site-header__divider" aria-hidden="true" />
-            <span className="xp-label xp-site-header__city">{city}</span>
+            {city ? <><span className="xp-site-header__divider" aria-hidden="true" /><span className="xp-label xp-site-header__city">{city}</span></> : null}
           </div>
 
-          <nav aria-label="Primary" className="xp-site-header__nav">
-            {!isPending && !user ? (
-              <>
-                <a className="xp-button xp-button--ghost" href="#about">About</a>
-                <a className="xp-button" href="/login">Sign in</a>
-              </>
-            ) : null}
+          <nav aria-label="Primary" className="xp-site-header__links">
+            <a href="/explore">Explore</a>
+            <a href="/explore" className="xp-site-header__cities">Cities <ChevronDown size={14} /></a>
+            <a href="/studio">For Brands</a>
+            <a href="/about">How it works</a>
+          </nav>
+
+          <div className="xp-site-header__actions">
+            <a className="xp-site-header__search" href="/explore" aria-label="Search XpoMag"><Search size={21} /></a>
+            {!isPending && !user ? <a className="xp-site-header__signin" href="/auth">Sign in</a> : null}
             {user ? (
               <div className="xp-profile" ref={profileRef}>
                 <button type="button" className="xp-profile__trigger" onClick={() => setProfileOpen((value) => !value)} aria-expanded={profileOpen} aria-label="Open profile menu">
@@ -71,32 +73,31 @@ export function SiteHeader({ city }: { city: string }) {
                 ) : null}
               </div>
             ) : null}
-          </nav>
+            <a className="xp-site-header__submit" href="/contribute">Submit a story</a>
+          </div>
+
+          <button className="xp-site-header__mobile-menu" type="button" onClick={() => setMenuOpen(true)} aria-label="Open menu"><Menu size={22} /></button>
         </div>
       </header>
 
-      {user ? (
-        <>
-          <button className="xp-member-rail-trigger" type="button" onClick={() => setMenuOpen(true)} aria-label="Open member menu"><Menu size={18} /></button>
-          <div className={`xp-member-drawer-backdrop ${menuOpen ? "is-open" : ""}`} onMouseDown={(event) => { if (event.target === event.currentTarget) setMenuOpen(false); }} aria-hidden={!menuOpen}>
-            <aside className={`xp-member-drawer ${menuOpen ? "is-open" : ""}`} aria-label="Member navigation">
-              <div className="xp-member-drawer__top">
-                <a href="/" className="xp-member-drawer__brand" aria-label="XpoMag home">
-                  <img src="/resources/brand/horizontal-logo-black@2x.png" alt="XpoMag" />
-                </a>
-                <button type="button" onClick={() => setMenuOpen(false)} aria-label="Close member menu"><X size={18} /></button>
-              </div>
-              <div className="xp-member-drawer__identity"><span className="xp-profile__avatar xp-profile__avatar--large">{initials}</span><div><strong>{user.name || "XpoMag member"}</strong><span>{user.email}</span></div></div>
-              <nav className="xp-member-drawer__nav">
-                <a href="/"><Home size={18} /><span>Discover</span></a>
-                <a href="/saved"><Bookmark size={18} /><span>Saved collections</span></a>
-                <span className="xp-member-drawer__soon"><UserRound size={18} /><span>Profile</span><small>Soon</small></span>
-              </nav>
-              <button className="xp-member-drawer__signout" type="button" onClick={signOut}><LogOut size={18} /><span>Sign out</span></button>
-            </aside>
+      <div className={`xp-member-drawer-backdrop ${menuOpen ? "is-open" : ""}`} onMouseDown={(event) => { if (event.target === event.currentTarget) setMenuOpen(false); }} aria-hidden={!menuOpen}>
+        <aside className={`xp-member-drawer ${menuOpen ? "is-open" : ""}`} aria-label="Navigation">
+          <div className="xp-member-drawer__top">
+            <a href="/" className="xp-member-drawer__brand" aria-label="XpoMag home"><img src="/horizontal-logo-black.svg" alt="XpoMag" /></a>
+            <button type="button" onClick={() => setMenuOpen(false)} aria-label="Close menu"><X size={20} /></button>
           </div>
-        </>
-      ) : null}
+          {user ? <div className="xp-member-drawer__identity"><span className="xp-profile__avatar xp-profile__avatar--large">{initials}</span><div><strong>{user.name || "XpoMag member"}</strong><span>{user.email}</span></div></div> : null}
+          <nav className="xp-member-drawer__nav">
+            <a href="/explore"><Search size={18} /><span>Explore</span></a>
+            <a href="/explore"><Home size={18} /><span>Cities</span></a>
+            <a href="/studio"><UserRound size={18} /><span>For Brands</span></a>
+            <a href="/about"><UserRound size={18} /><span>How it works</span></a>
+            <a href="/contribute"><UserRound size={18} /><span>Submit a story</span></a>
+            {user ? <a href="/saved"><Bookmark size={18} /><span>Saved collections</span></a> : <a href="/auth"><UserRound size={18} /><span>Sign in</span></a>}
+          </nav>
+          {user ? <button className="xp-member-drawer__signout" type="button" onClick={signOut}><LogOut size={18} /><span>Sign out</span></button> : null}
+        </aside>
+      </div>
     </>
   );
 }
