@@ -698,16 +698,25 @@ img, picture, video, canvas, svg { display: block; max-width: 100%; }
   transform: translateX(calc(var(--xp-turn-progress) * -25%));
 }
 
-/* Programmatic completion / threshold completion gets a smooth finish.
-   Dragging is fully direct and has no transition lag. */
+/* Page-turn progress is now driven frame-by-frame in JS for every committed
+   turn. Do not add a second CSS interpolation to geometry that already depends
+   on --xp-turn-progress. That double easing made edge transitions (especially
+   open spread -> front/back cover) visibly lag behind the turning sheet and
+   then catch up near the end. */
 .xp-magazine__stage[data-phase="animating"] .xp-magazine__spread-layer,
 .xp-magazine__stage[data-phase="animating"] .xp-magazine__sheet,
 .xp-magazine__stage[data-phase="animating"] .xp-magazine__native-spread,
-.xp-magazine__stage[data-phase="animating"] .xp-magazine__book-shadow {
-  transition:
-    transform 760ms var(--xp-ease-page),
-    opacity 760ms var(--xp-ease-page),
-    left 760ms var(--xp-ease-page);
+.xp-magazine__stage[data-phase="animating"] .xp-magazine__book-shadow,
+.xp-magazine__stage[data-phase="animating"] .xp-magazine__turn-sheet,
+.xp-magazine__stage[data-phase="animating"] .xp-magazine__turn-rotor {
+  transition: none !important;
+}
+
+.xp-magazine__stage[data-phase="animating"] .xp-magazine__native-spread,
+.xp-magazine__stage[data-phase="animating"] .xp-magazine__sheet,
+.xp-magazine__stage[data-phase="animating"] .xp-magazine__turn-sheet,
+.xp-magazine__stage[data-phase="animating"] .xp-magazine__turn-rotor {
+  will-change: transform, left;
 }
 
 /* Mobile reading sequence:
