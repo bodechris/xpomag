@@ -705,9 +705,9 @@ img, picture, video, canvas, svg { display: block; max-width: 100%; }
 .xp-magazine__stage[data-phase="animating"] .xp-magazine__native-spread,
 .xp-magazine__stage[data-phase="animating"] .xp-magazine__book-shadow {
   transition:
-    transform 560ms var(--xp-ease-page),
-    opacity 560ms var(--xp-ease-page),
-    left 560ms var(--xp-ease-page);
+    transform 760ms var(--xp-ease-page),
+    opacity 760ms var(--xp-ease-page),
+    left 760ms var(--xp-ease-page);
 }
 
 /* Mobile reading sequence:
