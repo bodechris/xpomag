@@ -1,6 +1,6 @@
 "use client";
 
-import { Bookmark, Home, LogOut, Menu, Search, UserRound, X } from "lucide-react";
+import { Bookmark, ChevronDown, Home, LogOut, Menu, Search, UserRound, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { authClient } from "../lib/auth-client";
 
