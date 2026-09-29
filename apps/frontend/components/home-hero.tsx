@@ -101,7 +101,7 @@ export function HomeHero() {
         lockRef.current = false;
         fallbackRef.current = null;
       });
-    }, 760);
+    }, 780);
     return true;
   }, [active]);
 
@@ -162,27 +162,35 @@ export function HomeHero() {
         </article>
 
         {outgoingSlide ? (
-          <div className="xp-home-hero__flip-overlay" aria-hidden="true">
-            <div className="xp-home-hero__leaf xp-home-hero__leaf--left">
-              <div className="xp-home-hero__leaf-canvas xp-home-hero__leaf-canvas--left">
+          <div className={`xp-home-hero__one-flip xp-home-hero__one-flip--${direction}`} aria-hidden="true">
+            <div className={`xp-home-hero__stationary-half xp-home-hero__stationary-half--${direction}`}>
+              <div className={`xp-home-hero__half-canvas xp-home-hero__half-canvas--stationary-${direction}`}>
                 <HeroVisual slide={outgoingSlide} inert />
               </div>
-              <div className="xp-home-hero__leaf-shade xp-home-hero__leaf-shade--left" />
             </div>
 
             <div
-              className="xp-home-hero__leaf xp-home-hero__leaf--right"
+              className={`xp-home-hero__page-sheet xp-home-hero__page-sheet--${direction}`}
               onAnimationEnd={(event) => {
                 if (event.currentTarget === event.target) finishFlip();
               }}
             >
-              <div className="xp-home-hero__leaf-canvas xp-home-hero__leaf-canvas--right">
-                <HeroVisual slide={outgoingSlide} inert />
+              <div className="xp-home-hero__page-face xp-home-hero__page-face--front">
+                <div className={`xp-home-hero__half-canvas xp-home-hero__half-canvas--front-${direction}`}>
+                  <HeroVisual slide={outgoingSlide} inert />
+                </div>
+                <div className="xp-home-hero__page-shade" />
               </div>
-              <div className="xp-home-hero__leaf-shade xp-home-hero__leaf-shade--right" />
+
+              <div className="xp-home-hero__page-face xp-home-hero__page-face--back">
+                <div className={`xp-home-hero__half-canvas xp-home-hero__half-canvas--back-${direction}`}>
+                  <HeroVisual slide={activeSlide} inert />
+                </div>
+                <div className="xp-home-hero__page-highlight" />
+              </div>
             </div>
 
-            <div className="xp-home-hero__center-shadow" />
+            <div className="xp-home-hero__one-spine-shadow" />
           </div>
         ) : null}
       </div>

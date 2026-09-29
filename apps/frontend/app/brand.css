@@ -2118,3 +2118,232 @@ select:focus {
     animation-duration: 1ms !important;
   }
 }
+
+
+/* ==========================================================================
+   HERO FLIP ENGINE V5 · SINGLE CENTER-HINGED SHEET
+   Reuses the stable V4 strategy: the final slide exists underneath from frame
+   zero. Only one physical half-screen sheet turns across the center. The
+   opposite old half dissolves underneath the turning sheet instead of being
+   swapped after the animation.
+   ========================================================================== */
+
+.xp-home-hero {
+  --xp-hero-flip-duration: 620ms;
+}
+
+.xp-home-hero__one-flip {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  perspective: 1500px;
+  perspective-origin: 50% 50%;
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+}
+
+.xp-home-hero__stationary-half,
+.xp-home-hero__page-sheet {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+}
+
+.xp-home-hero__stationary-half {
+  z-index: 3;
+  overflow: hidden;
+  contain: paint;
+  animation: xp-home-stationary-dissolve var(--xp-hero-flip-duration) linear both;
+}
+
+.xp-home-hero__stationary-half--next {
+  left: 0;
+}
+
+.xp-home-hero__stationary-half--previous {
+  right: 0;
+}
+
+@keyframes xp-home-stationary-dissolve {
+  0%, 42% { opacity: 1; }
+  72% { opacity: .46; }
+  100% { opacity: 0; }
+}
+
+.xp-home-hero__page-sheet {
+  z-index: 5;
+  overflow: visible;
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.xp-home-hero__page-sheet--next {
+  left: 50%;
+  transform-origin: left center;
+  animation: xp-home-single-page-next var(--xp-hero-flip-duration) cubic-bezier(.28,.02,.2,1) both;
+}
+
+.xp-home-hero__page-sheet--previous {
+  left: 0;
+  transform-origin: right center;
+  animation: xp-home-single-page-previous var(--xp-hero-flip-duration) cubic-bezier(.28,.02,.2,1) both;
+}
+
+@keyframes xp-home-single-page-next {
+  from { transform: rotateY(0deg); }
+  to { transform: rotateY(-180deg); }
+}
+
+@keyframes xp-home-single-page-previous {
+  from { transform: rotateY(0deg); }
+  to { transform: rotateY(180deg); }
+}
+
+.xp-home-hero__page-face {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #eef2f3;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform-style: flat;
+  contain: paint;
+}
+
+.xp-home-hero__page-face--front {
+  transform: translateZ(.15px);
+}
+
+.xp-home-hero__page-face--back {
+  transform: rotateY(180deg) translateZ(.15px);
+}
+
+.xp-home-hero__half-canvas {
+  position: absolute;
+  top: 0;
+  width: 200%;
+  height: 100%;
+  margin: 0;
+  transform: none !important;
+  -webkit-transform: none !important;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.xp-home-hero__half-canvas--stationary-next,
+.xp-home-hero__half-canvas--front-previous,
+.xp-home-hero__half-canvas--back-next {
+  left: 0;
+}
+
+.xp-home-hero__half-canvas--stationary-previous,
+.xp-home-hero__half-canvas--front-next,
+.xp-home-hero__half-canvas--back-previous {
+  left: -100%;
+}
+
+.xp-home-hero__half-canvas .xp-home-hero__image,
+.xp-home-hero__half-canvas .xp-home-hero__wash,
+.xp-home-hero__half-canvas .xp-home-hero__content {
+  transform: none !important;
+  -webkit-transform: none !important;
+}
+
+.xp-home-hero__page-shade,
+.xp-home-hero__page-highlight {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  pointer-events: none;
+  opacity: 0;
+  animation: xp-home-single-page-light var(--xp-hero-flip-duration) linear both;
+}
+
+.xp-home-hero__page-shade {
+  background: linear-gradient(90deg,
+    rgba(2,2,2,.02) 0%,
+    rgba(2,2,2,.07) 42%,
+    rgba(2,2,2,.30) 100%);
+}
+
+.xp-home-hero__one-flip--previous .xp-home-hero__page-shade {
+  background: linear-gradient(270deg,
+    rgba(2,2,2,.02) 0%,
+    rgba(2,2,2,.07) 42%,
+    rgba(2,2,2,.30) 100%);
+}
+
+.xp-home-hero__page-highlight {
+  background: linear-gradient(90deg,
+    transparent 16%,
+    rgba(255,255,255,.04) 42%,
+    rgba(255,255,255,.30) 61%,
+    transparent 84%);
+}
+
+@keyframes xp-home-single-page-light {
+  0%, 100% { opacity: 0; }
+  48%, 56% { opacity: .8; }
+}
+
+.xp-home-hero__one-spine-shadow {
+  position: absolute;
+  z-index: 30;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 28px;
+  transform: translateX(-50%) scaleX(.25);
+  opacity: 0;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent, rgba(2,2,2,.25), transparent);
+  filter: blur(7px);
+  animation: xp-home-one-spine var(--xp-hero-flip-duration) linear both;
+}
+
+@keyframes xp-home-one-spine {
+  0%, 100% { opacity: 0; transform: translateX(-50%) scaleX(.25); }
+  50% { opacity: .72; transform: translateX(-50%) scaleX(1); }
+}
+
+/* The same final slide remains underneath the entire time. There is no final
+   image insertion or half-screen replacement when the page disappears. */
+.xp-home-hero.is-flipping .xp-home-hero__slide.is-active {
+  z-index: 2;
+  visibility: visible !important;
+  opacity: 1 !important;
+  transform: none !important;
+  transition: none !important;
+}
+
+/* Retire the V4 two-leaf geometry. */
+.xp-home-hero__flip-overlay,
+.xp-home-hero__leaf,
+.xp-home-hero__leaf-canvas,
+.xp-home-hero__leaf-shade,
+.xp-home-hero__center-shadow {
+  display: none !important;
+}
+
+@media (max-width: 720px) {
+  .xp-home-hero__one-flip {
+    perspective: 1120px;
+  }
+
+  .xp-home-hero__one-spine-shadow {
+    width: 18px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .xp-home-hero__stationary-half,
+  .xp-home-hero__page-sheet,
+  .xp-home-hero__page-shade,
+  .xp-home-hero__page-highlight,
+  .xp-home-hero__one-spine-shadow {
+    animation-duration: 1ms !important;
+  }
+}
