@@ -2360,3 +2360,98 @@ select:focus {
     perspective: 1700px !important;
   }
 }
+
+
+/* ==========================================================================
+   GLOBAL HEADER · CONSISTENT APP CHROME
+   Default pages use one solid, full-width header. Only immersive surfaces
+   (homepage hero / reader) keep the transparent overlay treatment.
+   ========================================================================== */
+
+.xp-site-header--default {
+  position: relative;
+  inset: auto;
+  width: 100%;
+  background: rgba(255,255,255,.97);
+  border-bottom: 1px solid rgba(2,2,2,.08);
+  box-shadow: 0 1px 0 rgba(255,255,255,.7);
+  backdrop-filter: blur(18px) saturate(135%);
+  -webkit-backdrop-filter: blur(18px) saturate(135%);
+}
+
+.xp-site-header--default .xp-site-header__inner {
+  width: 100%;
+  max-width: none;
+  min-height: 76px;
+  margin: 0;
+  padding: 0 clamp(1.25rem, 4vw, 4.25rem);
+  grid-template-columns: minmax(190px, 1fr) auto minmax(300px, 1fr);
+  gap: clamp(1rem, 2vw, 2.4rem);
+  background: transparent;
+}
+
+.xp-site-header--default .xp-site-header__logo-img {
+  width: clamp(8.6rem, 10vw, 10.8rem);
+}
+
+.xp-site-header--default .xp-site-header__links {
+  gap: clamp(1.1rem, 2vw, 2.25rem);
+}
+
+.xp-site-header--default .xp-site-header__actions {
+  gap: clamp(.7rem, 1.25vw, 1.2rem);
+}
+
+/* Immersive header keeps the exact homepage visual language. */
+.xp-site-header--hero {
+  background: transparent;
+  border-bottom: 0;
+  box-shadow: none;
+}
+
+.xp-site-header--hero .xp-site-header__inner {
+  width: min(92vw, 1420px);
+  max-width: 1420px;
+  padding: 0;
+}
+
+/* Explore previously carried a second legacy wordmark inside its hero. */
+.xp-explore__brand {
+  display: none !important;
+}
+
+/* Give standard pages a clean handoff from global chrome to page content. */
+.xp-site-header--default + main,
+.xp-site-header--default + .xp-page,
+.xp-site-header--default + .xp-auth {
+  position: relative;
+}
+
+/* Auth already owns a full viewport composition. Account for global chrome
+   without changing its internal split layout. */
+.xp-site-header--default + .xp-auth {
+  min-height: calc(100svh - 76px);
+}
+
+@media (max-width: 1080px) {
+  .xp-site-header--default .xp-site-header__inner {
+    min-height: 70px;
+    grid-template-columns: 1fr auto;
+    padding-inline: clamp(1rem, 3vw, 2rem);
+  }
+}
+
+@media (max-width: 720px) {
+  .xp-site-header--default .xp-site-header__inner {
+    min-height: 64px;
+    padding-inline: 1rem;
+  }
+
+  .xp-site-header--default .xp-site-header__logo-img {
+    width: 8rem;
+  }
+
+  .xp-site-header--default + .xp-auth {
+    min-height: calc(100svh - 64px);
+  }
+}

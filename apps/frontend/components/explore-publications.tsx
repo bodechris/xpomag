@@ -24,7 +24,6 @@ export function ExplorePublications({ initialPublications, authenticated }: { in
   const coming=items.filter(item=>item.status==="COMING_SOON");
   return <div className="xp-explore">
     <section className="xp-explore__hero">
-      <a className="xp-explore__brand" href="/">XpoMag</a>
       <p className="xp-explore__eyebrow">EXPLORE XPOMAG</p>
       <h1>Every City<br/>Has a Story.</h1>
       <p className="xp-explore__intro">Find and follow the social magazines for the cities you care about. New issues, people, places and discoveries will live here.</p>
