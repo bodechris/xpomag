@@ -4,7 +4,6 @@ import { headers } from "next/headers";
 import { notFound } from "next/navigation";
 import { auth, ensureAuthInfrastructure } from "../../../../lib/auth-server";
 import { ArticlePost } from "../../../../components/article-post";
-import { SiteHeader } from "../../../../components/site-header";
 import { getDemoMagazineBySlug } from "../../../../lib/demo-magazine";
 import { articleJsonLd, buildPageMetadata } from "../../../../lib/seo";
 import { isStandaloneArticleKind } from "../../../../lib/magazine-reader-data";
@@ -39,7 +38,6 @@ export default async function ArticlePage({ params }: RouteProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
       />
-      <SiteHeader city={issue.city} />
       <ArticlePost issue={issue} page={page} viewerAuthenticated={Boolean(viewerSession?.user)} />
     </main>
   );

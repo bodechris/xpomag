@@ -1,7 +1,6 @@
 import { headers } from "next/headers";
 import { auth, ensureAuthInfrastructure } from "../../lib/auth-server";
 import { PublicationFollowButton, type PublicPublication } from "../../components/publication-follow-button";
-import { SiteHeader } from "../../components/site-header";
 import { HomeHero } from "../../components/home-hero";
 
 export const dynamic = "force-dynamic";
@@ -30,7 +29,6 @@ export default async function Home() {
 
   return (
     <main className="xp-discover xp-home">
-      <SiteHeader variant="hero" />
       <HomeHero />
 
       {following.length ? (

@@ -2,7 +2,6 @@
 
 import { Bookmark, ChevronRight, FolderHeart, Loader2 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
-import { SiteHeader } from "../../components/site-header";
 import { authClient } from "../../lib/auth-client";
 
 type Collection = { id: string; name: string; itemCount: number; createdAt: string };
@@ -43,7 +42,6 @@ export default function SavedPage() {
 
   return (
     <main className="xp-saved-page">
-      <SiteHeader city="Your XpoMag" />
       <section className="xp-container xp-saved-shell">
         <header className="xp-saved-hero"><p className="xp-label">Your library</p><h1>Saved collections.</h1><p>Keep the stories, places and ideas you want to come back to.</p></header>
         {loading ? <div className="xp-saved-loading"><Loader2 size={20} className="xp-spin" /> Loading your saves…</div> : (

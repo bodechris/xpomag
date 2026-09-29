@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import "./brand.css";
 import { AppProviders } from "./providers/app-providers";
+import { GlobalSiteHeader } from "../components/global-site-header";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://xpomag-frontend.vercel.app";
 
@@ -36,7 +37,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <meta name="theme-color" content="#F91616" />
       </head>
       <body>
-        <AppProviders>{children}</AppProviders>
+        <AppProviders><GlobalSiteHeader />{children}</AppProviders>
       </body>
     </html>
   );
