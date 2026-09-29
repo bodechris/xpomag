@@ -17,7 +17,7 @@ function ResilientImage({ sources, alt, className = "" }: { sources: string[]; a
 
 const joburg = ["/home/joburg-mag-cover-01.webp","/home/joburg-mag-cover-02.webp","/home/hero-1.webp"];
 const lagos = ["/home/xpomag-lagos-01.webp","/home/hero-2.webp"];
-const steyn = ["/home/steyn-city-cover-01.webp","/resources/studio/steyn/steyn-city-img-01.webp"];
+const steyn = ["/home/steyn-city-2026-magazine-cover-thumbnail-01.webp","/home/steyn-city-cover-01.webp"];
 
 export function HomeShowcase() {
   return (
