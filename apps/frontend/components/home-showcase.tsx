@@ -14,8 +14,8 @@ function ResilientImage({ sources, alt, className = "" }: { sources: string[]; a
   );
 }
 
-const joburg = ["/home/joburg-thumbnail.webp","/home/joburg-cover.webp","/home/joburg.webp","/home/hero-1.webp"];
-const lagos = ["/home/lagos-thumbnail.webp","/home/lagos-cover.webp","/home/lagos.webp","/home/hero-2.webp"];
+const joburg = ["/home/joburg-mag-cover-01.webp","/home/joburg-mag-cover-02.webp","/home/hero-1.webp"];
+const lagos = ["/home/xpomag-lagos-01.webp","/home/hero-2.webp"];
 const steyn = ["/home/steyn-thumbnail.webp","/home/steyn-city-thumbnail.webp","/home/steyn-city.webp","/resources/studio/steyn/steyn-city-img-01.webp"];
 
 export function HomeShowcase() {
