@@ -71,6 +71,7 @@ function HeroVisual({ slide, inert = false }: { slide: HeroSlide; inert?: boolea
 
 export function HomeHero() {
   const [active, setActive] = useState(0);
+  const [target, setTarget] = useState<number | null>(null);
   const [outgoing, setOutgoing] = useState<number | null>(null);
   const [direction, setDirection] = useState<"next" | "previous">("next");
   const lockRef = useRef(false);
@@ -90,12 +91,16 @@ export function HomeHero() {
     lockRef.current = true;
     setDirection(next > active ? "next" : "previous");
     setOutgoing(active);
-    setActive(next);
+    setTarget(next);
     if (fallbackRef.current) window.clearTimeout(fallbackRef.current);
     fallbackRef.current = window.setTimeout(() => {
-      setOutgoing(null);
-      lockRef.current = false;
-      fallbackRef.current = null;
+      setActive(next);
+      requestAnimationFrame(() => {
+        setTarget(null);
+        setOutgoing(null);
+        lockRef.current = false;
+        fallbackRef.current = null;
+      });
     }, 900);
     return true;
   }, [active]);
@@ -107,15 +112,18 @@ export function HomeHero() {
   }, []);
 
   const finishFlip = useCallback(() => {
+    if (target === null) return;
+    if (fallbackRef.current) window.clearTimeout(fallbackRef.current);
+    fallbackRef.current = null;
+    setActive(target);
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
-        if (fallbackRef.current) window.clearTimeout(fallbackRef.current);
-        fallbackRef.current = null;
+        setTarget(null);
         setOutgoing(null);
         lockRef.current = false;
       });
     });
-  }, []);
+  }, [target]);
 
   useEffect(() => {
     const hero = heroRef.current;
@@ -137,7 +145,8 @@ export function HomeHero() {
   }, [active, goTo]);
 
   const outgoingSlide = outgoing === null ? null : slides[outgoing];
-  const activeSlide = slides[active];
+  const visualIndex = target ?? active;
+  const activeSlide = slides[visualIndex];
 
   return (
     <section
@@ -192,16 +201,16 @@ export function HomeHero() {
             <button
               key={slide.eyebrow}
               type="button"
-              className={index === active ? "is-active" : ""}
+              className={index === visualIndex ? "is-active" : ""}
               onClick={() => goTo(index)}
               aria-label={`Go to hero slide ${index + 1}`}
-              aria-current={index === active ? "true" : undefined}
+              aria-current={index === visualIndex ? "true" : undefined}
             />
           ))}
         </div>
       </div>
 
-      <div className="xp-home-hero__count" aria-hidden="true"><strong>0{active + 1}</strong><span>/ 0{slides.length}</span></div>
+      <div className="xp-home-hero__count" aria-hidden="true"><strong>0{visualIndex + 1}</strong><span>/ 0{slides.length}</span></div>
     </section>
   );
 }

@@ -1871,3 +1871,61 @@ select:focus {
     animation-duration: 1ms !important;
   }
 }
+
+
+/* ==========================================================================
+   HERO FLIP ENGINE V3 · PERSISTENT TARGET SURFACE / NO POST-FLIP SWAP
+   ========================================================================== */
+
+.xp-home-hero__full-canvas,
+.xp-home-hero__face-canvas {
+  width: 200% !important;
+  height: 100% !important;
+  top: 0 !important;
+  margin: 0 !important;
+}
+
+.xp-home-hero__face-canvas--front-next { left: -100% !important; }
+.xp-home-hero__face-canvas--back-next { left: 0 !important; }
+.xp-home-hero__face-canvas--front-previous { left: 0 !important; }
+.xp-home-hero__face-canvas--back-previous { left: -100% !important; }
+
+.xp-home-hero__stationary--next .xp-home-hero__full-canvas {
+  left: 0 !important;
+  right: auto !important;
+}
+
+.xp-home-hero__stationary--previous .xp-home-hero__full-canvas {
+  left: auto !important;
+  right: 0 !important;
+}
+
+.xp-home-hero__slide.is-active,
+.xp-home-hero__slide.is-active > * {
+  transition: none !important;
+}
+
+.xp-home-hero__slide.is-active {
+  transform: none !important;
+  -webkit-transform: none !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.xp-home-hero.is-flipping .xp-home-hero__turn-sheet,
+.xp-home-hero.is-flipping .xp-home-hero__stationary,
+.xp-home-hero.is-flipping .xp-home-hero__turn-face {
+  opacity: 1 !important;
+}
+
+.xp-home-hero.is-flipping::after {
+  display: none !important;
+}
+
+.xp-home-hero__turn-face--front {
+  transform: translateZ(.15px) !important;
+}
+
+.xp-home-hero__turn-face--back {
+  transform: rotateY(180deg) translateZ(.15px) !important;
+}
