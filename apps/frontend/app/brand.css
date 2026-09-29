@@ -2589,3 +2589,36 @@ select:focus {
   .xp-studio-process>div p { grid-column:2; }
   .xp-home-final>div { flex-direction:column; }
 }
+
+
+/* Homepage image/icon polish */
+.xp-home-interact__visual img,
+.xp-home-studio__visual img,
+.xp-studio-case__visual img {
+  object-position: center center;
+}
+
+.xp-home-interact__chips span {
+  display: inline-flex;
+  align-items: center;
+  gap: .38rem;
+}
+
+.xp-home-interact__chips svg {
+  width: 1rem;
+  height: 1rem;
+  flex: 0 0 auto;
+}
+
+.xp-home-studio__features span {
+  display: flex;
+  align-items: center;
+  gap: .55rem;
+}
+
+.xp-home-studio__features svg {
+  width: 1rem;
+  height: 1rem;
+  flex: 0 0 auto;
+  color: rgba(255,255,255,.88);
+}

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { FaRegHeart, FaRegCommentDots, FaRegBookmark, FaShareNodes, FaPenRuler, FaCirclePlay, FaUsers, FaPuzzlePiece, FaMobileScreenButton, FaCloudArrowUp } from "react-icons/fa6";
 
 function ResilientImage({ sources, alt, className = "" }: { sources: string[]; alt: string; className?: string }) {
   const [index, setIndex] = useState(0);
@@ -16,7 +17,7 @@ function ResilientImage({ sources, alt, className = "" }: { sources: string[]; a
 
 const joburg = ["/home/joburg-mag-cover-01.webp","/home/joburg-mag-cover-02.webp","/home/hero-1.webp"];
 const lagos = ["/home/xpomag-lagos-01.webp","/home/hero-2.webp"];
-const steyn = ["/home/steyn-thumbnail.webp","/home/steyn-city-thumbnail.webp","/home/steyn-city.webp","/resources/studio/steyn/steyn-city-img-01.webp"];
+const steyn = ["/home/steyn-city-cover-01.webp","/resources/studio/steyn/steyn-city-img-01.webp"];
 
 export function HomeShowcase() {
   return (
@@ -71,8 +72,8 @@ export function HomeShowcase() {
           </div>
         </div>
         <div className="xp-home-interact__visual">
-          <ResilientImage sources={joburg} alt="Interactive XpoMag demo" />
-          <div className="xp-home-interact__chips"><span>♥ Like</span><span>◯ Comment</span><span>▣ Save</span><span>↗ Share</span></div>
+          <ResilientImage sources={["/home/xpomag-img-02.webp","/home/joburg-mag-cover-02.webp"]} alt="Interactive XpoMag experience" />
+          <div className="xp-home-interact__chips"><span><FaRegHeart /> Like</span><span><FaRegCommentDots /> Comment</span><span><FaRegBookmark /> Save</span><span><FaShareNodes /> Share</span></div>
         </div>
       </section>
 
@@ -86,7 +87,7 @@ export function HomeShowcase() {
             <a href="/magazine/steyn-city-2026/cover">View the Steyn City demo ↗</a>
           </div>
           <div className="xp-home-studio__features">
-            <span>Editorial design</span><span>Embedded video</span><span>Social engagement</span><span>Games & polls</span><span>Responsive</span><span>Hosted online</span>
+            <span><FaPenRuler />Editorial design</span><span><FaCirclePlay />Embedded video</span><span><FaUsers />Social engagement</span><span><FaPuzzlePiece />Games & polls</span><span><FaMobileScreenButton />Responsive</span><span><FaCloudArrowUp />Hosted online</span>
           </div>
         </div>
         <a className="xp-home-studio__visual" href="/magazine/steyn-city-2026/cover" aria-label="Open Steyn City demo">

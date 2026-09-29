@@ -26,7 +26,7 @@ export default function StudioPage() {
           <a href="/magazine/steyn-city-2026/cover">Open the Steyn City experience →</a>
         </div>
         <a className="xp-studio-case__visual" href="/magazine/steyn-city-2026/cover">
-          <img src="/resources/studio/steyn/steyn-city-img-01.webp" alt="Steyn City XpoMag demo" />
+          <img src="/home/steyn-city-cover-01.webp" alt="Steyn City XpoMag demo" />
         </a>
       </section>
 
