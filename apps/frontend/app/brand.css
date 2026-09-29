@@ -1558,3 +1558,149 @@ select:focus {
     animation-duration: 1ms !important;
   }
 }
+
+
+/* ==========================================================================
+   HERO FLIP ENGINE · FAST PERSPECTIVE / ZERO-CROSSFADE LANDING
+   ========================================================================== */
+
+.xp-home-hero {
+  --xp-hero-flip-duration: 680ms;
+}
+
+/* Stronger perspective again. The hinge remains exactly at 50vw. */
+.xp-home-hero__slides {
+  perspective: 1320px !important;
+  perspective-origin: 50% 48% !important;
+  transform-style: preserve-3d !important;
+  -webkit-transform-style: preserve-3d !important;
+}
+
+/* Critical texture alignment:
+   A full hero texture is 100vw wide inside a 50vw physical leaf.
+   The right half is therefore offset by -50vw, not -100%. */
+.xp-home-hero__face-canvas--front-next {
+  left: -50vw !important;
+}
+
+.xp-home-hero__face-canvas--back-next {
+  left: 0 !important;
+}
+
+.xp-home-hero__face-canvas--front-previous {
+  left: 0 !important;
+}
+
+.xp-home-hero__face-canvas--back-previous {
+  left: -50vw !important;
+}
+
+/* No opacity crossfade on the physical leaves. Crossfading the temporary
+   geometry was causing the end-of-turn flash/snap. The back face now lands
+   exactly over the corresponding target half, then the temporary geometry is
+   removed only after the turn has completed. */
+.xp-home-hero.is-flipping .xp-home-hero__turn-sheet,
+.xp-home-hero.is-flipping .xp-home-hero__stationary {
+  animation: none !important;
+  opacity: 1 !important;
+}
+
+/* Faster one-go turn with visible perspective. */
+.xp-home-hero__turn-sheet--next .xp-home-hero__turn-rotor {
+  transform-origin: left center !important;
+  animation: xp-home-fast-flip-next var(--xp-hero-flip-duration) cubic-bezier(.28,.02,.22,1) both !important;
+}
+
+.xp-home-hero__turn-sheet--previous .xp-home-hero__turn-rotor {
+  transform-origin: right center !important;
+  animation: xp-home-fast-flip-previous var(--xp-hero-flip-duration) cubic-bezier(.28,.02,.22,1) both !important;
+}
+
+@keyframes xp-home-fast-flip-next {
+  0% { transform: rotateY(0deg); }
+  100% { transform: rotateY(-180deg); }
+}
+
+@keyframes xp-home-fast-flip-previous {
+  0% { transform: rotateY(0deg); }
+  100% { transform: rotateY(180deg); }
+}
+
+/* Stable, isolated physical faces. */
+.xp-home-hero__turn-sheet,
+.xp-home-hero__turn-rotor {
+  transform-style: preserve-3d !important;
+  -webkit-transform-style: preserve-3d !important;
+  backface-visibility: visible;
+  -webkit-backface-visibility: visible;
+}
+
+.xp-home-hero__turn-face {
+  transform-style: flat !important;
+  backface-visibility: hidden !important;
+  -webkit-backface-visibility: hidden !important;
+  contain: paint;
+  isolation: isolate;
+  outline: 1px solid transparent;
+  will-change: transform;
+}
+
+.xp-home-hero__turn-face--front {
+  transform: translateZ(.2px) !important;
+  box-shadow: -8px 0 28px rgba(2,2,2,.06);
+}
+
+.xp-home-hero__turn-face--back {
+  transform: rotateY(180deg) translateZ(.2px) !important;
+  box-shadow: 8px 0 28px rgba(2,2,2,.08);
+}
+
+/* Keep the full-page textures on their own paint layers without introducing a
+   competing 3D transform that can flatten the parent perspective. */
+.xp-home-hero__full-canvas,
+.xp-home-hero__face-canvas,
+.xp-home-hero__image {
+  backface-visibility: hidden !important;
+  -webkit-backface-visibility: hidden !important;
+  transform: none !important;
+}
+
+/* Fast moving shadow gives the turn depth without expensive blend modes. */
+.xp-home-hero__turn-shade,
+.xp-home-hero__turn-highlight {
+  animation: xp-home-fast-light var(--xp-hero-flip-duration) linear both !important;
+  mix-blend-mode: normal !important;
+}
+
+@keyframes xp-home-fast-light {
+  0%, 100% { opacity: 0; }
+  45%, 55% { opacity: .72; }
+}
+
+.xp-home-hero__hinge-shadow {
+  animation: xp-home-fast-hinge var(--xp-hero-flip-duration) linear both !important;
+  filter: blur(8px);
+}
+
+@keyframes xp-home-fast-hinge {
+  0%, 100% { opacity: 0; transform: scaleX(.3); }
+  50% { opacity: .7; transform: scaleX(1.15); }
+}
+
+/* Ensure the target itself never animates/repaints when the temporary leaf is
+   removed at the end. */
+.xp-home-hero__slide.is-active {
+  transform: none !important;
+  transition: none !important;
+  opacity: 1 !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .xp-home-hero__turn-sheet--next .xp-home-hero__turn-rotor,
+  .xp-home-hero__turn-sheet--previous .xp-home-hero__turn-rotor,
+  .xp-home-hero__turn-shade,
+  .xp-home-hero__turn-highlight,
+  .xp-home-hero__hinge-shadow {
+    animation-duration: 1ms !important;
+  }
+}

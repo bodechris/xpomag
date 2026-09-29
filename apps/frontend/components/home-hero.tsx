@@ -93,7 +93,7 @@ export function HomeHero() {
     window.setTimeout(() => {
       setOutgoing(null);
       lockRef.current = false;
-    }, 960);
+    }, 720);
     return true;
   }, [active]);
 
