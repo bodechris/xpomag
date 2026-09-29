@@ -629,9 +629,27 @@ export function MagazineReader({
 
   const ensureSpreadLoaded = useCallback(async (spreadToLoad: MagazineMasterSpread | null | undefined) => {
     if (!spreadToLoad) return false;
+
+    // A native desktop spread already contains the complete authored artwork for
+    // both physical leaves. Do not wait for the legacy/page API payload before a
+    // drag can render its turning sheet. Forward drags were uniquely flashing
+    // because the next page was usually not hydrated yet, while backward drags
+    // worked because the previous page was already cached.
+    if (!singlePageMode && spreadToLoad.pageIndexes.length === 2) {
+      const spreadPageIds = spreadToLoad.pageIndexes
+        .map((pageIndex) => issue.pages[pageIndex]?.id)
+        .filter((id): id is string => Boolean(id));
+      const hasNativeSpread = issue.spreads?.some((candidate) =>
+        candidate.pieces.length > 0 &&
+        candidate.pageIds?.length === spreadPageIds.length &&
+        candidate.pageIds.every((id, index) => id === spreadPageIds[index])
+      );
+      if (hasNativeSpread) return true;
+    }
+
     const pages = await Promise.all(spreadToLoad.pageIndexes.map((pageIndex) => loadPage(pageIndex)));
     return pages.every(Boolean);
-  }, [loadPage]);
+  }, [issue.pages, issue.spreads, loadPage, singlePageMode]);
 
   const setProgress = useCallback((value: number) => {
     const next = clamp01(value);
@@ -1639,6 +1657,14 @@ export function MagazineReader({
     backTurnNativeSpread
   );
 
+  // Native spread faces are synchronously available from issue.spreads. Legacy
+  // hydrated page definitions are only required when either side is not native.
+  // This keeps the rotating sheet present on the very first forward-drag frame.
+  const canRenderTurnSheet = Boolean(
+    (currentTurnNativeSpread && backTurnNativeSpread) ||
+    (currentTurnPage && backTurnPage)
+  );
+
   const renderNativeStaticLeaf = (
     nativeSpread: MagazineSpreadDefinition,
     side: "left" | "right",
@@ -1800,7 +1826,7 @@ export function MagazineReader({
             </button>
           ) : null}
 
-          {motion?.kind === "flip" && currentTurnPage && backTurnPage ? (
+          {motion?.kind === "flip" && canRenderTurnSheet ? (
             <div className={`xp-magazine__turn-sheet xp-magazine__turn-sheet--${motion.direction}`} aria-hidden="true">
               <div className="xp-magazine__turn-rotor">
                 <div className="xp-magazine__turn-face xp-magazine__turn-face--front">
@@ -1813,7 +1839,7 @@ export function MagazineReader({
                       reflow={singlePageMode}
                     />
                   ) : (
-                    <MagazinePageRenderer page={currentTurnPage} globalElements={issue.designElements} />
+                    <MagazinePageRenderer page={currentTurnPage!} globalElements={issue.designElements} />
                   )}
                 </div>
                 <div className="xp-magazine__turn-face xp-magazine__turn-face--back">
@@ -1826,7 +1852,7 @@ export function MagazineReader({
                       reflow={singlePageMode}
                     />
                   ) : (
-                    <MagazinePageRenderer page={backTurnPage} globalElements={issue.designElements} />
+                    <MagazinePageRenderer page={backTurnPage!} globalElements={issue.designElements} />
                   )}
                 </div>
                 <div className="xp-magazine__fold-shadow" />
