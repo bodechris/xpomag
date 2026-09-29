@@ -6993,6 +6993,34 @@ p[data-drop-cap-lines="6"] .xp-editorial-drop-cap { font-size: 5.85em; }
   transform: rotateY(180deg) translateZ(.5px);
 }
 
+/* Chromium can composite a narrow strip of the reverse texture through the
+   forward (right -> left) page while the sheet is still front-facing. That is
+   the asymmetric centre-hinge artefact visible only on NEXT drags. Force the
+   two physical faces to be mutually exclusive around 90deg and use a real
+   paint clip so descendants from the 200%-wide native spread leaf cannot leak
+   through the 3D face boundary. Previous/left-page turns keep their existing
+   geometry because they are already stable. */
+.xp-magazine__turn-sheet--next .xp-magazine__turn-face {
+  contain: paint;
+  clip-path: inset(0);
+}
+
+.xp-magazine__turn-sheet--next .xp-magazine__turn-face--front {
+  opacity: clamp(
+    0,
+    calc((0.5 - var(--xp-turn-progress)) * 1000),
+    1
+  );
+}
+
+.xp-magazine__turn-sheet--next .xp-magazine__turn-face--back {
+  opacity: clamp(
+    0,
+    calc((var(--xp-turn-progress) - 0.5) * 1000),
+    1
+  );
+}
+
 
 /* Universal compact-page normal flow. Legacy/page-authored publications may
    contain absolutely positioned desktop nodes. In compact mode every ordinary
