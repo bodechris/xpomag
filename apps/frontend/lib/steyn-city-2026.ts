@@ -5777,7 +5777,6 @@ function allThingsDeliciousSpread(issueId: string): MagazineSpreadDefinition {
       loop: true,
       maxLoops: 999,
       controls: false,
-      loop: true,
     },
     style: { display: "block", width: "100%", height: "100%", ...style },
   });

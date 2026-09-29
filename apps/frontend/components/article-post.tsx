@@ -43,7 +43,7 @@ function sectionBlocks(section: MagazineSection, pageTitle: string) {
   return section.elements
     .flatMap(collectBlocks)
     .filter((block) => {
-      if (block.type === "image") return true;
+      if (block.type !== "text") return true;
       const key = block.text.toLowerCase();
       if (key === pageTitle.toLowerCase() || seen.has(key)) return false;
       seen.add(key);
@@ -107,6 +107,34 @@ export function ArticlePost({
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img src={block.src} alt={block.alt} loading="lazy" />
                         {block.alt ? <figcaption>{block.alt}</figcaption> : null}
+                      </figure>
+                    );
+                  }
+                  if (block.type === "video") {
+                    const isYouTube = /youtube\.com|youtu\.be/.test(block.src);
+                    return (
+                      <figure key={block.id}>
+                        {isYouTube ? (
+                          <iframe
+                            src={block.src}
+                            title={block.title}
+                            loading="lazy"
+                            allow="autoplay; encrypted-media; picture-in-picture"
+                            allowFullScreen
+                          />
+                        ) : (
+                          <video
+                            src={block.src}
+                            poster={block.poster}
+                            title={block.title}
+                            muted
+                            loop
+                            playsInline
+                            controls
+                            preload="metadata"
+                          />
+                        )}
+                        <figcaption>{block.title}</figcaption>
                       </figure>
                     );
                   }
