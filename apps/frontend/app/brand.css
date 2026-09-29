@@ -2347,3 +2347,16 @@ select:focus {
     animation-duration: 1ms !important;
   }
 }
+
+
+/* HERO FLIP · REDUCED PERSPECTIVE
+   Larger perspective distance = subtler 3D distortion while preserving depth. */
+.xp-home-hero__one-flip {
+  perspective: 2200px !important;
+}
+
+@media (max-width: 720px) {
+  .xp-home-hero__one-flip {
+    perspective: 1700px !important;
+  }
+}
