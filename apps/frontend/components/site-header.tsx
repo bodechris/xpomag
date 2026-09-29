@@ -1,17 +1,8 @@
 "use client";
 
-import { DesignElement } from "@xpomag/magazine/renderer";
-import type { DesignElementNode } from "@xpomag/magazine";
 import { Bookmark, ChevronDown, Home, LogOut, Menu, UserRound, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { authClient } from "../lib/auth-client";
-
-const headerLogo: DesignElementNode = {
-  id: "xpomag-header-brand-mark",
-  type: "brandMark",
-  props: { label: "XpoMag" },
-  style: { color: "#050505", fontSize: "2rem" },
-};
 
 export function SiteHeader({ city }: { city: string }) {
   const { data: session, isPending } = authClient.useSession();
@@ -49,7 +40,9 @@ export function SiteHeader({ city }: { city: string }) {
         <div className="xp-container xp-site-header__inner">
           <div className="xp-site-header__brand">
             {user ? <button className="xp-member-menu-trigger" type="button" onClick={() => setMenuOpen(true)} aria-label="Open member menu"><Menu size={18} /></button> : null}
-            <a href="/" className="xp-site-header__logo" aria-label="XpoMag home"><DesignElement node={headerLogo} /></a>
+            <a href="/" className="xp-site-header__logo" aria-label="XpoMag home">
+              <img className="xp-site-header__logo-img" src="/resources/brand/horizontal-logo-black@2x.png" alt="XpoMag" />
+            </a>
             <span className="xp-site-header__divider" aria-hidden="true" />
             <span className="xp-label xp-site-header__city">{city}</span>
           </div>
@@ -87,7 +80,12 @@ export function SiteHeader({ city }: { city: string }) {
           <button className="xp-member-rail-trigger" type="button" onClick={() => setMenuOpen(true)} aria-label="Open member menu"><Menu size={18} /></button>
           <div className={`xp-member-drawer-backdrop ${menuOpen ? "is-open" : ""}`} onMouseDown={(event) => { if (event.target === event.currentTarget) setMenuOpen(false); }} aria-hidden={!menuOpen}>
             <aside className={`xp-member-drawer ${menuOpen ? "is-open" : ""}`} aria-label="Member navigation">
-              <div className="xp-member-drawer__top"><a href="/" className="xp-member-drawer__brand">XpoMag</a><button type="button" onClick={() => setMenuOpen(false)} aria-label="Close member menu"><X size={18} /></button></div>
+              <div className="xp-member-drawer__top">
+                <a href="/" className="xp-member-drawer__brand" aria-label="XpoMag home">
+                  <img src="/resources/brand/horizontal-logo-black@2x.png" alt="XpoMag" />
+                </a>
+                <button type="button" onClick={() => setMenuOpen(false)} aria-label="Close member menu"><X size={18} /></button>
+              </div>
               <div className="xp-member-drawer__identity"><span className="xp-profile__avatar xp-profile__avatar--large">{initials}</span><div><strong>{user.name || "XpoMag member"}</strong><span>{user.email}</span></div></div>
               <nav className="xp-member-drawer__nav">
                 <a href="/"><Home size={18} /><span>Discover</span></a>

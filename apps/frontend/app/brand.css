@@ -1,0 +1,457 @@
+@import url("https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600;6..72,700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&family=Space+Mono:wght@400;700&display=swap");
+
+/* ==========================================================================
+   XPOMAG BRAND SYSTEM · 2026
+   Source palette:
+   Red #F91616 · Silver #C6C6C6 · Black #020202 · Ice #AEF4FF · Cyan #19CDF7
+
+   Product chrome uses Poppins. Newsreader is the editorial pairing for long-form
+   reading and story-led moments. Space Mono is reserved for metadata, issue
+   numbers and compact utility labels.
+
+   Publication-authored magazine pages keep their own art direction. These
+   tokens govern XpoMag itself: marketing, navigation, auth, discovery, forms,
+   overlays, social UI and reader chrome.
+   ========================================================================== */
+
+:root {
+  /* Brand palette */
+  --xp-red: #f91616;
+  --xp-silver: #c6c6c6;
+  --xp-black: #020202;
+  --xp-ice: #aef4ff;
+  --xp-cyan: #19cdf7;
+  --xp-white: #ffffff;
+
+  /* Brand ramps */
+  --xp-red-50: #fff1f1;
+  --xp-red-100: #ffdada;
+  --xp-red-200: #ffb2b2;
+  --xp-red-300: #ff7b7b;
+  --xp-red-400: #ff4343;
+  --xp-red-500: #f91616;
+  --xp-red-600: #d90b0b;
+  --xp-red-700: #ac0808;
+  --xp-red-800: #800808;
+  --xp-red-900: #510707;
+
+  --xp-cyan-50: #effcff;
+  --xp-cyan-100: #d9f9ff;
+  --xp-cyan-200: #aef4ff;
+  --xp-cyan-300: #78e9ff;
+  --xp-cyan-400: #3bd9fb;
+  --xp-cyan-500: #19cdf7;
+  --xp-cyan-600: #06a9d1;
+  --xp-cyan-700: #0784a5;
+  --xp-cyan-800: #0b667f;
+  --xp-cyan-900: #0d4657;
+
+  --xp-neutral-0: #ffffff;
+  --xp-neutral-50: #fafafa;
+  --xp-neutral-100: #f4f4f4;
+  --xp-neutral-200: #e9e9e9;
+  --xp-neutral-300: #d8d8d8;
+  --xp-neutral-400: #c6c6c6;
+  --xp-neutral-500: #929292;
+  --xp-neutral-600: #6e6e6e;
+  --xp-neutral-700: #454545;
+  --xp-neutral-800: #242424;
+  --xp-neutral-900: #111111;
+  --xp-neutral-950: #020202;
+
+  /* Existing XpoMag token aliases: overriding these refreshes the whole app
+     without rewriting the magazine rendering engine. */
+  --xp-color-black: var(--xp-black);
+  --xp-color-white: var(--xp-white);
+  --xp-color-paper: #f7f7f7;
+  --xp-color-paper-2: #eeeeee;
+  --xp-color-ink: var(--xp-black);
+  --xp-color-muted: #6e6e6e;
+  --xp-color-line: rgba(2, 2, 2, 0.10);
+  --xp-color-line-strong: rgba(2, 2, 2, 0.18);
+  --xp-color-accent: var(--xp-red);
+  --xp-color-success: #168354;
+  --xp-color-warning: #b36b00;
+  --xp-color-danger: var(--xp-red);
+
+  --xp-bg-app: #f7f7f7;
+  --xp-bg-card: var(--xp-white);
+  --xp-bg-inverse: var(--xp-black);
+
+  /* Type */
+  --xp-font-sans: "Poppins", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --xp-font-grotesk: "Poppins", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --xp-font-display-sans: "Poppins", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --xp-font-editorial: "Newsreader", Georgia, "Times New Roman", serif;
+  --xp-font-editorial-body: "Newsreader", Georgia, "Times New Roman", serif;
+  --xp-font-mono: "Space Mono", "SFMono-Regular", Consolas, monospace;
+
+  /* More deliberate product typography */
+  --xp-leading-tight: .92;
+  --xp-leading-heading: 1.02;
+  --xp-leading-body: 1.58;
+  --xp-tracking-tight: -.045em;
+  --xp-tracking-wide: .11em;
+
+  /* Softer geometry: clean, premium, not bubbly */
+  --xp-radius-sm: 8px;
+  --xp-radius-md: 14px;
+  --xp-radius-lg: 22px;
+  --xp-radius-xl: 32px;
+  --xp-radius-pill: 999px;
+
+  --xp-shadow-soft: 0 16px 46px rgba(2, 2, 2, .07);
+  --xp-shadow-medium: 0 22px 64px rgba(2, 2, 2, .11);
+  --xp-shadow-page: 0 34px 90px rgba(2, 2, 2, .18);
+
+  --xp-focus-ring: 0 0 0 4px rgba(25, 205, 247, .28);
+  --xp-brand-gradient: linear-gradient(135deg, var(--xp-red) 0 38%, var(--xp-cyan) 100%);
+}
+
+/* Base -------------------------------------------------------------------- */
+
+html {
+  background: var(--xp-bg-app);
+}
+
+body {
+  color: var(--xp-color-ink);
+  background:
+    radial-gradient(circle at 92% 0%, rgba(174, 244, 255, .23), transparent 29rem),
+    radial-gradient(circle at 7% 18%, rgba(249, 22, 22, .055), transparent 24rem),
+    var(--xp-bg-app);
+  font-family: var(--xp-font-sans);
+  letter-spacing: -.01em;
+}
+
+::selection {
+  color: #fff;
+  background: var(--xp-red);
+}
+
+:focus-visible {
+  outline: 2px solid var(--xp-cyan);
+  outline-offset: 3px;
+  box-shadow: var(--xp-focus-ring);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--xp-font-sans);
+  font-weight: 700;
+  letter-spacing: var(--xp-tracking-tight);
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+.xp-label,
+.xp-eyebrow,
+[class*="__eyebrow"] {
+  font-family: var(--xp-font-mono);
+  font-weight: 700;
+  letter-spacing: .11em;
+}
+
+.xp-editorial,
+.xp-editorial-copy,
+[data-xp-editorial-copy] {
+  font-family: var(--xp-font-editorial-body);
+  font-size: 1.08em;
+  line-height: 1.66;
+}
+
+.xp-display {
+  font-family: var(--xp-font-sans);
+  font-weight: 800;
+  letter-spacing: -.055em;
+  line-height: .94;
+}
+
+/* Shared buttons ---------------------------------------------------------- */
+
+.xp-button,
+.xp-btn {
+  gap: .5rem;
+  min-height: 44px;
+  border: 1px solid var(--xp-black);
+  border-radius: var(--xp-radius-pill);
+  padding: .74rem 1.15rem;
+  color: #fff;
+  background: var(--xp-black);
+  font-family: var(--xp-font-sans);
+  font-size: .84rem;
+  font-weight: 600;
+  letter-spacing: -.015em;
+  text-transform: none;
+  box-shadow: none;
+  transition:
+    transform 160ms var(--xp-ease-out),
+    border-color 160ms var(--xp-ease-out),
+    background 160ms var(--xp-ease-out),
+    color 160ms var(--xp-ease-out),
+    box-shadow 160ms var(--xp-ease-out);
+}
+
+.xp-button:hover,
+.xp-btn:hover {
+  color: #fff;
+  background: var(--xp-red);
+  border-color: var(--xp-red);
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px rgba(249, 22, 22, .18);
+}
+
+.xp-button--ghost,
+.xp-btn--ghost {
+  color: var(--xp-black);
+  background: rgba(255, 255, 255, .78);
+  border-color: rgba(2, 2, 2, .14);
+}
+
+.xp-button--ghost:hover,
+.xp-btn--ghost:hover {
+  color: var(--xp-black);
+  background: var(--xp-ice);
+  border-color: var(--xp-cyan);
+  box-shadow: none;
+}
+
+.xp-button--brand,
+.xp-btn--primary {
+  color: #fff;
+  background: var(--xp-red);
+  border-color: var(--xp-red);
+}
+
+.xp-button--brand:hover,
+.xp-btn--primary:hover {
+  background: var(--xp-black);
+  border-color: var(--xp-black);
+}
+
+/* Header + brand ---------------------------------------------------------- */
+
+.xp-site-header {
+  padding-top: .75rem;
+}
+
+.xp-site-header__inner {
+  min-height: 68px;
+  padding: .5rem .55rem .5rem .75rem;
+  border: 1px solid rgba(2, 2, 2, .08);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, .90);
+  box-shadow: 0 8px 28px rgba(2, 2, 2, .05);
+  backdrop-filter: blur(24px) saturate(150%);
+  -webkit-backdrop-filter: blur(24px) saturate(150%);
+}
+
+.xp-site-header__logo {
+  flex: 0 0 auto;
+}
+
+.xp-site-header__logo-img {
+  width: clamp(7.3rem, 11vw, 9.3rem);
+  height: auto;
+}
+
+.xp-site-header__divider {
+  height: 26px;
+  background: rgba(2, 2, 2, .13);
+}
+
+.xp-site-header__city {
+  color: var(--xp-neutral-600);
+  font-size: .68rem;
+}
+
+.xp-member-drawer__brand {
+  display: inline-flex;
+  align-items: center;
+}
+
+.xp-member-drawer__brand img {
+  width: 7.6rem;
+  height: auto;
+}
+
+/* Cards + surfaces -------------------------------------------------------- */
+
+.xp-surface,
+.xp-card,
+[class*="__card"]:not([class*="magazine"]):not([class*="publication"]) {
+  border-color: rgba(2, 2, 2, .09);
+  box-shadow: var(--xp-shadow-soft);
+}
+
+input,
+textarea,
+select {
+  accent-color: var(--xp-red);
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--xp-cyan);
+}
+
+/* Reader chrome only. Never recolor publication-authored pages. ----------- */
+
+.xp-reader-page {
+  --xp-reader-accent: var(--xp-red);
+}
+
+.xp-reader-page .xp-magazine__toolbar,
+.xp-reader-page .xp-magazine__footer,
+.xp-reader-page .xp-magazine-engagement {
+  font-family: var(--xp-font-sans);
+}
+
+.xp-reader-page .xp-magazine__icon-button:hover,
+.xp-reader-page .xp-magazine__cover-jump:hover:not(:disabled) {
+  color: var(--xp-black);
+  background: var(--xp-ice);
+  border-color: rgba(25, 205, 247, .45);
+}
+
+.xp-reader-page .xp-magazine-engagement__follow:not([data-following="true"]) {
+  color: #fff;
+  background: var(--xp-red);
+}
+
+.xp-reader-page .xp-magazine-engagement__follow:not([data-following="true"]):hover {
+  background: var(--xp-black);
+}
+
+/* Explore / discovery ----------------------------------------------------- */
+
+.xp-explore {
+  color: var(--xp-black);
+  background:
+    radial-gradient(circle at 85% 8%, rgba(174, 244, 255, .34), transparent 32rem),
+    #f7f7f7;
+  font-family: var(--xp-font-sans);
+}
+
+.xp-explore__brand {
+  font-family: var(--xp-font-sans);
+  letter-spacing: -.055em;
+}
+
+.xp-explore__eyebrow,
+.xp-explore__heading p,
+.xp-publication-card__top,
+.xp-publication-card__label {
+  font-family: var(--xp-font-mono);
+}
+
+.xp-explore__hero h1,
+.xp-explore__heading h2,
+.xp-publication-card h3 {
+  font-family: var(--xp-font-sans);
+  font-weight: 800;
+}
+
+.xp-publication-card--light {
+  color: var(--xp-black);
+  background: var(--xp-ice);
+}
+
+.xp-publication-card--dark,
+.xp-explore__coming {
+  color: #fff;
+  background: var(--xp-black);
+}
+
+.xp-publication-card--light button,
+.xp-publication-card--light a {
+  color: #fff;
+  background: var(--xp-red);
+}
+
+.xp-publication-card--light button:hover,
+.xp-publication-card--light a:hover {
+  background: var(--xp-black);
+}
+
+/* Auth + account ---------------------------------------------------------- */
+
+.xp-auth,
+.xp-auth-shell,
+.auth-shell {
+  font-family: var(--xp-font-sans);
+}
+
+.xp-auth-card,
+.auth-card,
+[class*="auth"][class*="card"] {
+  border-color: rgba(2, 2, 2, .09);
+  box-shadow: var(--xp-shadow-medium);
+}
+
+.xp-profile__avatar {
+  color: #fff;
+  background: var(--xp-black);
+}
+
+.xp-profile__trigger:hover .xp-profile__avatar,
+.xp-member-menu-trigger:hover,
+.xp-member-rail-trigger:hover {
+  background: var(--xp-red);
+  color: #fff;
+}
+
+/* Branded helpers --------------------------------------------------------- */
+
+.xp-bg-red { background: var(--xp-red) !important; }
+.xp-bg-black { background: var(--xp-black) !important; }
+.xp-bg-ice { background: var(--xp-ice) !important; }
+.xp-bg-cyan { background: var(--xp-cyan) !important; }
+.xp-text-red { color: var(--xp-red) !important; }
+.xp-text-cyan { color: var(--xp-cyan) !important; }
+.xp-text-black { color: var(--xp-black) !important; }
+.xp-font-editorial { font-family: var(--xp-font-editorial-body) !important; }
+.xp-font-mono { font-family: var(--xp-font-mono) !important; }
+
+@media (max-width: 760px) {
+  .xp-site-header {
+    padding-top: .45rem;
+  }
+
+  .xp-site-header__inner {
+    min-height: 58px;
+    padding: .4rem .45rem .4rem .6rem;
+    border-radius: 15px;
+  }
+
+  .xp-site-header__logo-img {
+    width: 7rem;
+  }
+
+  .xp-site-header__divider {
+    height: 20px;
+  }
+
+  .xp-site-header__city {
+    max-width: 8.5rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .xp-button,
+  .xp-btn,
+  .xp-site-header__logo {
+    transition: none !important;
+  }
+}
