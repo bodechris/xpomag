@@ -1449,3 +1449,112 @@ select:focus {
     animation-duration: 1ms !important;
   }
 }
+
+
+/* ==========================================================================
+   HERO FLIP LANDING · SEAMLESS FINAL BLEND
+   The physical turn now settles into the already-rendered target slide instead
+   of being removed on the exact final frame. This prevents the tiny snap/shake
+   caused by swapping the transformed half-page for the flat slide.
+   ========================================================================== */
+
+.xp-home-hero {
+  --xp-hero-flip-duration: 920ms;
+}
+
+/* Keep the target slide painted for the entire animation. It is the final
+   landing surface; the turning geometry merely reveals/blends into it. */
+.xp-home-hero.is-flipping .xp-home-hero__slide.is-active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Finish just shy of the exact 180deg backface boundary. Browsers can make a
+   one-frame compositing decision exactly at 180deg; 179.7deg is visually flat
+   but avoids that unstable boundary. */
+.xp-home-hero__turn-sheet--next .xp-home-hero__turn-rotor {
+  animation: xp-home-center-flip-next-land var(--xp-hero-flip-duration) cubic-bezier(.36,0,.64,1) both;
+}
+
+.xp-home-hero__turn-sheet--previous .xp-home-hero__turn-rotor {
+  animation: xp-home-center-flip-previous-land var(--xp-hero-flip-duration) cubic-bezier(.36,0,.64,1) both;
+}
+
+@keyframes xp-home-center-flip-next-land {
+  from { transform: rotateY(0deg); }
+  to { transform: rotateY(-179.7deg); }
+}
+
+@keyframes xp-home-center-flip-previous-land {
+  from { transform: rotateY(0deg); }
+  to { transform: rotateY(179.7deg); }
+}
+
+/* Fade the temporary physical geometry into the permanent target during only
+   the last few frames. The page still completes in one movement; this is the
+   visual equivalent of the sheet settling flush onto the surface. */
+.xp-home-hero.is-flipping .xp-home-hero__turn-sheet {
+  animation: xp-home-turn-settle var(--xp-hero-flip-duration) linear both;
+}
+
+.xp-home-hero.is-flipping .xp-home-hero__stationary {
+  animation: xp-home-stationary-settle var(--xp-hero-flip-duration) linear both;
+}
+
+@keyframes xp-home-turn-settle {
+  0%, 91% { opacity: 1; }
+  96% { opacity: .82; }
+  100% { opacity: 0; }
+}
+
+@keyframes xp-home-stationary-settle {
+  0%, 88% { opacity: 1; }
+  95% { opacity: .68; }
+  100% { opacity: 0; }
+}
+
+/* Lighting also resolves before the temporary geometry disappears so there is
+   no last-frame brightness pop. */
+.xp-home-hero__turn-shade,
+.xp-home-hero__turn-highlight {
+  animation: xp-home-page-light-land var(--xp-hero-flip-duration) linear both;
+}
+
+@keyframes xp-home-page-light-land {
+  0% { opacity: 0; }
+  48% { opacity: .78; }
+  82% { opacity: .18; }
+  100% { opacity: 0; }
+}
+
+.xp-home-hero__hinge-shadow {
+  animation: xp-home-hinge-shadow-land var(--xp-hero-flip-duration) linear both;
+}
+
+@keyframes xp-home-hinge-shadow-land {
+  0% { opacity: 0; transform: scaleX(.35); }
+  50% { opacity: .66; transform: scaleX(1.1); }
+  82% { opacity: .12; transform: scaleX(.55); }
+  100% { opacity: 0; transform: scaleX(.35); }
+}
+
+/* Do not transition any dimensional property at landing; only compositor-safe
+   transform/opacity are animated. */
+.xp-home-hero__turn-sheet,
+.xp-home-hero__stationary,
+.xp-home-hero__turn-rotor,
+.xp-home-hero__turn-face {
+  transition: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .xp-home-hero.is-flipping .xp-home-hero__turn-sheet,
+  .xp-home-hero.is-flipping .xp-home-hero__stationary,
+  .xp-home-hero__turn-sheet--next .xp-home-hero__turn-rotor,
+  .xp-home-hero__turn-sheet--previous .xp-home-hero__turn-rotor,
+  .xp-home-hero__turn-shade,
+  .xp-home-hero__turn-highlight,
+  .xp-home-hero__hinge-shadow {
+    animation-duration: 1ms !important;
+  }
+}
