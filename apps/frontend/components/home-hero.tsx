@@ -75,6 +75,7 @@ export function HomeHero() {
   const [direction, setDirection] = useState<"next" | "previous">("next");
   const lockRef = useRef(false);
   const heroRef = useRef<HTMLElement | null>(null);
+  const fallbackRef = useRef<number | null>(null);
 
   useEffect(() => {
     slides.forEach((slide) => {
@@ -90,12 +91,31 @@ export function HomeHero() {
     setDirection(next > active ? "next" : "previous");
     setOutgoing(active);
     setActive(next);
-    window.setTimeout(() => {
+    if (fallbackRef.current) window.clearTimeout(fallbackRef.current);
+    fallbackRef.current = window.setTimeout(() => {
       setOutgoing(null);
       lockRef.current = false;
-    }, 720);
+      fallbackRef.current = null;
+    }, 900);
     return true;
   }, [active]);
+
+  useEffect(() => {
+    return () => {
+      if (fallbackRef.current) window.clearTimeout(fallbackRef.current);
+    };
+  }, []);
+
+  const finishFlip = useCallback(() => {
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        if (fallbackRef.current) window.clearTimeout(fallbackRef.current);
+        fallbackRef.current = null;
+        setOutgoing(null);
+        lockRef.current = false;
+      });
+    });
+  }, []);
 
   useEffect(() => {
     const hero = heroRef.current;
@@ -141,7 +161,12 @@ export function HomeHero() {
             </div>
 
             <div className={`xp-home-hero__turn-sheet xp-home-hero__turn-sheet--${direction}`} aria-hidden="true">
-              <div className="xp-home-hero__turn-rotor">
+              <div
+                className="xp-home-hero__turn-rotor"
+                onAnimationEnd={(event) => {
+                  if (event.currentTarget === event.target) finishFlip();
+                }}
+              >
                 <div className="xp-home-hero__turn-face xp-home-hero__turn-face--front">
                   <div className={`xp-home-hero__face-canvas xp-home-hero__face-canvas--front-${direction}`}>
                     <HeroVisual slide={outgoingSlide} inert />
