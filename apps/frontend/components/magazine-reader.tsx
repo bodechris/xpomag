@@ -1,7 +1,7 @@
 "use client";
 
 import { buildMasterSpreadsFromPages, MAGAZINE_COMPACT_MAX_WIDTH, MAGAZINE_MAX_PAGE_CACHE_ENTRIES, MagazinePageRenderer, MagazineSpreadCanvas, MagazineSpreadLeaf, type ComposerNode, type DesignElementNode, type MagazineMasterSpread, type MagazinePageDefinition, type MagazineSpreadDefinition } from "@xpomag/magazine";
-import { ArrowLeft, ArrowRight, BookOpen, LockKeyhole, Maximize2, Menu, Minimize2, Pause, Play, RotateCcw, X } from "lucide-react";
+import { ArrowLeft, ArrowRight, BookOpen, ChevronsLeft, ChevronsRight, LockKeyhole, Maximize2, Menu, Minimize2, Pause, Play, RotateCcw, X } from "lucide-react";
 import { MagazineEngagementDock } from "./magazine-engagement-dock";
 import type { CSSProperties, MouseEvent as ReactMouseEvent, PointerEvent as ReactPointerEvent } from "react";
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
@@ -2014,18 +2014,42 @@ export function MagazineReader({
 
       <div className="xp-magazine__footer">
         <div className="xp-magazine__progress" aria-label="Magazine progress">
-          {spreads.map((item, index) => (
-            <button
-              key={item.id}
-              type="button"
-              aria-label={`Open ${singlePageMode ? "page" : "spread"} ${index + 1}`}
-              aria-current={index === safeSpreadIndex ? "page" : undefined}
-              className="xp-magazine__dot"
-              onClick={() => {
-                animateToSpread(index);
-              }}
-            />
-          ))}
+          <button
+            type="button"
+            className="xp-magazine__cover-jump"
+            onClick={() => animateToSpread(0)}
+            disabled={safeSpreadIndex === 0 || Boolean(motion)}
+            aria-label="Go to front cover"
+            title="Front cover"
+          >
+            <ChevronsLeft size={15} />
+          </button>
+
+          <div className="xp-magazine__progress-dots" aria-hidden="false">
+            {spreads.map((item, index) => (
+              <button
+                key={item.id}
+                type="button"
+                aria-label={`Open ${singlePageMode ? "page" : "spread"} ${index + 1}`}
+                aria-current={index === safeSpreadIndex ? "page" : undefined}
+                className="xp-magazine__dot"
+                onClick={() => {
+                  animateToSpread(index);
+                }}
+              />
+            ))}
+          </div>
+
+          <button
+            type="button"
+            className="xp-magazine__cover-jump"
+            onClick={() => animateToSpread(maxSpreadIndex)}
+            disabled={safeSpreadIndex === maxSpreadIndex || Boolean(motion)}
+            aria-label="Go to back cover"
+            title="Back cover"
+          >
+            <ChevronsRight size={15} />
+          </button>
         </div>
 
         <MagazineEngagementDock
