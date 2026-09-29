@@ -671,15 +671,35 @@ export function MagazineReader({
   }, []);
 
   const finishMotion = useCallback((commit: boolean, targetIndex: number) => {
-    if (commit) setSpreadIndex(targetIndex);
-    setMotion(null);
-    setProgress(0);
-    wheelDeltaRef.current = 0;
-    wheelBlockedUntilRef.current = performance.now() + 260;
-    navigationLockRef.current = false;
     const afterMotion = afterMotionRef.current;
     afterMotionRef.current = null;
-    if (commit) afterMotion?.();
+
+    if (!commit) {
+      setMotion(null);
+      setProgress(0);
+      wheelDeltaRef.current = 0;
+      wheelBlockedUntilRef.current = performance.now() + 260;
+      navigationLockRef.current = false;
+      return;
+    }
+
+    // Keep the completed turn at progress=1 while React swaps the animated
+    // scene for the new resting spread. Resetting the CSS variable immediately
+    // used to expose one frame of the old geometry at progress=0, which showed
+    // up as a full-screen flicker at the end of every successful turn.
+    setSpreadIndex(targetIndex);
+    setMotion(null);
+
+    motionFrameRef.current = requestAnimationFrame(() => {
+      motionFrameRef.current = requestAnimationFrame(() => {
+        motionFrameRef.current = null;
+        setProgress(0);
+        wheelDeltaRef.current = 0;
+        wheelBlockedUntilRef.current = performance.now() + 260;
+        navigationLockRef.current = false;
+        afterMotion?.();
+      });
+    });
   }, [setProgress]);
 
   const animateProgress = useCallback((to: number, onDone: () => void) => {
