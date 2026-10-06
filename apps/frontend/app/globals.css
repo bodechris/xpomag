@@ -1262,13 +1262,26 @@ img, picture, video, canvas, svg { display: block; max-width: 100%; }
   opacity: 1;
 }
 
-/* Steyn City editorial readability: body copy should remain comfortably legible
-   at the fitted desktop spread size. Mobile keeps the larger reflow-specific values. */
-@media (min-width: 621px) {
-  .xp-magazine[aria-label^="Steyn City magazine"] [data-magazine-spread] p,
-  .xp-magazine[aria-label^="Steyn City magazine"] [data-magazine-page] p {
-    font-size: clamp(.46rem, .52vw, .60rem) !important;
-    line-height: 1.5 !important;
+/* Steyn City editorial readability: long-form body copy should read closer
+   to modern social-feed text rather than tiny print. Native article pieces keep
+   their authored composition on desktop; compact/tablet mode still switches to
+   the universal vertical reflow below and grows to 1rem+. */
+@media (min-width: 1101px) {
+  .xp-magazine[aria-label^="Steyn City magazine"] [data-spread-piece-kind="article"] p,
+  .xp-magazine[aria-label^="Steyn City magazine"] [data-magazine-page-kind="editorial"] p,
+  .xp-magazine[aria-label^="Steyn City magazine"] [data-magazine-page-kind="feature"] p {
+    font-size: clamp(.84rem, .74vw, .96rem) !important;
+    line-height: 1.48 !important;
+    letter-spacing: -.005em !important;
+  }
+}
+
+@media (min-width: 621px) and (max-width: 1100px) {
+  .xp-magazine[aria-label^="Steyn City magazine"] [data-magazine-reflow] p,
+  .xp-magazine[aria-label^="Steyn City magazine"] [data-magazine-page-kind="editorial"] p,
+  .xp-magazine[aria-label^="Steyn City magazine"] [data-magazine-page-kind="feature"] p {
+    font-size: clamp(1rem, 1.45vw, 1.075rem) !important;
+    line-height: 1.58 !important;
   }
 }
 
