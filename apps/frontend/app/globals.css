@@ -1272,6 +1272,29 @@ img, picture, video, canvas, svg { display: block; max-width: 100%; }
   }
 }
 
+/* Steyn City authored cover feature links + per-story engagement. */
+[data-magazine-page="cover"] [data-section-id^="cover-feature-"] .xp-cover-feature-link {
+  pointer-events: auto;
+  transition: opacity 180ms var(--xp-ease-out), transform 180ms var(--xp-ease-out);
+  transform-origin: center;
+}
+[data-magazine-page="cover"] [data-section-id^="cover-feature-"] .xp-cover-feature-link:hover {
+  opacity: .82;
+  transform: translateY(-1px);
+}
+[data-magazine-page="cover"] [data-section-id^="cover-feature-"] .xp-cover-feature-link:focus-visible {
+  outline: 2px solid rgba(255,255,255,.82);
+  outline-offset: 4px;
+}
+[data-magazine-page="cover"] [data-section-id^="cover-feature-"] > .xp-section-engagement--inline {
+  pointer-events: auto;
+  opacity: .58;
+}
+[data-magazine-page="cover"] [data-section-id^="cover-feature-"]:hover > .xp-section-engagement--inline,
+[data-magazine-page="cover"] [data-section-id^="cover-feature-"]:focus-within > .xp-section-engagement--inline {
+  opacity: 1;
+}
+
 /* Cover engagement is positioned against the rendered text itself, not the composer
    node's design-box height. This is why it now sits immediately below each coverline. */
 [data-composer-node][data-story-id] { transition: opacity 160ms var(--xp-ease-out); }
