@@ -6,7 +6,7 @@ import type { ComposerNode } from "./editor.js";
 
 export type SectionEngagementRenderer = (section: MagazineSection) => ReactNode;
 
-export function MagazinePageRenderer({ page, globalElements, renderEngagement, renderComposerNodeOverlay, onComposerNodeActivate }: { page: MagazinePageDefinition; globalElements?: Record<string, import("./schema").DesignElementNode>; renderEngagement?: SectionEngagementRenderer; renderComposerNodeOverlay?: (node: ComposerNode) => ReactNode; onComposerNodeActivate?: (node: ComposerNode) => void }) {
+export function MagazinePageRenderer({ page, globalElements, renderEngagement, renderComposerNodeOverlay, onComposerNodeActivate, onNavigate }: { page: MagazinePageDefinition; globalElements?: Record<string, import("./schema").DesignElementNode>; renderEngagement?: SectionEngagementRenderer; renderComposerNodeOverlay?: (node: ComposerNode) => ReactNode; onComposerNodeActivate?: (node: ComposerNode) => void; onNavigate?: (href: string) => void }) {
   const layout = getMagazineLayout(page.layoutId);
   return (
     <div
@@ -14,7 +14,7 @@ export function MagazinePageRenderer({ page, globalElements, renderEngagement, r
       data-layout={layout.id}
       style={{ ...layout.style, position: "relative", isolation: "isolate", overflow: "hidden", containerType: "inline-size" }}
     >
-      <DesignElement node={page.background} registry={globalElements} renderComposerNodeOverlay={renderComposerNodeOverlay} onComposerNodeActivate={onComposerNodeActivate} />
+      <DesignElement node={page.background} registry={globalElements} renderComposerNodeOverlay={renderComposerNodeOverlay} onComposerNodeActivate={onComposerNodeActivate} onNavigate={onNavigate} />
       {page.sections.map((section) => {
         const slot = layout.slots.find((item) => item.name === section.slot);
         const style: CSSProperties = layout.mode === "grid"
@@ -22,7 +22,7 @@ export function MagazinePageRenderer({ page, globalElements, renderEngagement, r
           : { flex: slot?.grow ? String(slot.grow) : undefined, flexBasis: slot?.basis, minWidth: 0, minHeight: 0, position: "relative", zIndex: 1, ...(section.style as CSSProperties) };
         return (
           <section id={section.slug} data-magazine-section={section.slug} data-section-id={section.id} key={section.id} style={style}>
-            {section.elements.map((element) => <DesignElement key={element.id} node={element} registry={globalElements} renderComposerNodeOverlay={renderComposerNodeOverlay} onComposerNodeActivate={onComposerNodeActivate} />)}
+            {section.elements.map((element) => <DesignElement key={element.id} node={element} registry={globalElements} renderComposerNodeOverlay={renderComposerNodeOverlay} onComposerNodeActivate={onComposerNodeActivate} onNavigate={onNavigate} />)}
             {renderEngagement?.(section)}
           </section>
         );
