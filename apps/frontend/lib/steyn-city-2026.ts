@@ -364,9 +364,11 @@ function coverPage(issueId: string, tone: Tone): MagazinePageDefinition {
     id: string,
     title: string,
     deck: string,
+    href: string,
     style: DesignElementNode["style"],
     align: "left" | "right" = "left",
-  ): DesignElementNode => stack(`${id}-group`, [
+  ): DesignElementNode => {
+    const node = stack(`${id}-group`, [
     image(`${id}-corner`, corner, "", {
       width: "clamp(.92rem,1.45vw,1.35rem)",
       height: "clamp(.92rem,1.45vw,1.35rem)",
@@ -402,7 +404,31 @@ function coverPage(issueId: string, tone: Tone): MagazinePageDefinition {
       textShadow: "0 2px 8px rgba(0,0,0,.50)",
       marginTop: ".08rem",
     }),
-  ], { position: "absolute", zIndex: 6, gap: 0, ...style });
+  ], {
+    position: "absolute",
+    zIndex: 6,
+    gap: 0,
+    pointerEvents: "auto",
+    ...style,
+  });
+    node.props = {
+      ...(node.props ?? {}),
+      href,
+      className: "xp-cover-feature-link",
+      ariaLabel: `Open ${title.replaceAll("\\n", " ")}`,
+    };
+    return node;
+  };
+
+  const featureSectionStyle: MagazineSection["style"] = {
+    position: "absolute",
+    inset: 0,
+    padding: 0,
+    overflow: "visible",
+    background: "transparent",
+    pointerEvents: "none",
+    zIndex: 12,
+  };
 
   return page(issueId, "cover", "Steyn City 2026 · Extraordinary Living", "cover", "utility-full", tone, [
     section("cover-main", "Steyn City 2026 cover", "main", [
@@ -507,36 +533,6 @@ function coverPage(issueId: string, tone: Tone): MagazinePageDefinition {
         transform: "translateY(-5px) rotate(-3deg)",
       }),
 
-      coverline(
-        "cover-senior",
-        "SENIOR\nLIVING",
-        "a new take on\nthe golden years",
-        { left: "8.0%", top: "35.4%", width: "28.2%" },
-      ),
-
-      coverline(
-        "cover-liv",
-        "HOME OF LIV GOLF\nSOUTH AFRICA\n2026",
-        "making history",
-        { right: "7.7%", top: "35.4%", width: "43%" },
-        "right",
-      ),
-
-      coverline(
-        "cover-easy",
-        "LIVING THE\nEASY LIFE",
-        "convenient world-class\nfacilities and services",
-        { left: "7.2%", top: "60.0%", width: "36%" },
-      ),
-
-      coverline(
-        "cover-nature",
-        "BIRDS\n& BEES",
-        "where nature\nthrives",
-        { right: "7.7%", top: "60.0%", width: "21%" },
-        "right",
-      ),
-
       stack("cover-bottom-lockup", [
         image("cover-steyn-mark", steynMark, "Steyn City logo mark", {
           width: "clamp(2.7rem,4.7vw,4.45rem)",
@@ -609,7 +605,77 @@ function coverPage(issueId: string, tone: Tone): MagazinePageDefinition {
       overflow: "hidden",
       background: "#0c2017",
       isolation: "isolate",
-    }, true),
+    }, false),
+
+    section(
+      "cover-feature-senior",
+      "Senior Living",
+      "main",
+      [
+        coverline(
+          "cover-senior",
+          "SENIOR\nLIVING",
+          "a new take on\nthe golden years",
+          `/magazine/${issueId}/senior-village`,
+          { left: "8.0%", top: "35.4%", width: "28.2%" },
+        ),
+      ],
+      featureSectionStyle,
+      true,
+    ),
+
+    section(
+      "cover-feature-liv",
+      "Home of LIV Golf South Africa 2026",
+      "main",
+      [
+        coverline(
+          "cover-liv",
+          "HOME OF LIV GOLF\nSOUTH AFRICA\n2026",
+          "making history",
+          `/magazine/${issueId}/liv-opener`,
+          { right: "7.7%", top: "35.4%", width: "43%" },
+          "right",
+        ),
+      ],
+      featureSectionStyle,
+      true,
+    ),
+
+    section(
+      "cover-feature-easy",
+      "Living the Easy Life",
+      "main",
+      [
+        coverline(
+          "cover-easy",
+          "LIVING THE\nEASY LIFE",
+          "convenient world-class\nfacilities and services",
+          `/magazine/${issueId}/easy-life`,
+          { left: "7.2%", top: "60.0%", width: "36%" },
+        ),
+      ],
+      featureSectionStyle,
+      true,
+    ),
+
+    section(
+      "cover-feature-nature",
+      "Birds and Bees",
+      "main",
+      [
+        coverline(
+          "cover-nature",
+          "BIRDS\n& BEES",
+          "where nature\nthrives",
+          `/magazine/${issueId}/birds-bees-i`,
+          { right: "7.7%", top: "60.0%", width: "21%" },
+          "right",
+        ),
+      ],
+      featureSectionStyle,
+      true,
+    ),
   ]);
 }
 
