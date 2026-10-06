@@ -8,6 +8,7 @@ import { InteractiveYouTubeVideo } from "./interactive-youtube-video.js";
 type DesignElementInteractionProps = {
   renderComposerNodeOverlay?: (node: ComposerNode) => ReactNode;
   onComposerNodeActivate?: (node: ComposerNode) => void;
+  onNavigate?: (href: string) => void;
 };
 
 function childrenOf(node: DesignElementNode, registry: Record<string, DesignElementNode> | undefined, interactions: DesignElementInteractionProps): ReactNode {
@@ -27,18 +28,18 @@ function backgroundLayerStyle(layer: Record<string, unknown>): CSSProperties {
   return { position: "absolute", inset: 0, opacity, mixBlendMode, filter, transform, background, pointerEvents: "none" };
 }
 
-export function DesignElement({ node, registry, renderComposerNodeOverlay, onComposerNodeActivate }: { node: DesignElementNode; registry?: Record<string, DesignElementNode> } & DesignElementInteractionProps) {
+export function DesignElement({ node, registry, renderComposerNodeOverlay, onComposerNodeActivate, onNavigate }: { node: DesignElementNode; registry?: Record<string, DesignElementNode> } & DesignElementInteractionProps) {
   const style = styleOf(node);
   const props = node.props ?? {};
 
   switch (node.type) {
     case "frame":
-      return <section data-design-element="frame" style={style}>{childrenOf(node, registry, { renderComposerNodeOverlay, onComposerNodeActivate })}</section>;
+      return <section data-design-element="frame" style={style}>{childrenOf(node, registry, { renderComposerNodeOverlay, onComposerNodeActivate, onNavigate })}</section>;
     case "stack": {
       const href = typeof props.href === "string" ? props.href : "";
       const className = typeof props.className === "string" ? props.className : undefined;
       const ariaLabel = typeof props.ariaLabel === "string" ? props.ariaLabel : undefined;
-      const content = childrenOf(node, registry, { renderComposerNodeOverlay, onComposerNodeActivate });
+      const content = childrenOf(node, registry, { renderComposerNodeOverlay, onComposerNodeActivate, onNavigate });
       if (href) {
         return (
           <a
@@ -47,6 +48,12 @@ export function DesignElement({ node, registry, renderComposerNodeOverlay, onCom
             href={href}
             className={className}
             aria-label={ariaLabel}
+            onClick={(event) => {
+              if (!onNavigate) return;
+              event.preventDefault();
+              event.stopPropagation();
+              onNavigate(href);
+            }}
             style={{ display: "flex", flexDirection: "column", color: "inherit", textDecoration: "none", cursor: "pointer", ...style }}
           >
             {content}
@@ -56,7 +63,7 @@ export function DesignElement({ node, registry, renderComposerNodeOverlay, onCom
       return <div data-design-element="stack" className={className} style={{ display: "flex", flexDirection: "column", ...style }}>{content}</div>;
     }
     case "grid":
-      return <div data-design-element="grid" style={{ display: "grid", ...style }}>{childrenOf(node, registry, { renderComposerNodeOverlay, onComposerNodeActivate })}</div>;
+      return <div data-design-element="grid" style={{ display: "grid", ...style }}>{childrenOf(node, registry, { renderComposerNodeOverlay, onComposerNodeActivate, onNavigate })}</div>;
     case "text": {
       const as = typeof props.as === "string" ? props.as : "p";
       const text = typeof props.text === "string" ? props.text : "";
@@ -200,6 +207,7 @@ export function DesignElement({ node, registry, renderComposerNodeOverlay, onCom
           registry={registry}
           renderComposerNodeOverlay={renderComposerNodeOverlay}
           onComposerNodeActivate={onComposerNodeActivate}
+          onNavigate={onNavigate}
         />
       );
     }
