@@ -1703,7 +1703,7 @@ export function MagazineReader({
                         sectionSlug={section.slug}
                         authenticated={viewerAuthenticated}
                         config={section.engagement}
-                        appearance={["feature", "advert", "closing"].includes(page.kind) ? "light" : "dark"}
+                        appearance={["cover", "feature", "advert", "closing"].includes(page.kind) ? "light" : "dark"}
                       />
                     )}
                   />
