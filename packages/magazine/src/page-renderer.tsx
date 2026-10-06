@@ -11,6 +11,7 @@ export function MagazinePageRenderer({ page, globalElements, renderEngagement, r
   return (
     <div
       data-magazine-page={page.slug}
+      data-magazine-page-kind={page.kind}
       data-layout={layout.id}
       style={{ ...layout.style, position: "relative", isolation: "isolate", overflow: "hidden", containerType: "inline-size" }}
     >
