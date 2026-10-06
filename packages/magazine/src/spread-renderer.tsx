@@ -148,6 +148,7 @@ export function MagazineSpreadCanvas({
             data-magazine-spread-piece={piece.slug}
             data-spread-piece-id={piece.id}
             data-spread-region={piece.region ?? "spread"}
+            data-spread-piece-kind={piece.kind ?? "editorial"}
             data-gutter-behaviour={piece.gutterBehaviour ?? "avoid"}
             style={pieceStyle(piece)}
           >
