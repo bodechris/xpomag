@@ -633,7 +633,7 @@ function coverPage(issueId: string, tone: Tone): MagazinePageDefinition {
           "cover-liv",
           "HOME OF LIV GOLF\nSOUTH AFRICA\n2026",
           "making history",
-          `/magazine/${issueId}/liv-opener`,
+          `/magazine/${issueId}/golf-tradition-i`,
           { right: "7.7%", top: "35.4%", width: "43%" },
           "right",
         ),
