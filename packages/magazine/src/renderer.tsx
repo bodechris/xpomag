@@ -34,8 +34,27 @@ export function DesignElement({ node, registry, renderComposerNodeOverlay, onCom
   switch (node.type) {
     case "frame":
       return <section data-design-element="frame" style={style}>{childrenOf(node, registry, { renderComposerNodeOverlay, onComposerNodeActivate })}</section>;
-    case "stack":
-      return <div data-design-element="stack" style={{ display: "flex", flexDirection: "column", ...style }}>{childrenOf(node, registry, { renderComposerNodeOverlay, onComposerNodeActivate })}</div>;
+    case "stack": {
+      const href = typeof props.href === "string" ? props.href : "";
+      const className = typeof props.className === "string" ? props.className : undefined;
+      const ariaLabel = typeof props.ariaLabel === "string" ? props.ariaLabel : undefined;
+      const content = childrenOf(node, registry, { renderComposerNodeOverlay, onComposerNodeActivate });
+      if (href) {
+        return (
+          <a
+            data-design-element="stack"
+            data-magazine-interactive
+            href={href}
+            className={className}
+            aria-label={ariaLabel}
+            style={{ display: "flex", flexDirection: "column", color: "inherit", textDecoration: "none", cursor: "pointer", ...style }}
+          >
+            {content}
+          </a>
+        );
+      }
+      return <div data-design-element="stack" className={className} style={{ display: "flex", flexDirection: "column", ...style }}>{content}</div>;
+    }
     case "grid":
       return <div data-design-element="grid" style={{ display: "grid", ...style }}>{childrenOf(node, registry, { renderComposerNodeOverlay, onComposerNodeActivate })}</div>;
     case "text": {
