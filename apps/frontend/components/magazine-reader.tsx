@@ -799,6 +799,48 @@ export function MagazineReader({
     void animateToSpread(targetSpreadIndex, finishStoryNavigation);
   }, [animateToSpread, issue.pages, issue.slug, spreads]);
 
+  const openDesignHref = useCallback((href: string) => {
+    let url: URL;
+    try {
+      url = new URL(href, window.location.origin);
+    } catch {
+      window.location.href = href;
+      return;
+    }
+
+    const prefix = `/magazine/${issue.slug}/`;
+    if (!url.pathname.startsWith(prefix)) {
+      window.location.href = href;
+      return;
+    }
+
+    const targetPageSlug = decodeURIComponent(url.pathname.slice(prefix.length).split("/")[0] ?? "");
+    const pageIndex = issue.pages.findIndex((page) => page.slug === targetPageSlug);
+    if (pageIndex < 0) {
+      window.location.href = href;
+      return;
+    }
+
+    const targetSpreadIndex = spreads.findIndex((item) => item.pageIndexes.includes(pageIndex));
+    if (targetSpreadIndex < 0) {
+      window.location.href = href;
+      return;
+    }
+
+    const finishLinkedNavigation = () => {
+      const nextPath = `${url.pathname}${url.search}${url.hash}`;
+      window.history.pushState(window.history.state, "", nextPath);
+      if (url.hash) {
+        const id = decodeURIComponent(url.hash.slice(1));
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+          document.getElementById(id)?.scrollIntoView({ block: "center", behavior: "smooth" });
+        }));
+      }
+    };
+
+    void animateToSpread(targetSpreadIndex, finishLinkedNavigation);
+  }, [animateToSpread, issue.pages, issue.slug, spreads]);
+
   const navigate = useCallback(async (direction: Direction) => {
     if (motion || navigationLockRef.current) return;
 
@@ -1683,6 +1725,7 @@ export function MagazineReader({
                     page={page}
                     globalElements={issue.designElements}
                     onComposerNodeActivate={openStoryTarget}
+                    onNavigate={openDesignHref}
                     renderComposerNodeOverlay={(node) => node.story?.engagementAnchor ? (
                       <div className="xp-cover-story-engagement" data-story-engagement={node.story.id}>
                         <SectionEngagementBar
